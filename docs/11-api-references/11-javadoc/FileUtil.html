@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FileUtil - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>FileUtil</h1>
+      <p>Framework Components [com.onepg.util]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.util</p>
+        <p><strong>Class Name:</strong> FileUtil</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>File operation utility class.
+</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="getOsTemporaryPath">
+        <h3 class="method-name">getOsTemporaryPath</h3>
+        <div class="method-signature">
+          <code>public String getOsTemporaryPath()</code>
+        </div>
+        <div class="method-description">
+          Retrieves the OS temporary directory path.<br>
+<ul>
+<li>Specifically, returns the path of the Java java.io.tmpdir system property.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the OS temporary directory path</p>
+        </div>
+      </div>
+      <div class="method" id="joinPath">
+        <h3 class="method-name">joinPath</h3>
+        <div class="method-signature">
+          <code>public String joinPath(String... paths)</code>
+        </div>
+        <div class="method-description">
+          Joins file paths.<br>
+<ul>
+<li>If blank is passed as the last argument, returns a path ending with / or backslash.</li>
+<li>The separator will be the OS-appropriate character.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>paths</code></td>
+                <td><code>String...</code></td>
+                <td>the file paths (multiple)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the file path</p>
+        </div>
+      </div>
+      <div class="method" id="convOsPath">
+        <h3 class="method-name">convOsPath</h3>
+        <div class="method-signature">
+          <code>public String convOsPath(String path)</code>
+        </div>
+        <div class="method-description">
+          Converts to OS path.<br>
+<ul>
+<li>Replaces separators with OS-appropriate characters.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>path</code></td>
+                <td><code>String</code></td>
+                <td>the file path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the file path</p>
+        </div>
+      </div>
+      <div class="method" id="convAbsolutePath">
+        <h3 class="method-name">convAbsolutePath</h3>
+        <div class="method-signature">
+          <code>public String convAbsolutePath(String path)</code>
+        </div>
+        <div class="method-description">
+          Converts to absolute path.<br>
+<ul>
+<li>Converts relative paths to absolute paths.</li>
+<li>Replaces separators with OS-appropriate characters.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>path</code></td>
+                <td><code>String</code></td>
+                <td>the relative path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the absolute path</p>
+        </div>
+      </div>
+      <div class="method" id="exists">
+        <h3 class="method-name">exists</h3>
+        <div class="method-signature">
+          <code>public boolean exists(String checkPath)</code>
+        </div>
+        <div class="method-description">
+          Checks if file exists (directories also accepted).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>checkPath</code></td>
+                <td><code>String</code></td>
+                <td>the path to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if exists</p>
+        </div>
+      </div>
+      <div class="method" id="existsParent">
+        <h3 class="method-name">existsParent</h3>
+        <div class="method-signature">
+          <code>public boolean existsParent(String checkPath)</code>
+        </div>
+        <div class="method-description">
+          Checks if parent directory exists (directories also accepted).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>checkPath</code></td>
+                <td><code>String</code></td>
+                <td>the path to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if exists</p>
+        </div>
+      </div>
+      <div class="method" id="getFileName">
+        <h3 class="method-name">getFileName</h3>
+        <div class="method-signature">
+          <code>public String getFileName(String fullPath)</code>
+        </div>
+        <div class="method-description">
+          Retrieves file name from full path (directories also accepted).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>fullPath</code></td>
+                <td><code>String</code></td>
+                <td>the full path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the file name only</p>
+        </div>
+      </div>
+      <div class="method" id="getParentPath">
+        <h3 class="method-name">getParentPath</h3>
+        <div class="method-signature">
+          <code>public String getParentPath(String fullPath)</code>
+        </div>
+        <div class="method-description">
+          Retrieves parent directory path from full path (directories also accepted).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>fullPath</code></td>
+                <td><code>String</code></td>
+                <td>the full path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the parent directory path</p>
+        </div>
+      </div>
+      <div class="method" id="getFileModifiedDateTime">
+        <h3 class="method-name">getFileModifiedDateTime</h3>
+        <div class="method-signature">
+          <code>public String getFileModifiedDateTime(String fullPath)</code>
+        </div>
+        <div class="method-description">
+          Retrieves file modified date-time.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>fullPath</code></td>
+                <td><code>String</code></td>
+                <td>the full path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the file modified date-time (yyyyMMddHHmmss)</p>
+        </div>
+      </div>
+      <div class="method" id="splitFileTypeMark">
+        <h3 class="method-name">splitFileTypeMark</h3>
+        <div class="method-signature">
+          <code>public String[] splitFileTypeMark(String fileName)</code>
+        </div>
+        <div class="method-description">
+          Splits file name or full path into extension and the rest.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>fileName</code></td>
+                <td><code>String</code></td>
+                <td>the file name or full path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String[]</code> - the string array {part before extension, extension} (neither includes the dot)</p>
+        </div>
+      </div>
+      <div class="method" id="getFileList">
+        <h3 class="method-name">getFileList</h3>
+        <div class="method-signature">
+          <code>public List&lt;String&gt; getFileList(String dirPath, String typeMark, String prefixMatch, String middleMatch, String suffixMatch)</code>
+        </div>
+        <div class="method-description">
+          Retrieves file path (absolute path) list.<br>
+<ul>
+<li>File name and extension search strings are case-insensitive.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>dirPath</code></td>
+                <td><code>String</code></td>
+                <td>the target directory path</td>
+              </tr>
+              <tr>
+                <td><code>typeMark</code></td>
+                <td><code>String</code></td>
+                <td>the search extension (optional) <code>null</code> if omitted, dot character not required</td>
+              </tr>
+              <tr>
+                <td><code>prefixMatch</code></td>
+                <td><code>String</code></td>
+                <td>the search file name prefix match (optional) <code>null</code> if omitted</td>
+              </tr>
+              <tr>
+                <td><code>middleMatch</code></td>
+                <td><code>String</code></td>
+                <td>the search file name middle match (optional) <code>null</code> if omitted</td>
+              </tr>
+              <tr>
+                <td><code>suffixMatch</code></td>
+                <td><code>String</code></td>
+                <td>the search file name suffix match (optional) <code>null</code> if omitted</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>List&lt;String&gt;</code> - the file path (absolute path) list</p>
+        </div>
+      </div>
+      <div class="method" id="move">
+        <h3 class="method-name">move</h3>
+        <div class="method-signature">
+          <code>public File move(String srcFilePath, String destFilePath)</code>
+        </div>
+        <div class="method-description">
+          Moves a file.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>srcFilePath</code></td>
+                <td><code>String</code></td>
+                <td>the source file path</td>
+              </tr>
+              <tr>
+                <td><code>destFilePath</code></td>
+                <td><code>String</code></td>
+                <td>the destination file path (directory can be specified)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>File</code> - the destination file object</p>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="#move">#move(File, File)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="move">
+        <h3 class="method-name">move</h3>
+        <div class="method-signature">
+          <code>public File move(File srcFile, File destFile)</code>
+        </div>
+        <div class="method-description">
+          Moves a file.<br>
+<ul>
+<li>If the destination is a directory, the file name will be the same as the source.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>srcFile</code></td>
+                <td><code>File</code></td>
+                <td>the source file</td>
+              </tr>
+              <tr>
+                <td><code>destFile</code></td>
+                <td><code>File</code></td>
+                <td>the destination file (directory can be specified)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>File</code> - the destination file object</p>
+        </div>
+      </div>
+      <div class="method" id="copy">
+        <h3 class="method-name">copy</h3>
+        <div class="method-signature">
+          <code>public File copy(String srcFilePath, String destFilePath)</code>
+        </div>
+        <div class="method-description">
+          Copies a file.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>srcFilePath</code></td>
+                <td><code>String</code></td>
+                <td>the source file path</td>
+              </tr>
+              <tr>
+                <td><code>destFilePath</code></td>
+                <td><code>String</code></td>
+                <td>the destination file path (directory can be specified)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>File</code> - the destination file object</p>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="#copy">#copy(File, File)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="copy">
+        <h3 class="method-name">copy</h3>
+        <div class="method-signature">
+          <code>public File copy(File srcFile, File destFile)</code>
+        </div>
+        <div class="method-description">
+          Copies a file.<br>
+<ul>
+<li>If the destination is a directory, the file name will be the same as the source.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>srcFile</code></td>
+                <td><code>File</code></td>
+                <td>the source file</td>
+              </tr>
+              <tr>
+                <td><code>destFile</code></td>
+                <td><code>File</code></td>
+                <td>the destination file (directory can be specified)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>File</code> - the destination file object</p>
+        </div>
+      </div>
+      <div class="method" id="delete">
+        <h3 class="method-name">delete</h3>
+        <div class="method-signature">
+          <code>public boolean delete(String deleteFilePath)</code>
+        </div>
+        <div class="method-description">
+          Deletes a file.<br>
+<ul>
+<li>Returns <code>false</code> if file does not exist.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>deleteFilePath</code></td>
+                <td><code>String</code></td>
+                <td>the delete file path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>false</code> if file does not exist</p>
+        </div>
+      </div>
+      <div class="method" id="delete">
+        <h3 class="method-name">delete</h3>
+        <div class="method-signature">
+          <code>public boolean delete(File deleteFile)</code>
+        </div>
+        <div class="method-description">
+          Deletes a file.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>deleteFile</code></td>
+                <td><code>File</code></td>
+                <td>the delete file</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>false</code> if file does not exist</p>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="#delete">#delete(String)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="makeDir">
+        <h3 class="method-name">makeDir</h3>
+        <div class="method-signature">
+          <code>public boolean makeDir(String dirPath)</code>
+        </div>
+        <div class="method-description">
+          Creates a directory.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>dirPath</code></td>
+                <td><code>String</code></td>
+                <td>the directory path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>false</code> if already exists</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

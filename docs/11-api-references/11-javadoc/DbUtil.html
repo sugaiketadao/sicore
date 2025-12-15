@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DbUtil - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>DbUtil</h1>
+      <p>Framework Components [com.onepg.db]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.db</p>
+        <p><strong>Class Name:</strong> DbUtil</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>Database utility class.
+</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="getConn">
+        <h3 class="method-name">getConn</h3>
+        <div class="method-signature">
+          <code>public Connection getConn()</code>
+        </div>
+        <div class="method-description">
+          Gets the default database connection.<br>
+<ul>
+<li>Declare in try clause (try-with-resources statement).</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Connection</code> - the database connection</p>
+        </div>
+      </div>
+      <div class="method" id="getConn">
+        <h3 class="method-name">getConn</h3>
+        <div class="method-signature">
+          <code>public Connection getConn(String traceCode)</code>
+        </div>
+        <div class="method-description">
+          Gets the default database connection.<br>
+<ul>
+<li>Declare in try clause (try-with-resources statement).</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>traceCode</code></td>
+                <td><code>String</code></td>
+                <td>Trace code</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Connection</code> - the database connection</p>
+        </div>
+      </div>
+      <div class="method" id="getConnByConfigName">
+        <h3 class="method-name">getConnByConfigName</h3>
+        <div class="method-signature">
+          <code>public Connection getConnByConfigName(String connName)</code>
+        </div>
+        <div class="method-description">
+          Gets the database connection by configuration name.<br>
+<ul>
+<li>Declare in try clause (try-with-resources statement).</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>connName</code></td>
+                <td><code>String</code></td>
+                <td>Database connection name in configuration file (part before .dbcon.url)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Connection</code> - the database connection</p>
+        </div>
+      </div>
+      <div class="method" id="getConnByConfigName">
+        <h3 class="method-name">getConnByConfigName</h3>
+        <div class="method-signature">
+          <code>public Connection getConnByConfigName(String connName, String traceCode)</code>
+        </div>
+        <div class="method-description">
+          Gets the database connection by configuration name.<br>
+<ul>
+<li>Declare in try clause (try-with-resources statement).</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>connName</code></td>
+                <td><code>String</code></td>
+                <td>Database connection name in configuration file (part before .dbcon.url)</td>
+              </tr>
+              <tr>
+                <td><code>traceCode</code></td>
+                <td><code>String</code></td>
+                <td>Trace code</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Connection</code> - the database connection</p>
+        </div>
+      </div>
+      <div class="method" id="getConnPooled">
+        <h3 class="method-name">getConnPooled</h3>
+        <div class="method-signature">
+          <code>public Connection getConnPooled()</code>
+        </div>
+        <div class="method-description">
+          Gets the default pooled database connection.<br>
+<ul>
+<li>Gets a pooled database connection.</li>
+<li>Declare in try clause (try-with-resources statement).</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Connection</code> - the database connection</p>
+        </div>
+      </div>
+      <div class="method" id="getConnPooled">
+        <h3 class="method-name">getConnPooled</h3>
+        <div class="method-signature">
+          <code>public Connection getConnPooled(String traceCode)</code>
+        </div>
+        <div class="method-description">
+          Gets the default pooled database connection.<br>
+<ul>
+<li>Gets a pooled database connection.</li>
+<li>Declare in try clause (try-with-resources statement).</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>traceCode</code></td>
+                <td><code>String</code></td>
+                <td>Trace code</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Connection</code> - the database connection</p>
+        </div>
+      </div>
+      <div class="method" id="getConnPooledByConfigName">
+        <h3 class="method-name">getConnPooledByConfigName</h3>
+        <div class="method-signature">
+          <code>public Connection getConnPooledByConfigName(String connName)</code>
+        </div>
+        <div class="method-description">
+          Gets the pooled database connection by configuration name.<br>
+<ul>
+<li>Gets a pooled database connection.</li>
+<li>Declare in try clause (try-with-resources statement).</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>connName</code></td>
+                <td><code>String</code></td>
+                <td>Database connection name in configuration file (part before .dbcon.url)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Connection</code> - the database connection</p>
+        </div>
+      </div>
+      <div class="method" id="getConnPooledByConfigName">
+        <h3 class="method-name">getConnPooledByConfigName</h3>
+        <div class="method-signature">
+          <code>public Connection getConnPooledByConfigName(String connName, String traceCode)</code>
+        </div>
+        <div class="method-description">
+          Gets the pooled database connection by configuration name.<br>
+<ul>
+<li>Gets a pooled database connection.</li>
+<li>Declare in try clause (try-with-resources statement).</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>connName</code></td>
+                <td><code>String</code></td>
+                <td>Database connection name in configuration file (part before .dbcon.url)</td>
+              </tr>
+              <tr>
+                <td><code>traceCode</code></td>
+                <td><code>String</code></td>
+                <td>Trace code</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Connection</code> - the database connection</p>
+        </div>
+      </div>
+      <div class="method" id="closePooledConn">
+        <h3 class="method-name">closePooledConn</h3>
+        <div class="method-signature">
+          <code>public boolean closePooledConn()</code>
+        </div>
+        <div class="method-description">
+          Closes pooled database connections.<br>
+<ul>
+<li>Closes all pooled database connections.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if any connections were closed</p>
+        </div>
+      </div>
+      <div class="method" id="getConnNames">
+        <h3 class="method-name">getConnNames</h3>
+        <div class="method-signature">
+          <code>public List&lt;String&gt; getConnNames()</code>
+        </div>
+        <div class="method-description">
+          Gets the database connection configuration names.
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>List&lt;String&gt;</code> - the list of connection names where URL is configured (includes default connection name)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

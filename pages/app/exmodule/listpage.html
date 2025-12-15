@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>(Example) User List Page</title>
+  <link href="../../lib/css/onepg-base.css" rel="stylesheet">
+  <style>
+    .item-head {
+      width: 7rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>(Example) User List Page</div>
+    <!-- Message display -->
+    <section id="_msg"></section>
+  </header>
+  <main>
+    <!-- Search conditions -->
+    <section id="searchConditionsArea">
+      <!-- Search conditions row 1 -->
+      <div class="grid-row">
+        <div class="grid-col-3">
+          <div class="item-head">
+            <label for="userId">User ID</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="user_id" id="userId" style="width: 6rem;" title="Prefix match">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+
+        <div class="grid-col-3">
+          <div class="item-head">
+            <label for="userNm">User Name</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="user_nm" id="userNm" style="width: 10rem;" title="Partial match">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+
+        <div class="grid-col-3">
+          <div class="item-head">
+            <label for="email">Email</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="email" id="email" style="width: 10rem;" title="Partial match">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+
+        <div class="grid-col-3">
+          <div class="item-head">
+            <label for="countryCs">Country</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <select name="country_cs" id="countryCs">
+              <option value="" selected>Not selected</option>
+              <option value="JP">Japan</option>
+              <option value="US">United States</option>
+              <option value="BR">Brazil</option>
+              <option value="AU">Australia</option>
+            </select>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+
+      </div><!-- /.grid-row -->
+      <!-- /Search conditions row 1 -->
+
+      <!-- Search conditions row 2 -->
+      <div class="grid-row">
+        <div class="grid-col-3">
+          <div class="item-head">
+            <label>Gender</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <label><input type="radio" name="gender_cs" value="" checked>Not selected</label>
+            <label><input type="radio" name="gender_cs" value="M">Male</label>
+            <label><input type="radio" name="gender_cs" value="F">Female</label>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+
+        <div class="grid-col-3">
+          <div class="item-head">
+            <label>Spouse</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <label><input type="checkbox" name="spouse_cs" value="Y">Yes</label>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+
+        <div class="grid-col-3">
+          <div class="item-head">
+            <label for="incomeAm">Annual Income</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="income_am" id="incomeAm" style="width: 9rem;" data-value-format-type="num" class="align-right"><span>or more</span>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+
+        <div class="grid-col-3">
+          <div class="item-head">
+            <label for="birthDt">Birth Date</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="birth_dt" id="birthDt" style="width: 6rem;" data-value-format-type="ymd">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+
+      </div><!-- /.grid-row -->
+      <!-- /Search conditions row 2 -->
+    </section>
+    <!-- /Search conditions -->
+
+    <!-- Operations -->
+    <section>
+      <div class="grid-row">
+        <!-- Button layout -->
+        <div class="grid-col-12">
+          <button type="button" onclick="search()">Search</button>
+        </div><!-- /.grid-col-* -->
+        <!-- /Button layout -->
+      </div><!-- /.grid-row -->
+    </section>
+    <!-- /Operations -->
+
+    <!-- Search results -->
+    <section id="searchResultsArea">
+      <div class="table">
+        <table>
+          <caption style="text-align: right;"><span data-name="list_size">0</span> records</caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th class="align-right">Annual Income</th>
+              <th>Birth Date</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody id="list">
+            <script type="text/html">
+              <tr>
+                <td><input type="text" name="list.user_id" disabled style="width: 6rem;">
+                  <input type="hidden" name="list.upd_ts" ></td>
+                <td data-name="list.user_nm"></td>
+                <td data-name="list.email"></td>
+                <td data-name="list.gender_dn"></td>
+                <td data-name="list.income_am" data-value-format-type="num" class="align-right"></td>
+                <td data-name="list.birth_dt" data-value-format-type="ymd"></td>
+                <td><button onclick="editMove(this)">Edit</button></td>
+              </tr>
+            </script>
+          </tbody>
+        </table>
+      </div><!-- /.table -->
+    </section>
+    <!-- /Search results -->
+  </main>
+  <footer>
+    <!-- Operations -->
+    <section>
+      <div class="grid-row">
+        <!-- Button layout -->
+        <div class="grid-col-12">
+          <button type="button" onclick="create()">New</button>
+        </div><!-- /.grid-col-* -->
+        <!-- /Button layout -->
+      </div><!-- /.grid-row -->
+    </section>
+    <!-- /Operations -->
+    <div>©Sample</div>
+  </footer>
+  <script src="../../lib/js/onepg-utils.js" defer></script>
+  <script src="listpage.js" defer></script>
+</body>
+</html>

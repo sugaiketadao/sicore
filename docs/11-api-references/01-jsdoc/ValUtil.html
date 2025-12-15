@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ValUtil - JSDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>ValUtil</h1>
+      <p>Framework Component [onepg-utils.js]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Class Name:</strong> ValUtil</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>Value operation utility class.</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method">
+        <h3 id="isNull" class="method-name">isNull</h3>
+        <div class="method-signature">
+          <code>isNull(obj)</code>
+        </div>
+        <div class="method-description">
+          <code>null</code> check.<br>
+<ul>
+<li>Checks if the Object is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>Target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if <code>null</code></p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="isBlank" class="method-name">isBlank</h3>
+        <div class="method-signature">
+          <code>isBlank(str)</code>
+        </div>
+        <div class="method-description">
+          Blank check.<br>
+<ul>
+<li>Checks if the string is spaces only, zero length, or <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>str</code></td>
+                <td><code>string</code></td>
+                <td>Target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if blank</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="nvl" class="method-name">nvl</h3>
+        <div class="method-signature">
+          <code>nvl(value, rep)</code>
+        </div>
+        <div class="method-description">
+          <code>null</code> blank replacement.<br>
+<ul>
+<li>Returns blank or replacement string if the string is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>string</code></td>
+                <td>Target to check</td>
+              </tr>
+              <tr>
+                <td><code>[rep]</code></td>
+                <td><code>string</code></td>
+                <td>Replacement string (optional). Returns blank if omitted.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string</code> - Blank or replacement string if <code>null</code></p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="bvl" class="method-name">bvl</h3>
+        <div class="method-signature">
+          <code>bvl(value, rep)</code>
+        </div>
+        <div class="method-description">
+          Blank replacement.<br>
+<ul>
+<li>Returns replacement string if the string is blank.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>string</code></td>
+                <td>Target to check</td>
+              </tr>
+              <tr>
+                <td><code>rep</code></td>
+                <td><code>string</code></td>
+                <td>Replacement string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string</code> - Replacement string if blank</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="substring" class="method-name">substring</h3>
+        <div class="method-signature">
+          <code>substring(value, beginIndex, endIndex)</code>
+        </div>
+        <div class="method-description">
+          Safe string extraction.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>string</code></td>
+                <td>Target string</td>
+              </tr>
+              <tr>
+                <td><code>[beginIndex]</code></td>
+                <td><code>number</code></td>
+                <td>Start index (optional). Default is 0.</td>
+              </tr>
+              <tr>
+                <td><code>[endIndex]</code></td>
+                <td><code>number</code></td>
+                <td>End index (optional). Default is string length.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string</code> - Extracted string</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="equals" class="method-name">equals</h3>
+        <div class="method-signature">
+          <code>equals(val1, val2)</code>
+        </div>
+        <div class="method-description">
+          String comparison.<br>
+<ul>
+<li>Compares <code>null</code> as empty string.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>val1</code></td>
+                <td><code>string</code></td>
+                <td>Comparison target 1</td>
+              </tr>
+              <tr>
+                <td><code>val2</code></td>
+                <td><code>string</code></td>
+                <td>Comparison target 2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if equal</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="equalsObj" class="method-name">equalsObj</h3>
+        <div class="method-signature">
+          <code>equalsObj(obj1, obj2, ignoreKeys)</code>
+        </div>
+        <div class="method-description">
+          Associative array comparison.<br>
+<ul>
+  <li>Compares values of keys that exist in both targets. Keys that exist in only one are excluded from comparison.</li>
+  <li>Determines "not equal" if either target is not an associative array.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>obj1</code></td>
+                <td><code>Object</code></td>
+                <td>Comparison target 1</td>
+              </tr>
+              <tr>
+                <td><code>obj2</code></td>
+                <td><code>Object</code></td>
+                <td>Comparison target 2</td>
+              </tr>
+              <tr>
+                <td><code>ignoreKeys</code></td>
+                <td><code>string</code></td>
+                <td>Keys to exclude from comparison (multiple allowed)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if contents are equal</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="isEmpty" class="method-name">isEmpty</h3>
+        <div class="method-signature">
+          <code>isEmpty(obj)</code>
+        </div>
+        <div class="method-description">
+          Empty check.<br>
+<ul>
+  <li>Returns <code>true</code> if <code>null</code> is passed.</li>
+  <li>Returns same result as isBlank() if a string is passed.</li>
+  <li>Checks if length is zero when an array is passed.</li>
+  <li>Checks if length is zero when HTML element collection result is passed.</li>
+  <li>Checks if key array length is zero when an associative array is passed.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>Target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if empty</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="isNum" class="method-name">isNum</h3>
+        <div class="method-signature">
+          <code>isNum(value, minusNg, decNg)</code>
+        </div>
+        <div class="method-description">
+          Numeric check.<br>
+<ul>
+<li>Checks if the string is valid as a number.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>string</code></td>
+                <td>Target to check</td>
+              </tr>
+              <tr>
+                <td><code>[minusNg]</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code> to disallow negative values (optional)</td>
+              </tr>
+              <tr>
+                <td><code>[decNg]</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code> to disallow decimals (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="isDate" class="method-name">isDate</h3>
+        <div class="method-signature">
+          <code>isDate(yyyymmdd)</code>
+        </div>
+        <div class="method-description">
+          Valid date check.<br>
+<ul>
+<li>Checks if the string is valid as a date.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>yyyymmdd</code></td>
+                <td><code>string</code></td>
+                <td>Target to check (YYYYMMDD)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="isTrue" class="method-name">isTrue</h3>
+        <div class="method-signature">
+          <code>isTrue(val)</code>
+        </div>
+        <div class="method-description">
+          Boolean check.<br>
+<ul>
+<li>Checks if the string is a value considered as boolean "true".</li>
+<li>Performs the following evaluation:
+  <ol>
+    <li>"1", "true", "yes", "on" (all half-width) are <code>true</code>.</li>
+    <li><code>null</code> or blank is <code>false</code>; anything else not listed above is <code>false</code>.</li>
+    <li>Case insensitive.</li>
+    <li>Leading and trailing half-width blanks are ignored.</li>
+    <li>Boolean values are returned as is.</li>
+  </ol>
+</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>val</code></td>
+                <td><code>string|boolean</code></td>
+                <td>Target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if considered as boolean "true"</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="toDate" class="method-name">toDate</h3>
+        <div class="method-signature">
+          <code>toDate(yyyymmdd)</code>
+        </div>
+        <div class="method-description">
+          String to Date object conversion.<br>
+<ul>
+<li>Converts a date string to a Date object.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>yyyymmdd</code></td>
+                <td><code>string</code></td>
+                <td>Target to convert (YYYYMMDD)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Date</code> - Date object</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="dateTo" class="method-name">dateTo</h3>
+        <div class="method-signature">
+          <code>dateTo(dateObj)</code>
+        </div>
+        <div class="method-description">
+          Date object to string conversion.<br>
+<ul>
+<li>Converts a Date object to a date string.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>dateObj</code></td>
+                <td><code>Date</code></td>
+                <td>Target to convert</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string</code> - Date string (YYYYMMDD)</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="isAry" class="method-name">isAry</h3>
+        <div class="method-signature">
+          <code>isAry(obj)</code>
+        </div>
+        <div class="method-description">
+          Array check.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>Target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if array</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="isObj" class="method-name">isObj</h3>
+        <div class="method-signature">
+          <code>isObj(obj)</code>
+        </div>
+        <div class="method-description">
+          Associative array check.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>Target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if associative array</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="lpad" class="method-name">lpad</h3>
+        <div class="method-signature">
+          <code>lpad(value, pad, len)</code>
+        </div>
+        <div class="method-description">
+          Left padding.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>string</code></td>
+                <td>Target</td>
+              </tr>
+              <tr>
+                <td><code>pad</code></td>
+                <td><code>string</code></td>
+                <td>Padding character</td>
+              </tr>
+              <tr>
+                <td><code>len</code></td>
+                <td><code>number</code></td>
+                <td>Length after padding</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string</code> - String after left padding</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="rpad" class="method-name">rpad</h3>
+        <div class="method-signature">
+          <code>rpad(value, pad, len)</code>
+        </div>
+        <div class="method-description">
+          Right padding.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>string</code></td>
+                <td>Target</td>
+              </tr>
+              <tr>
+                <td><code>pad</code></td>
+                <td><code>string</code></td>
+                <td>Padding character</td>
+              </tr>
+              <tr>
+                <td><code>len</code></td>
+                <td><code>number</code></td>
+                <td>Length after padding</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string</code> - String after right padding</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="toType" class="method-name">toType</h3>
+        <div class="method-signature">
+          <code>toType(obj)</code>
+        </div>
+        <div class="method-description">
+          Object type retrieval.<br>
+<ul>
+<li>Use when detailed type checking is needed since typeof returns 'object' for both <code>null</code> and arrays.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>Object</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string</code> - Type string: 'undefined', 'null', 'boolean', 'number', 'string', 'array', 'object', etc.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JSDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

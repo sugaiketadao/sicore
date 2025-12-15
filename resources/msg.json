@@ -1,0 +1,20 @@
+{
+  "_comment_": "The messages below are for the sample program. Edit, add, or delete as needed.",
+  
+  "i0001": "Data has been registered. {0}",
+  "i0002": "Data has been updated. {0}",
+  "i0003": "Data has been deleted. {0}",
+  "i0004": "Search returned {0} records.",
+  "e0001": "Already registered by another user. {0}",
+  "e0002": "Already updated or deleted by another user. {0}",
+  
+  "ev001": "{0} is required.",
+  "ev011": "{0} must contain only alphanumeric characters.",
+  "ev012": "{0} must contain only numbers.",
+  "ev013": "{0} must be a valid date (YYYY/MM/DD).",
+  "ev021": "{0} must be {1} characters or less.",
+  "ev022": "{0} must be an integer with {1} digits or less.",
+  "ev023": "{0} must have {1} integer digits and {2} decimal places or less.",
+
+  "ea011": "Enter at least one detail row."
+}

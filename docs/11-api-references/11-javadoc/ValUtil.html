@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ValUtil - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>ValUtil</h1>
+      <p>Framework Components [com.onepg.util]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.util</p>
+        <p><strong>Class Name:</strong> ValUtil</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>Value utility class.
+</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Enumeration List</h2>
+      <div class="enum-list">
+        <div class="enum-item" id="CharSet">
+          <h3 class="enum-name">CharSet</h3>
+          <div class="enum-signature">
+            <code>public enum CharSet</code>
+          </div>
+          <div class="enum-description">
+            Character set specification. 
+          </div>
+          <div class="enum-constants">
+            <h4>Constants</h4>
+            <ul>
+              <li><code>UTF8</code></li>
+              <li><code>SJIS</code></li>
+              <li><code>MS932</code></li>
+            </ul>
+          </div>
+        </div>
+        <div class="enum-item" id="LineSep">
+          <h3 class="enum-name">LineSep</h3>
+          <div class="enum-signature">
+            <code>public enum LineSep</code>
+          </div>
+          <div class="enum-description">
+            Line separator. 
+          </div>
+          <div class="enum-constants">
+            <h4>Constants</h4>
+            <ul>
+              <li><code>LF</code></li>
+              <li><code>CRLF</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Constants and Variables</h2>
+      <div class="field-list">
+        <div class="field-item" id="BLANK">
+          <h3 class="field-name">BLANK</h3>
+          <div class="field-signature">
+            <code>public String BLANK</code>
+          </div>
+          <div class="field-description">
+            Blank value (zero-byte string). 
+          </div>
+        </div>
+        <div class="field-item" id="ON">
+          <h3 class="field-name">ON</h3>
+          <div class="field-signature">
+            <code>public String ON</code>
+          </div>
+          <div class="field-description">
+            Category: ON value. 
+          </div>
+        </div>
+        <div class="field-item" id="OFF">
+          <h3 class="field-name">OFF</h3>
+          <div class="field-signature">
+            <code>public String OFF</code>
+          </div>
+          <div class="field-description">
+            Category: OFF value. 
+          </div>
+        </div>
+        <div class="field-item" id="SQ">
+          <h3 class="field-name">SQ</h3>
+          <div class="field-signature">
+            <code>public String SQ</code>
+          </div>
+          <div class="field-description">
+            Single quote character. 
+          </div>
+        </div>
+        <div class="field-item" id="DQ">
+          <h3 class="field-name">DQ</h3>
+          <div class="field-signature">
+            <code>public String DQ</code>
+          </div>
+          <div class="field-description">
+            Double quote character. 
+          </div>
+        </div>
+        <div class="field-item" id="JSON_NULL">
+          <h3 class="field-name">JSON_NULL</h3>
+          <div class="field-signature">
+            <code>public String JSON_NULL</code>
+          </div>
+          <div class="field-description">
+            JSON <code>null</code> string. 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="isNull">
+        <h3 class="method-name">isNull</h3>
+        <div class="method-signature">
+          <code>public boolean isNull(Object obj)</code>
+        </div>
+        <div class="method-description">
+          Checks for <code>null</code>.<br>
+<ul>
+<li>Checks whether <code>Object</code> is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if <code>null</code></p>
+        </div>
+      </div>
+      <div class="method" id="isBlank">
+        <h3 class="method-name">isBlank</h3>
+        <div class="method-signature">
+          <code>public boolean isBlank(String value)</code>
+        </div>
+        <div class="method-description">
+          Checks for blank.<br>
+<ul>
+<li>Determines as blank if composed of only half-width spaces, zero-byte string, or <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if blank</p>
+        </div>
+      </div>
+      <div class="method" id="isEmpty">
+        <h3 class="method-name">isEmpty</h3>
+        <div class="method-signature">
+          <code>public boolean isEmpty(Object[] values)</code>
+        </div>
+        <div class="method-description">
+          Checks for empty.<br>
+<ul>
+<li>Checks whether array has zero length or is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>values</code></td>
+                <td><code>Object[]</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if empty</p>
+        </div>
+      </div>
+      <div class="method" id="isEmpty">
+        <h3 class="method-name">isEmpty</h3>
+        <div class="method-signature">
+          <code>public boolean isEmpty(List&lt;?&gt; list)</code>
+        </div>
+        <div class="method-description">
+          Checks for empty.<br>
+<ul>
+<li>Checks whether list has zero length or is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>list</code></td>
+                <td><code>List&lt;?&gt;</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if empty</p>
+        </div>
+      </div>
+      <div class="method" id="isEmpty">
+        <h3 class="method-name">isEmpty</h3>
+        <div class="method-signature">
+          <code>public boolean isEmpty(Map&lt;?, ?&gt; map)</code>
+        </div>
+        <div class="method-description">
+          Checks for empty.<br>
+<ul>
+<li>Checks whether map has zero length or is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>map</code></td>
+                <td><code>Map&lt;?, ?&gt;</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if empty</p>
+        </div>
+      </div>
+      <div class="method" id="nvl">
+        <h3 class="method-name">nvl</h3>
+        <div class="method-signature">
+          <code>public String nvl(String value)</code>
+        </div>
+        <div class="method-description">
+          Replaces <code>null</code> with blank.<br>
+<ul>
+<li>Returns blank if string is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - blank if <code>null</code></p>
+        </div>
+      </div>
+      <div class="method" id="nvl">
+        <h3 class="method-name">nvl</h3>
+        <div class="method-signature">
+          <code>public String nvl(String value, String nullDefault)</code>
+        </div>
+        <div class="method-description">
+          Replaces <code>null</code>.<br>
+<ul>
+<li>Returns replacement string if string is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+              <tr>
+                <td><code>nullDefault</code></td>
+                <td><code>String</code></td>
+                <td>the replacement string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the replacement string if <code>null</code></p>
+        </div>
+      </div>
+      <div class="method" id="nvl">
+        <h3 class="method-name">nvl</h3>
+        <div class="method-signature">
+          <code>public BigDecimal nvl(BigDecimal value)</code>
+        </div>
+        <div class="method-description">
+          Replaces <code>null</code> with zero.<br>
+<ul>
+<li>Returns zero if number is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>BigDecimal</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>BigDecimal</code> - zero if <code>null</code></p>
+        </div>
+      </div>
+      <div class="method" id="bvl">
+        <h3 class="method-name">bvl</h3>
+        <div class="method-signature">
+          <code>public String bvl(String value, String blankDefault)</code>
+        </div>
+        <div class="method-description">
+          Replaces blank.<br>
+<ul>
+<li>Returns replacement string if string is blank.</li>
+<li>Uses <code>#isBlank(String)</code> for blank determination.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+              <tr>
+                <td><code>blankDefault</code></td>
+                <td><code>String</code></td>
+                <td>the replacement string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the replacement string if blank</p>
+        </div>
+      </div>
+      <div class="method" id="join">
+        <h3 class="method-name">join</h3>
+        <div class="method-signature">
+          <code>public String join(String joint, String... values)</code>
+        </div>
+        <div class="method-description">
+          Joins array.<br>
+<ul>
+<li>Returns blank if array is empty.</li>
+<li><code>null</code> is joined as blank.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>joint</code></td>
+                <td><code>String</code></td>
+                <td>the joint character</td>
+              </tr>
+              <tr>
+                <td><code>values</code></td>
+                <td><code>String...</code></td>
+                <td>the target to join</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the joined string</p>
+        </div>
+      </div>
+      <div class="method" id="join">
+        <h3 class="method-name">join</h3>
+        <div class="method-signature">
+          <code>public String join(String joint, List&lt;String&gt; list)</code>
+        </div>
+        <div class="method-description">
+          Joins list.<br>
+<ul>
+<li>Returns blank if list is empty.</li>
+<li><code>null</code> is joined as blank.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>joint</code></td>
+                <td><code>String</code></td>
+                <td>the joint character</td>
+              </tr>
+              <tr>
+                <td><code>list</code></td>
+                <td><code>List&lt;String&gt;</code></td>
+                <td>the target to join</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the joined string</p>
+        </div>
+      </div>
+      <div class="method" id="join">
+        <h3 class="method-name">join</h3>
+        <div class="method-signature">
+          <code>public String join(String joint, Set&lt;String&gt; list)</code>
+        </div>
+        <div class="method-description">
+          Joins list.<br>
+<ul>
+<li>Returns blank if list is empty.</li>
+<li><code>null</code> is joined as blank.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>joint</code></td>
+                <td><code>String</code></td>
+                <td>the joint character</td>
+              </tr>
+              <tr>
+                <td><code>list</code></td>
+                <td><code>Set&lt;String&gt;</code></td>
+                <td>the target to join</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the joined string</p>
+        </div>
+      </div>
+      <div class="method" id="split">
+        <h3 class="method-name">split</h3>
+        <div class="method-signature">
+          <code>public String[] split(String value, String sep)</code>
+        </div>
+        <div class="method-description">
+          Splits into array.<br>
+<ul>
+<li>Returns zero-length array if string is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the string to split</td>
+              </tr>
+              <tr>
+                <td><code>sep</code></td>
+                <td><code>String</code></td>
+                <td>the separator string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String[]</code> - the split string array</p>
+        </div>
+      </div>
+      <div class="method" id="splitReg">
+        <h3 class="method-name">splitReg</h3>
+        <div class="method-signature">
+          <code>public String[] splitReg(String value, String sep)</code>
+        </div>
+        <div class="method-description">
+          Splits into array using regular expression.<br>
+<ul>
+<li>Returns zero-length array if string is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the string to split</td>
+              </tr>
+              <tr>
+                <td><code>sep</code></td>
+                <td><code>String</code></td>
+                <td>the separator string (regular expression)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String[]</code> - the split string array</p>
+        </div>
+      </div>
+      <div class="method" id="splitReg">
+        <h3 class="method-name">splitReg</h3>
+        <div class="method-signature">
+          <code>public String[] splitReg(String value, String sep, int limitLength)</code>
+        </div>
+        <div class="method-description">
+          Splits into array using regular expression.<br>
+<ul>
+<li>Returns zero-length array if string is <code>null</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the string to split</td>
+              </tr>
+              <tr>
+                <td><code>sep</code></td>
+                <td><code>String</code></td>
+                <td>the separator string (regular expression)</td>
+              </tr>
+              <tr>
+                <td><code>limitLength</code></td>
+                <td><code>int</code></td>
+                <td>the maximum length</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String[]</code> - the split string array</p>
+        </div>
+      </div>
+      <div class="method" id="equals">
+        <h3 class="method-name">equals</h3>
+        <div class="method-signature">
+          <code>public boolean equals(String str1, String str2)</code>
+        </div>
+        <div class="method-description">
+          Compares strings.<br>
+<ul>
+<li>Compares <code>null</code> as zero-byte blank string.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>str1</code></td>
+                <td><code>String</code></td>
+                <td>the first comparison target</td>
+              </tr>
+              <tr>
+                <td><code>str2</code></td>
+                <td><code>String</code></td>
+                <td>the second comparison target</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if equal</p>
+        </div>
+      </div>
+      <div class="method" id="equals">
+        <h3 class="method-name">equals</h3>
+        <div class="method-signature">
+          <code>public boolean equals(BigDecimal dec1, BigDecimal dec2)</code>
+        </div>
+        <div class="method-description">
+          Compares numbers.<br>
+<ul>
+<li>Compares <code>null</code> as zero.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>dec1</code></td>
+                <td><code>BigDecimal</code></td>
+                <td>the first comparison target</td>
+              </tr>
+              <tr>
+                <td><code>dec2</code></td>
+                <td><code>BigDecimal</code></td>
+                <td>the second comparison target</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if equal</p>
+        </div>
+      </div>
+      <div class="method" id="substring">
+        <h3 class="method-name">substring</h3>
+        <div class="method-signature">
+          <code>public String substring(String value, Integer beginIndex)</code>
+        </div>
+        <div class="method-description">
+          Safely extracts substring (specifying only start index).<br>
+<ul>
+<li>Extracts from start index to the end of the string.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target string</td>
+              </tr>
+              <tr>
+                <td><code>beginIndex</code></td>
+                <td><code>Integer</code></td>
+                <td>the start index</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the extracted string</p>
+        </div>
+      </div>
+      <div class="method" id="substring">
+        <h3 class="method-name">substring</h3>
+        <div class="method-signature">
+          <code>public String substring(String value, Integer beginIndex, Integer endIndex)</code>
+        </div>
+        <div class="method-description">
+          Safely extracts substring.<br>
+<ul>
+<li>Safely extracts the specified range from the string.</li>
+<li>Appropriately handles out-of-range or invalid values.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target string</td>
+              </tr>
+              <tr>
+                <td><code>beginIndex</code></td>
+                <td><code>Integer</code></td>
+                <td>the start index (optional); 0 if <code>null</code> is passed (omitted)</td>
+              </tr>
+              <tr>
+                <td><code>endIndex</code></td>
+                <td><code>Integer</code></td>
+                <td>the end index (optional); string length if <code>null</code> is passed (omitted)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the extracted string</p>
+        </div>
+      </div>
+      <div class="method" id="isAlphabetNumber">
+        <h3 class="method-name">isAlphabetNumber</h3>
+        <div class="method-signature">
+          <code>public boolean isAlphabetNumber(String value)</code>
+        </div>
+        <div class="method-description">
+          Checks for alphanumeric.<br>
+<ul>
+<li>Checks whether string is valid as alphanumeric.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
+        </div>
+      </div>
+      <div class="method" id="isNumber">
+        <h3 class="method-name">isNumber</h3>
+        <div class="method-signature">
+          <code>public boolean isNumber(String value)</code>
+        </div>
+        <div class="method-description">
+          Checks for number.<br>
+<ul>
+<li>Checks whether string is valid as a number.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
+        </div>
+      </div>
+      <div class="method" id="isNumber">
+        <h3 class="method-name">isNumber</h3>
+        <div class="method-signature">
+          <code>public boolean isNumber(String value, boolean minusNg, boolean decNg)</code>
+        </div>
+        <div class="method-description">
+          Checks for number.<br>
+<ul>
+<li>Checks whether string is valid as a number.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+              <tr>
+                <td><code>minusNg</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code> to treat negative values as invalid</td>
+              </tr>
+              <tr>
+                <td><code>decNg</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code> to treat decimals as invalid</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
+        </div>
+      </div>
+      <div class="method" id="checkLength">
+        <h3 class="method-name">checkLength</h3>
+        <div class="method-signature">
+          <code>public boolean checkLength(String value, int len)</code>
+        </div>
+        <div class="method-description">
+          Checks length.<br>
+<ul>
+<li>Assumes <code>#isBlank(String)</code> is <code>true</code>, and returns <code>false</code> if target is blank.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+              <tr>
+                <td><code>len</code></td>
+                <td><code>int</code></td>
+                <td>the valid length</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
+        </div>
+      </div>
+      <div class="method" id="checkLengthNumber">
+        <h3 class="method-name">checkLengthNumber</h3>
+        <div class="method-signature">
+          <code>public boolean checkLengthNumber(String value, int intPartLen, int decPartLen)</code>
+        </div>
+        <div class="method-description">
+          Checks numeric length (precision).<br>
+<ul>
+<li>Confirms that integer part and decimal part lengths are within specified ranges.</li>
+<li>Arguments follow DB field definition: total of integer and decimal parts, and decimal part only.</li>
+<li>Assumes <code>#isNumber(String)</code> is <code>true</code>, and returns
+<code>false</code> if target is blank.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+              <tr>
+                <td><code>intPartLen</code></td>
+                <td><code>int</code></td>
+                <td>the valid length of integer and decimal parts combined</td>
+              </tr>
+              <tr>
+                <td><code>decPartLen</code></td>
+                <td><code>int</code></td>
+                <td>the valid length of decimal part</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
+        </div>
+      </div>
+      <div class="method" id="isDate">
+        <h3 class="method-name">isDate</h3>
+        <div class="method-signature">
+          <code>public boolean isDate(String value)</code>
+        </div>
+        <div class="method-description">
+          Checks for valid date.<br>
+<ul>
+<li>Checks whether string is valid as a date.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target to check (YYYYMMDD)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
+        </div>
+      </div>
+      <div class="method" id="isTrue">
+        <h3 class="method-name">isTrue</h3>
+        <div class="method-signature">
+          <code>public boolean isTrue(String val)</code>
+        </div>
+        <div class="method-description">
+          Checks for boolean true.<br>
+<ul>
+<li>Checks whether string is considered as boolean "true".</li>
+<li>Performs the following evaluation:
+<ol>
+<li>"1", "true", "yes", "on" (all half-width) are <code>true</code>.</li>
+<li><code>null</code> or blank, and anything other than above are <code>false</code>.</li>
+<li>Case-insensitive.</li>
+<li>Leading and trailing half-width spaces are ignored.</li>
+</ol>
+</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>val</code></td>
+                <td><code>String</code></td>
+                <td>the target to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if considered as boolean "true"</p>
+        </div>
+      </div>
+      <div class="method" id="dateToLocalDate">
+        <h3 class="method-name">dateToLocalDate</h3>
+        <div class="method-signature">
+          <code>public LocalDate dateToLocalDate(java.util.Date date)</code>
+        </div>
+        <div class="method-description">
+          Converts Date type to LocalDate type.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>date</code></td>
+                <td><code>java.util.Date</code></td>
+                <td>the Date type (including java.sql.Date)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>LocalDate</code> - the LocalDate type</p>
+        </div>
+      </div>
+      <div class="method" id="trimDq">
+        <h3 class="method-name">trimDq</h3>
+        <div class="method-signature">
+          <code>public String trimDq(String value)</code>
+        </div>
+        <div class="method-description">
+          Removes double quotes.<br>
+<ul>
+<li>Removes double quotes from the start and end of the string.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the string after removal</p>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="#trimBothEnds">#trimBothEnds(String, char, char)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="trimBothEnds">
+        <h3 class="method-name">trimBothEnds</h3>
+        <div class="method-signature">
+          <code>public String trimBothEnds(String value, char prefix, char suffix)</code>
+        </div>
+        <div class="method-description">
+          Trims both ends of string.<br>
+<ul>
+<li>Trims and removes only if both end characters are found.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target string</td>
+              </tr>
+              <tr>
+                <td><code>prefix</code></td>
+                <td><code>char</code></td>
+                <td>the leading end character</td>
+              </tr>
+              <tr>
+                <td><code>suffix</code></td>
+                <td><code>char</code></td>
+                <td>the trailing end character</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the string with both ends trimmed</p>
+        </div>
+      </div>
+      <div class="method" id="trimBothEnds">
+        <h3 class="method-name">trimBothEnds</h3>
+        <div class="method-signature">
+          <code>public String trimBothEnds(String value, String prefix, String suffix)</code>
+        </div>
+        <div class="method-description">
+          Trims both ends of string.<br>
+<ul>
+<li>Trims and removes only if both end characters are found.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target string</td>
+              </tr>
+              <tr>
+                <td><code>prefix</code></td>
+                <td><code>String</code></td>
+                <td>the leading end string</td>
+              </tr>
+              <tr>
+                <td><code>suffix</code></td>
+                <td><code>String</code></td>
+                <td>the trailing end string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the string with both ends trimmed</p>
+        </div>
+      </div>
+      <div class="method" id="trimZenkakuSpace">
+        <h3 class="method-name">trimZenkakuSpace</h3>
+        <div class="method-signature">
+          <code>public String trimZenkakuSpace(String value)</code>
+        </div>
+        <div class="method-description">
+          Trims full-width spaces from both ends of string.<br>
+<ul>
+<li>Removes full-width spaces from the start and end of the string.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the target string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the string after removal</p>
+        </div>
+      </div>
+      <div class="method" id="trimLeftZero">
+        <h3 class="method-name">trimLeftZero</h3>
+        <div class="method-signature">
+          <code>public String trimLeftZero(String value)</code>
+        </div>
+        <div class="method-description">
+          Removes leading zeros.<br>
+<ul>
+<li>Removes <code>"0"</code> from the left of the string.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the processed string</p>
+        </div>
+      </div>
+      <div class="method" id="paddingLeftZero">
+        <h3 class="method-name">paddingLeftZero</h3>
+        <div class="method-signature">
+          <code>public String paddingLeftZero(String value, int digit)</code>
+        </div>
+        <div class="method-description">
+          Pads with leading zeros.<br>
+<ul>
+<li>Pads <code>"0"</code> to the left of the string.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the string</td>
+              </tr>
+              <tr>
+                <td><code>digit</code></td>
+                <td><code>int</code></td>
+                <td>the number of digits after padding</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the processed string</p>
+        </div>
+      </div>
+      <div class="method" id="paddingLeftZero">
+        <h3 class="method-name">paddingLeftZero</h3>
+        <div class="method-signature">
+          <code>public String paddingLeftZero(int value, int digit)</code>
+        </div>
+        <div class="method-description">
+          Pads with leading zeros.<br>
+<ul>
+<li>Converts number to string and pads <code>"0"</code> to the left.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>int</code></td>
+                <td>the number</td>
+              </tr>
+              <tr>
+                <td><code>digit</code></td>
+                <td><code>int</code></td>
+                <td>the number of digits after padding</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the processed string</p>
+        </div>
+      </div>
+      <div class="method" id="deleteLastChar">
+        <h3 class="method-name">deleteLastChar</h3>
+        <div class="method-signature">
+          <code>public void deleteLastChar(StringBuilder sb)</code>
+        </div>
+        <div class="method-description">
+          Deletes the last character.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sb</code></td>
+                <td><code>StringBuilder</code></td>
+                <td>the StringBuilder</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="deleteLastChar">
+        <h3 class="method-name">deleteLastChar</h3>
+        <div class="method-signature">
+          <code>public void deleteLastChar(StringBuilder sb, int length)</code>
+        </div>
+        <div class="method-description">
+          Deletes the last characters.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sb</code></td>
+                <td><code>StringBuilder</code></td>
+                <td>the StringBuilder</td>
+              </tr>
+              <tr>
+                <td><code>length</code></td>
+                <td><code>int</code></td>
+                <td>the length of last characters</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="urlEncode">
+        <h3 class="method-name">urlEncode</h3>
+        <div class="method-signature">
+          <code>public String urlEncode(String url)</code>
+        </div>
+        <div class="method-description">
+          URL encodes.<br>
+<ul>
+<li>Replaces one-byte blank from "+" to "%20" to match JavaScript's encodeURIComponent.</li>
+<li>Converts wildcard "*" to "%2A".</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>url</code></td>
+                <td><code>String</code></td>
+                <td>the string to convert</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the converted string</p>
+        </div>
+      </div>
+      <div class="method" id="urlDecode">
+        <h3 class="method-name">urlDecode</h3>
+        <div class="method-signature">
+          <code>public String urlDecode(String url)</code>
+        </div>
+        <div class="method-description">
+          URL decodes.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>url</code></td>
+                <td><code>String</code></td>
+                <td>the string to convert</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the converted string</p>
+        </div>
+      </div>
+      <div class="method" id="jsonEscape">
+        <h3 class="method-name">jsonEscape</h3>
+        <div class="method-signature">
+          <code>public String jsonEscape(String value)</code>
+        </div>
+        <div class="method-description">
+          JSON escapes.<br>
+<ul>
+<li>Escapes characters that require escaping in JSON.</li>
+<li>Also escapes <code>null</code> as a control character.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the converted string</p>
+        </div>
+      </div>
+      <div class="method" id="jsonUnEscape">
+        <h3 class="method-name">jsonUnEscape</h3>
+        <div class="method-signature">
+          <code>public String jsonUnEscape(String value)</code>
+        </div>
+        <div class="method-description">
+          Removes JSON escape.<br>
+<ul>
+<li>Removes escaping of characters that require escaping in JSON.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>the string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the string after removal</p>
+        </div>
+      </div>
+      <div class="method" id="getSequenceCode">
+        <h3 class="method-name">getSequenceCode</h3>
+        <div class="method-signature">
+          <code>public String getSequenceCode()</code>
+        </div>
+        <div class="method-description">
+          Gets sequence code value.<br>
+<ul>
+<li>Returns a timestamp including nanoseconds converted to base-36.</li>
+<li>Sleeps for 1 nanosecond before returning to always return a unique value within the system.</li>
+<li>When used across multiple systems, consideration such as appending host name or system name is required to ensure unique values.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the sequence code value</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Framework Components [onepg-base.css] - CSSDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>CSSDoc</h1>
+      <p>Framework Components [onepg-base.css]</p>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Table of Contents</h2>
+      <div class="toc">
+        <ul>
+          <li><a href="#section-1">CSS Class List.</a></li>
+          <li><a href="#section-2">Page Layout.</a></li>
+          <li><a href="#section-3">Grid Layout (12-Column).</a></li>
+          <li><a href="#section-4">Form Input Element Styles.</a></li>
+          <li><a href="#section-5">Table Styles.</a></li>
+          <li><a href="#section-6">Utility Styles.</a></li>
+          <li><a href="#section-7">Message Display / Item Highlight Styles.</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="section" id="section-1">
+      <h2>CSS Class List.</h2>
+      <div class="section-description">
+        <ul>
+<li><code>div.grid-row</code>: Grid row element</li>
+<li><code>div.grid-col-1</code>: Grid column element, width 1/12</li>
+<li><code>div.grid-col-2</code>: Grid column element, width 2/12</li>
+<li><code>div.grid-col-3</code>: Grid column element, width 3/12</li>
+<li><code>div.grid-col-4</code>: Grid column element, width 4/12</li>
+<li><code>div.grid-col-5</code>: Grid column element, width 5/12</li>
+<li><code>div.grid-col-6</code>: Grid column element, width 6/12</li>
+<li><code>div.grid-col-7</code>: Grid column element, width 7/12</li>
+<li><code>div.grid-col-8</code>: Grid column element, width 8/12</li>
+<li><code>div.grid-col-9</code>: Grid column element, width 9/12</li>
+<li><code>div.grid-col-10</code>: Grid column element, width 10/12</li>
+<li><code>div.grid-col-11</code>: Grid column element, width 11/12</li>
+<li><code>div.grid-col-12</code>: Grid column element, width 12/12</li>
+<li><code>div.item-head</code>: Item header element within a grid cell</li>
+<li><code>div.item-body</code>: Item body element within a grid cell</li>
+<li><code>div.table</code>: Element wrapping a table</li>
+<li><code>.align-left</code>: Left-align text</li>
+<li><code>.align-center</code>: Center-align text</li>
+<li><code>.align-right</code>: Right-align text</li>
+<li><code>.danger</code>: Display in warning color (for delete buttons, etc.)</li>
+<li><code>a.button</code>: Display link (&lt;a&gt;) as a button</li>
+</ul>
+      </div>
+    </div>
+    <div class="section" id="section-2">
+      <h2>Page Layout.</h2>
+      <div class="section-description">
+        <ul>
+<li><code>&lt;header&gt;</code> and <code>&lt;footer&gt;</code> are fixed at the top and bottom.</li>
+<li><code>&lt;main&gt;</code> uses all remaining height except <code>&lt;header&gt;</code> and <code>&lt;footer&gt;</code>.</li>
+<li><code>&lt;section&gt;</code> provides page left/right margins and section top/bottom margins. Do not use <code>&lt;section&gt;</code> to remove top/bottom margins.</li>
+</ul>
+<pre>[Example]<code>
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;section&gt;Fixed Header&lt;/section&gt;
+  &lt;/header&gt;
+  &lt;main&gt;
+    &lt;section&gt;Main Content&lt;/section&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;
+    &lt;section&gt;Fixed Footer&lt;/section&gt;
+  &lt;/footer&gt;
+&lt;/body&gt;
+</code></pre>
+      </div>
+    </div>
+    <div class="section" id="section-3">
+      <h2>Grid Layout (12-Column).</h2>
+      <div class="section-description">
+        <ul>
+<li>Uses a layout method that divides the page width into 12 equal parts for flexible element placement.</li>
+<li>Row elements are specified with <code>div.grid-row</code>, with column widths specified per row.</li>
+<li>Column elements are specified with <code>div.grid-col-1</code> to <code>div.grid-col-12</code>, where the trailing number represents the column width.</li>
+<li>Column width uses values from <code>1</code> to <code>12</code>, with the total equaling 12.</li>
+<li>Column width is normally 1/12 of the page, but on smartphone sizes it becomes full width and columns stack vertically.</li>
+<li>Content within columns is normally arranged horizontally, but on tablet sizes it changes to vertical arrangement.</li>
+</ul>
+<pre>[Example 1]<code>
+&lt;div class="grid-row"&gt;
+  &lt;div class="grid-col-3"&gt;1/4 of full width&lt;/div&gt;
+  &lt;div class="grid-col-3"&gt;1/4 of full width&lt;/div&gt;
+  &lt;div class="grid-col-3"&gt;1/4 of full width&lt;/div&gt;
+  &lt;div class="grid-col-3"&gt;1/4 of full width&lt;/div&gt;
+&lt;/div&gt;
+</code>[Example 2] Widths do not need to be uniform<code>
+&lt;div class="grid-row"&gt;
+  &lt;div class="grid-col-6"&gt;1/2 of full width&lt;/div&gt;
+  &lt;div class="grid-col-4"&gt;1/3 of full width&lt;/div&gt;
+  &lt;div class="grid-col-2"&gt;1/6 of full width&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+      </div>
+    </div>
+    <div class="section" id="section-4">
+      <h2>Form Input Element Styles.</h2>
+      <div class="section-description">
+        <ul>
+<li>Unifies styles for form input elements such as text boxes, select boxes, and text areas.</li>
+<li>Unifies styles for normal, focus, and disabled states.</li>
+<li>Unifies styles for labels paired with form input elements.</li>
+<li>Wrap label elements with <code>div.item-head</code> and form input elements with <code>div.item-body</code> to apply height adjustment and responsive direction switching styles.
+  <pre>[Example]
+<code>&lt;div class="item-head"&gt;&lt;label&gt;Item Name&lt;/label&gt;&lt;/div&gt;
+ &lt;div class="item-body"&gt;&lt;input type="text"&gt;&lt;/div&gt;</code></pre></li>
+<li>Wrap checkboxes and radio buttons with their value labels in <code>&lt;label&gt;</code>.
+  <pre>[Example]<code>&lt;div class="item-body"&gt;&lt;label&gt;&lt;input type="checkbox"&gt;Value Name&lt;/label&gt;&lt;/div&gt;</code></pre></li>
+</ul>
+      </div>
+    </div>
+    <div class="section" id="section-5">
+      <h2>Table Styles.</h2>
+      <div class="section-description">
+        <ul>
+<li>Unify the style of <code>&lt;table&gt;</code>.</li>
+<li>Tables display with alternating row stripes.</li>
+<li>Wrap <code>&lt;table&gt;</code> with <code>div.table</code> to apply styles.
+  <pre>[Example]
+<code>&lt;div class="table"&gt;&lt;table&gt;...omitted...&lt;/table&gt;&lt;/div&gt;</code></pre></li>
+<li>Wrap <code>&lt;th&gt;</code> with <code>&lt;thead&gt;</code> and <code>&lt;tr&gt;</code> with <code>&lt;tbody&gt;</code> to apply styles.</li>
+<li><code>&lt;tbody&gt;</code> can be single or multiple.
+  <pre>[Single Example] <code>&lt;table&gt;...omitted...&lt;tbody&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</code>
+[Multiple Example] <code>&lt;table&gt;...omitted...&lt;tbody&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;tbody&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
+</ul>
+      </div>
+    </div>
+    <div class="section" id="section-6">
+      <h2>Utility Styles.</h2>
+      <div class="section-description">
+        <ul>
+<li>This section provides commonly used general-purpose styles.</li>
+<li>Use the following classes for text alignment:
+  <ul>
+    <li>Left align: <code>.align-left</code></li>
+    <li>Center align: <code>.align-center</code></li>
+    <li>Right align: <code>.align-right</code></li>
+  </ul></li>
+<li>Set <code>.danger</code> on elements requiring caution to display in warning color (used for delete buttons, etc.).</li>
+<li>Set <code>.button</code> on <code>&lt;a&gt;</code> to display it with button-like appearance.</li>
+</ul>
+      </div>
+    </div>
+    <div class="section" id="section-7">
+      <h2>Message Display / Item Highlight Styles.</h2>
+      <div class="section-description">
+        <ul>
+<li>The HTML for the message display area uses the following fixed format:<br>
+  <pre><code>&lt;section id="_msg"&gt;&lt;/section&gt;</code></pre></li>
+<li>Calling JavaScript framework component <code>PageUtil#setMsg()</code> sets the following classes on target item elements, highlighting those items:
+  <ul>
+    <li>Info (blue background): <code>.info-item</code></li>
+    <li>Warning (yellow background): <code>.warn-item</code></li>
+    <li>Error (red background): <code>.err-item</code></li>
+</ul></li>
+<li>Items to highlight are specified along with message text in the argument of Java framework component <code>Io#putMsg()</code>.</li>
+</ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by CssDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

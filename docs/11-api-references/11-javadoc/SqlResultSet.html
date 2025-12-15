@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SqlResultSet - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>SqlResultSet</h1>
+      <p>Framework Components [com.onepg.db]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.db</p>
+        <p><strong>Class Name:</strong> SqlResultSet</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>SQL result set wrapper class.
+
+<ul>
+<li>A wrapper class for <code>ResultSet</code> that provides an iterator and handles closing of statement and result set.</li>
+<li>Through this class, data can only be retrieved via the iterator.</li>
+<li>Declare in try clause (try-with-resources statement).</li>
+<li>The column physical names in the row map obtained from this class's iterator are lowercase letters. (Keys of <code>IoItems</code>)</li>
+</ul>
+</div>
+      </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="SqlUtil.html#select">SqlUtil#select(java.sql.Connection, SqlBuilder)</a></li>
+          </ul>
+        </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="iterator">
+        <h3 class="method-name">iterator</h3>
+        <div class="method-signature">
+          <code>public Iterator&lt;IoItems&gt; iterator()</code>
+        </div>
+        <div class="method-description">
+          Creates an iterator.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Iterator&lt;IoItems&gt;</code> - the result row iterator</p>
+        </div>
+      </div>
+      <div class="method" id="close">
+        <h3 class="method-name">close</h3>
+        <div class="method-signature">
+          <code>public void close()</code>
+        </div>
+        <div class="method-description">
+          Closes resources.<br>
+<ul>
+<li>Closes the result set and statement.</li>
+</ul>
+
+  
+        </div>
+      </div>
+      <div class="method" id="isExists">
+        <h3 class="method-name">isExists</h3>
+        <div class="method-signature">
+          <code>public boolean isExists()</code>
+        </div>
+        <div class="method-description">
+          Checks if data exists (matches found for database extraction criteria).<br>
+<ul>
+<li>On DB2, <code>#isBeforeFirst</code> (with TYPE_FORWARD_ONLY) causes an error.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if data was retrieved</p>
+        </div>
+      </div>
+      <div class="method" id="getReadedCount">
+        <h3 class="method-name">getReadedCount</h3>
+        <div class="method-signature">
+          <code>public int getReadedCount()</code>
+        </div>
+        <div class="method-description">
+          Gets the number of rows read (not the number of rows matching database extraction criteria).<br>
+<ul>
+<li>Returns the number of rows read via the iterator.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the number of rows read</p>
+        </div>
+      </div>
+      <div class="method" id="isReadedEndRow">
+        <h3 class="method-name">isReadedEndRow</h3>
+        <div class="method-signature">
+          <code>public boolean isReadedEndRow()</code>
+        </div>
+        <div class="method-description">
+          Checks if the last row has been read.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if the last row has been read</p>
+        </div>
+      </div>
+      <div class="method" id="hasNext">
+        <h3 class="method-name">hasNext</h3>
+        <div class="method-signature">
+          <code>public boolean hasNext()</code>
+        </div>
+        <div class="method-description">
+          Checks for next row.<br>
+<ul>
+<li>Closes the result set and statement if no next row exists, in case try clause was not used.</li>
+<li>Does not recheck on consecutive hasNext() calls.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if next row exists</p>
+        </div>
+      </div>
+      <div class="method" id="next">
+        <h3 class="method-name">next</h3>
+        <div class="method-signature">
+          <code>public IoItems next()</code>
+        </div>
+        <div class="method-description">
+          Gets the next row.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>IoItems</code> - the row map</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

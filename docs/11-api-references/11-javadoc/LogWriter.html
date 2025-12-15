@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogWriter - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>LogWriter</h1>
+      <p>Framework Components [com.onepg.util]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.util</p>
+        <p><strong>Class Name:</strong> LogWriter</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>Log writer class.
+<ul>
+<li>Accepts log output from individual processes.</li>
+<li>Handles formatting of log text.</li>
+<li>Gets text writer instance from log text handler <code>LogTxtHandler</code> and outputs logs.</li>
+<li>Holds two log text handlers: one for info and one for errors.</li>
+<li>Outputs logs to console as well in develop mode.</li>
+<li>Log text opening and closing is handled by log text handler; this class does not open or close.</li>
+</ul>
+</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="flush">
+        <h3 class="method-name">flush</h3>
+        <div class="method-signature">
+          <code>public void flush()</code>
+        </div>
+        <div class="method-description">
+          Flushes the log writers.
+  
+        </div>
+      </div>
+      <div class="method" id="error">
+        <h3 class="method-name">error</h3>
+        <div class="method-signature">
+          <code>public void error(Throwable e, String msg)</code>
+        </div>
+        <div class="method-description">
+          Outputs an error.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>e</code></td>
+                <td><code>Throwable</code></td>
+                <td>the error instance</td>
+              </tr>
+              <tr>
+                <td><code>msg</code></td>
+                <td><code>String</code></td>
+                <td>the log message</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="error">
+        <h3 class="method-name">error</h3>
+        <div class="method-signature">
+          <code>public void error(Throwable e)</code>
+        </div>
+        <div class="method-description">
+          Outputs an error.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>e</code></td>
+                <td><code>Throwable</code></td>
+                <td>the error instance</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="error">
+        <h3 class="method-name">error</h3>
+        <div class="method-signature">
+          <code>public void error(String msg)</code>
+        </div>
+        <div class="method-description">
+          Outputs an error.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>msg</code></td>
+                <td><code>String</code></td>
+                <td>the log message</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="info">
+        <h3 class="method-name">info</h3>
+        <div class="method-signature">
+          <code>public void info(String msg)</code>
+        </div>
+        <div class="method-description">
+          Outputs info.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>msg</code></td>
+                <td><code>String</code></td>
+                <td>the log message</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="begin">
+        <h3 class="method-name">begin</h3>
+        <div class="method-signature">
+          <code>public void begin()</code>
+        </div>
+        <div class="method-description">
+          Outputs begin info.
+  
+        </div>
+      </div>
+      <div class="method" id="end">
+        <h3 class="method-name">end</h3>
+        <div class="method-signature">
+          <code>public void end()</code>
+        </div>
+        <div class="method-description">
+          Outputs end info.
+  
+        </div>
+      </div>
+      <div class="method" id="develop">
+        <h3 class="method-name">develop</h3>
+        <div class="method-signature">
+          <code>public void develop(String msg)</code>
+        </div>
+        <div class="method-description">
+          Outputs for development.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>msg</code></td>
+                <td><code>String</code></td>
+                <td>the log message</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="isDevelopMode">
+        <h3 class="method-name">isDevelopMode</h3>
+        <div class="method-signature">
+          <code>public boolean isDevelopMode()</code>
+        </div>
+        <div class="method-description">
+          Returns whether develop mode is enabled.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if develop log is enabled</p>
+        </div>
+      </div>
+      <div class="method" id="startWatch">
+        <h3 class="method-name">startWatch</h3>
+        <div class="method-signature">
+          <code>public void startWatch()</code>
+        </div>
+        <div class="method-description">
+          Starts elapsed time measurement.
+  
+        </div>
+      </div>
+      <div class="method" id="stopWatch">
+        <h3 class="method-name">stopWatch</h3>
+        <div class="method-signature">
+          <code>public void stopWatch()</code>
+        </div>
+        <div class="method-description">
+          Stops elapsed time measurement.
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

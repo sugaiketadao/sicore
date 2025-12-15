@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DomUtil - JSDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>DomUtil</h1>
+      <p>Framework Component [onepg-utils.js]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Class Name:</strong> DomUtil</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>HTML element operation utility class.
+</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method">
+        <h3 id="isExists" class="method-name">isExists</h3>
+        <div class="method-signature">
+          <code>isExists(elms)</code>
+        </div>
+        <div class="method-description">
+          Element existence check.
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elms</code></td>
+                <td><code>Element|NodeList</code></td>
+                <td>Target element(s) to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if HTML element(s) retrieved</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="isVisible" class="method-name">isVisible</h3>
+        <div class="method-signature">
+          <code>isVisible(elm)</code>
+        </div>
+        <div class="method-description">
+          Check if element is visible.<br>
+<ul>
+<li>Determines hidden if <code>display:none</code> or <code>visibility:hidden</code>.</li>
+<li>Also checks visibility of parent elements.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if visible</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getById" class="method-name">getById</h3>
+        <div class="method-signature">
+          <code>getById(id, outerElm)</code>
+        </div>
+        <div class="method-description">
+          ID selector (get first element).<br>
+<ul>
+<li>Returns <code>null</code> if argument is invalid or element not found.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>id</code></td>
+                <td><code>string</code></td>
+                <td><code>id</code> attribute</td>
+              </tr>
+              <tr>
+                <td><code>[outerElm]</code></td>
+                <td><code>Object</code></td>
+                <td>Search scope element (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Element|null</code> - Retrieved HTML element</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getSelector" class="method-name">getSelector</h3>
+        <div class="method-signature">
+          <code>getSelector(selector, outerElm)</code>
+        </div>
+        <div class="method-description">
+          Selector (get first element).<br>
+<ul>
+<li>Returns <code>null</code> if argument is invalid or element not found.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>selector</code></td>
+                <td><code>string</code></td>
+                <td>Selector string</td>
+              </tr>
+              <tr>
+                <td><code>[outerElm]</code></td>
+                <td><code>Object</code></td>
+                <td>Search scope element (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Element|null</code> - Retrieved HTML element</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getByName" class="method-name">getByName</h3>
+        <div class="method-signature">
+          <code>getByName(name, outerElm)</code>
+        </div>
+        <div class="method-description">
+          Name selector (get first element).<br>
+<ul>
+<li>Returns <code>null</code> if argument is invalid or element not found.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>name</code></td>
+                <td><code>string</code></td>
+                <td><code>name</code> attribute</td>
+              </tr>
+              <tr>
+                <td><code>[outerElm]</code></td>
+                <td><code>Object</code></td>
+                <td>Search scope element (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Element|null</code> - Retrieved HTML element</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getByDataName" class="method-name">getByDataName</h3>
+        <div class="method-signature">
+          <code>getByDataName(name, outerElm)</code>
+        </div>
+        <div class="method-description">
+          Data-name selector (get first element).<br>
+<ul>
+<li>Gets elements other than form input elements using an alternative attribute name for the <code>name</code> attribute.</li>
+<li>Returns <code>null</code> if argument is invalid or element not found.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>name</code></td>
+                <td><code>string</code></td>
+                <td><code>data-name</code> attribute</td>
+              </tr>
+              <tr>
+                <td><code>[outerElm]</code></td>
+                <td><code>Object</code></td>
+                <td>Search scope element (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Element|null</code> - Retrieved HTML element</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getsSelector" class="method-name">getsSelector</h3>
+        <div class="method-signature">
+          <code>getsSelector(selector, outerElm)</code>
+        </div>
+        <div class="method-description">
+          Selector (get multiple elements).<br>
+<ul>
+<li>Returns an array of HTML elements.</li>
+<li>Returns zero-length array if not found.</li>
+<li>Returns <code>null</code> if argument is invalid.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>selector</code></td>
+                <td><code>string</code></td>
+                <td>Selector string</td>
+              </tr>
+              <tr>
+                <td><code>[outerElm]</code></td>
+                <td><code>Object</code></td>
+                <td>Search scope element (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Array&lt;Element&gt;|null</code> - Multiple HTML element array</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getParentByTag" class="method-name">getParentByTag</h3>
+        <div class="method-signature">
+          <code>getParentByTag(baseElm, tag)</code>
+        </div>
+        <div class="method-description">
+          Ancestor element tag selector (get first element).<br>
+<ul>
+<li>Searches ancestor elements from the base element and returns the nearest element matching the HTML tag.</li>
+<li>Used to retrieve the row element containing the clicked button, etc.</li>
+<li>Returns <code>null</code> if argument is invalid or element not found.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>baseElm</code></td>
+                <td><code>Element</code></td>
+                <td>Base element</td>
+              </tr>
+              <tr>
+                <td><code>tag</code></td>
+                <td><code>string</code></td>
+                <td>HTML tag name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Element|null</code> - Retrieved HTML element</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getVal" class="method-name">getVal</h3>
+        <div class="method-signature">
+          <code>getVal(elm)</code>
+        </div>
+        <div class="method-description">
+          Get element value.<br>
+<ul>
+<li>Retrieves <code>value</code> attribute of <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>.</li>
+<li>Returns <code>null</code> if argument is invalid.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string|null</code> - Value</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="setVal" class="method-name">setVal</h3>
+        <div class="method-signature">
+          <code>setVal(elm, value)</code>
+        </div>
+        <div class="method-description">
+          Set element value.<br>
+<ul>
+<li>Sets <code>value</code> attribute of <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>.</li>
+<li>Returns <code>false</code> if argument is invalid.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>string</code></td>
+                <td>Value to set</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on success</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getTxt" class="method-name">getTxt</h3>
+        <div class="method-signature">
+          <code>getTxt(elm)</code>
+        </div>
+        <div class="method-description">
+          Get element text.<br>
+<ul>
+<li>Retrieves the element's <code>textContent</code>.</li>
+<li>Returns <code>null</code> if argument is invalid.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string|null</code> - Text</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="setTxt" class="method-name">setTxt</h3>
+        <div class="method-signature">
+          <code>setTxt(elm, text)</code>
+        </div>
+        <div class="method-description">
+          Set element text.<br>
+<ul>
+<li>Sets the element's <code>textContent</code>.</li>
+<li>Returns <code>false</code> if argument is invalid.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>text</code></td>
+                <td><code>string</code></td>
+                <td>Text to set</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on success</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="setEnable" class="method-name">setEnable</h3>
+        <div class="method-signature">
+          <code>setEnable(elm, isEnable)</code>
+        </div>
+        <div class="method-description">
+          Toggle element enabled state.<br>
+<ul>
+<li>Toggles the element's <code>disabled</code> attribute.</li>
+<li>Returns <code>false</code> if argument is invalid.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>isEnable</code></td>
+                <td><code>boolean|string</code></td>
+                <td><code>true</code> to enable</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on success</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="setVisible" class="method-name">setVisible</h3>
+        <div class="method-signature">
+          <code>setVisible(elm, isShow, keepLayout)</code>
+        </div>
+        <div class="method-description">
+          Toggle element visibility.<br>
+<ul>
+<li>Toggles the element's <code>display</code> style or <code>visibility</code> style.</li>
+<li>Use <code>visibility</code> style to preserve element space (maintain layout).</li>
+<li>Returns <code>false</code> if argument is invalid.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>isShow</code></td>
+                <td><code>boolean|string</code></td>
+                <td><code>true</code> to show</td>
+              </tr>
+              <tr>
+                <td><code>keepLayout</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code> to preserve element space</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on success</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getAttr" class="method-name">getAttr</h3>
+        <div class="method-signature">
+          <code>getAttr(elm, attrName)</code>
+        </div>
+        <div class="method-description">
+          Get element attribute.<br>
+<ul>
+<li>Retrieves the value of the specified attribute.</li>
+<li>Returns <code>null</code> if argument is invalid.</li>
+<li>Uses dataset API for data-* attributes.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>attrName</code></td>
+                <td><code>string</code></td>
+                <td>Attribute name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>string|number|null</code> - Attribute value</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="setAttr" class="method-name">setAttr</h3>
+        <div class="method-signature">
+          <code>setAttr(elm, attrName, val)</code>
+        </div>
+        <div class="method-description">
+          Set element attribute.<br>
+<ul>
+<li>Sets the value of the specified attribute.</li>
+<li>Returns <code>false</code> if argument is invalid.</li>
+<li>Uses dataset API for data-* attributes.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>attrName</code></td>
+                <td><code>string</code></td>
+                <td>Attribute name</td>
+              </tr>
+              <tr>
+                <td><code>val</code></td>
+                <td><code>string</code></td>
+                <td>Value to set</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on success</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="hasAttr" class="method-name">hasAttr</h3>
+        <div class="method-signature">
+          <code>hasAttr(elm, attrName)</code>
+        </div>
+        <div class="method-description">
+          Check element attribute existence.<br>
+<ul>
+<li>Uses dataset API for data-* attributes.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>attrName</code></td>
+                <td><code>string</code></td>
+                <td>Attribute name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if exists</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="removeAttr" class="method-name">removeAttr</h3>
+        <div class="method-signature">
+          <code>removeAttr(elm, attrName)</code>
+        </div>
+        <div class="method-description">
+          Remove element attribute.<br>
+<ul>
+<li>Removes the specified attribute.</li>
+<li>Returns <code>false</code> if argument is invalid.</li>
+<li>Uses dataset API for data-* attributes.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>attrName</code></td>
+                <td><code>string</code></td>
+                <td>Attribute name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on success</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="addClass" class="method-name">addClass</h3>
+        <div class="method-signature">
+          <code>addClass(elm, cls)</code>
+        </div>
+        <div class="method-description">
+          Add CSS class.<br>
+<ul>
+<li>Adds a CSS class to the element.</li>
+<li>Returns <code>false</code> if argument is invalid.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>cls</code></td>
+                <td><code>string</code></td>
+                <td>Class name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on success</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="removeClass" class="method-name">removeClass</h3>
+        <div class="method-signature">
+          <code>removeClass(elm, cls)</code>
+        </div>
+        <div class="method-description">
+          Remove CSS class.<br>
+<ul>
+<li>Removes a CSS class from the element.</li>
+<li>Returns <code>false</code> if argument is invalid.</li>
+<li>Returns <code>false</code> if target class does not exist.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>cls</code></td>
+                <td><code>string</code></td>
+                <td>Class name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on success</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="hasClass" class="method-name">hasClass</h3>
+        <div class="method-signature">
+          <code>hasClass(elm, cls)</code>
+        </div>
+        <div class="method-description">
+          Check CSS class existence.<br>
+<ul>
+<li>Checks if the element has the specified CSS class.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elm</code></td>
+                <td><code>Element</code></td>
+                <td>Target element</td>
+              </tr>
+              <tr>
+                <td><code>cls</code></td>
+                <td><code>string</code></td>
+                <td>Class name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if has class</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JSDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

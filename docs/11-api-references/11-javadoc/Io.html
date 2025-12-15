@@ -1,0 +1,3230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Io - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>Io</h1>
+      <p>Framework Components [com.onepg.util]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.util</p>
+        <p><strong>Class Name:</strong> Io</p>
+        <p><strong>Extends:</strong> <a href="AbstractIoTypeMap.html">AbstractIoTypeMap</a></p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>I/O map class.<br>
+<ul>
+<li>Can hold string lists.</li>
+<li>Can hold nested variable type maps.</li>
+<li>Can hold multiple rows of variable type maps as lists.</li>
+<li>Can hold string array (list) as lists.</li>
+<li>The above data structures are deep copied during both storage and retrieval.</li>
+<li>Can input/output JSON.</li>
+<li>Can input/output URL parameters.</li>
+<li>Basic rules and limitations conform to <code>AbstractIoTypeMap</code>.</li>
+
+<li>About string lists
+<ul>
+<li>Handle with **List methods such as <code>#getList(String)</code>, <code>#putList(String, List)</code>, <code>#containsKeyList(String)</code>,
+<code>#removeList(String)</code>.</li>
+<li>String lists are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
+<code>#keySet()</code>.<br>
+However, <code>#clear()</code> also clears the stored string lists.</li>
+<li>Adding elements to a list retrieved by <code>#getList(String)</code> does not affect the list held by this class.</li>
+<li>Adding elements to the original list stored by <code>#putList(String, List)</code>
+does not affect the list held by this class.</li>
+<li>String lists are not included in CSV output.</li>
+<li>Be careful about string length when using URL parameters containing string lists.</li>
+<li>Performance may degrade when repeatedly storing and retrieving lists or handling large lists, due to deep copying.</li>
+</ul>
+</li>
+
+<li>About nested maps
+<ul>
+<li>Handle with **Nest methods such as <code>#getNest(String)</code>, <code>#putNest(String, Map)</code>, <code>#containsKeyNest(String)</code>,
+<code>#removeNest(String)</code>.</li>
+<li>Nested maps are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
+<code>#keySet()</code>.<br>
+However, <code>#clear()</code> also clears the stored nested maps.</li>
+<li>Adding elements to a map retrieved by <code>#getNest(String)</code> does not affect the map held by this class.</li>
+<li>Adding elements to the original map stored by <code>#putNest(String, List)</code>
+does not affect the map held by this class.</li>
+<li>Nested maps are not included in CSV output or URL parameter output.</li>
+<li>Performance may degrade when repeatedly storing and retrieving lists or handling large lists, due to deep copying.</li>
+</ul>
+</li>
+
+<li>About multiple rows lists
+<ul>
+<li>Handle with **Rows methods such as <code>#getRows(String)</code>, <code>#putRows(String, Collection)</code>,
+<code>#containsKeyRows(String)</code>, <code>#removeRows(List)</code>.</li>
+<li>Multiple rows lists are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
+<code>#keySet()</code>.<br>
+However, <code>#clear()</code> also clears the stored multiple rows lists.</li>
+<li>Adding elements to a list retrieved by <code>#getRows(String)</code> does not affect the list held by this class.</li>
+<li>Adding elements to the original list stored by <code>#putRows(String, Collection)</code>
+does not affect the list held by this class.</li>
+<li>Multiple rows lists are not included in CSV output or URL parameter output.</li>
+<li>Performance may degrade when repeatedly storing and retrieving lists or handling large lists, due to deep copying.</li>
+</ul>
+</li>
+
+<li>About array lists
+<ul>
+<li>Handle with **Arys methods such as <code>#getArys(String)</code>, <code>#putArys(String, Collection)</code>,
+<code>#containsKeyArys(String)</code>, <code>#removeArys(List)</code>.</li>
+<li>Array lists are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
+<code>#keySet()</code>.<br>
+However, <code>#clear()</code> also clears the stored array lists.</li>
+<li>Adding elements to a list retrieved by <code>#getArys(String)</code> does not affect the list held by this class.</li>
+<li>Adding elements to the original list stored by <code>#putArys(String, Collection)</code>
+does not affect the list held by this class.</li>
+<li>Array lists are not included in CSV output or URL parameter output.</li>
+<li>Performance may degrade when repeatedly storing and retrieving lists or handling large lists, due to deep copying.</li>
+</ul>
+</li>
+
+<li>JSON does not support arrays of 4 or more levels (dimensions).
+<ul>
+<li>{ [ [ ] ] } is supported. → Array list</li>
+<li>{ [ { } ] } is supported. → Multiple rows list</li>
+<li>{ [ [ [ ] ] ] } is not supported.</li>
+<li>{ [ [ { } ] ] } is not supported.</li>
+</ul>
+</li>
+
+<li>About messages
+<ul>
+<li>Can hold message ID and target field name, and messages are output together with JSON output.</li>
+<li>By passing message text as an argument during JSON output, held message texts are also output together.</li>
+<li><code>{0}, {1}, ...</code> in message text are replaced with strings passed as arguments when adding messages.</li>
+</ul>
+</li>
+
+</ul>
+</div>
+      </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="AbstractIoTypeMap.html">AbstractIoTypeMap</a></li>
+          </ul>
+        </div>
+    </div>
+    <div class="section">
+      <h2>Enumeration List</h2>
+      <div class="enum-list">
+        <div class="enum-item" id="MsgType">
+          <h3 class="enum-name">MsgType</h3>
+          <div class="enum-signature">
+            <code>public enum MsgType</code>
+          </div>
+          <div class="enum-description">
+            Message type. 
+          </div>
+          <div class="enum-constants">
+            <h4>Constants</h4>
+            <ul>
+              <li><code>ERROR</code></li>
+              <li><code>WARN</code></li>
+              <li><code>INFO</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="getString">
+        <h3 class="method-name">getString <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String getString(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves string.<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+<li>Returns empty string if stored value is <code>null</code>. (<code>null</code> is not returned)</li>
+<li>To retrieve <code>null</code>, use <code>#getStringNullable(String)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the string</p>
+        </div>
+      </div>
+      <div class="method" id="getStringOrDefault">
+        <h3 class="method-name">getStringOrDefault <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String getStringOrDefault(String key, String notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Retrieves string.<br>
+<ul>
+<li>Returns the default value parameter if key does not exist.</li>
+<li>Returns empty string if stored value is <code>null</code>. (<code>null</code> is not returned)</li>
+<li>To retrieve <code>null</code>, use <code>#getStringNullableOrDefault(String, String)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>notExistsValue</code></td>
+                <td><code>String</code></td>
+                <td>value to return if key does not exist</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the string</p>
+        </div>
+      </div>
+      <div class="method" id="getStringNullable">
+        <h3 class="method-name">getStringNullable <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String getStringNullable(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves string (nullable).<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the string (nullable)</p>
+        </div>
+      </div>
+      <div class="method" id="getStringNullableOrDefault">
+        <h3 class="method-name">getStringNullableOrDefault <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String getStringNullableOrDefault(String key, String notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Retrieves string (nullable).<br>
+<ul>
+<li>Returns the default value parameter if key does not exist.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key</td>
+              </tr>
+              <tr>
+                <td><code>notExistsValue</code></td>
+                <td><code>String</code></td>
+                <td>value to return if key does not exist</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the string (nullable)</p>
+        </div>
+      </div>
+      <div class="method" id="getBigDecimal">
+        <h3 class="method-name">getBigDecimal <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public BigDecimal getBigDecimal(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves numeric value.<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+<li>Returns zero if stored value is <code>null</code>. (<code>null</code> is not returned)</li>
+<li>To retrieve <code>null</code>, use <code>#getBigDecimalNullable(String)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>BigDecimal</code> - the numeric value</p>
+        </div>
+      </div>
+      <div class="method" id="getBigDecimalOrDefault">
+        <h3 class="method-name">getBigDecimalOrDefault <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public BigDecimal getBigDecimalOrDefault(String key, BigDecimal notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Retrieves numeric value.<br>
+<ul>
+<li>Returns the default value parameter if key does not exist.</li>
+<li>Returns zero if stored value is <code>null</code>. (<code>null</code> is not returned)</li>
+<li>To retrieve <code>null</code>, use <code>#getBigDecimalNullableOrDefault(String)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>notExistsValue</code></td>
+                <td><code>BigDecimal</code></td>
+                <td>value to return if key does not exist</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>BigDecimal</code> - the numeric value</p>
+        </div>
+      </div>
+      <div class="method" id="getBigDecimalNullable">
+        <h3 class="method-name">getBigDecimalNullable <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public BigDecimal getBigDecimalNullable(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves numeric value (nullable).<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>BigDecimal</code> - the numeric value (nullable)</p>
+        </div>
+      </div>
+      <div class="method" id="getBigDecimalNullableOrDefault">
+        <h3 class="method-name">getBigDecimalNullableOrDefault <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public BigDecimal getBigDecimalNullableOrDefault(String key, BigDecimal notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Retrieves numeric value (nullable).<br>
+<ul>
+<li>Returns the default value parameter if key does not exist.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key</td>
+              </tr>
+              <tr>
+                <td><code>notExistsValue</code></td>
+                <td><code>BigDecimal</code></td>
+                <td>value to return if key does not exist</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>BigDecimal</code> - the numeric value (nullable)</p>
+        </div>
+      </div>
+      <div class="method" id="getInt">
+        <h3 class="method-name">getInt <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public int getInt(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves int value.<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+<li>Returns zero if stored value is <code>null</code>.</li>
+<li>Throws exception if value is outside int range.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the int value</p>
+        </div>
+      </div>
+      <div class="method" id="getIntOrDefault">
+        <h3 class="method-name">getIntOrDefault <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public int getIntOrDefault(String key, int notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Retrieves int value.<br>
+<ul>
+<li>Returns the default value parameter if key does not exist.</li>
+<li>Returns zero if stored value is <code>null</code>.</li>
+<li>Throws exception if value is outside int range.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>notExistsValue</code></td>
+                <td><code>int</code></td>
+                <td>value to return if key does not exist</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the int value</p>
+        </div>
+      </div>
+      <div class="method" id="getLong">
+        <h3 class="method-name">getLong <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public long getLong(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves long value.<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+<li>Returns zero if stored value is <code>null</code>.</li>
+<li>Throws exception if value is outside long range.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>long</code> - the long value</p>
+        </div>
+      </div>
+      <div class="method" id="getLongOrDefault">
+        <h3 class="method-name">getLongOrDefault <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public long getLongOrDefault(String key, long notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Retrieves long value.<br>
+<ul>
+<li>Returns the default value parameter if key does not exist.</li>
+<li>Returns zero if stored value is <code>null</code>.</li>
+<li>Throws exception if value is outside long range.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>notExistsValue</code></td>
+                <td><code>long</code></td>
+                <td>value to return if key does not exist</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>long</code> - the long value</p>
+        </div>
+      </div>
+      <div class="method" id="getDateNullable">
+        <h3 class="method-name">getDateNullable <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public LocalDate getDateNullable(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves date (nullable).<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+<li>Throws exception if date conversion fails.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>LocalDate</code> - the date (nullable)</p>
+        </div>
+      </div>
+      <div class="method" id="getDateNullableOrDefault">
+        <h3 class="method-name">getDateNullableOrDefault <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public LocalDate getDateNullableOrDefault(String key, LocalDate notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Retrieves date (nullable).<br>
+<ul>
+<li>Returns the default value parameter if key does not exist.</li>
+<li>Throws exception if date conversion fails.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key</td>
+              </tr>
+              <tr>
+                <td><code>notExistsValue</code></td>
+                <td><code>LocalDate</code></td>
+                <td>value to return if key does not exist</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>LocalDate</code> - the date (nullable)</p>
+        </div>
+      </div>
+      <div class="method" id="getDateTimeNullable">
+        <h3 class="method-name">getDateTimeNullable <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public LocalDateTime getDateTimeNullable(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves date-time (nullable).<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+<li>Throws exception if date-time conversion fails.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>LocalDateTime</code> - the date-time (nullable)</p>
+        </div>
+      </div>
+      <div class="method" id="getDateTimeNullableOrDefault">
+        <h3 class="method-name">getDateTimeNullableOrDefault <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public LocalDateTime getDateTimeNullableOrDefault(String key, LocalDateTime notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Retrieves date-time (nullable).<br>
+<ul>
+<li>Returns the default value parameter if key does not exist.</li>
+<li>Throws exception if date-time conversion fails.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key</td>
+              </tr>
+              <tr>
+                <td><code>notExistsValue</code></td>
+                <td><code>LocalDateTime</code></td>
+                <td>value to return if key does not exist</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>LocalDateTime</code> - the date-time (nullable)</p>
+        </div>
+      </div>
+      <div class="method" id="getBoolean">
+        <h3 class="method-name">getBoolean <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public boolean getBoolean(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves boolean value.<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+<li>Boolean evaluation follows <code>ValUtil.isTrue(String)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - the boolean value</p>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="ValUtil.html#isTrue">ValUtil#isTrue(String)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="getBooleanOrDefault">
+        <h3 class="method-name">getBooleanOrDefault <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public boolean getBooleanOrDefault(String key, boolean notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Retrieves boolean value.<br>
+<ul>
+<li>Returns the default value parameter if key does not exist.</li>
+<li>Value evaluation follows <code>ValUtil.isTrue(String)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key</td>
+              </tr>
+              <tr>
+                <td><code>notExistsValue</code></td>
+                <td><code>boolean</code></td>
+                <td>value to return if key does not exist</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - the boolean value</p>
+        </div>
+      </div>
+      <div class="method" id="putNull">
+        <h3 class="method-name">putNull <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putNull(String key)</code>
+        </div>
+        <div class="method-description">
+          Stores <code>null</code>.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putNullForce">
+        <h3 class="method-name">putNullForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putNullForce(String key)</code>
+        </div>
+        <div class="method-description">
+          Stores <code>null</code> (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="put">
+        <h3 class="method-name">put <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String put(String key, String value)</code>
+        </div>
+        <div class="method-description">
+          Stores string.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use <code>#putForce(String, String)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="put">
+        <h3 class="method-name">put <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String put(String key, BigDecimal value)</code>
+        </div>
+        <div class="method-description">
+          Stores numeric value.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use <code>#putForce(String, BigDecimal)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>BigDecimal</code></td>
+                <td>numeric value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="put">
+        <h3 class="method-name">put <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String put(String key, int value)</code>
+        </div>
+        <div class="method-description">
+          Stores int value.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use <code>#putForce(String, int)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>int</code></td>
+                <td>int value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="put">
+        <h3 class="method-name">put <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String put(String key, long value)</code>
+        </div>
+        <div class="method-description">
+          Stores long value.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use <code>#putForce(String, long)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>long</code></td>
+                <td>long value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="put">
+        <h3 class="method-name">put <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String put(String key, LocalDate value)</code>
+        </div>
+        <div class="method-description">
+          Stores date.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use <code>#putForce(String, LocalDate)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>LocalDate</code></td>
+                <td>date</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="put">
+        <h3 class="method-name">put <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String put(String key, LocalDateTime value)</code>
+        </div>
+        <div class="method-description">
+          Stores date-time.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use <code>#putForce(String, LocalDateTime)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>LocalDateTime</code></td>
+                <td>date-time</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="put">
+        <h3 class="method-name">put <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String put(String key, java.util.Date value)</code>
+        </div>
+        <div class="method-description">
+          Stores UTIL date.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use <code>#putForce(String, java.util.Date)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>java.util.Date</code></td>
+                <td>date (including <code>java.sql.Date</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="put">
+        <h3 class="method-name">put <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String put(String key, java.sql.Timestamp value)</code>
+        </div>
+        <div class="method-description">
+          Stores SQL timestamp.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use <code>#putForce(String, java.sql.Timestamp)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>java.sql.Timestamp</code></td>
+                <td>timestamp</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="put">
+        <h3 class="method-name">put <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String put(String key, boolean value)</code>
+        </div>
+        <div class="method-description">
+          Stores boolean value.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use <code>#putForce(String, boolean)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>boolean</code></td>
+                <td>boolean value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putForce">
+        <h3 class="method-name">putForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putForce(String key, String value)</code>
+        </div>
+        <div class="method-description">
+          Stores string (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>String</code></td>
+                <td>value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putForce">
+        <h3 class="method-name">putForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putForce(String key, BigDecimal value)</code>
+        </div>
+        <div class="method-description">
+          Stores numeric value (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>BigDecimal</code></td>
+                <td>numeric value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putForce">
+        <h3 class="method-name">putForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putForce(String key, int value)</code>
+        </div>
+        <div class="method-description">
+          Stores int value (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>int</code></td>
+                <td>int value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putForce">
+        <h3 class="method-name">putForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putForce(String key, long value)</code>
+        </div>
+        <div class="method-description">
+          Stores long value (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>long</code></td>
+                <td>long value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putForce">
+        <h3 class="method-name">putForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putForce(String key, LocalDate value)</code>
+        </div>
+        <div class="method-description">
+          Stores date (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>LocalDate</code></td>
+                <td>date</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putForce">
+        <h3 class="method-name">putForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putForce(String key, LocalDateTime value)</code>
+        </div>
+        <div class="method-description">
+          Stores date-time (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>LocalDateTime</code></td>
+                <td>date-time</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putForce">
+        <h3 class="method-name">putForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putForce(String key, java.util.Date value)</code>
+        </div>
+        <div class="method-description">
+          Stores UTIL date (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>java.util.Date</code></td>
+                <td>date (including <code>java.sql.Date</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putForce">
+        <h3 class="method-name">putForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putForce(String key, java.sql.Timestamp value)</code>
+        </div>
+        <div class="method-description">
+          Stores SQL timestamp (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>java.sql.Timestamp</code></td>
+                <td>timestamp</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putForce">
+        <h3 class="method-name">putForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String putForce(String key, boolean value)</code>
+        </div>
+        <div class="method-description">
+          Stores boolean value (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>boolean</code></td>
+                <td>boolean value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the previously stored string</p>
+        </div>
+      </div>
+      <div class="method" id="putAll">
+        <h3 class="method-name">putAll <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public void putAll(Map&lt;? extends String, ? extends String&gt; map)</code>
+        </div>
+        <div class="method-description">
+          Stores all values.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>If potentially existing keys are included, use <code>#putAllForce(Map)</code>.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>map</code></td>
+                <td><code>Map&lt;? extends String, ? extends String&gt;</code></td>
+                <td>map</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="putAllForce">
+        <h3 class="method-name">putAllForce <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public void putAllForce(Map&lt;? extends String, ? extends String&gt; map)</code>
+        </div>
+        <div class="method-description">
+          Stores all values (overwrite allowed).
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>map</code></td>
+                <td><code>Map&lt;? extends String, ? extends String&gt;</code></td>
+                <td>map</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="size">
+        <h3 class="method-name">size <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public int size()</code>
+        </div>
+        <div class="method-description">
+          Gets map size.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the map size</p>
+        </div>
+      </div>
+      <div class="method" id="isEmpty">
+        <h3 class="method-name">isEmpty <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public boolean isEmpty()</code>
+        </div>
+        <div class="method-description">
+          Checks if map is empty.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if empty</p>
+        </div>
+      </div>
+      <div class="method" id="containsKey">
+        <h3 class="method-name">containsKey <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public boolean containsKey(Object key)</code>
+        </div>
+        <div class="method-description">
+          Checks if key exists in map.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>Object</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if exists</p>
+        </div>
+      </div>
+      <div class="method" id="containsValue">
+        <h3 class="method-name">containsValue <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public boolean containsValue(Object value)</code>
+        </div>
+        <div class="method-description">
+          Checks if value exists in map.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>Object</code></td>
+                <td>value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if exists</p>
+        </div>
+      </div>
+      <div class="method" id="remove">
+        <h3 class="method-name">remove <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public String remove(Object key)</code>
+        </div>
+        <div class="method-description">
+          Removes value from map.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>Object</code></td>
+                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the removed value</p>
+        </div>
+      </div>
+      <div class="method" id="clear">
+        <h3 class="method-name">clear <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public void clear()</code>
+        </div>
+        <div class="method-description">
+          Clears map.
+  
+        </div>
+      </div>
+      <div class="method" id="keySet">
+        <h3 class="method-name">keySet <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public Set&lt;String&gt; keySet()</code>
+        </div>
+        <div class="method-description">
+          Gets key set.<br>
+<ul>
+<li>Read-only because removal would break internal consistency.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Set&lt;String&gt;</code> - the key set</p>
+        </div>
+      </div>
+      <div class="method" id="values">
+        <h3 class="method-name">values <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public Collection&lt;String&gt; values()</code>
+        </div>
+        <div class="method-description">
+          Gets value collection.<br>
+<ul>
+<li>Read-only because removal would break internal consistency.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Collection&lt;String&gt;</code> - the value collection</p>
+        </div>
+      </div>
+      <div class="method" id="entrySet">
+        <h3 class="method-name">entrySet <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public Set&lt;Entry&lt;String, String&gt;&gt; entrySet()</code>
+        </div>
+        <div class="method-description">
+          Gets entry set.<br>
+<ul>
+<li>Read-only because removal would break internal consistency.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Set&lt;Entry&lt;String, String&gt;&gt;</code> - the entry set</p>
+        </div>
+      </div>
+      <div class="method" id="getList">
+        <h3 class="method-name">getList</h3>
+        <div class="method-signature">
+          <code>public List&lt;String&gt; getList(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves string list.<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>If retrieving a value with a key that may not exist, confirm existence beforehand with
+<code>#containsKeyList(String)</code>.</li>
+<li>If the stored value is <code>null</code>, returns a zero-size list. (<code>null</code> is
+not returned)</li>
+<li>Adding elements to the retrieved list does not affect the list held by this class. (deep
+copied)</li>
+<li>Performance degrades when handling large lists or repeatedly storing and retrieving
+lists.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>List&lt;String&gt;</code> - the string list</p>
+        </div>
+      </div>
+      <div class="method" id="putList">
+        <h3 class="method-name">putList</h3>
+        <div class="method-signature">
+          <code>public List&lt;String&gt; putList(String key, List&lt;String&gt; list)</code>
+        </div>
+        <div class="method-description">
+          Stores string list.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>If storing a value with a key that may already exist, store with
+<code>#putListForce(String, List)</code>.</li>
+<li>Adding elements to the original stored list does not affect the list held by this class.
+(deep copied)</li>
+<li>Performance degrades when handling large lists or repeatedly storing and retrieving
+lists.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+              <tr>
+                <td><code>list</code></td>
+                <td><code>List&lt;String&gt;</code></td>
+                <td>the string list</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>List&lt;String&gt;</code> - the previously stored string list</p>
+        </div>
+      </div>
+      <div class="method" id="putListForce">
+        <h3 class="method-name">putListForce</h3>
+        <div class="method-signature">
+          <code>public List&lt;String&gt; putListForce(String key, List&lt;String&gt; list)</code>
+        </div>
+        <div class="method-description">
+          Stores string list (overwrite allowed).<br>
+<ul>
+<li>Adding elements to the original stored list does not affect the list held by this class.
+(deep copied)</li>
+<li>Performance degrades when handling large lists or repeatedly storing and retrieving
+lists.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+              <tr>
+                <td><code>list</code></td>
+                <td><code>List&lt;String&gt;</code></td>
+                <td>the string list</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>List&lt;String&gt;</code> - the previously stored string list</p>
+        </div>
+      </div>
+      <div class="method" id="getNest">
+        <h3 class="method-name">getNest</h3>
+        <div class="method-signature">
+          <code>public Io getNest(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves nested map.<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>If retrieving a value with a key that may not exist, confirm existence beforehand with
+<code>#containsKeyNest(String)</code>.</li>
+<li>If the stored value is <code>null</code>, returns a zero-size map. (<code>null</code> is
+not returned)</li>
+<li>Adding elements to the retrieved map does not affect the map held by this class. (deep
+copied)</li>
+<li>Performance degrades when handling large maps or repeatedly storing and retrieving
+maps.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Io</code> - the nested map</p>
+        </div>
+      </div>
+      <div class="method" id="putNest">
+        <h3 class="method-name">putNest</h3>
+        <div class="method-signature">
+          <code>public Io putNest(String key, Io nest)</code>
+        </div>
+        <div class="method-description">
+          Stores nested map.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>If storing a value with a key that may already exist, store with
+<code>#putNestForce(String, Nest)</code>.</li>
+<li>Adding elements to the original stored map does not affect the map held by this class.
+(deep copied)</li>
+<li>Performance degrades when handling large maps or repeatedly storing and retrieving
+maps.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+              <tr>
+                <td><code>nest</code></td>
+                <td><code>Io</code></td>
+                <td>the nested map</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Io</code> - the previously stored nested map</p>
+        </div>
+      </div>
+      <div class="method" id="putNestForce">
+        <h3 class="method-name">putNestForce</h3>
+        <div class="method-signature">
+          <code>public Io putNestForce(String key, Io nest)</code>
+        </div>
+        <div class="method-description">
+          Stores nested map (overwrite allowed).<br>
+<ul>
+<li>Adding elements to the original stored map does not affect the map held by this class.
+(deep copied)</li>
+<li>Performance degrades when handling large maps or repeatedly storing and retrieving
+maps.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+              <tr>
+                <td><code>nest</code></td>
+                <td><code>Io</code></td>
+                <td>the nested map</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Io</code> - the previously stored nested map</p>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="#putNest">#putNest(String, Nest)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="getRows">
+        <h3 class="method-name">getRows</h3>
+        <div class="method-signature">
+          <code>public IoRows getRows(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves multiple rows list.<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>If retrieving a value with a key that may not exist, confirm existence beforehand with
+<code>#containsKeyRows(String)</code>.</li>
+<li>If the stored value is <code>null</code>, returns a zero-size list. (<code>null</code> is
+not returned)</li>
+<li>Adding elements to the retrieved list does not affect the list held by this class. (deep
+copied)</li>
+<li>Performance degrades when handling large lists or repeatedly storing and retrieving
+lists.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>IoRows</code> - the multiple rows list</p>
+        </div>
+      </div>
+      <div class="method" id="putRows">
+        <h3 class="method-name">putRows</h3>
+        <div class="method-signature">
+          <code>public IoRows putRows(String key, Collection&lt;? extends Map&lt;? extends String, ? extends String&gt;&gt; rows)</code>
+        </div>
+        <div class="method-description">
+          Stores multiple rows list.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>If storing a value with a key that may already exist, store with
+<code>#putRowsForce(String, List)</code>.</li>
+<li>Adding elements to the original stored list does not affect the list held by this class.
+(deep copied)</li>
+<li>Performance degrades when handling large lists or repeatedly storing and retrieving
+lists.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+              <tr>
+                <td><code>rows</code></td>
+                <td><code>Collection&lt;? extends Map&lt;? extends String, ? extends String&gt;&gt;</code></td>
+                <td>the multiple rows list</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>IoRows</code> - the previously stored multiple rows list</p>
+        </div>
+      </div>
+      <div class="method" id="putRowsForce">
+        <h3 class="method-name">putRowsForce</h3>
+        <div class="method-signature">
+          <code>public IoRows putRowsForce(String key, Collection&lt;? extends IoItems&gt; rows)</code>
+        </div>
+        <div class="method-description">
+          Stores multiple rows list (overwrite allowed).<br>
+<ul>
+<li>Adding elements to the original stored list does not affect the list held by this class.
+(deep copied)</li>
+<li>Performance degrades when handling large lists or repeatedly storing and retrieving
+lists.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+              <tr>
+                <td><code>rows</code></td>
+                <td><code>Collection&lt;? extends IoItems&gt;</code></td>
+                <td>the multiple rows list</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>IoRows</code> - the previously stored multiple rows list</p>
+        </div>
+      </div>
+      <div class="method" id="getArys">
+        <h3 class="method-name">getArys</h3>
+        <div class="method-signature">
+          <code>public IoArrays getArys(String key)</code>
+        </div>
+        <div class="method-description">
+          Retrieves array list.<br>
+<ul>
+<li>Retrieving a value with a non-existent key causes a runtime error.</li>
+<li>If retrieving a value with a key that may not exist, confirm existence beforehand with
+<code>#containsKeyArys(String)</code>.</li>
+<li>If the stored value is <code>null</code>, returns a zero-size list. (<code>null</code> is
+not returned)</li>
+<li>Adding elements to the retrieved list does not affect the list held by this class. (deep
+copied)</li>
+<li>Performance degrades when handling large lists or repeatedly storing and retrieving
+lists.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>IoArrays</code> - the array list</p>
+        </div>
+      </div>
+      <div class="method" id="putArys">
+        <h3 class="method-name">putArys</h3>
+        <div class="method-signature">
+          <code>public IoArrays putArys(String key, Collection&lt;? extends List&lt;String&gt;&gt; arys)</code>
+        </div>
+        <div class="method-description">
+          Stores array list.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>If storing a value with a key that may already exist, store with
+<code>#putArysForce(String, List)</code>.</li>
+<li>Adding elements to the original stored list does not affect the list held by this class.
+(deep copied)</li>
+<li>Performance degrades when handling large lists or repeatedly storing and retrieving
+lists.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+              <tr>
+                <td><code>arys</code></td>
+                <td><code>Collection&lt;? extends List&lt;String&gt;&gt;</code></td>
+                <td>the array list</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>IoArrays</code> - the previously stored array list</p>
+        </div>
+      </div>
+      <div class="method" id="putArysForce">
+        <h3 class="method-name">putArysForce</h3>
+        <div class="method-signature">
+          <code>public IoArrays putArysForce(String key, Collection&lt;? extends List&lt;String&gt;&gt; arys)</code>
+        </div>
+        <div class="method-description">
+          Stores array list (overwrite allowed).<br>
+<ul>
+<li>Adding elements to the original stored list does not affect the list held by this class.
+(deep copied)</li>
+<li>Performance degrades when handling large lists or repeatedly storing and retrieving
+lists.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+              <tr>
+                <td><code>arys</code></td>
+                <td><code>Collection&lt;? extends List&lt;String&gt;&gt;</code></td>
+                <td>the array list</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>IoArrays</code> - the previously stored array list</p>
+        </div>
+      </div>
+      <div class="method" id="createUrlParam">
+        <h3 class="method-name">createUrlParam</h3>
+        <div class="method-signature">
+          <code>public String createUrlParam()</code>
+        </div>
+        <div class="method-description">
+          Creates URL parameters (the part after ? in URL).<br>
+<ul>
+<li>String lists become comma-separated parameters.</li>
+<li>Nested maps, multiple rows lists, and array lists are not output.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the URL-encoded GET parameters</p>
+        </div>
+      </div>
+      <div class="method" id="createJson">
+        <h3 class="method-name">createJson</h3>
+        <div class="method-signature">
+          <code>public String createJson()</code>
+        </div>
+        <div class="method-description">
+          Creates JSON.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the JSON string</p>
+        </div>
+      </div>
+      <div class="method" id="createJsonWithMsg">
+        <h3 class="method-name">createJsonWithMsg</h3>
+        <div class="method-signature">
+          <code>public String createJsonWithMsg(Map&lt;String, String&gt; msgTextMap)</code>
+        </div>
+        <div class="method-description">
+          Creates JSON with messages.
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>msgTextMap</code></td>
+                <td><code>Map&lt;String, String&gt;</code></td>
+                <td>the message text map &lt;message ID, message text&gt;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the JSON string</p>
+        </div>
+      </div>
+      <div class="method" id="putAll">
+        <h3 class="method-name">putAll</h3>
+        <div class="method-signature">
+          <code>public void putAll(Io map)</code>
+        </div>
+        <div class="method-description">
+          Stores all values.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>If keys that may already exist are included, store with <code>#putAllForce(Map)</code>.</li>
+<li>Messages are also copied.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>map</code></td>
+                <td><code>Io</code></td>
+                <td>the I/O map</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="putAllForce">
+        <h3 class="method-name">putAllForce</h3>
+        <div class="method-signature">
+          <code>public void putAllForce(Io map)</code>
+        </div>
+        <div class="method-description">
+          Stores all values (overwrite allowed).
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>map</code></td>
+                <td><code>Io</code></td>
+                <td>the I/O map</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="#putAll">#putAll(Io)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="putAllByUrlParam">
+        <h3 class="method-name">putAllByUrlParam</h3>
+        <div class="method-signature">
+          <code>public int putAllByUrlParam(String url)</code>
+        </div>
+        <div class="method-description">
+          Stores URL parameters (the part after ? in URL).<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>url</code></td>
+                <td><code>String</code></td>
+                <td>the full URL or URL parameters</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the number of stored parameters</p>
+        </div>
+      </div>
+      <div class="method" id="putAllByJson">
+        <h3 class="method-name">putAllByJson</h3>
+        <div class="method-signature">
+          <code>public int putAllByJson(String json)</code>
+        </div>
+        <div class="method-description">
+          Stores JSON.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>json</code></td>
+                <td><code>String</code></td>
+                <td>the JSON string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the number of stored items</p>
+        </div>
+      </div>
+      <div class="method" id="containsKeyList">
+        <h3 class="method-name">containsKeyList</h3>
+        <div class="method-signature">
+          <code>public boolean containsKeyList(String key)</code>
+        </div>
+        <div class="method-description">
+          Checks if string list key exists.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if exists</p>
+        </div>
+      </div>
+      <div class="method" id="removeList">
+        <h3 class="method-name">removeList</h3>
+        <div class="method-signature">
+          <code>public List&lt;String&gt; removeList(String key)</code>
+        </div>
+        <div class="method-description">
+          Removes string list.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>List&lt;String&gt;</code> - the removed list</p>
+        </div>
+      </div>
+      <div class="method" id="containsKeyNest">
+        <h3 class="method-name">containsKeyNest</h3>
+        <div class="method-signature">
+          <code>public boolean containsKeyNest(String key)</code>
+        </div>
+        <div class="method-description">
+          Checks if nested map key exists.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if exists</p>
+        </div>
+      </div>
+      <div class="method" id="removeNest">
+        <h3 class="method-name">removeNest</h3>
+        <div class="method-signature">
+          <code>public Io removeNest(String key)</code>
+        </div>
+        <div class="method-description">
+          Removes nested map.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Io</code> - the removed nested map</p>
+        </div>
+      </div>
+      <div class="method" id="containsKeyRows">
+        <h3 class="method-name">containsKeyRows</h3>
+        <div class="method-signature">
+          <code>public boolean containsKeyRows(String key)</code>
+        </div>
+        <div class="method-description">
+          Checks if multiple rows list key exists.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if exists</p>
+        </div>
+      </div>
+      <div class="method" id="removeRows">
+        <h3 class="method-name">removeRows</h3>
+        <div class="method-signature">
+          <code>public IoRows removeRows(String key)</code>
+        </div>
+        <div class="method-description">
+          Removes multiple rows list.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>IoRows</code> - the removed multiple rows list</p>
+        </div>
+      </div>
+      <div class="method" id="containsKeyArys">
+        <h3 class="method-name">containsKeyArys</h3>
+        <div class="method-signature">
+          <code>public boolean containsKeyArys(String key)</code>
+        </div>
+        <div class="method-description">
+          Checks if array list key exists.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if exists</p>
+        </div>
+      </div>
+      <div class="method" id="removeArys">
+        <h3 class="method-name">removeArys</h3>
+        <div class="method-signature">
+          <code>public IoArrays removeArys(String key)</code>
+        </div>
+        <div class="method-description">
+          Removes array list.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>String</code></td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>IoArrays</code> - the removed array list</p>
+        </div>
+      </div>
+      <div class="method" id="putMsg">
+        <h3 class="method-name">putMsg</h3>
+        <div class="method-signature">
+          <code>public void putMsg(MsgType type, String msgId)</code>
+        </div>
+        <div class="method-description">
+          Adds message.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>type</code></td>
+                <td><code>MsgType</code></td>
+                <td>the message type</td>
+              </tr>
+              <tr>
+                <td><code>msgId</code></td>
+                <td><code>String</code></td>
+                <td>the message ID</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="putMsg">
+        <h3 class="method-name">putMsg</h3>
+        <div class="method-signature">
+          <code>public void putMsg(MsgType type, String msgId, String[] replaceVals)</code>
+        </div>
+        <div class="method-description">
+          Adds message.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>type</code></td>
+                <td><code>MsgType</code></td>
+                <td>the message type</td>
+              </tr>
+              <tr>
+                <td><code>msgId</code></td>
+                <td><code>String</code></td>
+                <td>the message ID</td>
+              </tr>
+              <tr>
+                <td><code>replaceVals</code></td>
+                <td><code>String[]</code></td>
+                <td>the replacement strings in message (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="putMsg">
+        <h3 class="method-name">putMsg</h3>
+        <div class="method-signature">
+          <code>public void putMsg(MsgType type, String msgId, String itemId)</code>
+        </div>
+        <div class="method-description">
+          Adds message.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>type</code></td>
+                <td><code>MsgType</code></td>
+                <td>the message type</td>
+              </tr>
+              <tr>
+                <td><code>msgId</code></td>
+                <td><code>String</code></td>
+                <td>the message ID</td>
+              </tr>
+              <tr>
+                <td><code>itemId</code></td>
+                <td><code>String</code></td>
+                <td>the target item ID (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="putMsg">
+        <h3 class="method-name">putMsg</h3>
+        <div class="method-signature">
+          <code>public void putMsg(MsgType type, String msgId, String[] replaceVals, String itemId)</code>
+        </div>
+        <div class="method-description">
+          Adds message.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>type</code></td>
+                <td><code>MsgType</code></td>
+                <td>the message type</td>
+              </tr>
+              <tr>
+                <td><code>msgId</code></td>
+                <td><code>String</code></td>
+                <td>the message ID</td>
+              </tr>
+              <tr>
+                <td><code>replaceVals</code></td>
+                <td><code>String[]</code></td>
+                <td>the replacement strings in message (optional)</td>
+              </tr>
+              <tr>
+                <td><code>itemId</code></td>
+                <td><code>String</code></td>
+                <td>the target item ID (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="putMsg">
+        <h3 class="method-name">putMsg</h3>
+        <div class="method-signature">
+          <code>public void putMsg(MsgType type, String msgId, String itemId, String rowListId, int rowIndex)</code>
+        </div>
+        <div class="method-description">
+          Adds message.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>type</code></td>
+                <td><code>MsgType</code></td>
+                <td>the message type</td>
+              </tr>
+              <tr>
+                <td><code>msgId</code></td>
+                <td><code>String</code></td>
+                <td>the message ID</td>
+              </tr>
+              <tr>
+                <td><code>itemId</code></td>
+                <td><code>String</code></td>
+                <td>the target item ID (optional)</td>
+              </tr>
+              <tr>
+                <td><code>rowListId</code></td>
+                <td><code>String</code></td>
+                <td>the row list ID (optional)</td>
+              </tr>
+              <tr>
+                <td><code>rowIndex</code></td>
+                <td><code>int</code></td>
+                <td>the row index (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="putMsg">
+        <h3 class="method-name">putMsg</h3>
+        <div class="method-signature">
+          <code>public void putMsg(MsgType type, String msgId, String[] replaceVals, String itemId, String rowListId, int rowIndex)</code>
+        </div>
+        <div class="method-description">
+          Adds message.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>type</code></td>
+                <td><code>MsgType</code></td>
+                <td>the message type</td>
+              </tr>
+              <tr>
+                <td><code>msgId</code></td>
+                <td><code>String</code></td>
+                <td>the message ID</td>
+              </tr>
+              <tr>
+                <td><code>replaceVals</code></td>
+                <td><code>String[]</code></td>
+                <td>the replacement strings in message (optional)</td>
+              </tr>
+              <tr>
+                <td><code>itemId</code></td>
+                <td><code>String</code></td>
+                <td>the target item ID (optional)</td>
+              </tr>
+              <tr>
+                <td><code>rowListId</code></td>
+                <td><code>String</code></td>
+                <td>the row list ID (optional)</td>
+              </tr>
+              <tr>
+                <td><code>rowIndex</code></td>
+                <td><code>int</code></td>
+                <td>the row index (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="hasMsg">
+        <h3 class="method-name">hasMsg</h3>
+        <div class="method-signature">
+          <code>public boolean hasMsg()</code>
+        </div>
+        <div class="method-description">
+          Checks if message is held.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if message is held</p>
+        </div>
+      </div>
+      <div class="method" id="hasErrorMsg">
+        <h3 class="method-name">hasErrorMsg</h3>
+        <div class="method-signature">
+          <code>public boolean hasErrorMsg()</code>
+        </div>
+        <div class="method-description">
+          Checks if error message exists.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if error message exists</p>
+        </div>
+      </div>
+      <div class="method" id="clearMsg">
+        <h3 class="method-name">clearMsg</h3>
+        <div class="method-signature">
+          <code>public void clearMsg()</code>
+        </div>
+        <div class="method-description">
+          Clears messages.
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

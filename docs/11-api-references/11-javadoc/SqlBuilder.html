@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SqlBuilder - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>SqlBuilder</h1>
+      <p>Framework Components [com.onepg.db]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.db</p>
+        <p><strong>Class Name:</strong> SqlBuilder</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>SQL builder.<br>
+<ul>
+<li>A class that encapsulates SQL and parameter list required for database access.</li>
+<li>Has methods that can assemble SQL and set parameters simultaneously.</li>
+<li>Methods starting with add* return the instance itself, enabling method chaining.</li>
+<li>Replaces 2 or more consecutive blanks with a single blank when adding SQL.</li>
+</ul>
+<pre>
+[Example 1] <code>sqlBuilder.addQuery("AND a.user_id IS NOT NULL ");</code>
+[Example 2] <code>sqlBuilder.addQuery("AND a.user_id = ? ", userId);</code>
+[Example 3] <code>sqlBuilder.addQuery("AND ? <= a.birth_dt AND a.birth_dt <= ?", birthDtFrom, birthDtTo);</code>
+[Example 4] <code>sqlBuilder.addQnotB("AND a.user_id = ? ", userId);</code>
+[Example 5] <code>sqlBuilder.addQnotB("AND a.user_id = ? ", userId).addQnotB("AND a.user_nm LIKE ? ", '%' + name + '%');</code>
+</pre>
+</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Constants and Variables</h2>
+      <div class="field-list">
+        <div class="field-item" id="PROTOCOL_ERR_AVOID_SQL">
+          <h3 class="field-name">PROTOCOL_ERR_AVOID_SQL</h3>
+          <div class="field-signature">
+            <code>public String PROTOCOL_ERR_AVOID_SQL</code>
+          </div>
+          <div class="field-description">
+            SQL to avoid protocol violation.<br>
+<a href="https://support.oracle.com/knowledge/Middleware/2707017_1.html">support.oracle.com (reference)</a>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="length">
+        <h3 class="method-name">length</h3>
+        <div class="method-signature">
+          <code>public int length()</code>
+        </div>
+        <div class="method-description">
+          Gets the SQL string length.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the SQL string length</p>
+        </div>
+      </div>
+      <div class="method" id="addSqlBuilder">
+        <h3 class="method-name">addSqlBuilder</h3>
+        <div class="method-signature">
+          <code>public void addSqlBuilder(SqlBuilder sb)</code>
+        </div>
+        <div class="method-description">
+          Appends an SQL builder.<br>
+<ul>
+<li>Inherits SQL and parameters.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sb</code></td>
+                <td><code>SqlBuilder</code></td>
+                <td>SQL builder</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="addQuery">
+        <h3 class="method-name">addQuery</h3>
+        <div class="method-signature">
+          <code>public SqlBuilder addQuery(String sql, Object... params)</code>
+        </div>
+        <div class="method-description">
+          Appends SQL and parameters.<br>
+<ul>
+<li>Parameter arguments are optional and can be passed as single or multiple values.</li>
+</ul>
+<pre>
+[Example 1] <code>sqlBuilder.addQuery("AND a.user_id IS NOT NULL ");</code>
+[Example 2] <code>sqlBuilder.addQuery("AND a.user_id = ? ", userId);</code>
+[Example 3] <code>sqlBuilder.addQuery("AND ? <= a.birth_dt AND a.birth_dt <= ?", birthDtFrom, birthDtTo);</code>
+</pre>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sql</code></td>
+                <td><code>String</code></td>
+                <td>SQL</td>
+              </tr>
+              <tr>
+                <td><code>params</code></td>
+                <td><code>Object...</code></td>
+                <td>Parameters (multiple allowed) (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlBuilder</code> - this instance</p>
+        </div>
+      </div>
+      <div class="method" id="addParam">
+        <h3 class="method-name">addParam</h3>
+        <div class="method-signature">
+          <code>public SqlBuilder addParam(Object... params)</code>
+        </div>
+        <div class="method-description">
+          Appends parameters.<br>
+<ul>
+<li>Multiple values can be passed.</li>
+</ul>
+<pre>
+[Example 1] <code>sqlBuilder.addParam(userId);</code>
+[Example 2] <code>sqlBuilder.addParam(birthDtFrom, birthDtTo);</code>
+</pre>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>params</code></td>
+                <td><code>Object...</code></td>
+                <td>Parameters (multiple allowed)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlBuilder</code> - this instance</p>
+        </div>
+      </div>
+      <div class="method" id="addListInBind">
+        <h3 class="method-name">addListInBind</h3>
+        <div class="method-signature">
+          <code>public SqlBuilder addListInBind(List&lt;Object&gt; params)</code>
+        </div>
+        <div class="method-description">
+          Appends comma-separated bind character SQL.<br>
+<ul>
+<li>Appends bind character "?" to SQL separated by commas for each element in the list.</li>
+<li>If the list has 3 elements, "?,?,?" is appended to SQL.</li>
+<li>Values in the list are added as bind character parameters.</li>
+<li>Intended for use with IN clauses where the number of bind characters varies.</li>
+</ul>
+<pre>
+[Example] <code>sqlBuilder.addQuery("AND type_cs IN (").addListInBind(list).addQuery(")");</code>
+</pre>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>params</code></td>
+                <td><code>List&lt;Object&gt;</code></td>
+                <td>Parameter list</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlBuilder</code> - this instance</p>
+        </div>
+      </div>
+      <div class="method" id="addQueryWithParamNotBlank">
+        <h3 class="method-name">addQueryWithParamNotBlank</h3>
+        <div class="method-signature">
+          <code>public SqlBuilder addQueryWithParamNotBlank(String sql, Object param)</code>
+        </div>
+        <div class="method-description">
+          Appends SQL and parameter only if the parameter is not <code>null</code> and not blank.<br>
+<ul>
+<li>Appends SQL and parameter only if the parameter is not <code>null</code> and not blank.</li>
+<li>Other specifications are the same as <code>#addQuery(String, Object...)</code>.</li>
+<li>Basically, use the shortcut method <code>#addQnotB(String, Object)</code>.</li>
+</ul>
+<pre>In the example below, SQL is appended only if <code>userId</code> is not <code>null</code> or blank.
+[Example] <code>sqlBuilder.addQueryWithParamNotBlank("AND user_id = ? ", userId);</code>
+</pre>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sql</code></td>
+                <td><code>String</code></td>
+                <td>SQL</td>
+              </tr>
+              <tr>
+                <td><code>param</code></td>
+                <td><code>Object</code></td>
+                <td>Parameter (single only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlBuilder</code> - this instance</p>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="#addQuery">#addQuery(String, Object...)</a></li>
+            <li><a href="#addQnotB">#addQnotB(String, Object)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="addQnotB">
+        <h3 class="method-name">addQnotB</h3>
+        <div class="method-signature">
+          <code>public SqlBuilder addQnotB(String sql, Object param)</code>
+        </div>
+        <div class="method-description">
+          Appends SQL and parameter only if the parameter is not <code>null</code> and not blank.<br>
+<ul>
+<li>Shortcut for <code>#addQueryWithParamNotBlank(String, Object)</code>.</li>
+<li>Appends SQL and parameter only if the parameter is not <code>null</code> and not blank.</li>
+<li>Other specifications are the same as <code>#addQuery(String, Object...)</code>.</li>
+</ul>
+<pre>In the example below, SQL is appended only if <code>userId</code> is not <code>null</code> or blank.
+[Example] <code>sqlBuilder.addQnotB("AND user_id = ? ", userId);</code>
+</pre>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sql</code></td>
+                <td><code>String</code></td>
+                <td>SQL</td>
+              </tr>
+              <tr>
+                <td><code>param</code></td>
+                <td><code>Object</code></td>
+                <td>Parameter (single only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlBuilder</code> - this instance</p>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="#addQueryWithParamNotBlank">#addQueryWithParamNotBlank(String, Object)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="deleteLastChar">
+        <h3 class="method-name">deleteLastChar</h3>
+        <div class="method-signature">
+          <code>public void deleteLastChar(int deleteCharCount)</code>
+        </div>
+        <div class="method-description">
+          Deletes the last SQL characters.
+<ul>
+<li>Deletes the specified number of characters from the end of SQL.</li>
+</ul>
+<pre>[Example]
+<code>for (final String key : params.keySet()) {
+  sb.addQuery(key).addQuery("=?", params.get(key)).addQuery(",");
+</code>
+// Delete the last comma
+sb.deleteLastChar(1);
+}</pre>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>deleteCharCount</code></td>
+                <td><code>int</code></td>
+                <td>Number of characters to delete</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="clearParameters">
+        <h3 class="method-name">clearParameters</h3>
+        <div class="method-signature">
+          <code>public void clearParameters()</code>
+        </div>
+        <div class="method-description">
+          Clears parameters.
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

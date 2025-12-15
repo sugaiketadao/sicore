@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TxtReader - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>TxtReader</h1>
+      <p>Framework Components [com.onepg.util]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.util</p>
+        <p><strong>Class Name:</strong> TxtReader</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>Text reader class.<br>
+<ul>
+<li>A wrapper class for file reader <code>BufferedReader</code>.</li>
+<li>Declares in a try clause (try-with-resources statement).</li>
+</ul>
+<pre>[Example]
+<code>try (final TxtReader tr = new TxtReader(filePath, ValUtil.UTF8);) {
+  // Skips header row
+  tr.skip();
+  for (final String line : tr) {
+    : omitted
+  }
+}</code>
+</pre>
+</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="iterator">
+        <h3 class="method-name">iterator</h3>
+        <div class="method-signature">
+          <code>public Iterator&lt;String&gt; iterator()</code>
+        </div>
+        <div class="method-description">
+          Creates an iterator.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Iterator&lt;String&gt;</code> - the read line iterator</p>
+        </div>
+      </div>
+      <div class="method" id="close">
+        <h3 class="method-name">close</h3>
+        <div class="method-signature">
+          <code>public void close()</code>
+        </div>
+        <div class="method-description">
+          Closes the file.
+  
+        </div>
+      </div>
+      <div class="method" id="getReadedCount">
+        <h3 class="method-name">getReadedCount</h3>
+        <div class="method-signature">
+          <code>public int getReadedCount()</code>
+        </div>
+        <div class="method-description">
+          Gets the number of rows already read.<br>
+<ul>
+<li>Returns the count read by the iterator.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the number of rows already read</p>
+        </div>
+      </div>
+      <div class="method" id="isReadedEndRow">
+        <h3 class="method-name">isReadedEndRow</h3>
+        <div class="method-signature">
+          <code>public boolean isReadedEndRow()</code>
+        </div>
+        <div class="method-description">
+          Determines whether the last row has been read.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if the last row has been read</p>
+        </div>
+      </div>
+      <div class="method" id="skip">
+        <h3 class="method-name">skip</h3>
+        <div class="method-signature">
+          <code>public boolean skip()</code>
+        </div>
+        <div class="method-description">
+          Skips one row.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>false</code> if there were insufficient rows</p>
+        </div>
+        <div class="see-also">
+          <h4>See Also</h4>
+          <ul>
+            <li><a href="#skip">#skip(int)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="method" id="skip">
+        <h3 class="method-name">skip</h3>
+        <div class="method-signature">
+          <code>public boolean skip(int count)</code>
+        </div>
+        <div class="method-description">
+          Skips rows.<br>
+<ul>
+<li>Skips header rows, etc.</li>
+<li>Even if the skip count exceeds the file rows, no error occurs and returns <code>false</code>.</li>
+<li>The read row count is not incremented.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>count</code></td>
+                <td><code>int</code></td>
+                <td>the number of rows to skip</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>false</code> if there were insufficient rows</p>
+        </div>
+      </div>
+      <div class="method" id="hasNext">
+        <h3 class="method-name">hasNext</h3>
+        <div class="method-signature">
+          <code>public boolean hasNext()</code>
+        </div>
+        <div class="method-description">
+          Checks for next row.<br>
+<ul>
+<li>Closes the file reader if next row does not exist, in case try clause was not used.</li>
+<li>Does not re-check on consecutive hasNext() calls.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if next row exists</p>
+        </div>
+      </div>
+      <div class="method" id="next">
+        <h3 class="method-name">next</h3>
+        <div class="method-signature">
+          <code>public String next()</code>
+        </div>
+        <div class="method-description">
+          Gets the next row.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the row</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

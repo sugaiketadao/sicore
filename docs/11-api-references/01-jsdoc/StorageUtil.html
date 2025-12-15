@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StorageUtil - JSDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>StorageUtil</h1>
+      <p>Framework Component [onepg-utils.js]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Class Name:</strong> StorageUtil</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>Session storage utility class.<br>
+<ul>
+  <li>Store and retrieve associative arrays in browser session storage by the following scope + key:</li>
+  <ul>
+    <li>Page scope (per URL HTML file, data persists within one page)</li>
+    <li>Module scope (per URL module directory, data shared across pages)</li>
+    <li>System scope (data shared across entire system)</li>
+  </ul>
+  <li>Assumes non-critical processing, so generally does not throw exception errors.</li>
+</ul></div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method">
+        <h3 id="getPageObj" class="method-name">getPageObj</h3>
+        <div class="method-signature">
+          <code>getPageObj(key, notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Get page scope (per URL HTML file) data. <br>
+<ul>
+  <li>Retrieve associative array from browser session storage by page scope + key.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>string</code></td>
+                <td>Retrieval key</td>
+              </tr>
+              <tr>
+                <td><code>[notExistsValue]</code></td>
+                <td><code>Object</code></td>
+                <td>Value to return when not exists (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Object|null</code> - Retrieved data</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getModuleObj" class="method-name">getModuleObj</h3>
+        <div class="method-signature">
+          <code>getModuleObj(key, notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Get module scope (per URL module directory) data. <br>
+<ul>
+  <li>Retrieve associative array from browser session storage by module scope + key.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>string</code></td>
+                <td>Retrieval key</td>
+              </tr>
+              <tr>
+                <td><code>[notExistsValue]</code></td>
+                <td><code>Object</code></td>
+                <td>Value to return when not exists (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Object|null</code> - Retrieved data</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getSystemObj" class="method-name">getSystemObj</h3>
+        <div class="method-signature">
+          <code>getSystemObj(key, notExistsValue)</code>
+        </div>
+        <div class="method-description">
+          Get system scope data.<br>
+<ul>
+  <li>Retrieve associative array from browser session storage by key.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>string</code></td>
+                <td>Retrieval key</td>
+              </tr>
+              <tr>
+                <td><code>[notExistsValue]</code></td>
+                <td><code>Object</code></td>
+                <td>Value to return when not exists (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Object|null</code> - Retrieved data</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="setPageObj" class="method-name">setPageObj</h3>
+        <div class="method-signature">
+          <code>setPageObj(key, obj)</code>
+        </div>
+        <div class="method-description">
+          Store page scope data (per URL HTML file).<br>
+<ul>
+  <li>Store associative array in browser session storage by page scope + key.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>string</code></td>
+                <td>Storage key</td>
+              </tr>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>Data to store</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful storage</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="setModuleObj" class="method-name">setModuleObj</h3>
+        <div class="method-signature">
+          <code>setModuleObj(key, obj)</code>
+        </div>
+        <div class="method-description">
+          Store module scope data (per URL module directory).<br>
+<ul>
+  <li>Store associative array in browser session storage by module scope + key.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>string</code></td>
+                <td>Storage key</td>
+              </tr>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>Data to store</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful storage</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="setSystemObj" class="method-name">setSystemObj</h3>
+        <div class="method-signature">
+          <code>setSystemObj(key, obj)</code>
+        </div>
+        <div class="method-description">
+          Store system scope data.<br>
+<ul>
+  <li>Store associative array in browser session storage by key.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>string</code></td>
+                <td>Storage key</td>
+              </tr>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>Data to store</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful storage</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="removePage" class="method-name">removePage</h3>
+        <div class="method-signature">
+          <code>removePage(key)</code>
+        </div>
+        <div class="method-description">
+          Remove page scope data.
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>string</code></td>
+                <td>Key</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful deletion</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="removeModule" class="method-name">removeModule</h3>
+        <div class="method-signature">
+          <code>removeModule(key)</code>
+        </div>
+        <div class="method-description">
+          Remove module scope data.
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>string</code></td>
+                <td>Key</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful deletion</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="removeSystem" class="method-name">removeSystem</h3>
+        <div class="method-signature">
+          <code>removeSystem(key)</code>
+        </div>
+        <div class="method-description">
+          Remove system scope data.
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>key</code></td>
+                <td><code>string</code></td>
+                <td>Deletion key</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful deletion</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="clearAllData" class="method-name">clearAllData</h3>
+        <div class="method-signature">
+          <code>clearAllData()</code>
+        </div>
+        <div class="method-description">
+          Clear all data.<br>
+<ul>
+  <li>Remove all data stored by this utility.</li>
+  <li>Use for emergency or debugging purposes.</li>
+</ul>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful clear</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="clearPage" class="method-name">clearPage</h3>
+        <div class="method-signature">
+          <code>clearPage()</code>
+        </div>
+        <div class="method-description">
+          Clear all page scope data.<br>
+<ul>
+  <li>Remove all data stored for current page.</li>
+</ul>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful clear</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="clearModule" class="method-name">clearModule</h3>
+        <div class="method-signature">
+          <code>clearModule()</code>
+        </div>
+        <div class="method-description">
+          Clear all module scope data.<br>
+<ul>
+  <li>Remove all data stored for current module.</li>
+</ul>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful clear</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="clearSystem" class="method-name">clearSystem</h3>
+        <div class="method-signature">
+          <code>clearSystem()</code>
+        </div>
+        <div class="method-description">
+          Clear system scope data.<br>
+<ul>
+  <li>Remove all data stored for system sharing.</li>
+</ul>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful clear</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JSDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

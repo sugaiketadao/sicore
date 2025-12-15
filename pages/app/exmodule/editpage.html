@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>(Example) User Edit Page</title>
+  <link href="../../lib/css/onepg-base.css" rel="stylesheet">
+  <style>
+    .item-head {
+      width: 7rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>(Example) User Edit Page</div>
+    <!-- Message display -->
+    <section id="_msg"></section>
+  </header>
+  
+  <main>
+    <!-- Header data -->
+    <section>
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label for="userId">User ID</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="user_id" id="userId" style="width: 6rem;">
+            <input type="hidden" name="upd_ts">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label for="userNm">User Name</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="user_nm" id="userNm" style="width: 20rem;">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label for="email">Email</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="email" id="email" style="width: 30rem;">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label for="countryCs">Country</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <select name="country_cs" id="countryCs">
+              <option value="" selected>Not selected</option>
+              <option value="JP">Japan</option>
+              <option value="US">United States</option>
+              <option value="BR">Brazil</option>
+              <option value="AU">Australia</option>
+            </select>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label>Gender</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <label><input type="radio" name="gender_cs" value="" checked>Not selected</label>
+            <label><input type="radio" name="gender_cs" value="M">Male</label>
+            <label><input type="radio" name="gender_cs" value="F">Female</label>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label>Spouse</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <label><input type="checkbox" name="spouse_cs" value="Y" data-check-off-value="N">Yes</label>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label for="incomeAm">Annual Income</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="income_am" id="incomeAm" style="width: 10rem;" data-value-format-type="num" class="align-right"><span>or more</span>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label for="birthDt">Birth Date</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="birth_dt" id="birthDt" style="width: 10rem;" data-value-format-type="ymd">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+    </section>
+    <!-- /Header data -->
+      
+    <!-- Detail data -->
+    <section>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th>No</th>
+              <th>Pet Name</th>
+              <th>Type</th>
+              <th>Gender</th>
+              <th>Vaccination</th>
+              <th class="align-right">Weight (kg)</th>
+              <th>Birth Date</th>
+            </tr>
+          </thead>
+          <tbody id="detail">
+            <script type="text/html">
+              <tr>
+                <td class="align-center"><input type="checkbox" name="detail.chk" value="1"></td>
+                <td data-name="detail.pet_no"></td>
+                <td><input type="text" name="detail.pet_nm" style="width: 10rem;"></td>
+                <td><select name="detail.type_cs" style="width: 5rem;">
+                  <option value="">Not selected</option>
+                  <option value="DG">Dog</option>
+                  <option value="CT">Cat</option>
+                  <option value="BD">Bird</option>
+                </select></td>
+                <td> 
+                  <label><input type="radio" name="detail.gender_cs" value="">Not selected</label>
+                  <label><input type="radio" name="detail.gender_cs" value="M">Male</label>
+                  <label><input type="radio" name="detail.gender_cs" value="F">Female</label>
+                </td>
+                <td>
+                  <label><input type="checkbox" name="detail.vaccine_cs" value="Y" data-check-off-value="N">Vaccinated</label>
+                </td>
+                <td><input type="text" name="detail.weight_kg" style="width: 4rem;" data-value-format-type="num" class="align-right"></td>
+                <td><input type="text" name="detail.birth_dt" style="width: 8rem;" data-value-format-type="ymd"></td>
+              </tr>
+            </script>
+          </tbody>
+        </table>
+      </div><!-- /.table -->
+    </section>
+    <!-- /Detail data -->
+  </main>
+
+  <footer>
+    <!-- Operations -->
+    <section>
+      <div class="grid-row">
+        <!-- Button layout -->
+        <div class="grid-col-6">
+          <button type="button" onclick="addRow()">Add Row</button>
+          <button type="button" onclick="removeRow()">Remove Row</button>
+        </div><!-- /.grid-col-* -->
+        <div class="grid-col-6 align-right">
+          <button type="button" onclick="upsert()" >Save</button>
+          <button type="button" onclick="del()" class="danger">Delete</button>
+          <button type="button" onclick="cancel()">Cancel</button>
+        </div><!-- /.grid-col-* -->
+        <!-- /Button layout -->
+      </div><!-- /.grid-row -->
+    </section>
+    <!-- /Operations -->
+    <div>©Sample</div>
+  </footer>
+
+  <script src="../../lib/js/onepg-utils.js" defer></script>
+  <script src="editpage.js" defer></script>
+</body>
+</html>

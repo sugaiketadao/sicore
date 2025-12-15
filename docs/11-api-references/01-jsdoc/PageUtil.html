@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PageUtil - JSDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>PageUtil</h1>
+      <p>Framework Component [onepg-utils.js]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Class Name:</strong> PageUtil</p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>Page operation utility class.<br>
+<ul>
+  <li>Performs operations targeting the entire page or specific areas of the page.</li>
+  <li>Performs operations such as message display, error existence check, form clear, form enable/disable, and form show/hide.</li>
+  <li>"List" refers to both grids (repeating rows) and details (repeating rows). Explanations about lists apply to both.</li>
+</ul></div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method">
+        <h3 id="setMsg" class="method-name">setMsg</h3>
+        <div class="method-signature">
+          <code>setMsg(res)</code>
+        </div>
+        <div class="method-description">
+          Display message.<br>
+<ul>
+  <li>Display message from response data.</li>
+  <li>The key for response data is <code>'_msg'</code>.</li>
+  <li>Element with <code>id</code> attribute <code>'_msg'</code> is treated as message display area element.</li>
+  <li>If multiple message display area elements exist, set to the first element.</li>
+  <li>To control visibility, execute <code>PageUtil#clearMsg()</code> in page initialization to hide.</li>
+  <li>If no message exists in response data, clear the text of message display area element (<code>PageUtil#clearMsg()</code> is executed).</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>res</code></td>
+                <td><code>Object</code></td>
+                <td>Response data</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="hasError" class="method-name">hasError</h3>
+        <div class="method-signature">
+          <code>hasError(res)</code>
+        </div>
+        <div class="method-description">
+          Check error existence.<br>
+<ul>
+  <li>Check for error existence from response data.</li>
+  <li>The key for response data is <code>'_has_err'</code>.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>res</code></td>
+                <td><code>Object</code></td>
+                <td>Response data</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if error exists</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="clearMsg" class="method-name">clearMsg</h3>
+        <div class="method-signature">
+          <code>clearMsg()</code>
+        </div>
+        <div class="method-description">
+          Clear message.<br>
+<ul>
+  <li>Clear the text of message display area element.</li>
+</ul>
+  
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getValues" class="method-name">getValues</h3>
+        <div class="method-signature">
+          <code>getValues(outerElm)</code>
+        </div>
+        <div class="method-description">
+          Get page data.<br>
+<ul>
+  <li>Get values of data-sending HTML elements (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>) on the page as an associative array.</li>
+  <li>Target HTML elements are those with <code>name</code> attribute set, and <code>name</code> attribute becomes the key of the associative array.</li>
+  <li>If scope element argument is omitted, <code>&lt;main&gt;</code> is used as scope; if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is used as scope.</li>
+  <li>Mainly used to get request data for Web services.</li>
+  <li>The following differ from normal <code>&lt;form&gt;</code> POST submission:
+  <ul>
+    <li>Disabled items are included.</li>
+    <li>Style-hidden items (<code>display:none</code> or <code>visibility:hidden</code>) are not included.</li>
+  </ul></li>
+  <li>If <code>data-value-format-type</code> attribute defining value format type is set, get unformatted value using corresponding <code>UnFrmUtil</code> method.</li>
+  <li>For text boxes and text areas, get value with tab characters and trailing blank line breaks removed.</li>
+  <li>For checkboxes, return <code>value</code> attribute value when checked, and get <code>data-check-off-value</code> attribute value when not checked.</li>
+  <li>List section (repeating section) data becomes an array and is stored in associative array with one key.</li>
+  <li><pre>[Example] <code>&lt;input name="user_id" value="U001"&gt;
+     &lt;input name="birth_dt" value="2025/02/10"&gt;
+     &lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_no" value="1"&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;input name="detail.weight_kg" value="8.9"&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_no" value="2"&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;input name="detail.weight_kg" value="12.1"&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;/tbody&gt;&lt;/table&gt;</code> is
+      retrieved as <code>{ user_id:'U001', birth_dt:'20250210', detail:[{pet_no:'1', weight_kg:'8.9'}, {pet_no:'2', weight_kg:'12.1'}] }</code>.</pre></li>
+  <li>List section elements should follow the rules below:
+  <ul> 
+    <li>Elements within a row (hereinafter called row-inner elements) have <code>name</code> attribute in <code>tableId.itemName</code> format with <code>"."</code> separator. Note that <code>name</code> attribute with <code>"."</code> separator should only be used for row-inner elements.</li>
+    <li>Row-inner elements must have a parent/grandparent element (hereinafter called table element) with <code>id</code> attribute equal to the part before <code>"."</code> separator (<code>tableId</code>).<br>
+        In most cases, table element is <code>&lt;tbody&gt;</code> or <code>&lt;table&gt;</code>.</li>
+    <li>Direct children of table element become the topmost element of repeating section (hereinafter called row element).<br>
+        In most cases, row element is <code>&lt;tr&gt;</code>.</li>
+    <li><pre>[NG Example 1] Table element does not exist. (Neither <code>&lt;table&gt;</code> nor <code>&lt;tbody&gt;</code> has <code>id</code> attribute)
+      <code>&lt;table&gt;...omitted...&lt;tbody&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
+    <li><pre>[NG Example 2] Row element does not exist directly under table element. (<code>&lt;table&gt;</code> has <code>id</code> attribute but <code>&lt;tbody&gt;</code> is in between)
+      <code>&lt;table id="detail"&gt;...omitted...&lt;tbody&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
+    <li><pre>[OK Example 1] If <code>&lt;tbody&gt;</code> has <code>id</code> attribute, <code>&lt;tbody&gt;</code> becomes table element.
+      <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
+    <li><pre>[OK Example 2] If <code>&lt;table&gt;</code> has <code>id</code> attribute, <code>&lt;table&gt;</code> becomes table element. (Example using multiple <code>&lt;tbody&gt;</code>)
+      <code>&lt;table id="detail"&gt;...omitted...
+        &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+        &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+      &lt;/table&gt;</code></pre></li>
+  </ul></li>
+  <li>Row-inner elements store row index value in <code>data-obj-row-idx</code> attribute, and are converted to array based on that index.</li>
+  <li>Radio buttons within rows have [row index] removed from end of <code>name</code> attribute for return value key. (See <code>PageUtil#setValue</code>)</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>[outerElm]</code></td>
+                <td><code>Object</code></td>
+                <td>Scope element (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Object</code> - Page data associative array</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getRowValues" class="method-name">getRowValues</h3>
+        <div class="method-signature">
+          <code>getRowValues(rowElm)</code>
+        </div>
+        <div class="method-description">
+          Get row data.<br>
+<ul>
+  <li>Get one row of page data within list as associative array.</li>
+  <li>Data retrieval rules are same as <code>PageUtil#getValues</code>.</li>
+  <li>Part before <code>"."</code> in <code>name</code> attribute (= table element's <code>id</code> attribute) is removed to create associative array key.</li>
+  <li><pre>[Example] For <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_no" value="1"&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;input name="detail.weight_kg" value="8.9"&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_no" value="2"&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;input name="detail.weight_kg" value="12.1"&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;/tbody&gt;&lt;/table&gt;</code> when specifying 2nd row as argument,
+      <code>{ pet_no:'2', weight_kg:'12.1' }</code> is retrieved.</pre></li>
+  <li>For radio buttons within row, [row index] at end of <code>name</code> attribute is removed to create return value key. (See <code>PageUtil#setValues</code>)</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>rowElm</code></td>
+                <td><code>Element</code></td>
+                <td>Row element (typically <code>&lt;tr&gt;</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Object</code> - Row data associative array</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="getRowValuesByInnerElm" class="method-name">getRowValuesByInnerElm</h3>
+        <div class="method-signature">
+          <code>getRowValuesByInnerElm(baseElm, rowTag)</code>
+        </div>
+        <div class="method-description">
+          Get row data.<br>
+<ul>
+  <li>Traverse parent elements from base element argument to get row element (mostly <code>&lt;tr&gt;</code>), and get page data of that row element as an associative array.</li>
+  <li>Data retrieval rules are same as <code>PageUtil#getRowValues</code>.</li>
+</ul> 
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>baseElm</code></td>
+                <td><code>Element</code></td>
+                <td>Base element</td>
+              </tr>
+              <tr>
+                <td><code>[rowTag]</code></td>
+                <td><code>string</code></td>
+                <td>Row element tag name (optional) defaults to 'tr' if omitted</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Object</code> - Row data associative array</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="setValues" class="method-name">setValues</h3>
+        <div class="method-signature">
+          <code>setValues(obj, outerElm)</code>
+        </div>
+        <div class="method-description">
+          Set page data.<br>
+<ul>
+  <li>Set associative array values to HTML elements on the page.</li>
+  <li>Target HTML elements are those with <code>name</code> attribute or <code>data-name</code> attribute set, and associative array key becomes the <code>name</code> attribute or <code>data-name</code> attribute of target element.</li>
+  <li>To set values to non-input form elements (that do not originally have <code>name</code> attribute) like <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, set <code>data-name</code> attribute.</li>
+  <li>For HTML elements without <code>value</code> attribute like <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, set to <code>textContent</code>.</li>
+  <li>If scope element argument is omitted, <code>&lt;main&gt;</code> is used as scope; if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is used as scope.</li>
+  <li>Mainly used to set response data from Web services.</li>
+  <li>Values with keys starting with underscore are used by this framework and cannot be used outside this class, so they are ignored by this method.</li>
+  <li>If <code>data-value-format-type</code> attribute defining value format type is set, set formatted value using corresponding <code>FrmUtil</code> method.</li>
+  <li>List section data is assumed to be stored as an array in one key of the associative array.</li>
+  <li><pre>[Example] <code>{ user_id:'U001', birth_dt:'20250210', list:[{pet_no:'1', weight_kg:'8.9'}, {pet_no:'2', weight_kg:'12.1'}] }</code> is
+    set as <code>&lt;input name="user_id" value="U001"&gt;
+    &lt;input name="birth_dt" value="2025/02/10"&gt;
+    &lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
+      &lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;1&lt;/td&gt;
+          &lt;td&gt;&lt;input name="detail.weight_kg" value="8.9"&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;2&lt;/td&gt;
+          &lt;td&gt;&lt;input name="detail.weight_kg" value="12.1"&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;&lt;/table&gt;</code>.</pre></li>
+  <li>Rules for table element, row element, and row-inner elements in list are same as <code>PageUtil#getValues</code>.</li>
+  <li>To synchronize number of arrays in associative array with number of list rows for display, dynamically generate elements from template row element (hereinafter called template row element) and set values.</li>
+  <li>Template row element is placed as child element (first) of table element wrapped in <code>&lt;script&gt;</code>.</li>
+  <li><pre>[Example] For above example, place template row element as follows:
+    <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
+      &lt;script type="text/html"&gt;&lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;&lt;/td&gt;
+                                   &lt;td&gt;&lt;input name="detail.weight_kg"&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;/script&gt;
+    &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
+  <li>Radio buttons within template row element have [row index] appended to end of <code>name</code> attribute to group by row.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>Associative array data</td>
+              </tr>
+              <tr>
+                <td><code>[outerElm]</code></td>
+                <td><code>Element</code></td>
+                <td>Scope element (optional, defaults to <code>document.body</code> if omitted)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="addRow" class="method-name">addRow</h3>
+        <div class="method-signature">
+          <code>addRow(listId, obj)</code>
+        </div>
+        <div class="method-description">
+          Add list row.<br>
+<ul>
+  <li>Generate and add row element using template row element of table element and set default values.</li>
+  <li>See <code>PageUtil#setValues</code> for template row.</li>
+  <li><pre>[Example] For following template row:
+    <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
+      &lt;script type="text/html"&gt;&lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;&lt;/td&gt;
+                                   &lt;td&gt;&lt;input name="detail.weight_kg"&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;/script&gt;
+    &lt;/tbody&gt;&lt;/table&gt;</code>
+    Default value key excludes table element <code>id</code> attribute (detail.) as follows:
+   <code>{ pet_no:'1', weight_kg:'8.9' }</code>
+   Multiple rows are added when passing array of associative arrays:
+   <code>[ { pet_no:'1', weight_kg:'8.9' }, { pet_no:'2', weight_kg:'12.1' } ]</code></pre>
+  </li>
+  <li>If default value is omitted, add one empty row element.</li>
+  <li>To add multiple empty rows, pass <code>new Array(n)</code>.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>listId</code></td>
+                <td><code>string</code></td>
+                <td><code>id</code> attribute of table element (parent element) ([Example] <code>'detail'</code>)</td>
+              </tr>
+              <tr>
+                <td><code>[obj]</code></td>
+                <td><code>Object|Array&lt;Object&gt;</code></td>
+                <td>Default value associative array for row addition (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="removeRow" class="method-name">removeRow</h3>
+        <div class="method-signature">
+          <code>removeRow(searchElmName, searchElmVal, rowTag)</code>
+        </div>
+        <div class="method-description">
+          Remove list row.<br>
+<ul>
+  <li>Remove row element (mostly <code>&lt;tr&gt;</code>) containing element with specified <code>name</code> attribute and <code>value</code> attribute.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>searchElmName</code></td>
+                <td><code>string</code></td>
+                <td><code>name</code> attribute of search target element ([Example] <code>'detail.chk'</code> for checkbox) <code>data-name</code> attribute not allowed</td>
+              </tr>
+              <tr>
+                <td><code>searchElmVal</code></td>
+                <td><code>string</code></td>
+                <td>Value of search target element ([Example] <code>'1'</code>)</td>
+              </tr>
+              <tr>
+                <td><code>[rowTag]</code></td>
+                <td><code>string</code></td>
+                <td>Row element tag name (optional) defaults to <code>'tr'</code> if omitted</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> on successful deletion</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="clearRows" class="method-name">clearRows</h3>
+        <div class="method-signature">
+          <code>clearRows(listId)</code>
+        </div>
+        <div class="method-description">
+          Clear all rows.<br>
+<ul>
+  <li>Remove all row elements except template row.</li>
+</ul>
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>listId</code></td>
+                <td><code>string</code></td>
+                <td><code>id</code> attribute of table element (parent element) ([Example] <code>'detail'</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JSDocGenerator - 2025</p>
+  </div>
+</body>
+</html>

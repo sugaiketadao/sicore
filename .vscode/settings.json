@@ -1,0 +1,15 @@
+{
+    "editor.formatOnPaste": false,
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+   
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "classes",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ],
+    "java.debug.settings.onBuildFailureProceed": true,
+    
+    "files.eol": "\n"
+}
