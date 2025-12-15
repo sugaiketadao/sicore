@@ -26,4 +26,4 @@ replay_pid*
 # Ignore all files under classes
 classes/*
 # Ignore sample data
-# example_db/data/*
+example_db/data/*
