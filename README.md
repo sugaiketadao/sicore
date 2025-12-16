@@ -158,5 +158,5 @@ SQLite is in the public domain with no restrictions on use, modification, or red
 SQLite JDBC Driver is distributed under the Apache License 2.0. See the `licenses/` folder for the full license text.
 
 ---
-© 2025 onepg.com
+© 2025 sugaiketadao (onepg.com)
 
