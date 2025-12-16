@@ -113,7 +113,8 @@ Access the following URL in your browser.
 http://localhost:8000/pages/
 ```
 
-A list of example screens is displayed. Click on each screen link to verify its operation.
+- A list of example screens is displayed. Click on each screen link to verify the functionality.
+- To stop the server, run `src/com/onepg/web/StandaloneServerStopper.java`.
 
 ### 5. Sample Code
 - HTML/JavaScript: `pages/app/exmodule/`
@@ -139,6 +140,7 @@ Enter the following prompt in Copilot Chat:
 > Generate screen functionality based on the requirements in `ai-test-prompts/order-prompt.md`.
 
 - The AI reads the requirements document and automatically generates the necessary HTML, JavaScript, and Java code.
+- After generation, refer to [AI Prompt Guide (for Debugging and Fixes)](docs/21-ai-guides/02-ai-debug-guide.md).
 - ⚠️ Use an AI agent that strictly follows instructions. (As of December 2025, Claude Opus 4.5 is recommended.)
 - 🚫 Highly creative AI agents may not be suitable for this task.
 

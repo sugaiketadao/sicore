@@ -1,6 +1,6 @@
 # AI Prompt Guide (for Debugging and Fixes)
 
-This guide standardizes the instruction methods for debugging and requesting fixes for AI-generated code.
+This guide explains how to provide instructions when requesting debugging and fixes for AI-generated code.
 
 ---
 
@@ -38,41 +38,30 @@ If compile errors occur after code generation, request fixes as follows.
 
 **Prompt Example 1 (Simple)**:
 ```
+[With the error file open]
 Fix the compile errors
 ```
 
 **Prompt Example 2 (Specifying Package)**:
 ```
-Fix the compile errors in the todo package
+Fix the compile errors in the com.example.app.service.ordermng package
 ```
 
 **Prompt Example 3 (Selecting and Presenting Error Location)**:
 ```
-Fix this error
-[Request with the error location selected in the editor]
+[With the error location selected in the editor]
+Fix this compile error
 ```
 
-### 2.2 When AI Cannot Detect Errors
-
-If the AI cannot recognize errors detected by the IDE, select the error location and present it directly.
-
-**Steps**:
-1. Select the line where the error occurs in the editor
-2. Request with the selection active
-3. If there is an error message, present it as well
-
-**Prompt Examples**:
+**Prompt Example 4 (Pasting and Presenting Error Location)**:
 ```
-PropertiesUtil.getString(
-[With error location selected]
+[With the error file open]
+Fix the following compile error
+
+PropertiesUtil.getString
 ```
 
-```
-io.putError(
-[With error location selected]
-```
-
-### 2.3 Common Causes of Compile Errors
+### 2.2 Common Causes of Compile Errors
 
 | Error Type | Cause | Solution |
 |-----------|------|----------|
@@ -90,9 +79,13 @@ io.putError(
 After resolving compile errors, start the server to verify functionality.
 
 **Startup Steps**:
-1. Run `StandaloneServerStarter` from the debug configuration
+1. Run `src/com/onepg/web/StandaloneServerStarter.java`
 2. Wait until the startup completion message appears in the console
 3. Access the target screen in the browser
+
+**Shutdown Steps**:
+- Run `src/com/onepg/web/StandaloneServerStopper.java`
+- If you modify Java classes, a server restart is required.
 
 ### 3.2 Accessing Screens
 
@@ -104,6 +97,7 @@ Refer to 'config\web.properties' for the port
 ```
 
 **Verification Items**:
+- [ ] Are there no errors output to the VS Code console?
 - [ ] Does the screen display correctly?
 - [ ] Does initialization processing work correctly?
 - [ ] Do search, insert, update, and delete work correctly?
@@ -131,11 +125,13 @@ When runtime errors occur, provide the error log and request fixes.
 **Prompt Example**:
 ```
 Fix this error
-java.lang.RuntimeException: Key already exists. key="todo_id"
+java.lang.RuntimeException: Key already exists. key="user_id"
  at com.onepg.util.AbstractIoTypeMap.validateKeyForPut(AbstractIoTypeMap.java:173)
  at com.onepg.util.AbstractIoTypeMap.putVal(AbstractIoTypeMap.java:206)
- at com.onepg.util.AbstractIoTypeMap.put(AbstractIoTypeMap.java:689)
- at com.example.app.service.todo.TodoLoad.doExecute(TodoLoad.java:22)
+ at com.onepg.util.AbstractIoTypeMap.putAllByMap(AbstractIoTypeMap.java:989)
+ at com.onepg.util.AbstractIoTypeMap.putAll(AbstractIoTypeMap.java:961)
+ at com.example.app.service.exmodule.ExampleLoad.getHead(ExampleLoad.java:60)
+ at com.example.app.service.exmodule.ExampleLoad.doExecute(ExampleLoad.java:23)
 ```
 
 **Key Points**:
@@ -158,6 +154,8 @@ Fix it so that it searches by partial match on the title.
 ```
 
 ### 4.3 Bug Fix Request Template
+
+When fixing bugs with complex reproduction steps or specifications, use the following template.
 
 **Template**:
 ```markdown
@@ -194,37 +192,53 @@ Fix the above bug.
 
 **Symptoms**:
 ```
-java.lang.RuntimeException: Key already exists. key="todo_id"
+java.lang.RuntimeException: Key already exists. key="user_id"
  at com.onepg.util.AbstractIoTypeMap.validateKeyForPut(AbstractIoTypeMap.java:173)
  at com.onepg.util.AbstractIoTypeMap.putVal(AbstractIoTypeMap.java:206)
- at com.onepg.util.AbstractIoTypeMap.put(AbstractIoTypeMap.java:689)
- at com.example.app.service.todo.TodoLoad.doExecute(TodoLoad.java:22)
+ at com.onepg.util.AbstractIoTypeMap.putAllByMap(AbstractIoTypeMap.java:989)
+ at com.onepg.util.AbstractIoTypeMap.putAll(AbstractIoTypeMap.java:961)
+ at com.example.app.service.exmodule.ExampleLoad.getHead(ExampleLoad.java:60)
+ at com.example.app.service.exmodule.ExampleLoad.doExecute(ExampleLoad.java:23)
 ```
 
 **Cause**:
-Attempting to set a value with the same key twice in the `Io` class.
-Since `Io.put()` prohibits overwriting the same key, calling `put()` on an existing key causes an error.
+- Attempting to set a value with the same key twice in the `Io` class.
+- Since `Io.put()` prohibits overwriting the same key, calling `put()` on an existing key causes an error.
+- The same error occurs with `Io.putAll()`.
 
-**Common Occurrence Patterns**:
-- A key sent from the screen (e.g., `todo_id`) is being set again on the server side with `io.put("todo_id", ...)`
-- Setting values to the same key multiple times within a loop
+**Common Patterns**:
+- Setting SELECT results that include keys sent from the screen (e.g., `user_id`) using `io.putAll(row)`
 
 **Solutions**:
 
-1. **Remove unnecessary `put()` calls**:
-   Values sent from the screen are already stored in `Io`, so there is no need to set them again.
+1. **Exclude duplicate keys from SELECT statements**:
+   Values sent from the screen are already stored in `Io`, so there is no need to retrieve them again with SELECT.
    ```java
-   // NG: Re-setting a key already sent from the screen
-   io.put("todo_id", data.getString("todo_id"));
+   // NG: SELECT results contain keys already sent from the screen (user_id)
+   sb.addQuery("SELECT ");
+   sb.addQuery("  u.user_id "); // ← retrieves user_id
+   sb.addQuery(", u.user_nm ");
+   sb.addQuery(", u.email ");
+   sb.addQuery(" FROM t_user u ");
+   sb.addQuery(" WHERE u.user_id = ? ", io.getString("user_id")); // ← user_id already exists in io
+   final IoItems row = SqlUtil.selectOne(getDbConn(), sb);
+   io.putAll(row); // ← user_id duplicates and causes an error
    
-   // OK: Remove the unnecessary put()
-   // (The todo_id sent from the screen is used as-is)
+   // OK: Exclude user_id from the SELECT statement
+   sb.addQuery("SELECT ");
+   // ... (do not SELECT user_id)
+   sb.addQuery("  u.user_nm ");
+   sb.addQuery(", u.email ");
+   sb.addQuery(" FROM t_user u ");
+   sb.addQuery(" WHERE u.user_id = ? ", io.getString("user_id"));
+   final IoItems row = SqlUtil.selectOne(getDbConn(), sb);
+   io.putAll(row); // ← no duplication
    ```
 
-2. **Use `putForce()` when force overwrite is needed**:
+2. **Use `putAllForce()` when force overwrite is needed**:
    ```java
    // To force overwrite
-   io.putForce("todo_id", newValue);
+   io.putAllForce(row);
    ```
 
 **Prompt Example**:
@@ -232,15 +246,20 @@ Since `Io.put()` prohibits overwriting the same key, calling `put()` on an exist
 A Key already exists error is occurring.
 Remove the code that re-sets keys already sent from the screen.
 
-java.lang.RuntimeException: Key already exists. key="todo_id"
- at com.example.app.service.todo.TodoLoad.doExecute(TodoLoad.java:22)
+java.lang.RuntimeException: Key already exists. key="user_id"
+ at com.onepg.util.AbstractIoTypeMap.validateKeyForPut(AbstractIoTypeMap.java:173)
+ at com.onepg.util.AbstractIoTypeMap.putVal(AbstractIoTypeMap.java:206)
+ at com.onepg.util.AbstractIoTypeMap.putAllByMap(AbstractIoTypeMap.java:989)
+ at com.onepg.util.AbstractIoTypeMap.putAll(AbstractIoTypeMap.java:961)
+ at com.example.app.service.exmodule.ExampleLoad.getHead(ExampleLoad.java:60)
+ at com.example.app.service.exmodule.ExampleLoad.doExecute(ExampleLoad.java:23)
 ```
 
 
 ### 5.2 JavaScript Runtime Errors
 
 **Symptoms**:
-An error is displayed in the browser console.
+A JavaScript error is displayed in the browser console.
 
 **Solution**:
 Copy the error message from the browser developer tools and present it.
