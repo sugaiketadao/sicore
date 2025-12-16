@@ -8,7 +8,7 @@
     - Java: `src/com/example/app/service/exmodule/`
 
 ## Prerequisites
-- Use Java classes.
+- Use Java 11 or higher.
 - Requests to web services are in JSON format or URL parameters.
 - Responses to web pages are in JSON format only.
 - HTML is obtained only through static file downloads; dynamic HTML generation by web services is not performed.
