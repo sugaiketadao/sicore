@@ -82,7 +82,8 @@ Refer to the following documentation before starting development.
 
 ---
 
-## 🖥️ How to View Example Screens
+## 🖥️ How to View Example Screens - VS Code
+⚠️ The following steps assume that VS Code and Java 11 or later are installed.
 
 ### 1. Download the Project
 
@@ -96,11 +97,12 @@ Download the project from GitHub.
 
 1. Launch VS Code.
 2. Select "File" → "Open Folder" and choose the folder where you extracted the ZIP file.
+3. If the "Do you trust the authors?" dialog appears, select "Yes".
 
 ### 3. Start the Server
 
-1. Open `src/com/onepg/web/StandaloneServerStarter.java`.
-2. Press the `F5` key, or select "Run" → "Start Debugging".
+1. Select `src/com/onepg/web/StandaloneServerStarter.java`.
+2. Press `F5` or select "Debug Java" from the right-click menu.
 3. Wait until the startup completion message appears in the console.
 
 ### 4. Access the Example Screens
