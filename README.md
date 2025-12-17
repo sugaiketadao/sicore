@@ -156,7 +156,7 @@ However, bug reports and feedback are welcome! Please create an [Issue](../../is
 
 ## 💖 Sponsors
 
-If you like this project, please consider supporting it through [GitHub Sponsors](../../sponsor). Your support helps me dedicate time to coding and documentation, and maintain the development environment and AI tools.
+If you like this project, please consider supporting it through [GitHub Sponsors](https://github.com/sponsors/sugaiketadao). Your support helps me dedicate time to coding and documentation, and maintain the development environment and AI tools.
 
 ⭐ Even just giving a star is a great encouragement!
 
