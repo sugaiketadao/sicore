@@ -69,6 +69,7 @@ This framework is designed for **AI (generative AI) and beginner developers**.
 | Unified patterns. | Easy to reference past examples. |
 | Few config files. | Less likely to cause config errors. |
 | Built-in error prevention. | Less likely to introduce bugs. |
+| Entire framework provided as source code. | Easy to trace the code execution flow. |
 
 - Simply instruct AI to "create a search screen" and it generates working code.
 - Provide existing samples and AI automatically creates similar features.

@@ -33,6 +33,7 @@ GitHub Copilot and other AI coding assistants can easily generate high-quality c
 - **AI Guidelines**: `.github/copilot-instructions.md` enables AI to accurately understand the framework conventions.
 - **Token Optimization**: In addition to human-oriented documentation, we provide concise documentation specifically for AI. Also, in documentation shared with humans, wrapping AI-unnecessary sections with `<!-- AI_SKIP_START -->` markers reduces the token count that AI reads.
 - **Standardized Patterns**: Unified patterns for screens and logic enable AI to generate code with high accuracy.
+- **Easy-to-Trace Code**: The entire framework is provided as source code, making it easier for AI to trace the code execution flow.
 
 ## 📂 Directory Structure
 
