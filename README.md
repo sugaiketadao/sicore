@@ -8,6 +8,8 @@ Unlike heavyweight frameworks, SICore eliminates annotations and complex configu
 
 > ⚠️ **Note**: This project is under development. Some parts are incomplete, but the basic features are available for you to try.
 
+> 📝 **Translation Notice**: All English text in this project, including documents and code comments, has been translated by AI. Please excuse any awkward or unnatural expressions.
+
 ## 🚀 Features
 
 ### 1. Simple, Lightweight & Clear
@@ -143,6 +145,19 @@ Enter the following prompt in Copilot Chat:
 - After generation, refer to [AI Prompt Guide (for Debugging and Fixes)](docs/21-ai-guides/02-ai-debug-guide.md).
 - ⚠️ Use an AI agent that strictly follows instructions. (As of December 2025, Claude Opus 4.5 is recommended.)
 - 🚫 Highly creative AI agents may not be suitable for this task.
+
+---
+## 💬 Contributing
+
+This project is currently under development, so **pull requests are not accepted at this time**.
+
+However, bug reports and feedback are welcome! Please create an [Issue](../../issues) to share your thoughts.
+
+## 💖 Sponsors
+
+If you like this project, please consider supporting it through [GitHub Sponsors](../../sponsor). Your support helps me dedicate time to coding and documentation, and maintain the development environment and AI tools.
+
+⭐ Even just giving a star is a great encouragement!
 
 ---
 ## 📜 License
