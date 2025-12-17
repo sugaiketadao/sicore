@@ -69,5 +69,3 @@ When creating Java, execute the following steps after code generation.
 - Do not point out comments within methods or TODO comments.
 - If there is misuse of framework APIs, provide the correct usage.
 - If there is code that violates rules, provide a fix suggestion.
-- If there are JSDoc/JavaDoc that violate rules, provide a fix suggestion.
-- If there are unclear or incorrect descriptions in JavaDoc/JSDoc, provide a fix suggestion. (Noun phrases are allowed for class names and method names at the beginning of JavaDoc/JSDoc)
