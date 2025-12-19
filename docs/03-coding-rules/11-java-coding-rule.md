@@ -127,7 +127,6 @@ if (!ValUtil.isDate(beforDate)) {
 - Explanations for `private` scope methods, variables, and constants may be simplified.
 - Enclose JavaDoc comments with `/** */`.
 - Write regular comments (other than JavaDoc) on a single line with `//` at the beginning of the line. Comments at the end of lines are prohibited.
-- Write comments as complete sentences, not as noun phrases.
 
 ## JavaDoc
 - Create `package-info.java` for each module package and include the module name.

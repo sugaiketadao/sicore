@@ -95,7 +95,6 @@
 - Explanations for private scope methods, variables, and constants may be simplified.
 - Enclose JSDoc comments with `/** */`.
 - Write regular comments (other than JSDoc) on a single line with `//` at the beginning of the line. Comments at the end of lines are prohibited.
-- Write comments as complete sentences, not as noun phrases.
 
 ## JSDoc
 - The format for method declarations is as follows:
