@@ -1303,11 +1303,11 @@ public final class SqlUtil {
   /** Date retrieval SELECT statement map. */
   private static final Map<DbmsName, String> SQL_SELECT_TODAY = new HashMap<>();
   static {
-    SQL_SELECT_TODAY.put(DbmsName.POSTGRESQL, "SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') day");
-    SQL_SELECT_TODAY.put(DbmsName.ORACLE,    "SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') day FROM DUAL");
-    SQL_SELECT_TODAY.put(DbmsName.MSSQL,     "SELECT CONVERT(VARCHAR, FORMAT(GETDATE(), 'yyyyMMdd')) day");
-    SQL_SELECT_TODAY.put(DbmsName.SQLITE,    "SELECT strftime('%Y%m%d', 'now', 'localtime') day");
-    SQL_SELECT_TODAY.put(DbmsName.DB2, "SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') day FROM SYSIBM.DUAL");
+    SQL_SELECT_TODAY.put(DbmsName.POSTGRESQL, "SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today");
+    SQL_SELECT_TODAY.put(DbmsName.ORACLE,    "SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM DUAL");
+    SQL_SELECT_TODAY.put(DbmsName.MSSQL,     "SELECT CONVERT(VARCHAR, FORMAT(GETDATE(), 'yyyyMMdd')) today");
+    SQL_SELECT_TODAY.put(DbmsName.SQLITE,    "SELECT strftime('%Y%m%d', 'now', 'localtime') today");
+    SQL_SELECT_TODAY.put(DbmsName.DB2, "SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM SYSIBM.DUAL");
   }
   
   /**
@@ -1325,7 +1325,7 @@ public final class SqlUtil {
     final SqlBuilder sb = new SqlBuilder();
     sb.addQuery(sql);
     final IoItems ret = selectOne(conn, sb);
-    return ret.getString("day");
+    return ret.getString("today");
   }
 
 }

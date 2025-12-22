@@ -3,7 +3,7 @@
 1. Create a Docker configuration file on Windows.
     - Save the following text with the filename `docker-compose.yml`. (Encoding: UTF-8 without BOM, Line ending: LF)
     - The version `17.2` after `image: postgres:` can be any version you specify.
-    - The password `dcpgpass` after `POSTGRES_PASSWORD:` is the password for the postgres user on the container OS and can be any value you specify.
+    - The password `dcpgpass` after `POSTGRES_PASSWORD:` is the password for the postgres user on Docker and can be any value you specify.
     - `/tmp/share_docker:/tmp/share_host` links `/tmp/share_docker` on WSL to `/tmp/share_host` on Docker, creating a shared directory between Ubuntu on WSL and Ubuntu on Docker.
 
 ```docker-compose
