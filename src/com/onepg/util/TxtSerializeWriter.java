@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <ul>
  * <li>Serializes output even when called from parallel threads.</li>
  * <li>Also caches output data internally.</li>
+ * <li>Always call <code>#close()</code> because output content may remain in cache if the last write is concurrent. (<code>#close()</code> internally calls <code>#flush()</code>)</li>
  * </ul>
  * @hidden
  */
@@ -18,7 +19,7 @@ final class TxtSerializeWriter extends TxtWriter {
   /** Line cache. */
   private final ConcurrentLinkedQueue<String> lineCache = new ConcurrentLinkedQueue<>();
   /** Printing flag. */
-  private AtomicBoolean printNow = new AtomicBoolean(false);
+  private AtomicBoolean isPrinting = new AtomicBoolean(false);
 
   /**
    * Constructor.
@@ -36,59 +37,42 @@ final class TxtSerializeWriter extends TxtWriter {
   }
 
   /**
-   * Prints a line (serialized).
-   */
-  private synchronized void linePrint(final String line) {
-    super.println(line);
-  }
-
-  /**
    * Prints cache (serialized).
    *
    * @param fullFlush <code>true</code> to output all cached data (intended for use at program termination)
    */
   private synchronized void cachePrint(final boolean fullFlush) {
-    final int olsSize = lineCache.size();
-    if (olsSize <= 0) {
+    if (fullFlush) {
+      String cache = null;
+      while ((cache = this.lineCache.poll()) != null) {
+        super.println(cache);
+      }
       return;
     }
-    final int escSize;
-    if (fullFlush) {
-      escSize = Integer.MAX_VALUE;
-    } else {
-      escSize = olsSize;
-    }
 
-    int count = 0;
-    String cache = null;
-    while ((cache = this.lineCache.poll()) != null) {
-      // Retrieves from cache and outputs
-      linePrint(cache);
-      count++;
-      if (escSize <= count) {
-        // Finishes for now even if added during processing (to avoid long processing)
-        return;
+    // Outputs only the cached data at this point in time.
+    // Finishes even if added during processing to avoid long processing.
+    final int cacheSize = lineCache.size();
+    for (int i = 0; i < cacheSize; i++) {
+      final String cache = this.lineCache.poll();
+      if (cache == null) {
+        break;
       }
+      super.println(cache);
     }
   }
 
   @Override
-  public void println(String line) {
-    if (ValUtil.isNull(line)) {
-      return;
-    }
-
-    // Stores in cache first and then outputs
-    this.lineCache.offer(line);
-    if (this.printNow.compareAndSet(false, true)) {
+  public void println(final String line) {
+    // Replaces null here as well because putting null in cache is not desirable, even though TxtWriter#println also replaces null
+    this.lineCache.offer(ValUtil.nvl(line));
+    if (this.isPrinting.compareAndSet(false, true)) {
       try {
         // If not currently printing, switches to printing and outputs cache
         cachePrint(false);
-      } catch (Exception e) {
-        throw e; 
       }finally {
         // Resets flag even on exception
-        this.printNow.set(false);
+        this.isPrinting.set(false);
       }
     }
   }

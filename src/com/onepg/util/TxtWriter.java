@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
  * <ul>
  * <li>A print writer wrapper class dedicated to text files.</li>
  * <li>Allows character set and line separator specification.</li>
+ * <li>Writing <code>null</code> outputs only a line break.</li>
  * </ul>
  */
 public class TxtWriter implements AutoCloseable {
@@ -78,10 +79,8 @@ public class TxtWriter implements AutoCloseable {
    * @param line the row data
    */
   public void println(final String line) {
-    if (ValUtil.isNull(line)) {
-      throw new RuntimeException("Row data is required.");
-    }
-    this.pw.println(line);
+    // Replaces null with blank (outputs only a line break)
+    this.pw.println(ValUtil.nvl(line));
     this.lineCount++;
   }
 

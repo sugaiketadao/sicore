@@ -560,27 +560,58 @@ public final class ValUtil {
   }
 
   /**
-   * Removes leading zeros for number check.
+   * Removes leading zeros for number check.<br>
+   * <ul>
+   * <li>Supports numbers including decimal points.</li>
+   * <li>"-0" and "-000" are normalized to "0".</li>
+   * </ul>
    *
    * @param value the string
    * @return the processed string
    */
   private static String trimLeftZeroByIsNumber(final String value) {
+    final boolean hasMinus = value.startsWith("-");
     final String tmp;
-    if (value.startsWith("-")) {
+    if (hasMinus) {
       tmp = value.substring(1);
     } else {
       tmp = value;
     }
-    final String ret = tmp.replaceAll("^0+", "");
-    if (isBlank(ret)) {
+      
+    // Checks the position of the decimal point
+    final int dotIndex = tmp.indexOf('.');
+    final String ret;
+    
+    if (dotIndex == -1) {
+      // No decimal point: removes leading zeros normally
+      ret = tmp.replaceAll("^0+", "");
+    } else if (dotIndex == 0) {
+      // Format like ".5": returns as-is (no integer part)
+      ret = tmp;
+    } else {
+      // With decimal point: removes leading zeros from integer part only
+      final String intPart = tmp.substring(0, dotIndex).replaceAll("^0+", "");
+      final String decPart = tmp.substring(dotIndex); // Includes "."
+      ret = intPart + decPart;
+    }
+    
+    // If all zeros
+    if (isBlank(ret) || ret.equals(".")) {
       return "0";
     }
-    if (value.startsWith("-")) {
-      return "-" + ret;
-    } else {
-      return ret;
+    
+    // If integer part is empty → complements with "0"
+    if (ret.startsWith(".")) {
+      if (hasMinus) {
+        return "-0" + ret;
+      }
+      return "0" + ret;
     }
+
+    if (hasMinus) {
+      return "-" + ret;
+    }
+    return ret;
   }
 
   /**

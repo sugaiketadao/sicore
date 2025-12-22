@@ -4,7 +4,7 @@
     - Save the following text with the filename `docker-compose.yml`. (Encoding: UTF-8 without BOM, Line ending: LF)
     - The version `17.2` after `image: postgres:` can be any version you specify.
     - The password `dcpgpass` after `POSTGRES_PASSWORD:` is the password for the postgres user on the container OS and can be any value you specify.
-    - `/tmp/share_docker:/tmp/share_host` links `/tmp/share_host` on WSL to `/tmp/share_docker` on Docker.
+    - `/tmp/share_docker:/tmp/share_host` links `/tmp/share_docker` on WSL to `/tmp/share_host` on Docker, creating a shared directory between Ubuntu on WSL and Ubuntu on Docker.
 
 ```docker-compose
 services:
@@ -47,6 +47,7 @@ $ docker exec -it container_name bash
 
 6. Log in to PostgreSQL on Docker-Ubuntu.
 ```Command
+Switch to the postgres OS user
 # su - postgres
 $ psql -h localhost -p 5432 -U postgres
 ```
@@ -81,9 +82,9 @@ $ psql -h localhost -p 5432 -d db01 -U dbuser01
 ```
 
 ```SQL
-> SELECT current_schema();
+=> SELECT current_schema();
 `schema01` will be displayed.
-> quit
+=> \q
 ```
 
 11. Log out from Docker-Ubuntu.
@@ -101,13 +102,53 @@ You are now exited from Docker-Ubuntu.
     - USER: dbuser01
     - PASS: dbpass01
 
-
-13. Stop Docker.
+---
+- Docker stop command
 ```Command
 $ docker compose down
 ```
 
+- Docker start command
+```Command
+$ docker compose up -d
+```
 
+
+- Log in to the database on Ubuntu in Docker.
+```Command
+$ docker ps
+
+Copy the container name from the results (e.g., user01-postgres-1) and use the following command to log in to Ubuntu on Docker.
+$ docker exec -it container_name bash
+(Example: docker exec -it user01-postgres-1 bash)
+
+Switch to the postgres OS user.
+# su - postgres
+
+Log in to the database.
+$ psql -h localhost -p 5432 -d db01 -U dbuser01
+```
+
+---
+## Procedure to Execute SQL Files in psql on Docker
+
+1. Grant write permissions to the shared directory on WSL.
+
+```Command
+$ sudo chmod 777 /tmp/share_docker/
+```
+
+2. Copy the target SQL file to the Ubuntu directory on WSL.
+    - Use File Explorer to copy the SQL file to `\\wsl.localhost\Ubuntu\tmp\share_docker`.
+
+3. Log in to the database on Ubuntu in Docker and execute the SQL file.
+
+```SQL
+[Example]
+=> \i /tmp/share_host/example_data_create.sql
+```
+
+---
 ## Docker Image Recreation Commands
 
 ***This is normally an unnecessary procedure.***

@@ -1173,6 +1173,9 @@ const DomUtil = /** @lends DomUtil */ {
    * Get element value.<br>
    * <ul>
    * <li>Retrieves <code>value</code> attribute of <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>.</li>
+   * <li>If the target element has the <code>data-value-format-type</code> attribute that defines the value format type, retrieves the unformatted value using the corresponding method of <code>UnFrmUtil</code>.</li>
+   * <li>If the target element is a text box or text area, retrieves the value with tab characters, trailing blanks, and line break codes removed.</li>
+   * <li>If the target element is a checkbox, returns the value of the <code>value</code> attribute when checked, and retrieves the value of the <code>data-check-off-value</code> attribute when unchecked.</li>
    * <li>Returns <code>null</code> if argument is invalid.</li>
    * </ul>
    * @param {Element} elm Target element
@@ -1182,13 +1185,15 @@ const DomUtil = /** @lends DomUtil */ {
     if (!DomUtil.isExists(elm)) {
       return null;
     }
-    return ValUtil.nvl(elm.value);
+    const val = PageUtil._getElmUnFormatVal(elm);
+    return val;
   },
 
   /**
    * Set element value.<br>
    * <ul>
    * <li>Sets <code>value</code> attribute of <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>.</li>
+   * <li>If the target element has the <code>data-value-format-type</code> attribute that defines the value format type, sets the formatted value using the corresponding method of <code>FrmUtil</code>.</li>
    * <li>Returns <code>false</code> if argument is invalid.</li>
    * </ul>
    * @param {Element} elm Target element
@@ -1199,7 +1204,7 @@ const DomUtil = /** @lends DomUtil */ {
     if (!DomUtil.isExists(elm)) {
       return false;
     }
-    elm.value = ValUtil.nvl(value);
+    PageUtil._setElmFormatVal(elm, value);
     return true;
   },
 
@@ -1207,6 +1212,7 @@ const DomUtil = /** @lends DomUtil */ {
    * Get element text.<br>
    * <ul>
    * <li>Retrieves the element's <code>textContent</code>.</li>
+   * <li>If the target element has the <code>data-value-format-type</code> attribute that defines the value format type, retrieves the unformatted value using the corresponding method of <code>UnFrmUtil</code>.</li>
    * <li>Returns <code>null</code> if argument is invalid.</li>
    * </ul>
    * @param {Element} elm Target element
@@ -1216,13 +1222,15 @@ const DomUtil = /** @lends DomUtil */ {
     if (!DomUtil.isExists(elm)) {
       return null;
     }
-    return ValUtil.nvl(elm.textContent);
+    const val = PageUtil._getElmUnFormatVal(elm);
+    return val;
   },
 
   /**
    * Set element text.<br>
    * <ul>
    * <li>Sets the element's <code>textContent</code>.</li>
+   * <li>If the target element has the <code>data-value-format-type</code> attribute that defines the value format type, sets the formatted value using the corresponding method of <code>FrmUtil</code>.</li>
    * <li>Returns <code>false</code> if argument is invalid.</li>
    * </ul>
    * @param {Element} elm Target element
@@ -1233,7 +1241,7 @@ const DomUtil = /** @lends DomUtil */ {
     if (!DomUtil.isExists(elm)) {
       return false;
     }
-    elm.textContent = ValUtil.nvl(text);
+    PageUtil._setElmFormatVal(elm, text);
     return true;
   },
 
@@ -2307,7 +2315,7 @@ const PageUtil = /** @lends PageUtil */ {
       if (PageUtil._isTextType(elm)) {
         val = PageUtil._convPostVal(orgval);
       } else if (PageUtil._isTextArea(elm)) {
-        val = PageUtil._convPostVal(orgval);
+        val = PageUtil._convPostVal(orgval, true);
       } else {
         val = orgval;
       }
