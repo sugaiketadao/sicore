@@ -1,5 +1,7 @@
 # SICore Framework
 
+English | [Japanese](https://github.com/sugaiketadao/sicore-ja)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 SICore Framework is a lightweight Java framework designed to support **"programming beginners"** and **"AI-powered code generation"**.
