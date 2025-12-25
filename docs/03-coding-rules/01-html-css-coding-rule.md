@@ -36,18 +36,18 @@
     - [OK] `type="text"`
     - [NG] `type = "text"`
 - Do not add unnecessary line breaks before or after string literals within elements. When adding line breaks, do not add unnecessary indentation.
-```[OK]
-<label>[OK]<br>
-Do not add unnecessary line breaks before or after string literals within elements.<br>
-When adding line breaks, do not add unnecessary indentation.<label>
-```
-```[NG]
-<label>
-    [NG]<br>
+    ```[OK]
+    <label>[OK]<br>
     Do not add unnecessary line breaks before or after string literals within elements.<br>
-    When adding line breaks, do not add unnecessary indentation.
-<label>
-```
+    When adding line breaks, do not add unnecessary indentation.<label>
+    ```
+    ```[NG]
+    <label>
+        [NG]<br>
+        Do not add unnecessary line breaks before or after string literals within elements.<br>
+        When adding line breaks, do not add unnecessary indentation.
+    <label>
+    ```
 
 ## CSS Style
 - Use 2 space characters for indentation inside braces. Do not use tab characters.

@@ -32,7 +32,7 @@
 - Use `COUNT(*)` when counting all retrieved records. (Use `*` as the argument.)
 
 ## Writing Rules
-- Use `<>` for the negation operator.
+- Use `<>` instead of `!=` for the inequality operator.
 - Do not use implicit type conversion.
 - Write fixed values as literals in SQL without using bind variables.
 - Do not use `DISTINCT` when `GROUP BY` can be used.
@@ -45,7 +45,6 @@
 - Use uppercase for keywords and function names.
 - Use lowercase for database table names, database field names, and their aliases (other than keywords and function names).
 - Add a single space before and after operators (`+`, `-`, etc.), comparison operators (`=`, `<=`, etc.), and string operations (`||`).
-
 - Add a line break before the following:
     - `,` within `SELECT`, `GROUP BY`, `ORDER BY`, and `SET` clauses.
     - `FROM`, `WHERE`, `AND`, `OR`, `JOIN`, `LEFT JOIN`, `ON`.

@@ -47,6 +47,16 @@ public final class ValUtil {
   private static final DateTimeFormatter DTF_DATE =
       DateTimeFormatter.ofPattern("uuuuMMdd").withResolverStyle(ResolverStyle.STRICT);
 
+  /**
+   * Input-output map key check pattern.<br>
+   * <ul>
+   * <li>Allowed characters are as follows:
+   * <ul><li>Lowercase letters</li><li>Digits</li><li>Underscores</li><li>Hyphens</li><li>Dots</li></ul>
+   * </li>
+   * </ul>
+   */
+  private static final Pattern PATTERN_IO_KEY_CHECK = Pattern.compile("^[a-z0-9_.-]+$");
+
   /** Character set specification. */
   public enum CharSet {
     /** Character set specification - UTF-8. */
@@ -173,6 +183,45 @@ public final class ValUtil {
     return map.isEmpty();
   }
 
+
+  /**
+   * Checks input-output map key format.<br>
+   * <ul>
+   * <li>Checks whether the key contains only valid characters for input-output map keys.</li>
+   * <li>Allowed characters are as follows:
+   * <ul><li>Lowercase letters</li><li>Digits</li><li>Underscores</li><li>Hyphens</li><li>Dots</li></ul>
+   * </li>
+   * </ul>
+   *
+   * @param key the key to check
+   * @return <code>false</code> if contains invalid characters
+   */
+  public static boolean isValidIoKey(final String key) {
+    if (isBlank(key)) {
+      return false;
+    }
+    return PATTERN_IO_KEY_CHECK.matcher(key).matches();
+  }
+
+  /**
+   * Checks input-output map key format.<br>
+   * <ul>
+   * <li>Checks whether the key contains only valid characters for input-output map keys.</li>
+   * <li>Allowed characters are as follows:
+   * <ul><li>Lowercase letters</li><li>Digits</li><li>Underscores</li><li>Hyphens</li><li>Dots</li></ul>
+   * </li>
+   * <li>Throws <code>RuntimeException</code> if contains invalid characters.</li>
+   * </ul>
+   *
+   * @param key the key to check
+   */
+  public static void validateIoKey(final String key) {
+    if (!ValUtil.isValidIoKey(key)) {
+      throw new RuntimeException("Only lowercase letters, digits, underscores, hyphens, and dots are allowed. "
+                                + LogUtil.joinKeyVal("key", key));
+    }
+  }
+  
   /**
    * Replaces <code>null</code> with blank.<br>
    * <ul>

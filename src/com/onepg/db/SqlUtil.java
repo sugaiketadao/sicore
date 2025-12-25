@@ -72,13 +72,13 @@ public final class SqlUtil {
    * </ul>
    *
    * @param conn Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @return the row data map
    */
-  public static IoItems selectOneExists(final Connection conn, final SqlBuilder sqlBuilder) {
-    final IoItems retMap = selectFirstRec(conn, sqlBuilder, false);
+  public static IoItems selectOneExists(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
+    final IoItems retMap = selectFirstRec(conn, sqlWithParams, false);
     if (ValUtil.isNull(retMap)) {
-      throw new RuntimeException("No matching data exists. " + sqlBuilder.toString());
+      throw new RuntimeException("No matching data exists. " + sqlWithParams.toString());
     }
     return retMap;
   }
@@ -93,11 +93,11 @@ public final class SqlUtil {
    * </ul>
    *
    * @param conn       Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @return the row data map
    */
-  public static IoItems selectOne(final Connection conn, final SqlBuilder sqlBuilder) {
-    return selectFirstRec(conn, sqlBuilder, false);
+  public static IoItems selectOne(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
+    return selectFirstRec(conn, sqlWithParams, false);
   }
 
   /**
@@ -109,11 +109,11 @@ public final class SqlUtil {
    * </ul>
    *
    * @param conn       Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @return the row data map
    */
-  public static IoItems selectOneMultiIgnore(final Connection conn, final SqlBuilder sqlBuilder) {
-    return selectFirstRec(conn, sqlBuilder, true);
+  public static IoItems selectOneMultiIgnore(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
+    return selectFirstRec(conn, sqlWithParams, true);
   }
 
   /**
@@ -127,15 +127,15 @@ public final class SqlUtil {
    * </ul>
    *
    * @param conn            Database connection
-   * @param sqlBuilder      SQL builder
+   * @param sqlWithParams   SQL and parameters
    * @param multiDataIgnore <code>true</code> to not treat multiple records as an error
    * @return the row data map (may be <code>null</code>)
    */
-  private static IoItems selectFirstRec(final Connection conn, final SqlBuilder sqlBuilder,
+  private static IoItems selectFirstRec(final Connection conn, final AbstractSqlWithParameters sqlWithParams,
       final boolean multiDataIgnore) {
 
     // Bulk retrieval
-    final IoRows rows = selectBulkByLimitCount(conn, sqlBuilder, 1);
+    final IoRows rows = selectBulkByLimitCount(conn, sqlWithParams, 1);
     if (rows.size() <= 0) {
       // No data
       return null;
@@ -144,7 +144,7 @@ public final class SqlUtil {
     if (rows.isLimitOver()) {
       // More than one row retrieved
       if (!multiDataIgnore) {
-        throw new RuntimeException("Multiple records were retrieved. " + sqlBuilder.toString());
+        throw new RuntimeException("Multiple records were retrieved. " + sqlWithParams.toString());
       }
     }
     return rows.get(0);
@@ -157,15 +157,14 @@ public final class SqlUtil {
    * <li>Column physical names in the row map obtained from <code>SqlResultSet</code>
    * iterator are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * <li>Use in try clause (try-with-resources statement).</li>
-   * <li>This class sets the default fetch size to 500. Use <code>SqlBuilder#fetchAll()</code>
-   * to fetch all records.</li>
+   * <li>This class sets the default fetch size to 500. To fetch all records, use <code>SqlUtil#selectFetchAll(Connection, AbstractSqlWithParameters)</code>.</li>
    * <li>About fetch size per DBMS:
    * <ul>
    * <li>Oracle default is 10 records which is small, so fetch size is specified.</li>
    * <li>PostgreSQL default fetches all records which may cause OutOfMemory, so fetch size is specified.</li>
    * <li>In PostgreSQL, if fetch size is specified (not fetching all), updated retrieved data,
    * and intermediate commit, cursor invalid error (SQLSTATE 34000) occurs. In that case,
-   * stop intermediate commits or fetch all records. (See <code>SqlUtil#selectFetchAll(Connection, SqlBuilder)</code>)<br>
+   * stop intermediate commits or fetch all records.<br>
    * Alternatively, though more complex, data can be retrieved in chunks using SQL LIMIT clause.</li>
    * <li>In MS-SqlServer, fetch size may not work as specified, so if OutOfMemory is possible,
    * data must be retrieved in chunks using SQL LIMIT clause.</li>
@@ -184,11 +183,11 @@ public final class SqlUtil {
    * </pre>
    *
    * @param conn       Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @return the SQL result set
    */
-  public static SqlResultSet select(final Connection conn, final SqlBuilder sqlBuilder) {
-    return selectByFetchSize(conn, sqlBuilder, DEFAULT_FETCH_SIZE);
+  public static SqlResultSet select(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
+    return selectByFetchSize(conn, sqlWithParams, DEFAULT_FETCH_SIZE);
   }
 
   /**
@@ -199,13 +198,13 @@ public final class SqlUtil {
    * <li>Retrieving a large number of records with this method may cause memory errors.</li>
    * </ul>
    * 
-   * @see #select(Connection, SqlBuilder)
+   * @see #select(Connection, AbstractSqlWithParameters)
    * @param conn       Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @return the SQL result set
    */
-  public static SqlResultSet selectFetchAll(final Connection conn, final SqlBuilder sqlBuilder) {
-    return selectByFetchSize(conn, sqlBuilder, 0);
+  public static SqlResultSet selectFetchAll(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
+    return selectByFetchSize(conn, sqlWithParams, 0);
   }
 
   /**
@@ -214,19 +213,19 @@ public final class SqlUtil {
    * <li>Returns a multiple row list.</li>
    * <li>Returns a list with size zero if zero records are returned.</li>
    * <li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-   * <li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
+   * <li>This method consumes memory, so use <code>#select(Connection, AbstractSqlWithParameters)</code>
    * for loop processing.</li>
    * <li>Retrieving a large number of records with this method may cause memory errors.</li>
    * </ul>
    *
    * @param conn       Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @param limitCount Maximum number of records to retrieve
    * @return the multiple row list
    */
-  public static IoRows selectBulk(final Connection conn, final SqlBuilder sqlBuilder,
+  public static IoRows selectBulk(final Connection conn, final AbstractSqlWithParameters sqlWithParams,
       final int limitCount) {
-    return selectBulkByLimitCount(conn, sqlBuilder, limitCount);
+    return selectBulkByLimitCount(conn, sqlWithParams, limitCount);
   }
 
   /**
@@ -235,28 +234,28 @@ public final class SqlUtil {
    * <li>Returns a multiple row list.</li>
    * <li>Returns a list with size zero if zero records are returned.</li>
    * <li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-   * <li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
+   * <li>This method consumes memory, so use <code>#select(Connection, AbstractSqlWithParameters)</code>
    * for loop processing.</li>
    * <li>Retrieving a large number of records with this method may cause memory errors.</li>
    * </ul>
    *
    * @param conn       Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @return the multiple row list
    */
-  public static IoRows selectBulkAll(final Connection conn, final SqlBuilder sqlBuilder) {
-    return selectBulkByLimitCount(conn, sqlBuilder, 0);
+  public static IoRows selectBulkAll(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
+    return selectBulkByLimitCount(conn, sqlWithParams, 0);
   }
 
   /**
    * Gets multiple records in bulk.
    * 
    * @param conn Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @param limitCount Maximum number of records to retrieve (retrieves all if zero or less)
    * @return the multiple row list
    */
-  private static IoRows selectBulkByLimitCount(final Connection conn, final SqlBuilder sqlBuilder,
+  private static IoRows selectBulkByLimitCount(final Connection conn, final AbstractSqlWithParameters sqlWithParams,
       final int limitCount) {
     // Fetch size
     final int fetchSize;
@@ -270,7 +269,7 @@ public final class SqlUtil {
     }
 
     final IoRows rows = new IoRows();
-    try (final SqlResultSet rSet = SqlUtil.selectByFetchSize(conn, sqlBuilder, fetchSize);) {
+    try (final SqlResultSet rSet = SqlUtil.selectByFetchSize(conn, sqlWithParams, fetchSize);) {
       final Iterator<IoItems> ite = rSet.iterator();
       while (ite.hasNext()) {
         final IoItems row = ite.next();
@@ -297,19 +296,19 @@ public final class SqlUtil {
    * Gets multiple records with specified fetch size.
    *
    * @param conn Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @param fetchSize Fetch size
    * @return the SQL result set
    */
-  private static SqlResultSet selectByFetchSize(final Connection conn, final SqlBuilder sqlBuilder,
+  private static SqlResultSet selectByFetchSize(final Connection conn, final AbstractSqlWithParameters sqlWithParams,
       final int fetchSize) {
         
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
-    final String sql = sqlBuilder.getSql();
-    final List<Object> params = sqlBuilder.getParameters();
+    final String sql = sqlWithParams.getSql();
+    final List<Object> params = sqlWithParams.getParameters();
     if (logger.isDevelopMode()) {
       // Output SQL log
-      logger.develop("SQL#SELECT execution. " + LogUtil.joinKeyVal("sql", sqlBuilder, "fetchSize", fetchSize));
+      logger.develop("SQL#SELECT execution. " + LogUtil.joinKeyVal("sql", sqlWithParams, "fetchSize", fetchSize));
     }
 
     try {
@@ -334,7 +333,7 @@ public final class SqlUtil {
 
     } catch (SQLException e) {
       throw new RuntimeException("Exception error occurred during data retrieval. " + LogUtil.joinKeyVal("sql",
-          sqlBuilder, "fetchSize", fetchSize), e);
+          sqlWithParams, "fetchSize", fetchSize), e);
     }
   }
 
@@ -869,13 +868,13 @@ public final class SqlUtil {
    * </ul>
    *
    * @param conn       Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @return <code>true</code> if affected count is one record, <code>false</code> if zero records
    */
-  public static boolean executeOne(final Connection conn, final SqlBuilder sqlBuilder) {
-    final int ret = execute(conn, sqlBuilder);
+  public static boolean executeOne(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
+    final int ret = execute(conn, sqlWithParams);
     if (ret > 1) {
-      throw new RuntimeException("Multiple records were affected. " + LogUtil.joinKeyVal("sql", sqlBuilder));
+      throw new RuntimeException("Multiple records were affected. " + LogUtil.joinKeyVal("sql", sqlWithParams));
     }
     return (ret == 1);
   }
@@ -884,14 +883,14 @@ public final class SqlUtil {
    * SQL insert/update/delete.
    *
    * @param conn Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @return the affected count
    */
-  public static int execute(final Connection conn, final SqlBuilder sqlBuilder) {
+  public static int execute(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
     try {
-      return executeSql(conn, sqlBuilder);
+      return executeSql(conn, sqlWithParams);
     } catch (SQLException e) {
-      throw new RuntimeException("Exception error occurred during SQL execution. " + LogUtil.joinKeyVal("sql", sqlBuilder), e);
+      throw new RuntimeException("Exception error occurred during SQL execution. " + LogUtil.joinKeyVal("sql", sqlWithParams), e);
     }
   }
 
@@ -899,22 +898,22 @@ public final class SqlUtil {
    * Executes SQL builder.
    *
    * @param conn Database connection
-   * @param sqlBuilder SQL builder
+   * @param sqlWithParams SQL and parameters
    * @return the affected count
    * @throws SQLException SQL exception error
    */
-  private static int executeSql(final Connection conn, final SqlBuilder sqlBuilder)
+  private static int executeSql(final Connection conn, final AbstractSqlWithParameters sqlWithParams)
       throws SQLException {
         
     if (logger.isDevelopMode()) {
       // Output SQL log
-      logger.develop("SQL#EXECUTE execution. " + LogUtil.joinKeyVal("sql", sqlBuilder));
+      logger.develop("SQL#EXECUTE execution. " + LogUtil.joinKeyVal("sql", sqlWithParams));
     }
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
     // Create statement
-    try (final PreparedStatement stmt = conn.prepareStatement(sqlBuilder.getSql());) {
+    try (final PreparedStatement stmt = conn.prepareStatement(sqlWithParams.getSql());) {
       // Set parameters to statement
-      setStmtParameters(stmt, sqlBuilder.getParameters(), dbmsName);
+      setStmtParameters(stmt, sqlWithParams.getParameters(), dbmsName);
       // Execute SQL
       final int ret = stmt.executeUpdate();
       return ret;

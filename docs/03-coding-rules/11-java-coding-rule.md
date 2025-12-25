@@ -62,13 +62,13 @@
     - [Example] `for (int i = 0; i < list.length; i++)`
 - Use `java.lang.StringBuilder` class when concatenating strings multiple times.
 - Declare classes that extend `java.lang.AutoCloseable` or `java.io.Closeable` in `try` clauses (try-with-resources statements). Calling the `close` method is not required.
-```try clause declaration [Example]
-try (final TxtReader tr = new TxtReader(filePath, ValUtil.UTF8);) {
-  for (final String line : tr) {
-    :
-  }
-}
-```
+    ```java
+    try (final TxtReader tr = new TxtReader(filePath, ValUtil.UTF8);) {
+      for (final String line : tr) {
+        :
+      }
+    }
+    ```
 - Prohibit the use of `System.out`.
 - Prohibit catching subclasses of `java.lang.Exception` (hereinafter referred to as error classes) in module processing.
 - Prioritize readability of diffs during modifications; prohibit the use of ternary operators, lambda expressions `->`, method references `::`, and Stream API method chaining.
@@ -84,23 +84,22 @@ try (final TxtReader tr = new TxtReader(filePath, ValUtil.UTF8);) {
 - The logic for throwing errors on unexpected arguments or database values is as follows:
     - The `else` clause of expected `if`, `else if` statements (same applies to `default` clause in `case` statements).
     - `if` statements that check for unexpected conditions.
+    ```java
+    [Example 1]
+    if (ValUtil.equals(kbn, "1")) {
+      // Expected
+    } else if (ValUtil.equals(kbn, "2")) {
+      // Expected
+    } else {
+      throw new RuntimeException("Unexpected category. " + LogUtil.joinKeyVal("category value", kbn));
+    }
 
-```Unexpected case logic
-[Example 1]
-if (ValUtil.equals(kbn, "1")) {
-    // Expected
-} else if (ValUtil.equals(kbn, "2")) {
-    // Expected
-} else {
-    throw new RuntimeException("Unexpected category. " + LogUtil.joinKeyVal("category value", kbn));
-}
-
-[Example 2]
-if (!ValUtil.isDate(beforDate)) {
-  // Unexpected
-  throw new RuntimeException("Previous date is invalid. " + LogUtil.joinKeyVal("date", beforDate));
-}
-```
+    [Example 2]
+    if (!ValUtil.isDate(beforDate)) {
+      // Unexpected
+      throw new RuntimeException("Previous date is invalid. " + LogUtil.joinKeyVal("date", beforDate));
+    }
+    ```
 
 - Use the following database retrieval methods of this framework's `com.onepg.util.SqlUtil` to throw errors in unexpected cases:
     - `SqlUtil#selectOneExists`: Throws an error when zero or multiple records are retrieved.
@@ -119,6 +118,22 @@ if (!ValUtil.isDate(beforDate)) {
     - Before and after all operators (`+`, `=`, `!==`, `&&`, etc.). However, increment and decrement operators are excluded.
     - Between commas, colons, semicolons and the string that follows.
 - Target approximately 100 characters per line excluding indentation; wrap lines if they exceed this. Do not wrap unnecessarily if lines are shorter.
+- Actively use text blocks ("""...""") for multi-line strings. ***Only for JDK 15 or later***
+    ```java
+    sb.addQuery("SELECT ");
+    sb.addQuery("  u.user_nm ");
+    sb.addQuery(", u.email ");
+    sb.addQuery(" FROM t_user u ");
+    sb.addQuery(" WHERE u.user_id = ? ", io.getString("user_id"));
+    ↓
+    sb.addQuery("""
+      SELECT
+        u.user_nm
+      , u.email
+      FROM t_user u
+    """);
+    sb.addQuery(" WHERE u.user_id = ? ", io.getString("user_id"));
+    ```
 
 ## Comments
 - Do not comment out logic; delete it instead. If there are important notes, leave only those notes as comments.
@@ -140,12 +155,12 @@ if (!ValUtil.isDate(beforDate)) {
         - Write `@return` tags in the format "@return description".
         - If `null` may be returned, add "(nullable)" at the end of the "description".
 - Add `{@inheritDoc}` to implementations of abstract methods. JavaDoc with only `{@inheritDoc}` is acceptable.
-``` Abstract method implementation JavaDoc example
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-```
+    ```java
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    ```
 - Use `@see` tags to reference JavaDoc of other Java classes or methods.
 - Enclose sample code in text with `<pre><code>`. Use only `<code>` for short one-line code.
 - Also enclose the following names with `<code>`:

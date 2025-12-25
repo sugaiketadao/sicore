@@ -25,6 +25,33 @@
       <div class="class-description">
         <h3>Description</h3>
         <div>I/O field group map class.<br>
+
+<ul>
+<li>A map class with typed value retrieval and storage methods.</li>
+<li>Internally stores values as strings.</li>
+<li>Preserves insertion order of values.</li>
+<li>Extends Map&lt;String, String&gt; for versatility.</li>
+<li>Can be made read-only via constructor parameter.</li>
+<li>Basic rules and restrictions:
+<ul>
+<li>Keys are limited to lowercase letters, digits, underscores, hyphens, and dots only.<br>
+(Only characters valid in JSON, and lowercase letters to eliminate DBMS differences)</li>
+<li>In principle, value retrieval methods do not return <code>null</code>.</li>
+<li>To retrieve <code>null</code>, use an explicit method [e.g.] <code>#getStringNullable(String)</code>.</li>
+<li>In principle, retrieving a value with a non-existent key causes a runtime error.</li>
+<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>,
+or use an explicit method that specifies a default value [e.g.] <code>#getStringOrDefault(String, String)</code>.</li>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>To store with a potentially existing key, use an explicit method [e.g.] <code>#putForce(String, String)</code>.</li>
+<li>To explicitly store <code>null</code>, also use an explicit method [e.g.] <code>#putNull(String)</code>.</li>
+<li>Unlike regular maps, results of <code>#keySet()</code>, <code>#entrySet()</code>, and <code>#values()</code>
+are read-only.<br>
+(Keys are managed separately internally, and removing from results would break consistency)</li>
+<li>Timestamps are stored with up to 6 fractional digits.</li>
+</ul>
+</ul>
+<br>
+
 <ul>
 <li>Can input/output CSV.</li>
 <li>Can input/output JSON.</li>

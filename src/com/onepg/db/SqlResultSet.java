@@ -19,7 +19,7 @@ import java.util.Map;
  * <li>The column physical names in the row map obtained from this class's iterator are lowercase letters. (Keys of <code>IoItems</code>)</li>
  * </ul>
  * 
- * @see SqlUtil#select(java.sql.Connection, SqlBuilder)
+ * @see SqlUtil#select(java.sql.Connection, AbstractSqlWithParameters)
  */
 public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
 

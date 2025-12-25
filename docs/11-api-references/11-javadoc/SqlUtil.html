@@ -32,7 +32,7 @@
       <div class="method" id="selectOneExists">
         <h3 class="method-name">selectOneExists</h3>
         <div class="method-signature">
-          <code>public IoItems selectOneExists(Connection conn, SqlBuilder sqlBuilder)</code>
+          <code>public IoItems selectOneExists(Connection conn, AbstractSqlWithParameters sqlWithParams)</code>
         </div>
         <div class="method-description">
           Gets one record (error if zero records).<br>
@@ -60,9 +60,9 @@
                 <td>Database connection</td>
               </tr>
               <tr>
-                <td><code>sqlBuilder</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>sqlWithParams</code></td>
+                <td><code>AbstractSqlWithParameters</code></td>
+                <td>SQL and parameters</td>
               </tr>
             </tbody>
           </table>
@@ -75,7 +75,7 @@
       <div class="method" id="selectOne">
         <h3 class="method-name">selectOne</h3>
         <div class="method-signature">
-          <code>public IoItems selectOne(Connection conn, SqlBuilder sqlBuilder)</code>
+          <code>public IoItems selectOne(Connection conn, AbstractSqlWithParameters sqlWithParams)</code>
         </div>
         <div class="method-description">
           Gets one record.<br>
@@ -104,9 +104,9 @@
                 <td>Database connection</td>
               </tr>
               <tr>
-                <td><code>sqlBuilder</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>sqlWithParams</code></td>
+                <td><code>AbstractSqlWithParameters</code></td>
+                <td>SQL and parameters</td>
               </tr>
             </tbody>
           </table>
@@ -119,7 +119,7 @@
       <div class="method" id="selectOneMultiIgnore">
         <h3 class="method-name">selectOneMultiIgnore</h3>
         <div class="method-signature">
-          <code>public IoItems selectOneMultiIgnore(Connection conn, SqlBuilder sqlBuilder)</code>
+          <code>public IoItems selectOneMultiIgnore(Connection conn, AbstractSqlWithParameters sqlWithParams)</code>
         </div>
         <div class="method-description">
           Gets one record (multiple records OK).<br>
@@ -147,9 +147,9 @@
                 <td>Database connection</td>
               </tr>
               <tr>
-                <td><code>sqlBuilder</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>sqlWithParams</code></td>
+                <td><code>AbstractSqlWithParameters</code></td>
+                <td>SQL and parameters</td>
               </tr>
             </tbody>
           </table>
@@ -162,7 +162,7 @@
       <div class="method" id="select">
         <h3 class="method-name">select</h3>
         <div class="method-signature">
-          <code>public SqlResultSet select(Connection conn, SqlBuilder sqlBuilder)</code>
+          <code>public SqlResultSet select(Connection conn, AbstractSqlWithParameters sqlWithParams)</code>
         </div>
         <div class="method-description">
           Gets multiple records.<br>
@@ -171,15 +171,14 @@
 <li>Column physical names in the row map obtained from <code>SqlResultSet</code>
 iterator are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
 <li>Use in try clause (try-with-resources statement).</li>
-<li>This class sets the default fetch size to 500. Use <code>SqlBuilder#fetchAll()</code>
-to fetch all records.</li>
+<li>This class sets the default fetch size to 500. To fetch all records, use <code>SqlUtil#selectFetchAll(Connection, AbstractSqlWithParameters)</code>.</li>
 <li>About fetch size per DBMS:
 <ul>
 <li>Oracle default is 10 records which is small, so fetch size is specified.</li>
 <li>PostgreSQL default fetches all records which may cause OutOfMemory, so fetch size is specified.</li>
 <li>In PostgreSQL, if fetch size is specified (not fetching all), updated retrieved data,
 and intermediate commit, cursor invalid error (SQLSTATE 34000) occurs. In that case,
-stop intermediate commits or fetch all records. (See <code>SqlUtil#selectFetchAll(Connection, SqlBuilder)</code>)<br>
+stop intermediate commits or fetch all records.<br>
 Alternatively, though more complex, data can be retrieved in chunks using SQL LIMIT clause.</li>
 <li>In MS-SqlServer, fetch size may not work as specified, so if OutOfMemory is possible,
 data must be retrieved in chunks using SQL LIMIT clause.</li>
@@ -215,9 +214,9 @@ data must be retrieved in chunks using SQL LIMIT clause.</li>
                 <td>Database connection</td>
               </tr>
               <tr>
-                <td><code>sqlBuilder</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>sqlWithParams</code></td>
+                <td><code>AbstractSqlWithParameters</code></td>
+                <td>SQL and parameters</td>
               </tr>
             </tbody>
           </table>
@@ -230,7 +229,7 @@ data must be retrieved in chunks using SQL LIMIT clause.</li>
       <div class="method" id="selectFetchAll">
         <h3 class="method-name">selectFetchAll</h3>
         <div class="method-signature">
-          <code>public SqlResultSet selectFetchAll(Connection conn, SqlBuilder sqlBuilder)</code>
+          <code>public SqlResultSet selectFetchAll(Connection conn, AbstractSqlWithParameters sqlWithParams)</code>
         </div>
         <div class="method-description">
           Gets multiple records (fetch all).<br>
@@ -258,9 +257,9 @@ data must be retrieved in chunks using SQL LIMIT clause.</li>
                 <td>Database connection</td>
               </tr>
               <tr>
-                <td><code>sqlBuilder</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>sqlWithParams</code></td>
+                <td><code>AbstractSqlWithParameters</code></td>
+                <td>SQL and parameters</td>
               </tr>
             </tbody>
           </table>
@@ -272,14 +271,14 @@ data must be retrieved in chunks using SQL LIMIT clause.</li>
         <div class="see-also">
           <h4>See Also</h4>
           <ul>
-            <li><a href="#select">#select(Connection, SqlBuilder)</a></li>
+            <li><a href="#select">#select(Connection, AbstractSqlWithParameters)</a></li>
           </ul>
         </div>
       </div>
       <div class="method" id="selectBulk">
         <h3 class="method-name">selectBulk</h3>
         <div class="method-signature">
-          <code>public IoRows selectBulk(Connection conn, SqlBuilder sqlBuilder, int limitCount)</code>
+          <code>public IoRows selectBulk(Connection conn, AbstractSqlWithParameters sqlWithParams, int limitCount)</code>
         </div>
         <div class="method-description">
           Gets multiple records in bulk.<br>
@@ -287,7 +286,7 @@ data must be retrieved in chunks using SQL LIMIT clause.</li>
 <li>Returns a multiple row list.</li>
 <li>Returns a list with size zero if zero records are returned.</li>
 <li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
+<li>This method consumes memory, so use <code>#select(Connection, AbstractSqlWithParameters)</code>
 for loop processing.</li>
 <li>Retrieving a large number of records with this method may cause memory errors.</li>
 </ul>
@@ -310,9 +309,9 @@ for loop processing.</li>
                 <td>Database connection</td>
               </tr>
               <tr>
-                <td><code>sqlBuilder</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>sqlWithParams</code></td>
+                <td><code>AbstractSqlWithParameters</code></td>
+                <td>SQL and parameters</td>
               </tr>
               <tr>
                 <td><code>limitCount</code></td>
@@ -330,7 +329,7 @@ for loop processing.</li>
       <div class="method" id="selectBulkAll">
         <h3 class="method-name">selectBulkAll</h3>
         <div class="method-signature">
-          <code>public IoRows selectBulkAll(Connection conn, SqlBuilder sqlBuilder)</code>
+          <code>public IoRows selectBulkAll(Connection conn, AbstractSqlWithParameters sqlWithParams)</code>
         </div>
         <div class="method-description">
           Gets multiple records in bulk (all records).<br>
@@ -338,7 +337,7 @@ for loop processing.</li>
 <li>Returns a multiple row list.</li>
 <li>Returns a list with size zero if zero records are returned.</li>
 <li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
+<li>This method consumes memory, so use <code>#select(Connection, AbstractSqlWithParameters)</code>
 for loop processing.</li>
 <li>Retrieving a large number of records with this method may cause memory errors.</li>
 </ul>
@@ -361,9 +360,9 @@ for loop processing.</li>
                 <td>Database connection</td>
               </tr>
               <tr>
-                <td><code>sqlBuilder</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>sqlWithParams</code></td>
+                <td><code>AbstractSqlWithParameters</code></td>
+                <td>SQL and parameters</td>
               </tr>
             </tbody>
           </table>
@@ -835,7 +834,7 @@ if timestamp exclusive control is not needed.</li>
       <div class="method" id="executeOne">
         <h3 class="method-name">executeOne</h3>
         <div class="method-signature">
-          <code>public boolean executeOne(Connection conn, SqlBuilder sqlBuilder)</code>
+          <code>public boolean executeOne(Connection conn, AbstractSqlWithParameters sqlWithParams)</code>
         </div>
         <div class="method-description">
           SQL insert/update/delete one record.<br>
@@ -861,9 +860,9 @@ if timestamp exclusive control is not needed.</li>
                 <td>Database connection</td>
               </tr>
               <tr>
-                <td><code>sqlBuilder</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>sqlWithParams</code></td>
+                <td><code>AbstractSqlWithParameters</code></td>
+                <td>SQL and parameters</td>
               </tr>
             </tbody>
           </table>
@@ -876,7 +875,7 @@ if timestamp exclusive control is not needed.</li>
       <div class="method" id="execute">
         <h3 class="method-name">execute</h3>
         <div class="method-signature">
-          <code>public int execute(Connection conn, SqlBuilder sqlBuilder)</code>
+          <code>public int execute(Connection conn, AbstractSqlWithParameters sqlWithParams)</code>
         </div>
         <div class="method-description">
           SQL insert/update/delete.
@@ -899,9 +898,9 @@ if timestamp exclusive control is not needed.</li>
                 <td>Database connection</td>
               </tr>
               <tr>
-                <td><code>sqlBuilder</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>sqlWithParams</code></td>
+                <td><code>AbstractSqlWithParameters</code></td>
+                <td>SQL and parameters</td>
               </tr>
             </tbody>
           </table>

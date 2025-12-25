@@ -18,8 +18,8 @@ Unlike heavyweight frameworks, SICore eliminates annotations and complex configu
 - **JSON-Centric Design**: Uses only JSON for communication between browser and server. No template engine is used; HTML is treated as static files.
 - **Minimal Dependencies**: Minimizes dependencies on external libraries. No Tomcat required. (Runs on standard JDK APIs only)
 - **URL = Class Name**: No routing configuration needed. URLs are directly mapped to the Java classes to be executed.
-  - URL: `/services/ordermng/OrderListSearch`
-  - Class: `com.example.app.service.ordermng.OrderListSearch`
+  - URL: `/services/exmodule/ExampleListSearch`
+  - Class: `com.example.app.service.exmodule.ExampleListSearch`
 - **Annotation-Free**: Eliminates annotations that tend to obscure processing details. This makes code execution flow easier to trace.
 
 ### 2. Robust Data Handling
@@ -152,9 +152,7 @@ Enter the following prompt in Copilot Chat:
 ---
 ## 💬 Contributing
 
-This project is currently under development, so **pull requests are not accepted at this time**.
-
-However, bug reports and feedback are welcome! Please create an [Issue](../../issues) to share your thoughts.
+This project is currently under development, so **pull requests are not accepted at this time**. However, bug reports and feedback are welcome! Please create an [Issue](../../issues) to share your thoughts.
 
 ## 💖 Sponsors
 

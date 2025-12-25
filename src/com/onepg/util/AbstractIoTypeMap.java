@@ -11,7 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * I/O variable type map base class.<br>
@@ -42,8 +41,6 @@ import java.util.regex.Pattern;
  */
 public abstract class AbstractIoTypeMap implements Map<String, String> {
 
-  /** Pattern to check if only lowercase letters, digits, underscores, hyphens, and dots. */
-  private static final Pattern PATTERN_KEY_CHECK = Pattern.compile("^[a-z0-9_.-]+$");
   /** Value storage map. */
   private final Map<String, String> valMap;
   /** All key set (used for key existence check including keys outside value storage map). */
@@ -131,13 +128,7 @@ public abstract class AbstractIoTypeMap implements Map<String, String> {
    * @param key key
    */
   protected final void validateKey(final String key) {
-    if (ValUtil.isBlank(key)) {
-      throw new RuntimeException("Key is blank. ");
-    }
-    if (!PATTERN_KEY_CHECK.matcher(key).matches()) {
-      throw new RuntimeException("Only lowercase letters, digits, underscores, hyphens, and dots are allowed. "
-                                + LogUtil.joinKeyVal("key", key));
-    }
+    ValUtil.validateIoKey(key);
   }
 
   /**

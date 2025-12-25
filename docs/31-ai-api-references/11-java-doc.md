@@ -69,6 +69,39 @@ protected String putVal(String key, String value, boolean canOverwrite)
 
 **Returns**: `String`
 
+## AbstractSqlWithParameters (Abstract Class)
+
+**Package**: com.onepg.db
+
+### Methods
+
+#### addSql
+
+```
+protected void addSql(String sql)
+```
+
+**Parameters**:
+- `sql`: `String`
+
+#### addParameters
+
+```
+protected void addParameters(Object... params)
+```
+
+**Parameters**:
+- `params`: `Object...`
+
+#### addParametersList
+
+```
+protected void addParametersList(List<Object> params)
+```
+
+**Parameters**:
+- `params`: `List<Object>`
+
 ## AbstractWebService (Abstract Class)
 
 **Package**: com.onepg.web
@@ -2342,6 +2375,21 @@ public int length()
 
 **Returns**: `int`
 
+#### deleteLastChar
+
+```
+public void deleteLastChar(int deleteCharCount)
+```
+
+**Parameters**:
+- `deleteCharCount`: `int`
+
+#### clearParameters
+
+```
+public void clearParameters()
+```
+
 #### addSqlBuilder
 
 ```
@@ -2385,10 +2433,10 @@ public SqlBuilder addListInBind(List<Object> params)
 
 **Returns**: `SqlBuilder`
 
-#### addQueryWithParamNotBlank
+#### addQueryIfNotBlankParameter
 
 ```
-public SqlBuilder addQueryWithParamNotBlank(String sql, Object param)
+public SqlBuilder addQueryIfNotBlankParameter(String sql, Object param)
 ```
 
 **Parameters**:
@@ -2408,21 +2456,6 @@ public SqlBuilder addQnotB(String sql, Object param)
 - `param`: `Object`
 
 **Returns**: `SqlBuilder`
-
-#### deleteLastChar
-
-```
-public void deleteLastChar(int deleteCharCount)
-```
-
-**Parameters**:
-- `deleteCharCount`: `int`
-
-#### clearParameters
-
-```
-public void clearParameters()
-```
 
 ## SqlResultSet
 
@@ -2493,72 +2526,72 @@ public IoItems next()
 #### selectOneExists
 
 ```
-public IoItems selectOneExists(Connection conn, SqlBuilder sqlBuilder)
+public IoItems selectOneExists(Connection conn, AbstractSqlWithParameters sqlWithParams)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sqlBuilder`: `SqlBuilder`
+- `sqlWithParams`: `AbstractSqlWithParameters`
 
 **Returns**: `IoItems`
 
 #### selectOne
 
 ```
-public IoItems selectOne(Connection conn, SqlBuilder sqlBuilder)
+public IoItems selectOne(Connection conn, AbstractSqlWithParameters sqlWithParams)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sqlBuilder`: `SqlBuilder`
+- `sqlWithParams`: `AbstractSqlWithParameters`
 
 **Returns**: `IoItems`
 
 #### selectOneMultiIgnore
 
 ```
-public IoItems selectOneMultiIgnore(Connection conn, SqlBuilder sqlBuilder)
+public IoItems selectOneMultiIgnore(Connection conn, AbstractSqlWithParameters sqlWithParams)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sqlBuilder`: `SqlBuilder`
+- `sqlWithParams`: `AbstractSqlWithParameters`
 
 **Returns**: `IoItems`
 
 #### select
 
 ```
-public SqlResultSet select(Connection conn, SqlBuilder sqlBuilder)
+public SqlResultSet select(Connection conn, AbstractSqlWithParameters sqlWithParams)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sqlBuilder`: `SqlBuilder`
+- `sqlWithParams`: `AbstractSqlWithParameters`
 
 **Returns**: `SqlResultSet`
 
 #### selectFetchAll
 
 ```
-public SqlResultSet selectFetchAll(Connection conn, SqlBuilder sqlBuilder)
+public SqlResultSet selectFetchAll(Connection conn, AbstractSqlWithParameters sqlWithParams)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sqlBuilder`: `SqlBuilder`
+- `sqlWithParams`: `AbstractSqlWithParameters`
 
 **Returns**: `SqlResultSet`
 
 #### selectBulk
 
 ```
-public IoRows selectBulk(Connection conn, SqlBuilder sqlBuilder, int limitCount)
+public IoRows selectBulk(Connection conn, AbstractSqlWithParameters sqlWithParams, int limitCount)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sqlBuilder`: `SqlBuilder`
+- `sqlWithParams`: `AbstractSqlWithParameters`
 - `limitCount`: `int`
 
 **Returns**: `IoRows`
@@ -2566,12 +2599,12 @@ public IoRows selectBulk(Connection conn, SqlBuilder sqlBuilder, int limitCount)
 #### selectBulkAll
 
 ```
-public IoRows selectBulkAll(Connection conn, SqlBuilder sqlBuilder)
+public IoRows selectBulkAll(Connection conn, AbstractSqlWithParameters sqlWithParams)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sqlBuilder`: `SqlBuilder`
+- `sqlWithParams`: `AbstractSqlWithParameters`
 
 **Returns**: `IoRows`
 
@@ -2691,24 +2724,24 @@ public int delete(Connection conn, String tableName, AbstractIoTypeMap params, S
 #### executeOne
 
 ```
-public boolean executeOne(Connection conn, SqlBuilder sqlBuilder)
+public boolean executeOne(Connection conn, AbstractSqlWithParameters sqlWithParams)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sqlBuilder`: `SqlBuilder`
+- `sqlWithParams`: `AbstractSqlWithParameters`
 
 **Returns**: `boolean`
 
 #### execute
 
 ```
-public int execute(Connection conn, SqlBuilder sqlBuilder)
+public int execute(Connection conn, AbstractSqlWithParameters sqlWithParams)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sqlBuilder`: `SqlBuilder`
+- `sqlWithParams`: `AbstractSqlWithParameters`
 
 **Returns**: `int`
 
@@ -2897,6 +2930,26 @@ public boolean isEmpty(Map<?, ?> map)
 - `map`: `Map<?, ?>`
 
 **Returns**: `boolean`
+
+#### isValidIoKey
+
+```
+public boolean isValidIoKey(String key)
+```
+
+**Parameters**:
+- `key`: `String`
+
+**Returns**: `boolean`
+
+#### validateIoKey
+
+```
+public void validateIoKey(String key)
+```
+
+**Parameters**:
+- `key`: `String`
 
 #### nvl
 
