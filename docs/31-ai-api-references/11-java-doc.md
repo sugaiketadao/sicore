@@ -93,10 +93,10 @@ protected void addParameters(Object... params)
 **Parameters**:
 - `params`: `Object...`
 
-#### addParametersList
+#### addParameters
 
 ```
-protected void addParametersList(List<Object> params)
+protected void addParameters(List<Object> params)
 ```
 
 **Parameters**:
