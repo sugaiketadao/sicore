@@ -34,7 +34,7 @@
 ## Writing Rules
 - Use `<>` instead of `!=` for the inequality operator.
 - Do not use implicit type conversion.
-- Write fixed values as literals in SQL without using bind variables.
+- Write fixed values as SQL literals without using SQL bind variables `?`.
 - Do not use `DISTINCT` when `GROUP BY` can be used.
 - Do not use `COALESCE` for fields that do not contain `null`.
 - Do not use subqueries where they are not necessary.

@@ -45,6 +45,13 @@ public final class SqlUtil {
       DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSSSSS").withResolverStyle(ResolverStyle.STRICT);
 
   /**
+   * SQL to avoid ORACLE protocol violation.<br>
+   * <a href="https://support.oracle.com/knowledge/Middleware/2707017_1.html">support.oracle.com (reference)</a>
+   */
+  public static final String ORACLE_PROTOCOL_ERR_AVOID_SQL =
+      " /* protocol error avoidance */ FETCH FIRST 99999999 ROWS ONLY ";
+
+  /**
    * Database column class type.<br>
    * <ul>
    * <li>Indicates the Java variable class corresponding to the database column type.</li>
@@ -72,13 +79,13 @@ public final class SqlUtil {
    * </ul>
    *
    * @param conn Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param sb SQL builder
    * @return the row data map
    */
-  public static IoItems selectOneExists(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
-    final IoItems retMap = selectFirstRec(conn, sqlWithParams, false);
+  public static IoItems selectOneExists(final Connection conn, final SqlBuilder sb) {
+    final IoItems retMap = selectFirstRec(conn, sb, false);
     if (ValUtil.isNull(retMap)) {
-      throw new RuntimeException("No matching data exists. " + sqlWithParams.toString());
+      throw new RuntimeException("No matching data exists. " + sb.toString());
     }
     return retMap;
   }
@@ -92,12 +99,12 @@ public final class SqlUtil {
    * <li>Column physical names are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn       Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param conn Database connection
+   * @param sb SQL builder
    * @return the row data map
    */
-  public static IoItems selectOne(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
-    return selectFirstRec(conn, sqlWithParams, false);
+  public static IoItems selectOne(final Connection conn, final SqlBuilder sb) {
+    return selectFirstRec(conn, sb, false);
   }
 
   /**
@@ -108,12 +115,12 @@ public final class SqlUtil {
    * <li>Column physical names are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn       Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param conn Database connection
+   * @param sb SQL builder
    * @return the row data map
    */
-  public static IoItems selectOneMultiIgnore(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
-    return selectFirstRec(conn, sqlWithParams, true);
+  public static IoItems selectOneMultiIgnore(final Connection conn, final SqlBuilder sb) {
+    return selectFirstRec(conn, sb, true);
   }
 
   /**
@@ -126,16 +133,16 @@ public final class SqlUtil {
    * <li>Column physical names are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn            Database connection
-   * @param sqlWithParams   SQL and parameters
+   * @param conn Database connection
+   * @param sb SQL builder
    * @param multiDataIgnore <code>true</code> to not treat multiple records as an error
    * @return the row data map (may be <code>null</code>)
    */
-  private static IoItems selectFirstRec(final Connection conn, final AbstractSqlWithParameters sqlWithParams,
+  private static IoItems selectFirstRec(final Connection conn, final SqlBuilder sb,
       final boolean multiDataIgnore) {
 
     // Bulk retrieval
-    final IoRows rows = selectBulkByLimitCount(conn, sqlWithParams, 1);
+    final IoRows rows = selectBulkByLimitCount(conn, sb, 1);
     if (rows.size() <= 0) {
       // No data
       return null;
@@ -144,7 +151,7 @@ public final class SqlUtil {
     if (rows.isLimitOver()) {
       // More than one row retrieved
       if (!multiDataIgnore) {
-        throw new RuntimeException("Multiple records were retrieved. " + sqlWithParams.toString());
+        throw new RuntimeException("Multiple records were retrieved. " + sb.toString());
       }
     }
     return rows.get(0);
@@ -157,7 +164,7 @@ public final class SqlUtil {
    * <li>Column physical names in the row map obtained from <code>SqlResultSet</code>
    * iterator are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * <li>Use in try clause (try-with-resources statement).</li>
-   * <li>This class sets the default fetch size to 500. To fetch all records, use <code>SqlUtil#selectFetchAll(Connection, AbstractSqlWithParameters)</code>.</li>
+   * <li>This class sets the default fetch size to 500. To fetch all records, use <code>SqlUtil#selectFetchAll(Connection, SqlBuilder)</code>.</li>
    * <li>About fetch size per DBMS:
    * <ul>
    * <li>Oracle default is 10 records which is small, so fetch size is specified.</li>
@@ -182,12 +189,12 @@ public final class SqlUtil {
    * }}
    * </pre>
    *
-   * @param conn       Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param conn Database connection
+   * @param sb SQL builder
    * @return the SQL result set
    */
-  public static SqlResultSet select(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
-    return selectByFetchSize(conn, sqlWithParams, DEFAULT_FETCH_SIZE);
+  public static SqlResultSet select(final Connection conn, final SqlBuilder sb) {
+    return selectByFetchSize(conn, sb, DEFAULT_FETCH_SIZE);
   }
 
   /**
@@ -198,13 +205,13 @@ public final class SqlUtil {
    * <li>Retrieving a large number of records with this method may cause memory errors.</li>
    * </ul>
    * 
-   * @see #select(Connection, AbstractSqlWithParameters)
-   * @param conn       Database connection
-   * @param sqlWithParams SQL and parameters
+   * @see #select(Connection, SqlBuilder)
+   * @param conn Database connection
+   * @param sb SQL builder
    * @return the SQL result set
    */
-  public static SqlResultSet selectFetchAll(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
-    return selectByFetchSize(conn, sqlWithParams, 0);
+  public static SqlResultSet selectFetchAll(final Connection conn, final SqlBuilder sb) {
+    return selectByFetchSize(conn, sb, 0);
   }
 
   /**
@@ -213,19 +220,19 @@ public final class SqlUtil {
    * <li>Returns a multiple row list.</li>
    * <li>Returns a list with size zero if zero records are returned.</li>
    * <li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-   * <li>This method consumes memory, so use <code>#select(Connection, AbstractSqlWithParameters)</code>
+   * <li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
    * for loop processing.</li>
    * <li>Retrieving a large number of records with this method may cause memory errors.</li>
    * </ul>
    *
-   * @param conn       Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param conn Database connection
+   * @param sb SQL builder
    * @param limitCount Maximum number of records to retrieve
    * @return the multiple row list
    */
-  public static IoRows selectBulk(final Connection conn, final AbstractSqlWithParameters sqlWithParams,
+  public static IoRows selectBulk(final Connection conn, final SqlBuilder sb,
       final int limitCount) {
-    return selectBulkByLimitCount(conn, sqlWithParams, limitCount);
+    return selectBulkByLimitCount(conn, sb, limitCount);
   }
 
   /**
@@ -234,28 +241,28 @@ public final class SqlUtil {
    * <li>Returns a multiple row list.</li>
    * <li>Returns a list with size zero if zero records are returned.</li>
    * <li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-   * <li>This method consumes memory, so use <code>#select(Connection, AbstractSqlWithParameters)</code>
+   * <li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
    * for loop processing.</li>
    * <li>Retrieving a large number of records with this method may cause memory errors.</li>
    * </ul>
    *
-   * @param conn       Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param conn Database connection
+   * @param sb SQL builder
    * @return the multiple row list
    */
-  public static IoRows selectBulkAll(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
-    return selectBulkByLimitCount(conn, sqlWithParams, 0);
+  public static IoRows selectBulkAll(final Connection conn, final SqlBuilder sb) {
+    return selectBulkByLimitCount(conn, sb, 0);
   }
 
   /**
    * Gets multiple records in bulk.
    * 
    * @param conn Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param sb SQL builder
    * @param limitCount Maximum number of records to retrieve (retrieves all if zero or less)
    * @return the multiple row list
    */
-  private static IoRows selectBulkByLimitCount(final Connection conn, final AbstractSqlWithParameters sqlWithParams,
+  private static IoRows selectBulkByLimitCount(final Connection conn, final SqlBuilder sb,
       final int limitCount) {
     // Fetch size
     final int fetchSize;
@@ -269,7 +276,7 @@ public final class SqlUtil {
     }
 
     final IoRows rows = new IoRows();
-    try (final SqlResultSet rSet = SqlUtil.selectByFetchSize(conn, sqlWithParams, fetchSize);) {
+    try (final SqlResultSet rSet = selectByFetchSize(conn, sb, fetchSize);) {
       final Iterator<IoItems> ite = rSet.iterator();
       while (ite.hasNext()) {
         final IoItems row = ite.next();
@@ -296,19 +303,19 @@ public final class SqlUtil {
    * Gets multiple records with specified fetch size.
    *
    * @param conn Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param sb SQL builder
    * @param fetchSize Fetch size
    * @return the SQL result set
    */
-  private static SqlResultSet selectByFetchSize(final Connection conn, final AbstractSqlWithParameters sqlWithParams,
+  private static SqlResultSet selectByFetchSize(final Connection conn, final SqlBuilder sb,
       final int fetchSize) {
         
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
-    final String sql = sqlWithParams.getSql();
-    final List<Object> params = sqlWithParams.getParameters();
+    final String sql = sb.getQuery();
+    final List<Object> params = sb.getParameters();
     if (logger.isDevelopMode()) {
       // Output SQL log
-      logger.develop("SQL#SELECT execution. " + LogUtil.joinKeyVal("sql", sqlWithParams, "fetchSize", fetchSize));
+      logger.develop("SQL#SELECT execution. " + LogUtil.joinKeyVal("sql", sb, "fetchSize", fetchSize));
     }
 
     try {
@@ -333,7 +340,7 @@ public final class SqlUtil {
 
     } catch (SQLException e) {
       throw new RuntimeException("Exception error occurred during data retrieval. " + LogUtil.joinKeyVal("sql",
-          sqlWithParams, "fetchSize", fetchSize), e);
+          sb, "fetchSize", fetchSize), e);
     }
   }
 
@@ -385,8 +392,8 @@ public final class SqlUtil {
       }
 
       // Build SQL
-      sbInto.deleteLastChar(1);
-      sbVals.deleteLastChar(1);
+      sbInto.delLastChar();
+      sbVals.delLastChar();
       sbInto.addQuery(" ) VALUES ");
       sbVals.addQuery(" ) ");
       sbInto.addSqlBuilder(sbVals);
@@ -819,7 +826,7 @@ public final class SqlUtil {
       // Append SQL
       sb.addQuery(itemName).addQuery("=?", param).addQuery(",");
     }
-    sb.deleteLastChar(1);
+    sb.delLastChar();
   }
 
   /**
@@ -858,7 +865,7 @@ public final class SqlUtil {
       // Append SQL
       sb.addQuery(itemName).addQuery("=?", param).addQuery(" AND ");
     }
-    sb.deleteLastChar(4);
+    sb.delLastChar(4);
   }
 
   /**
@@ -867,14 +874,14 @@ public final class SqlUtil {
    * <li>Throws an exception error if the affected count is multiple records.</li>
    * </ul>
    *
-   * @param conn       Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param conn Database connection
+   * @param sb SQL builder
    * @return <code>true</code> if affected count is one record, <code>false</code> if zero records
    */
-  public static boolean executeOne(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
-    final int ret = execute(conn, sqlWithParams);
+  public static boolean executeOne(final Connection conn, final SqlBuilder sb) {
+    final int ret = execute(conn, sb);
     if (ret > 1) {
-      throw new RuntimeException("Multiple records were affected. " + LogUtil.joinKeyVal("sql", sqlWithParams));
+      throw new RuntimeException("Multiple records were affected. " + LogUtil.joinKeyVal("sql", sb));
     }
     return (ret == 1);
   }
@@ -883,14 +890,14 @@ public final class SqlUtil {
    * SQL insert/update/delete.
    *
    * @param conn Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param sb SQL builder
    * @return the affected count
    */
-  public static int execute(final Connection conn, final AbstractSqlWithParameters sqlWithParams) {
+  public static int execute(final Connection conn, final SqlBuilder sb) {
     try {
-      return executeSql(conn, sqlWithParams);
+      return executeSql(conn, sb);
     } catch (SQLException e) {
-      throw new RuntimeException("Exception error occurred during SQL execution. " + LogUtil.joinKeyVal("sql", sqlWithParams), e);
+      throw new RuntimeException("Exception error occurred during SQL execution. " + LogUtil.joinKeyVal("sql", sb), e);
     }
   }
 
@@ -898,22 +905,22 @@ public final class SqlUtil {
    * Executes SQL builder.
    *
    * @param conn Database connection
-   * @param sqlWithParams SQL and parameters
+   * @param sb SQL builder
    * @return the affected count
    * @throws SQLException SQL exception error
    */
-  private static int executeSql(final Connection conn, final AbstractSqlWithParameters sqlWithParams)
+  private static int executeSql(final Connection conn, final SqlBuilder sb)
       throws SQLException {
         
     if (logger.isDevelopMode()) {
       // Output SQL log
-      logger.develop("SQL#EXECUTE execution. " + LogUtil.joinKeyVal("sql", sqlWithParams));
+      logger.develop("SQL#EXECUTE execution. " + LogUtil.joinKeyVal("sql", sb));
     }
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
     // Create statement
-    try (final PreparedStatement stmt = conn.prepareStatement(sqlWithParams.getSql());) {
+    try (final PreparedStatement stmt = conn.prepareStatement(sb.getQuery());) {
       // Set parameters to statement
-      setStmtParameters(stmt, sqlWithParams.getParameters(), dbmsName);
+      setStmtParameters(stmt, sb.getParameters(), dbmsName);
       // Execute SQL
       final int ret = stmt.executeUpdate();
       return ret;
@@ -1327,4 +1334,98 @@ public final class SqlUtil {
     return ret.getString("today");
   }
 
+  /** Single-byte blank. */
+  private static final String ONEBLANK = " ";
+
+  /**
+   * Appends SQL.<br>
+   * <ul>
+   * <li>Appends an SQL string to the StringBuilder.</li>
+   * <li>If the argument SQL starts with a blank, adds a single blank at the beginning. However, does not add if the existing SQL is empty or ends with a blank.</li>
+   * <li>Trims leading and trailing blanks of the argument SQL and replaces 2 or more consecutive blanks with a single blank.</li>
+   * <li>If the argument SQL ends with a blank, adds a single blank at the end.</li>
+   * </ul>
+   * 
+   * @param toSb  the destination StringBuilder
+   * @param sql the SQL to append
+   */
+  static void appendQuery(final StringBuilder toSb, final String sql) {
+    if (ValUtil.isBlank(sql)) {
+      return;
+    }
+
+    // If the argument SQL starts with a blank, add a single blank at the beginning
+    // However, do not add if existing SQL is empty or ends with a blank
+    if (sql.startsWith(ONEBLANK) && toSb.length() > 0
+        && toSb.charAt(toSb.length() - 1) != ' ') {
+      toSb.append(ONEBLANK);
+    }
+
+    // Trim leading and trailing blanks
+    // Replace 2 or more consecutive blanks with a single blank
+    // However, do not replace blanks enclosed in single quotes
+    toSb.append(trimQuerySpaces(sql));
+
+    // If the argument SQL ends with a blank, add a single blank at the end
+    if (sql.endsWith(ONEBLANK)) {
+      toSb.append(ONEBLANK);
+    }
+  }
+  
+  /**
+   * Replaces 2 or more consecutive blanks with a single blank in the SQL string.<br>
+   * <ul>
+   * <li>Trims leading and trailing blanks.</li>
+   * <li>Replaces 2 or more consecutive blanks with a single blank.<br>
+   * However, blanks enclosed in single quotes are not replaced.</li>
+   * </ul>
+   * 
+   * @param sql SQL
+   * @return the result SQL
+   */
+  private static String trimQuerySpaces(final String sql) {
+    if (ValUtil.isBlank(sql)) {
+        return ValUtil.BLANK;
+    }
+    
+    final int length = sql.length();
+    final char[] chars = sql.toCharArray(); // Use array access for performance
+    final StringBuilder ret = new StringBuilder(length);
+    
+    boolean inSq = false;
+    boolean prevSpace = false;
+    int beginPos = 0;
+    int endPos = length;
+    
+    // Pre-calculate leading and trailing trim positions
+    while (beginPos < endPos && Character.isWhitespace(chars[beginPos])) {
+        beginPos++;
+    }
+    while (endPos > beginPos && Character.isWhitespace(chars[endPos - 1])) {
+        endPos--;
+    }
+    
+    for (int i = beginPos; i < endPos; i++) {
+        final char c = chars[i];
+        
+        if (c == '\'' && (i == 0 || chars[i-1] != '\\')) {
+            inSq = !inSq;
+            ret.append(c);
+            prevSpace = false;
+        } else if (inSq) {
+            ret.append(c);
+            prevSpace = false;
+        } else if (Character.isWhitespace(c)) {
+            if (!prevSpace) {
+                ret.append(' ');
+                prevSpace = true;
+            }
+        } else {
+            ret.append(c);
+            prevSpace = false;
+        }
+    }
+    
+    return ret.toString();
+  }
 }

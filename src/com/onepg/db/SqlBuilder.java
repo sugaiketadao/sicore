@@ -1,14 +1,17 @@
 package com.onepg.db;
 
+import com.onepg.util.LogUtil;
 import com.onepg.util.ValUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * SQL builder.<br>
  * <ul>
+ * <li>Encapsulates SQL and parameter list required for database access.</li>
  * <li>Has methods that can assemble SQL and set parameters simultaneously.</li>
- * <li>Methods starting with add* return the instance itself, enabling method chaining.</li>
+ * <li>Methods starting with add* return this instance, enabling method chaining.</li>
  * </ul>
  * <pre>
  * [Example 1] <code>sqlBuilder.addQuery("AND a.user_id IS NOT NULL ");</code>
@@ -18,15 +21,79 @@ import java.util.List;
  * [Example 5] <code>sqlBuilder.addQnotB("AND a.user_id = ? ", userId).addQnotB("AND a.user_nm LIKE ? ", '%' + name + '%');</code>
  * </pre>
  * 
- * @see AbstractSqlWithParameters
  */
-public final class SqlBuilder extends AbstractSqlWithParameters {
+public final class SqlBuilder {
 
+  /** SQL string. */
+  private final StringBuilder query = new StringBuilder();
+  /** Parameters. */
+  private final List<Object> parameters = new ArrayList<>();
+  
   /**
    * Constructor.
    */
   public SqlBuilder() {
     super();
+  }
+
+  /**
+   * Appends an SQL string.<br>
+   * <ul>
+   * <li>Appends an SQL string.</li>
+   * <li>Replaces 2 or more consecutive blanks with a single blank when appending.</li>
+   * </ul>
+   * 
+   * @param sql SQL string
+   */
+  private void appendQuery(final String sql) {
+    SqlUtil.appendQuery(this.query, sql);
+  }
+
+  /**
+   * Adds parameters.<br>
+   * <ul>
+   * <li>Multiple values can be passed.</li>
+   * </ul>
+   *
+   * @param params Parameters (multiple allowed)
+   */
+  private void addAllParameters(final Object... params) {
+    if (ValUtil.isEmpty(params)) {
+      return;
+    }
+    for (final Object param : params) {
+      this.parameters.add(param);
+    }
+  }
+
+  /**
+   * Adds a parameter list.
+   *
+   * @param params Parameter list
+   */
+  private void addAllParameters(final List<Object> params) {
+    if (ValUtil.isEmpty(params)) {
+      return;
+    }
+    this.parameters.addAll(params);
+  }
+
+  /**
+   * Gets the SQL string.
+   *
+   * @return the SQL string
+   */
+  String getQuery() {
+    return this.query.toString();
+  }
+
+  /**
+   * Gets the parameters.
+   *
+   * @return the parameters
+   */
+  List<Object> getParameters() {
+    return this.parameters;
   }
 
   /**
@@ -39,9 +106,9 @@ public final class SqlBuilder extends AbstractSqlWithParameters {
    */
   public void addSqlBuilder(final SqlBuilder sb) {
     // Append SQL
-    super.addSql(sb.getSql());
+    appendQuery(sb.getQuery());
     // Append parameters
-    super.addParameters(sb.getParameters());
+    addAllParameters(sb.getParameters());
   }
 
   /**
@@ -60,9 +127,9 @@ public final class SqlBuilder extends AbstractSqlWithParameters {
    */
   public SqlBuilder addQuery(final String sql, final Object... params) {
     // Append SQL
-    super.addSql(sql);
+    appendQuery(sql);
     // Append parameters
-    super.addParameters(params);
+    addAllParameters(params);
     return this;
   }
 
@@ -72,25 +139,25 @@ public final class SqlBuilder extends AbstractSqlWithParameters {
    * <li>Multiple values can be passed.</li>
    * </ul>
    * <pre>
-   * [Example 1] <code>sqlBuilder.addParam(userId);</code>
-   * [Example 2] <code>sqlBuilder.addParam(birthDtFrom, birthDtTo);</code>
+   * [Example 1] <code>sqlBuilder.addParams(userId);</code>
+   * [Example 2] <code>sqlBuilder.addParams(birthDtFrom, birthDtTo);</code>
    * </pre>
    *
    * @param params Parameters (multiple allowed)
    * @return this instance
    */
-  public SqlBuilder addParam(final Object... params) {
-    super.addParameters(params);
+  public SqlBuilder addParams(final Object... params) {
+    addAllParameters(params);
     return this;
   }
 
   /**
-   * Appends comma-separated bind character SQL.<br>
+   * Appends comma-separated SQL bind placeholders.<br>
    * <ul>
-   * <li>Appends bind character "?" to SQL separated by commas for each element in the list.</li>
-   * <li>If the list has 3 elements, "?,?,?" is appended to SQL.</li>
-   * <li>Values in the list are added as bind character parameters.</li>
-   * <li>Intended for use with IN clauses where the number of bind characters varies.</li>
+   * <li>Appends SQL bind placeholders "?" to SQL, comma-separated for the number of elements in the list.</li>
+   * <li>If the list contains 3 elements, "?,?,?" is appended to SQL.</li>
+   * <li>The values in the list are added as SQL bind variable parameters.</li>
+   * <li>Intended for use in IN clauses with a variable number of bind placeholders.</li>
    * </ul>
    * <pre>
    * [Example] <code>sqlBuilder.addQuery("AND type_cs IN (").addListInBind(list).addQuery(")");</code>
@@ -109,8 +176,8 @@ public final class SqlBuilder extends AbstractSqlWithParameters {
     }
     ValUtil.deleteLastChar(sb);
 
-    super.addSql(sb.toString());
-    super.addParameters(params);
+    appendQuery(sb.toString());
+    addAllParameters(params);
     return this;
   }
 
@@ -163,5 +230,69 @@ public final class SqlBuilder extends AbstractSqlWithParameters {
   @SuppressWarnings("all")
   public SqlBuilder addQnotB(final String sql, final Object param) {
     return addQueryIfNotBlankParameter(sql, param);
+  }
+
+  /**
+   * Deletes characters from the end of the SQL string.
+   * <ul>
+   * <li>Deletes the last character (1 character) from the SQL string.</li>
+   * </ul>
+   * <pre>[Example]
+   * <code>for (final String key : params.keySet()) {
+   *   sb.addQuery(key).addQuery("=?", params.get(key)).addQuery(",");
+   * }
+   * // Delete last comma
+   * sb.deleteLastChar();
+   * </code></pre>
+   * 
+   * @return this instance
+   */
+  public SqlBuilder delLastChar() {
+    ValUtil.deleteLastChar(this.query);
+    return this;
+  }
+  
+  /**
+   * Deletes characters from the end of the SQL string.
+   * <ul>
+   * <li>Deletes the specified number of characters from the end of the SQL string.</li>
+   * </ul>
+   * <pre>[Example]
+   * <code>for (final String key : params.keySet()) {
+   *   sb.addQuery(key).addQuery("=?", params.get(key)).addQuery(" AND ");
+   * }
+   * // Delete last AND
+   * sb.delLastChar(4);
+   * </code></pre>
+   * 
+   * @param deleteCharCount Number of characters to delete
+   * @return this instance
+   */
+  public SqlBuilder delLastChar(final int deleteCharCount) {
+    ValUtil.deleteLastChar(this.query, deleteCharCount);
+    return this;
+  }
+  
+  /**
+   * Gets the SQL string length.
+   *
+   * @return the SQL string length
+   */
+  public int length() {
+    return this.query.length();
+  }
+
+  /**
+   * Returns a string for logging.
+   */
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    try {
+      sb.append("{\"").append(this.query.toString()).append("\"<-");
+      sb.append(LogUtil.join(this.parameters)).append("}");
+    } catch (Exception ignore) {
+      // No processing
+    }
+    return sb.toString();
   }
 }

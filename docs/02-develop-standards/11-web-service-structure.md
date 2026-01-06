@@ -327,7 +327,7 @@ sb.addQuery(" AND user_id = ? ", userId);
 sb.addQnotB(" AND user_id = ? ", userId);
 
 // Add parameter only
-sb.addParam(userId);
+sb.addParams(userId);
 
 // Merge another SqlBuilder
 sb.addSqlBuilder(otherSb);

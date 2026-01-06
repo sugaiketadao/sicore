@@ -891,7 +891,7 @@ public final class ValUtil {
       return;
     }
     if (sb.length() >= length) {
-      sb.delete(sb.length() - length, sb.length());
+      sb.setLength(sb.length() - length);
     }
   }
 
