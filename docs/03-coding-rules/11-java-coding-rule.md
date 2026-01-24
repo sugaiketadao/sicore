@@ -6,7 +6,7 @@
 
 ## Prerequisites
 - Follow the [Web Service Structure Standard](../02-develop-standards/11-web-service-structure.md).
-- Follow the [Batch Processing Structure Standard](../02-develop-standards/12-batch-structure.md).
+- Follow the [Batch Processing Structure Standard](../02-develop-standards/12-batch-processing-structure.md).
 
 ## Variable/Class Names
 - Use lowerCamelCase for variable names.

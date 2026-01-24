@@ -68,7 +68,7 @@ Refer to the following documentation before starting development.
 ### Development Standards
 - [Web Page Structure Standard (HTML/JavaScript/CSS)](docs/02-develop-standards/01-web-page-structure.md)
 - [Web Service Structure Standard (Java)](docs/02-develop-standards/11-web-service-structure.md)
-- [Batch Processing Structure Standard (Java)](docs/02-develop-standards/12-batch-structure.md)
+- [Batch Processing Structure Standard (Java)](docs/02-develop-standards/12-batch-processing-structure.md)
 - [Event Coding Patterns](docs/02-develop-standards/21-event-coding-pattern.md)
 - [Batch Processing Coding Patterns](docs/02-develop-standards/22-batch-coding-pattern.md)
 

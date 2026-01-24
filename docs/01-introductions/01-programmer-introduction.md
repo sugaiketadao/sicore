@@ -410,4 +410,4 @@ SqlUtil.insertOne(conn, "t_user", io);
 - [Introduction for Managers](../01-introductions/02-manager-introduction.md)
 - [Web Page Structure Standard (HTML/JavaScript/CSS)](../02-develop-standards/01-web-page-structure.md)
 - [Web Service Structure Standard (Java)](../02-develop-standards/11-web-service-structure.md)
-- [Batch Processing Structure Standard (Java)](../02-develop-standards/12-batch-structure.md)
+- [Batch Processing Structure Standard (Java)](../02-develop-standards/12-batch-processing-structure.md)

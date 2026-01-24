@@ -15,7 +15,7 @@ When generating, completing, or suggesting code, always execute the following st
 ### Common Steps (Execute First)
 
 Open `docs/02-develop-standards/21-event-coding-pattern.md` with read_file and read coding patterns for similar processing.
-For batch processing, open `docs/02-develop-standards/12-batch-structure.md` with read_file.
+For batch processing, open `docs/02-develop-standards/22-batch-coding-pattern.md` with read_file.
 
 
 ### Language-Specific Steps
@@ -37,7 +37,7 @@ After completing common steps, execute the following according to the target to 
 2. If there are unclear points, read Java files under `src/com/example/app/service/exmodule/` listed in `21-event-coding-pattern.md` with read_file.
 For batch processing, read Java files under `src/com/example/app/bat/exmodule/` listed in `22-batch-coding-pattern.md` with read_file.
 3. For new creation, read `docs/02-develop-standards/11-web-service-structure.md` listed in `21-event-coding-pattern.md` with read_file.
-For batch processing, read `docs/02-develop-standards/12-batch-structure.md` listed in `22-batch-coding-pattern.md` with read_file.
+For batch processing, read `docs/02-develop-standards/12-batch-processing-structure.md` listed in `22-batch-coding-pattern.md` with read_file.
 
 ## Absolute Prohibitions
 - Generating code before completing "Steps Before Code Generation"
