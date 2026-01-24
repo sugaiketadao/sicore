@@ -1,113 +1,113 @@
 # JavaScript Coding Rules
 
 ## Overview
-- Define the coding rules for JavaScript.
-- Following these rules aims to standardize program code and improve development and maintenance efficiency.
+- Defines coding rules for JavaScript.
+- By following these rules, the code is standardized and development/maintenance efficiency is improved.
 
 ## Prerequisites
-- Follow the [Web Page Structure Standards](../02-develop-standards/01-web-page-structure.md).
+- Follow the [Web Page Structure Standard](../02-develop-standards/01-web-page-structure.md).
 
-## Variable Names, Method Names, and Class Names
+## Variable/Method/Class Names
 - Use lowerCamelCase for variable names.
     - [Example] `const lowerCamelCase = req['lower_snake_case']`
-- Use UPPER_SNAKE_CASE for variable names declared with const and initialized with literals (= constant names).
+- Use UPPER_SNAKE_CASE for variable names (i.e., constant names) that are declared with const and have literal initial values.
     - [Example] `const UPPER_SNAKE_CASE = 'SNAKE'`
-- Use lower_snake_case for object keys.
+- Use lower_snake_case for associative array keys.
     - [Example] `const obj = {lower_snake_case: 'snake'}`
 - Use lowerCamelCase for method names.
     - [Example 1] `const init = async function`
     - [Example 2] `const editMove = async function`
 - Use UpperCamelCase for class names.
-    - [Example 1] `const UpperCamelCase = /** @lends UpperCamelCase */ {`
-    - [Example 2] `class UpperCamelCase {`
+    - [Example 1] `const UowerCamelCase = /** @lends UowerCamelCase */ {`
+    - [Example 2] `class UowerCamelCase {`
 - Do not use `remove` alone as a method name or variable name.
-    - [NG] `const remove = function`
-    - [OK] `const removeLine = function`
-- Method names, variable names, constant names, and object keys (including request and response) starting with underscore `_` are reserved for this framework and MUST NOT be used by applications.
+    - [NG Example] `const remove = function`
+    - [OK Example] `const removeLine = function`
+- DO NOT use method names, variable names, constant names, or associative array keys (including request and response) that begin with an underscore `_`, as they are reserved for use by this framework.
 
 ## Declarations
-- As a rule, declare variables with `const` and do not reuse them. The following uses are exceptions and should be declared with `let`. Do not use `var` declarations.
-    - Array index increments, etc.
-    - Progressive string additions or replacements.
-    - Progressive array additions.
-    - When performance is significantly degraded.
+- In principle, declare variables with `const` and do not reuse them. For the following use cases, declare with `let` as exceptions. Do not use `var` declarations.
+    - Incrementing array indices.
+    - Incremental string additions or replacements.
+    - Incremental array additions.
+    - Cases where performance degrades significantly.
 - Declare local variables (variables within methods) immediately before use, in locations where the scope is as small as possible.
 - Do not use member variables (variables outside methods, excluding constants).
-- Do not use class inheritance in module classes.
+- Do not perform class inheritance for module classes.
 - Create common components for modules as utility classes.
 - Use utility classes without instantiation.
-- Write arrays and objects using literal notation.
-    - [NG 1] `const ary = new Array()`
-    - [NG 2] `const obj = new Object()`
-    - [OK 1] `const ary = []`
-    - [OK 2] `const obj = {}`
-- Do not enclose object keys in single quotes.
-    - [NG] `const obj = {'key1': 'V1', 'key2': 2}`
-    - [OK] `const obj = {key1: 'V1', key2: 2}`
+- Write arrays and associative arrays as literals.
+    - [NG Example 1] `const ary = new Array()`
+    - [NG Example 2] `const obj = new Object()`
+    - [OK Example 1] `const ary = []`
+    - [OK Example 2] `const obj = {}`
+- Do not enclose associative array keys in single quotation marks.
+    - [NG Example] `const obj = {'key1': 'V1', 'key2': 2}`
+    - [OK Example] `const obj = {key1: 'V1', key2: 2}`
 
-## Access Method
-- Use bracket notation for object key access.
-    - [NG] `const val = obj.user_id` (dot notation)
-    - [OK] `const val = obj['user_id']`
+## Access Methods
+- Use bracket notation for accessing associative array keys.
+    - [NG Example] `const val = obj.user_id` (dot notation)
+    - [OK Example] `const val = obj['user_id']`
 
-## Comparison and Evaluation
+## Comparison/Evaluation
 - Use `===` and `!==` instead of `==` and `!=` for equality operators.
 - Do not compare `boolean` variables with `true`/`false`.
-    - [NG] `if (hasError === true)`
-    - [OK] `if (hasError)`
-- When checking if a variable's value is blank (including `null`) or if the variable itself is `undefined`, do not check with the variable alone; use this framework's utilities. The same applies when checking if arrays or objects have zero elements.
-    - [NG] `if (!val)`
-    - [OK 1] `if (ValUtil.isBlank(val))`
-    - [OK 2] `if (ValUtil.isEmpty(ary))`
+    - [NG Example] `if (hasError === true)`
+    - [OK Example] `if (hasError)`
+- When determining whether a variable's value is blank (including `null`) or the variable itself is `undefined`, do not judge by the variable alone; use framework components. The same applies when determining whether arrays or associative arrays contain zero items.
+    - [NG Example] `if (!val)`
+    - [OK Example 1] `if (ValUtil.isBlank(val))`
+    - [OK Example 2] `if (ValUtil.isEmpty(ary))`
 
-## Processing Method
-- Do not create classes for module processing; use one method per process.
-- Use the `of` method for array loop processing.
+## Processing Methods
+- For module processing, do not create classes; use one method per process.
+- Use the `of` style for array loop processing.
     - [Example] `for (const val of ary)`
-- Use the `in` method for object loop processing.
+- Use the `in` style for associative array loop processing.
     - [Example] `for (const key in obj)`
-- Prioritize readability of diffs during modifications; prohibit the use of ternary operators and arrow functions `=>`.
+- Prioritize diff readability during modifications; DO NOT use ternary operators or arrow functions `=>`.
 
 ## Error Handling
 - Do not catch errors in module processing.
 
 ## Logging
-- Do not output console logs in module processing. Even if temporarily output during development, remove them before test completion.
+- Do not output console logs in module processing. Even if temporarily output during development, delete them before completing tests.
 
 ## Style
-- Use 2 space characters for indentation within methods and control structures (`if`, `for`, etc.). Do not use tab characters.
-- Do not omit braces `{ }` in control structures (`if`, `for`, etc.), and add a line break immediately after `{` and immediately before `}`.
-- Enclose strings in single quotes.
+- Use 2 spaces for indentation within methods and control structures (`if`, `for`, etc.). Do not use tab characters.
+- Do not omit braces `{ }` for control structures (`if`, `for`, etc.); insert a line break immediately after `{` and immediately before `}`.
+- Enclose strings in single quotation marks.
 - Actively use template literals when concatenating variables with strings.
-- When breaking long string literals across lines, do not use the backslash `\` at the end of lines; use template literals instead.
-- Add a single space in the following locations. However, do not add spaces at the end of lines or immediately before semicolons at line ends.
-    - Between keywords (`if`, `return`, etc.) and the string that follows.
-    - Between keywords (`else`, `catch`, etc.) and the string that precedes.
-    - Between the opening brace `{` and the string that precedes it.
-    - Before and after all operators (`+`, `=`, `!==`, `&&`, etc.). However, increment and decrement operators are excluded.
-    - Between commas, colons, semicolons and the string that follows.
-- Target approximately 100 characters per line excluding indentation; wrap lines if they exceed this. Do not wrap unnecessarily if lines are shorter.
+- When breaking long string literals, do not use the method of adding `\` at the end of lines; use template literals.
+- Insert one space in the following locations. However, do not insert spaces at the end of lines or immediately before semicolons at the end of lines.
+    - Between reserved words (`if`, `return`, etc.) and the following string.
+    - Between reserved words (`else`, `catch`, etc.) and the preceding string.
+    - Between the opening brace `{` and the preceding string.
+    - Before and after all operators (`+`, `=`, `!==`, `&&`, etc.). However, exclude increment and decrement operators.
+    - Between commas, colons, semicolons and the following string.
+- Aim for approximately 100 columns per line excluding indentation, and wrap lines if they exceed this. Do not wrap lines unnecessarily if they are shorter.
 
 ## Comments
-- Do not comment out logic; delete it instead. If there are important notes, leave only those notes as comments.
-- Do not include change history comments. If there are important notes, leave only those notes as comments.
-- Write JSDoc for all declarations except variables within methods. This does not mean variables within methods do not need explanations; write explanations as regular comments.
-- Explanations for private scope methods, variables, and constants may be simplified.
-- Enclose JSDoc comments with `/** */`.
-- Write regular comments (other than JSDoc) on a single line with `//` at the beginning of the line. Comments at the end of lines are prohibited.
+- Delete logic instead of commenting it out. If there are important notes, leave only the notes as comments.
+- Do not write change history comments. If there are important notes, leave only the notes as comments.
+- Write JSDoc for all declarations except variables within methods. This does not mean that variables within methods do not need explanations; write explanations as regular comments.
+- Descriptions of methods, variables, and constants declared with private scope may be simplified.
+- Enclose JSDoc comments in `/** */`.
+- Write regular comments (non-JSDoc) using the format of adding `//` at the beginning of a line, using one line. DO NOT write comments at the end of lines.
 
 ## JSDoc
-- The format for method declarations is as follows:
+- Format method declarations as follows:
     - Write the class name or method name on the first line. Add `.<br>` after the name.
-    - The class name or method name should concisely describe its role or responsibility in one phrase; do not write the English class/method name itself.
-    - From the second line onward, describe the role, responsibility, and processing as bullet points using `<ul>` or `<ol>`.
-    - Enclose sample code with `<pre><code>`. Use escape characters for HTML tags inside `<code>`.
-    - Describe method arguments with `@param` tags.
-        - Write `@param` tags in the format "@param {type} variableName description".
-        - Enclose optional argument "variableName" in `[]` and add "(optional)" at the end of the "description".
-        - Write "{type}" as, for example, `{string}`, `{Object}`, `{Array<string>}`, etc.
-    - Describe method return values with `@returns` tags.
-        - Write `@returns` tags in the format "@returns {type} description".
-        - Write "{type}" as, for example, `{string}`, `{Object}`, `{Array<string>}`, etc.
-        - If `null` may be returned, write "{type}" as, for example, `{Object|null}`.
-- Add `@private` tag to private scope methods, variables, and constants.
+    - The class name or method name should concisely express its role or responsibility in one phrase; do not write the actual English class/method name itself.
+    - From the second line onward, describe the role, responsibility, or processing using bullet points with `<ul>` or `<ol>`.
+    - Enclose sample code in `<pre><code>`. Write HTML tags within `<code>` using escape characters.
+    - Describe method parameters using the `@param` tag.
+        - Write the `@param` tag in the format "@param {type} variableName description".
+        - Enclose the "variableName" of optional parameters in `[]` and write "(optional)" at the end of the "description".
+        - Write "{type}" as [Example] `{string}`, `{Object}`, `{Array<string>}`, etc.
+    - Describe method return values using the `@returns` tag.
+        - Write the `@returns` tag in the format "@returns {type} description".
+        - Write "{type}" as [Example] `{string}`, `{Object}`, `{Array<string>}`, etc.
+        - If `null` may be returned as a return value, write "{type}" as [Example] `{Object|null}`.
+- Add the `@private` tag to methods, variables, and constants with private scope.

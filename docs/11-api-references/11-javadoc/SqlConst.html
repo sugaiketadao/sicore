@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SqlConst - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>SqlConst</h1>
+      <p>Framework Components [com.onepg.db]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.db</p>
+        <p><strong>Class Name:</strong> SqlConst</p>
+        <p><strong>Extends:</strong> <a href="SqlBean.html">SqlBean</a></p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>Fixed SQL.<br>
+<ul>
+<li>Stores SQL string and bind item definitions (item name and type).</li>
+<li>When executing SQL, parameters with bind values are passed together with this SQL.</li>
+<li>The same item name can be bound multiple times with the same type.</li>
+<li>If there are no bind items, it is used as is.</li>
+</ul>
+<pre>
+[SQL Declaration Example 1]<code>SqlConst SQL_INS_PET = SqlConst.begin()
+    .addQuery("INSERT INTO t_pet ( ")
+    .addQuery("  pet_no ")
+    .addQuery(", pet_nm ")
+    .addQuery(", birth_dt ")
+    .addQuery(", ins_ts ")
+    .addQuery(", upd_ts ")
+    .addQuery(" ) VALUES ( ")
+    .addQuery("  ? ", "pet_no", BindType.BigDecimal)
+    .addQuery(", ? ", "pet_nm", BindType.String)
+    .addQuery(", ? ", "birth_dt", BindType.Date)
+    .addQuery(", ? ", "now_ts", BindType.Timestamp)
+    .addQuery(", ? ", "now_ts", BindType.Timestamp)
+    .addQuery(" ) ")
+    .end();</code>
+[SQL Execution Example 1] <code>SqlUtil.executeOne(conn, SQL_INS_PET.bind(io));</code>
+[SQL Declaration Example 2]<code>SqlConst SQL_SEL_USER = SqlConst.begin()
+    .addQuery("SELECT ")
+    .addQuery("  u.user_id ")
+    .addQuery(", u.user_nm ")
+    .addQuery(", u.email ")
+    .addQuery(", u.birth_dt ")
+    .addQuery(" FROM t_user u ")
+    .addQuery(" ORDER BY u.user_id ")
+    .end();</code>
+[SQL Execution Example 2] <code>SqlResultSet rSet = SqlUtil.select(getDbConn(), SQL_SEL_USER);</code>
+</pre>
+</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Enumeration List</h2>
+      <div class="enum-list">
+        <div class="enum-item" id="BindType">
+          <h3 class="enum-name">BindType</h3>
+          <div class="enum-signature">
+            <code>public enum BindType</code>
+          </div>
+          <div class="enum-description">
+            Bind type.<br>
+<ul>
+<li>Indicates the type when binding to SQL.</li>
+<li>Numeric types are unified to <code>BigDecimal</code>.</li>
+</ul>
+  
+          </div>
+          <div class="enum-constants">
+            <h4>Constants</h4>
+            <ul>
+              <li><code>STRING</code></li>
+              <li><code>BIGDECIMAL</code></li>
+              <li><code>DATE</code></li>
+              <li><code>TIMESTAMP</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="begin">
+        <h3 class="method-name">begin</h3>
+        <div class="method-signature">
+          <code>public SqlConstBuilder begin()</code>
+        </div>
+        <div class="method-description">
+          Creates fixed SQL builder instance.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlConstBuilder</code> - the fixed SQL builder instance</p>
+        </div>
+      </div>
+      <div class="method" id="bind">
+        <h3 class="method-name">bind</h3>
+        <div class="method-signature">
+          <code>public SqlBean bind(AbstractIoTypeMap params)</code>
+        </div>
+        <div class="method-description">
+          Sets bind values.<br>
+<ul>
+<li>Returns a SQL Bean with the stored SQL string and the parameter value map received as an argument.</li>
+<li>Creates a bind value list from the parameter value map based on the bind item name list and bind item definition map, and sets it in the SQL Bean.</li>
+<li>Each element of the bind value list is <code>Object</code>, and each item value is stored in the type according to the bind item definition.</li>
+<li>If the bind item name does not exist in the parameter value map, a runtime error occurs.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>params</code></td>
+                <td><code>AbstractIoTypeMap</code></td>
+                <td>the parameter value map</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlBean</code> - the SQL Bean</p>
+        </div>
+      </div>
+      <div class="method" id="end">
+        <h3 class="method-name">end</h3>
+        <div class="method-signature">
+          <code>public SqlConst end()</code>
+        </div>
+        <div class="method-description">
+          Returns fixed SQL.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlConst</code> - the fixed SQL</p>
+        </div>
+      </div>
+      <div class="method" id="addQuery">
+        <h3 class="method-name">addQuery</h3>
+        <div class="method-signature">
+          <code>public SqlConstBuilder addQuery(String sql)</code>
+        </div>
+        <div class="method-description">
+          Adds SQL.<br>
+<ul>
+<li>Replaces 2 or more consecutive blanks with a single blank when appending.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sql</code></td>
+                <td><code>String</code></td>
+                <td>the SQL</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlConstBuilder</code> - the instance itself</p>
+        </div>
+      </div>
+      <div class="method" id="addQuery">
+        <h3 class="method-name">addQuery</h3>
+        <div class="method-signature">
+          <code>public SqlConstBuilder addQuery(String sql, String itemName, BindType bindType)</code>
+        </div>
+        <div class="method-description">
+          Adds SQL and bind item definition (item name and type).<br>
+<ul>
+<li>The SQL string must contain exactly one bind placeholder <code>?</code>.</li>
+<li>The bind item name must be a valid value as an <code>Io</code> object key. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sql</code></td>
+                <td><code>String</code></td>
+                <td>the SQL</td>
+              </tr>
+              <tr>
+                <td><code>itemName</code></td>
+                <td><code>String</code></td>
+                <td>the bind item name</td>
+              </tr>
+              <tr>
+                <td><code>bindType</code></td>
+                <td><code>BindType</code></td>
+                <td>the bind type</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>SqlConstBuilder</code> - the instance itself</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2026</p>
+  </div>
+</body>
+</html>

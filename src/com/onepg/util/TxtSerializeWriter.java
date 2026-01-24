@@ -25,15 +25,15 @@ final class TxtSerializeWriter extends TxtWriter {
    * Constructor.
    *
    * @param filePath the file path
-   * @param canAppend <code>true</code> if appending is allowed
-   * @param lineFlush <code>true</code> if flushing on line break
    * @param lineSep the line separator
    * @param charSet the character set
    * @param withBom <code>true</code> if with BOM
+   * @param canAppend <code>true</code> if appending is allowed
+   * @param lineFlush <code>true</code> if flushing on line break
    */
-  TxtSerializeWriter(final String filePath, final boolean canAppend, final boolean lineFlush,
-      final LineSep lineSep, final CharSet charSet, final boolean withBom) {
-    super(filePath, canAppend, lineFlush, lineSep, charSet, withBom);
+  TxtSerializeWriter(final String filePath, final LineSep lineSep, final CharSet charSet, final boolean withBom,
+     final boolean canAppend, final boolean lineFlush) {
+    super(filePath, lineSep, charSet, withBom, canAppend, lineFlush);
   }
 
   /**

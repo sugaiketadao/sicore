@@ -159,6 +159,39 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
   }
 
   /**
+   * Gets the first line.<br>
+   * <ul>
+   * <li>Gets the first line of the file.</li>
+   * <li>The read row count is incremented after retrieval.</li>
+   * <li>Returns <code>null</code> in the following cases:
+   *   <ul><li>The file is already closed.</li>
+   *       <li>The file is empty (zero rows), or the last row has already been reached.</li></ul>
+   * </ul>
+   *
+   * @return the first line string
+   */
+  public String getFirstLine() {
+    if (this.isClosed) {
+      return null;
+    }
+    try {
+      final String line = this.br.readLine();
+      if (ValUtil.isNull(line)) {
+        // Sets last row read flag ON
+        readedEndRowFlag = true;
+        // Closes the file
+        close();
+        return null;
+      }
+      // Increments the read row count
+      readedCount++;
+      return line;
+    } catch (IOException e) {
+      throw new RuntimeException("An exception error occurred while reading first line. " + LogUtil.joinKeyVal("path", this.filePath), e);
+    }
+  }
+
+  /**
    * Read line iterator class.
    */
   public final class TxtReadIterator implements Iterator<String> {

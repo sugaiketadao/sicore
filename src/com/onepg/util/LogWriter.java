@@ -215,6 +215,20 @@ public final class LogWriter {
   }
 
   /**
+   * Outputs end info.
+   * 
+   * @param exitStatus the exit status
+   */
+  public void end(final int exitStatus) {
+    final String log = createMsg(this.infPrefix, "< end > " + this.beginEndSuffix + " " + LogUtil.joinKeyVal("status", exitStatus));
+
+    this.infHdr.getWriter().println(log);
+    if (this.isDevelopMode) {
+      this.console.println(log);
+    }
+  }
+
+  /**
    * Outputs for development.
    *
    * @param msg the log message

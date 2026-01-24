@@ -50,7 +50,7 @@ public final class SqlUtil {
    */
   public static final String ORACLE_PROTOCOL_ERR_AVOID_SQL =
       " /* protocol error avoidance */ FETCH FIRST 99999999 ROWS ONLY ";
-
+      
   /**
    * Database column class type.<br>
    * <ul>
@@ -60,7 +60,7 @@ public final class SqlUtil {
    * </ul>
    */
   enum ItemClsType {
-    StringCls, BigDecCls, DateCls, TsCls, StringToDateCls, StringToTsCls
+    STRING_CLS, BIGDECIMAL_CLS, DATE_CLS, TIMESTAMP_CLS, STRING_TO_DATE_CLS, STRING_TO_TS_CLS
   }
 
   /**
@@ -71,18 +71,18 @@ public final class SqlUtil {
   }
 
   /**
-   * Gets one record (error if zero records).<br>
+   * Retrieves one record (error on zero records).<br>
    * <ul>
-   * <li>Use when exactly one record is expected to exist.</li>
-   * <li>Throws an exception error if zero records are returned.</li>
-   * <li>Throws an exception error if multiple records are returned.</li>
+   * <li>Uses this method with the premise that only one target record exists.</li>
+   * <li>Throws a runtime exception if the result is zero records.</li>
+   * <li>Throws a runtime exception if the result is multiple records.</li>
    * </ul>
    *
-   * @param conn Database connection
-   * @param sb SQL builder
+   * @param conn the database connection
+   * @param sb the SQL Bean
    * @return the row data map
    */
-  public static IoItems selectOneExists(final Connection conn, final SqlBuilder sb) {
+  public static IoItems selectOneExists(final Connection conn, final SqlBean sb) {
     final IoItems retMap = selectFirstRec(conn, sb, false);
     if (ValUtil.isNull(retMap)) {
       throw new RuntimeException("No matching data exists. " + sb.toString());
@@ -91,55 +91,54 @@ public final class SqlUtil {
   }
 
   /**
-   * Gets one record.<br>
+   * Retrieves one record.<br>
    * <ul>
-   * <li>Use when exactly one record is expected to exist.</li>
-   * <li>Returns <code>null</code> if zero records are returned.</li>
-   * <li>Throws an exception error if multiple records are returned.</li>
-   * <li>Column physical names are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Uses this method with the premise that only one target record exists.</li>
+   * <li>Returns <code>null</code> if the result is zero records.</li>
+   * <li>Throws a runtime exception if the result is multiple records.</li>
+   * <li>Column physical names become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn Database connection
-   * @param sb SQL builder
+   * @param conn the database connection
+   * @param sb the SQL Bean
    * @return the row data map
    */
-  public static IoItems selectOne(final Connection conn, final SqlBuilder sb) {
+  public static IoItems selectOne(final Connection conn, final SqlBean sb) {
     return selectFirstRec(conn, sb, false);
   }
 
   /**
-   * Gets one record (multiple records OK).<br>
+   * Retrieves one record (multiple records acceptable).<br>
    * <ul>
-   * <li>Returns <code>null</code> if zero records are returned.</li>
-   * <li>Returns the first record without error even if multiple records are retrieved.</li>
-   * <li>Column physical names are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Returns <code>null</code> if the result is zero records.</li>
+   * <li>Returns the first record without error even if multiple records can be retrieved.</li>
+   * <li>Column physical names become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn Database connection
-   * @param sb SQL builder
+   * @param conn the database connection
+   * @param sb the SQL Bean
    * @return the row data map
    */
-  public static IoItems selectOneMultiIgnore(final Connection conn, final SqlBuilder sb) {
+  public static IoItems selectOneMultiIgnore(final Connection conn, final SqlBean sb) {
     return selectFirstRec(conn, sb, true);
   }
 
   /**
-   * Gets the first record.<br>
+   * Retrieves the first record.<br>
    * <ul>
-   * <li>Returns <code>null</code> if zero records are returned.</li>
-   * <li>Pass <code>true</code> to multiDataIgnore argument to not treat multiple records as an error.<br>
-   * Returns the first record if multiple records are retrieved.</li>
-   * <li>Throws an exception error if multiDataIgnore argument is <code>false</code> and multiple records are retrieved.</li>
-   * <li>Column physical names are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Returns <code>null</code> if the result is zero records.</li>
+   * <li>Passes <code>true</code> to the multiDataIgnore parameter to avoid error even if multiple records can be retrieved.<br>
+   * Returns the first record if multiple records can be retrieved.</li>
+   * <li>Throws a runtime exception if the multiDataIgnore parameter is passed <code>false</code> and multiple records can be retrieved.</li>
+   * <li>Column physical names become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn Database connection
-   * @param sb SQL builder
-   * @param multiDataIgnore <code>true</code> to not treat multiple records as an error
+   * @param conn the database connection
+   * @param sb the SQL Bean
+   * @param multiDataIgnore <code>true</code> to avoid error even if multiple records can be retrieved
    * @return the row data map (may be <code>null</code>)
    */
-  private static IoItems selectFirstRec(final Connection conn, final SqlBuilder sb,
-      final boolean multiDataIgnore) {
+  private static IoItems selectFirstRec(final Connection conn, final SqlBean sb, final boolean multiDataIgnore) {
 
     // Bulk retrieval
     final IoRows rows = selectBulkByLimitCount(conn, sb, 1);
@@ -149,7 +148,7 @@ public final class SqlUtil {
     }
 
     if (rows.isLimitOver()) {
-      // More than one row retrieved
+      // Retrieved one or more rows
       if (!multiDataIgnore) {
         throw new RuntimeException("Multiple records were retrieved. " + sb.toString());
       }
@@ -158,120 +157,115 @@ public final class SqlUtil {
   }
 
   /**
-   * Gets multiple records.<br>
+   * Retrieves multiple records.<br>
    * <ul>
    * <li>Returns as <code>SqlResultSet</code>.</li>
-   * <li>Column physical names in the row map obtained from <code>SqlResultSet</code>
-   * iterator are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-   * <li>Use in try clause (try-with-resources statement).</li>
-   * <li>This class sets the default fetch size to 500. To fetch all records, use <code>SqlUtil#selectFetchAll(Connection, SqlBuilder)</code>.</li>
-   * <li>About fetch size per DBMS:
+   * <li>Column physical names of row maps retrieved from the <code>SqlResultSet</code>
+   * iterator become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Uses in try clause (try-with-resources statement).</li>
+   * <li>This class sets the default fetch size to 500. Uses <code>SqlUtil#selectFetchAll(Connection, SqlBean)</code> to fetch all records.</li>
+   * <li>About fetch size per DBMS
    * <ul>
-   * <li>Oracle default is 10 records which is small, so fetch size is specified.</li>
-   * <li>PostgreSQL default fetches all records which may cause OutOfMemory, so fetch size is specified.</li>
-   * <li>In PostgreSQL, if fetch size is specified (not fetching all), updated retrieved data,
-   * and intermediate commit, cursor invalid error (SQLSTATE 34000) occurs. In that case,
-   * stop intermediate commits or fetch all records.<br>
-   * Alternatively, though more complex, data can be retrieved in chunks using SQL LIMIT clause.</li>
-   * <li>In MS-SqlServer, fetch size may not work as specified, so if OutOfMemory is possible,
-   * data must be retrieved in chunks using SQL LIMIT clause.</li>
+   * <li>Oracle defaults to 10 records which is small, so specifies fetch size.</li>
+   * <li>PostgreSQL defaults to fetch all records which may cause OutOfMemory, so specifies fetch size.</li>
+   * <li>PostgreSQL causes cursor invalid error (SQLSTATE 34000) when specifying fetch size (not fetching all records), updating retrieved data, and performing intermediate commit. In such case, stops intermediate commit or fetches all records.<br>
+   * Also resolves by dividing and retrieving data with SQL LIMIT clause though processing becomes complex.</li>
+   * <li>MS-SqlServer may not follow the specified fetch size, so divides and retrieves data with SQL LIMIT clause when there is a possibility of OutOfMemory.</li>
    * </ul>
    * </li>
    * </ul>
    * <pre>[Example]
    * <code>try (final SqlResultSet rSet = SqlUtil.select(getDbConn(), sqlBuilder);) {
    *   for (final IoItems row : rSet) {
-   *     : omitted
-   *   </code>
-   *   if (rSet.getReadedCount() <= 0) {
-   *     // If zero records
+   *     : Omitted
    *   }
-   * }}
+   *   if (rSet.getReadedCount() <= 0) {
+   *     // For zero records case
+   *   }
+   * }</code>
    * </pre>
    *
-   * @param conn Database connection
-   * @param sb SQL builder
+   * @param conn the database connection
+   * @param sb the SQL Bean
    * @return the SQL result set
    */
-  public static SqlResultSet select(final Connection conn, final SqlBuilder sb) {
+  public static SqlResultSet select(final Connection conn, final SqlBean sb) {
     return selectByFetchSize(conn, sb, DEFAULT_FETCH_SIZE);
   }
 
   /**
-   * Gets multiple records (fetch all).<br>
+   * Retrieves multiple records (fetch all records).<br>
    * <ul>
-   * <li>Basically, do not use this method.</li>
-   * <li>Use only when issues occur without fetching all.</li>
-   * <li>Retrieving a large number of records with this method may cause memory errors.</li>
+   * <li>Basically does not use this method.</li>
+   * <li>Uses this method only when defects occur without fetching all records.</li>
+   * <li>This method may cause memory error when retrieving a large number of records.</li>
    * </ul>
    * 
-   * @see #select(Connection, SqlBuilder)
-   * @param conn Database connection
-   * @param sb SQL builder
+   * @see #select(Connection, SqlBean)
+   * @param conn the database connection
+   * @param sb the SQL Bean
    * @return the SQL result set
    */
-  public static SqlResultSet selectFetchAll(final Connection conn, final SqlBuilder sb) {
+  public static SqlResultSet selectFetchAll(final Connection conn, final SqlBean sb) {
     return selectByFetchSize(conn, sb, 0);
   }
 
   /**
-   * Gets multiple records in bulk.<br>
+   * Retrieves multiple records in bulk.<br>
    * <ul>
-   * <li>Returns a multiple row list.</li>
-   * <li>Returns a list with size zero if zero records are returned.</li>
-   * <li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-   * <li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
+   * <li>Returns multiple row list.</li>
+   * <li>Returns a list with zero size if the result is zero records.</li>
+   * <li>Column physical names of the map for one row become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>This method consumes memory, so uses <code>#select(Connection, SqlBean)</code>
    * for loop processing.</li>
-   * <li>Retrieving a large number of records with this method may cause memory errors.</li>
+   * <li>This method may cause memory error when retrieving a large number of records.</li>
    * </ul>
    *
-   * @param conn Database connection
-   * @param sb SQL builder
-   * @param limitCount Maximum number of records to retrieve
+   * @param conn the database connection
+   * @param sb the SQL Bean
+   * @param limitCount the retrieval count limit
    * @return the multiple row list
    */
-  public static IoRows selectBulk(final Connection conn, final SqlBuilder sb,
-      final int limitCount) {
+  public static IoRows selectBulk(final Connection conn, final SqlBean sb, final int limitCount) {
     return selectBulkByLimitCount(conn, sb, limitCount);
   }
 
   /**
-   * Gets multiple records in bulk (all records).<br>
+   * Retrieves multiple records in bulk (retrieves all records).<br>
    * <ul>
-   * <li>Returns a multiple row list.</li>
-   * <li>Returns a list with size zero if zero records are returned.</li>
-   * <li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-   * <li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
+   * <li>Returns multiple row list.</li>
+   * <li>Returns a list with zero size if the result is zero records.</li>
+   * <li>Column physical names of the map for one row become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>This method consumes memory, so uses <code>#select(Connection, SqlBean)</code>
    * for loop processing.</li>
-   * <li>Retrieving a large number of records with this method may cause memory errors.</li>
+   * <li>This method may cause memory error when retrieving a large number of records.</li>
    * </ul>
    *
-   * @param conn Database connection
-   * @param sb SQL builder
+   * @param conn the database connection
+   * @param sb the SQL Bean
    * @return the multiple row list
    */
-  public static IoRows selectBulkAll(final Connection conn, final SqlBuilder sb) {
+  public static IoRows selectBulkAll(final Connection conn, final SqlBean sb) {
     return selectBulkByLimitCount(conn, sb, 0);
   }
 
   /**
-   * Gets multiple records in bulk.
+   * Retrieves multiple records in bulk.
    * 
-   * @param conn Database connection
-   * @param sb SQL builder
-   * @param limitCount Maximum number of records to retrieve (retrieves all if zero or less)
+   * @param conn the database connection
+   * @param sb the SQL Bean
+   * @param limitCount the retrieval count limit (retrieves all records if zero or less)
    * @return the multiple row list
    */
-  private static IoRows selectBulkByLimitCount(final Connection conn, final SqlBuilder sb,
-      final int limitCount) {
+  private static IoRows selectBulkByLimitCount(final Connection conn, final SqlBean sb, final int limitCount) {
     // Fetch size
     final int fetchSize;
     if (limitCount <= 0 || DEFAULT_FETCH_SIZE < limitCount) {
       // To reduce memory usage as much as possible
-      // Use default fetch size for all records or when exceeding default fetch size
+      // Uses default fetch size for all records or when exceeding default fetch size
       fetchSize = DEFAULT_FETCH_SIZE;
     } else {
-      // Add +1 for limit exceeded check
+      // Adds +1 for limit exceeded determination
       fetchSize = limitCount + 1;
     }
 
@@ -282,16 +276,16 @@ public final class SqlUtil {
         final IoItems row = ite.next();
         rows.add(row);
         if (limitCount > 0 && rows.size() >= limitCount) {
-          // End because limit count reached
+          // Terminates because reached limit count
           if (ite.hasNext()) {
-            // Data still exists = limit exceeded
+            // Still has data = limit exceeded
             rows.setLimitOver(true);
           }
           break;
         }
       }
       if (rSet.getReadedCount() > 0) {
-        // Set begin and end row numbers if not zero records
+        // Sets begin row number and end row number for cases other than zero records
         rows.setBeginRowNo(1);
         rows.setEndRowNo(rSet.getReadedCount());
       }
@@ -300,35 +294,36 @@ public final class SqlUtil {
   }
 
   /**
-   * Gets multiple records with specified fetch size.
+   * Retrieves multiple records with specified fetch size.
    *
-   * @param conn Database connection
-   * @param sb SQL builder
-   * @param fetchSize Fetch size
+   * @param conn the database connection
+   * @param sb the SQL Bean
+   * @param fetchSize the fetch size
    * @return the SQL result set
    */
-  private static SqlResultSet selectByFetchSize(final Connection conn, final SqlBuilder sb,
+  private static SqlResultSet selectByFetchSize(final Connection conn, final SqlBean sb,
       final int fetchSize) {
         
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
     final String sql = sb.getQuery();
-    final List<Object> params = sb.getParameters();
+    final List<Object> bindValues = sb.getBindValues();
     if (logger.isDevelopMode()) {
-      // Output SQL log
+      // Outputs SQL log
       logger.develop("SQL#SELECT execution. " + LogUtil.joinKeyVal("sql", sb, "fetchSize", fetchSize));
     }
-
+    PreparedStatement stmt = null;
+    ResultSet rset = null;
     try {
-      // Create statement
-      final PreparedStatement stmt = conn.prepareStatement(sql);
-      // Set parameters to statement
-      setStmtParameters(stmt, params, dbmsName);
-      // Set fetch-related properties to statement
+      // Generates statement
+      stmt = conn.prepareStatement(sql);
+      // Sets parameters to statement
+      setStmtParameters(stmt, bindValues, dbmsName);
+      // Sets fetch-related properties to statement
       setStmtFetchProperty(stmt, fetchSize);
 
-      // Execute SQL
-      final ResultSet rset = stmt.executeQuery();
-      // Database column name to class type map
+      // Executes SQL
+      rset = stmt.executeQuery();
+      // Database column name and class type map
       final Map<String, ItemClsType> itemClsMap = createItemNameClsMap(rset);
 
       // Connection serial code
@@ -339,25 +334,27 @@ public final class SqlUtil {
       return retSet;
 
     } catch (SQLException e) {
+      DbUtil.closeQuietly(rset);
+      DbUtil.closeQuietly(stmt);
       throw new RuntimeException("Exception error occurred during data retrieval. " + LogUtil.joinKeyVal("sql",
           sb, "fetchSize", fetchSize), e);
     }
   }
 
   /**
-   * Inserts one record by specifying table.<br>
+   * Inserts one record with specified table.<br>
    * <ul>
-   * <li>Inserts one record by specifying the table name.</li>
-   * <li>Parameters not existing in the table are ignored.</li>
-   * <li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-   * values will be inserted into the added column without implementation changes, so caution is needed.</li>
-   * <li>Throws an exception error if the affected count is zero for reasons other than unique constraint violation.</li>
+   * <li>Inserts one record by specifying table name.</li>
+   * <li>Ignores parameters that do not exist in the table.</li>
+   * <li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+   * the value will be inserted into the added column without implementation modification.</li>
+   * <li>Throws a runtime exception if the affected count is zero for reasons other than unique constraint violation.</li>
    * </ul>
    *
-   * @param conn      Database connection
-   * @param tableName Table name
-   * @param params    Parameter values
-   * @return <code>false</code> if unique constraint violation, <code>true</code> if one record was inserted successfully
+   * @param conn      the database connection
+   * @param tableName the table name
+   * @param params    the parameter values
+   * @return <code>false</code> for unique constraint violation, <code>true</code> if one record is normally inserted
    */
   public static boolean insertOne(final Connection conn, final String tableName, final AbstractIoTypeMap params) {
 
@@ -368,7 +365,7 @@ public final class SqlUtil {
     final SqlBuilder sbInto = new SqlBuilder();
     final SqlBuilder sbVals = new SqlBuilder();
     try {
-      // Database column name to class type map
+      // Database column name and class type map
       final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
 
       sbInto.addQuery("INSERT INTO ").addQuery(tableName);
@@ -377,21 +374,21 @@ public final class SqlUtil {
       sbVals.addQuery(" ( ");
       for (final String itemName : params.keySet()) {
         if (!itemClsMap.containsKey(itemName)) {
-          // Skip parameters not existing in the table
+          // Skips parameters that do not exist in the table
           continue;
         }
 
         // Column class type
         final ItemClsType itemCls = itemClsMap.get(itemName);
-        // Get value by column class type
+        // Value retrieval by column class type
         final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
 
-        // Append SQL
+        // Adds SQL
         sbInto.addQuery(itemName).addQuery(",");
         sbVals.addQuery("?,", param);
       }
 
-      // Build SQL
+      // Assembles SQL
       sbInto.delLastChar();
       sbVals.delLastChar();
       sbInto.addQuery(" ) VALUES ");
@@ -404,7 +401,7 @@ public final class SqlUtil {
     }
 
     try{
-      // Execute SQL
+      // Executes SQL
       final int ret = executeSql(conn, sbInto);
       if (ret != 1) {
         throw new RuntimeException("Failed to insert data. " + LogUtil.joinKeyVal("sql",
@@ -423,21 +420,21 @@ public final class SqlUtil {
   }
 
   /**
-   * Inserts one record by specifying table (timestamp auto-set).<br>
+   * Inserts one record with specified table (automatic timestamp setting).<br>
    * <ul>
-   * <li>Inserts one record by specifying the table name.</li>
-   * <li>Sets the timestamp for optimistic locking.</li>
-   * <li>Parameters not existing in the table are ignored.</li>
-   * <li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-   * values will be inserted into the added column without implementation changes, so caution is needed.</li>
-   * <li>Throws an exception error if the affected count is zero for reasons other than unique constraint violation.</li>
+   * <li>Inserts one record by specifying table name.</li>
+   * <li>Sets timestamp for optimistic concurrency control.</li>
+   * <li>Ignores parameters that do not exist in the table.</li>
+   * <li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+   * the value will be inserted into the added column without implementation modification.</li>
+   * <li>Throws a runtime exception if the affected count is zero for reasons other than unique constraint violation.</li>
    * </ul>
    *
-   * @param conn      Database connection
-   * @param tableName Table name
-   * @param params    Parameter values
-   * @param tsItem    Timestamp column name (for optimistic locking)
-   * @return <code>false</code> if unique constraint violation, <code>true</code> if one record was inserted successfully
+   * @param conn      the database connection
+   * @param tableName the table name
+   * @param params    the parameter values
+   * @param tsItem    the timestamp column name (for optimistic concurrency control)
+   * @return <code>false</code> for unique constraint violation, <code>true</code> if one record is normally inserted
    */
   public static boolean insertOne(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String tsItem) {
@@ -451,7 +448,7 @@ public final class SqlUtil {
     final SqlBuilder sbInto = new SqlBuilder();
     final SqlBuilder sbVals = new SqlBuilder();
     try {
-      // Database column name to class type map
+      // Database column name and class type map
       final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
 
       sbInto.addQuery("INSERT INTO ").addQuery(tableName);
@@ -460,28 +457,28 @@ public final class SqlUtil {
       sbVals.addQuery(" ( ");
       for (final String itemName : params.keySet()) {
         if (!itemClsMap.containsKey(itemName)) {
-          // Skip parameters not existing in the table
+          // Skips parameters that do not exist in the table
           continue;
         }
         if (tsItem.equals(itemName)) {
-          // Skip timestamp
+          // Skips timestamp
           continue;
         }
 
         // Column class type
         final ItemClsType itemCls = itemClsMap.get(itemName);
-        // Get value by column class type
+        // Value retrieval by column class type
         final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
 
-        // Append SQL
+        // Adds SQL
         sbInto.addQuery(itemName).addQuery(",");
         sbVals.addQuery("?,", param);
       }
-      // Append timestamp SQL
+      // Adds timestamp SQL
       sbInto.addQuery(tsItem);
       sbVals.addQuery(curTs);
 
-      // Build SQL
+      // Assembles SQL
       sbInto.addQuery(" ) VALUES ");
       sbVals.addQuery(" ) ");
       sbInto.addSqlBuilder(sbVals);
@@ -492,7 +489,7 @@ public final class SqlUtil {
     }
 
     try {
-      // Execute SQL
+      // Executes SQL
       final int ret = executeSql(conn, sbInto);
       if (ret != 1) {
         throw new RuntimeException("Failed to insert data. " + LogUtil.joinKeyVal("sql",
@@ -511,24 +508,24 @@ public final class SqlUtil {
   }
 
   /**
-   * Updates one record by specifying table.<br>
+   * Updates one record with specified table.<br>
    * <ul>
-   * <li>Updates one record by specifying the table name.</li>
-   * <li>Throws an exception error if multiple records are updated.</li>
-   * <li>Parameters not existing in the table are ignored.</li>
-   * <li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-   * values will be updated in the added column without implementation changes, so caution is needed.</li>
-   * <li>WHERE clause is created from key columns.</li>
-   * <li>Key columns must be included in the parameter values.</li>
-   * <li>Key column names must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Updates one record by specifying table name.</li>
+   * <li>Throws a runtime exception if multiple records are updated.</li>
+   * <li>Ignores parameters that do not exist in the table.</li>
+   * <li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+   * the value will be updated in the added column without implementation modification.</li>
+   * <li>WHERE clause is created by key columns.</li>
+   * <li>Key columns must be included in parameter values.</li>
+   * <li>Alphabetic characters of key column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn      Database connection
-   * @param tableName Table name
-   * @param params    Parameter values (including key column names)
-   * @param keyItems  Key column names
+   * @param conn      the database connection
+   * @param tableName the table name
+   * @param params    the parameter values (including key column names)
+   * @param keyItems  the key column names
    *
-   * @return <code>true</code> if one record was updated, <code>false</code> if zero records
+   * @return <code>true</code> if one record is updated, <code>false</code> if zero records
    */
   public static boolean updateOne(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] keyItems) {
@@ -544,28 +541,29 @@ public final class SqlUtil {
   }
 
   /**
-   * Updates one record by specifying table (timestamp exclusive control update).<br>
+   * Updates one record with specified table (timestamp exclusive control update).<br>
    * <ul>
-   * <li>Updates one record by specifying the table name.</li>
-   * <li>Throws an exception error if multiple records are updated.</li>
-   * <li>Performs optimistic locking using timestamp.</li>
-   * <li>Parameters not existing in the table are ignored.</li>
-   * <li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-   * values will be updated in the added column without implementation changes, so caution is needed.</li>
-   * <li>WHERE clause is created from key columns and timestamp column (for exclusive control).</li>
-   * <li>Key columns and timestamp column must be included in the parameter values.</li>
-   * <li>Key column names and timestamp column name must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-   * <li>Timestamp column is updated with the current datetime.</li>
-   * <li>Use <code>#updateOne(Connection, String, AbstractIoTypeMap, String[])</code> if timestamp exclusive control is not needed.</li>
+   * <li>Updates one record by specifying table name.</li>
+   * <li>Throws a runtime exception if multiple records are updated.</li>
+   * <li>Performs optimistic concurrency control with timestamp.</li>
+   * <li>Ignores parameters that do not exist in the table.</li>
+   * <li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+   * the value will be updated in the added column without implementation modification.</li>
+   * <li>WHERE clause is created by key columns and timestamp column (exclusive control).</li>
+   * <li>Key columns and timestamp column must be included in parameter values.</li>
+   * <li>Alphabetic characters of key column names and timestamp column name must be specified in lowercase. (<code>AbstractIoTypeMap</code>
+   * key rule)</li>
+   * <li>Timestamp column is updated with current date/time.</li>
+   * <li>Uses <code>#updateOne(Connection, String, AbstractIoTypeMap, String[])</code> when timestamp exclusive control is not required.</li>
    * </ul>
    *
-   * @param conn      Database connection
-   * @param tableName Table name
-   * @param params    Parameter values (including key column names)
-   * @param keyItems  Key column names
-   * @param tsItem    Timestamp column name (for optimistic locking)
+   * @param conn      the database connection
+   * @param tableName the table name
+   * @param params    the parameter values (including key column names)
+   * @param keyItems  the key column names
+   * @param tsItem    the timestamp column name (for optimistic concurrency control)
    *
-   * @return <code>true</code> if one record was updated, <code>false</code> if zero records
+   * @return <code>true</code> if one record is updated, <code>false</code> if zero records
    */
   public static boolean updateOne(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] keyItems, final String tsItem) {
@@ -585,18 +583,18 @@ public final class SqlUtil {
     
     final SqlBuilder sb = new SqlBuilder();
     try {
-      // Database column name to class type map
+      // Database column name and class type map
       final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
 
       final String[] whereItems = Arrays.copyOf(keyItems, keyItems.length + 1);
       whereItems[keyItems.length] = tsItem;
 
       sb.addQuery("UPDATE ").addQuery(tableName);
-      // Append SET clause
+      // Adds SET clause
       addSetQuery(sb, params, whereItems, itemClsMap);
-      // Update timestamp column with current datetime
+      // Updates timestamp column with current date/time
       sb.addQuery(",").addQuery(tsItem).addQuery("=").addQuery(curTs);
-      // Append WHERE clause
+      // Adds WHERE clause
       addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
 
     } catch (SQLException e) {
@@ -605,7 +603,7 @@ public final class SqlUtil {
     }
 
     try {
-      // Execute SQL
+      // Executes SQL
       final int ret = executeSql(conn, sb);
       if (ret > 1) {
         throw new RuntimeException("Multiple records were updated. " + LogUtil.joinKeyVal("sql", sb));
@@ -617,23 +615,23 @@ public final class SqlUtil {
   }
 
   /**
-   * Updates records by specifying table.<br>
+   * Updates with specified table.<br>
    * <ul>
-   * <li>Updates multiple records by specifying the table name.</li>
-   * <li>Parameters not existing in the table are ignored.</li>
-   * <li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-   * values will be updated in the added column without implementation changes, so caution is needed.</li>
-   * <li>WHERE clause is created from extraction condition columns.</li>
-   * <li>Extraction condition columns must be included in the parameter values.</li>
-   * <li>Extraction condition column names must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Updates multiple records by specifying table name.</li>
+   * <li>Ignores parameters that do not exist in the table.</li>
+   * <li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+   * the value will be updated in the added column without implementation modification.</li>
+   * <li>WHERE clause is created by filter condition columns.</li>
+   * <li>Filter condition columns must be included in parameter values.</li>
+   * <li>Alphabetic characters of filter condition column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn       Database connection
-   * @param tableName  Table name
-   * @param params     Parameter values (including extraction condition column names)
-   * @param whereItems Extraction condition column names (optional) <code>null</code> if omitted
+   * @param conn       the database connection
+   * @param tableName  the table name
+   * @param params     the parameter values (including filter condition column names)
+   * @param whereItems the filter condition column names (optional) <code>null</code> if omitted
    *
-   * @return the number of updated records
+   * @return the update count
    */
   public static int update(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] whereItems) {
@@ -644,13 +642,13 @@ public final class SqlUtil {
 
     final SqlBuilder sb = new SqlBuilder();
     try {
-      // Database column name to class type map
+      // Database column name and class type map
       final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
 
       sb.addQuery("UPDATE ").addQuery(tableName);
-      // Append SET clause
+      // Adds SET clause
       addSetQuery(sb, params, whereItems, itemClsMap);
-      // Append WHERE clause
+      // Adds WHERE clause
       addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
 
     } catch (SQLException e) {
@@ -659,7 +657,7 @@ public final class SqlUtil {
     }
 
     try {
-      // Execute SQL
+      // Executes SQL
       final int ret = executeSql(conn, sb);
       return ret;
     } catch (SQLException e) {
@@ -668,21 +666,21 @@ public final class SqlUtil {
   }
 
   /**
-   * Deletes one record by specifying table.<br>
+   * Deletes one record with specified table.<br>
    * <ul>
-   * <li>Deletes one record by specifying the table name.</li>
-   * <li>Throws an exception error if multiple records are deleted.</li>
-   * <li>WHERE clause is created from key columns.</li>
-   * <li>Key columns must be included in the parameter values.</li>
-   * <li>Key column names must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Deletes one record by specifying table name.</li>
+   * <li>Throws a runtime exception if multiple records are deleted.</li>
+   * <li>WHERE clause is created by key columns.</li>
+   * <li>Key columns must be included in parameter values.</li>
+   * <li>Alphabetic characters of key column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn      Database connection
-   * @param tableName Table name
-   * @param params    Parameter values (including key column names)
-   * @param keyItems  Key column names
+   * @param conn      the database connection
+   * @param tableName the table name
+   * @param params    the parameter values (including key column names)
+   * @param keyItems  the key column names
    *
-   * @return <code>true</code> if one record was deleted, <code>false</code> if zero records
+   * @return <code>true</code> if one record is deleted, <code>false</code> if zero records
    */
   public static boolean deleteOne(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] keyItems) {
@@ -698,25 +696,27 @@ public final class SqlUtil {
   }
 
   /**
-   * Deletes one record by specifying table (timestamp exclusive control delete).<br>
+   * Deletes one record with specified table (timestamp exclusive control delete).<br>
    * <ul>
-   * <li>Deletes one record by specifying the table name.</li>
-   * <li>Throws an exception error if multiple records are deleted.</li>
-   * <li>Performs optimistic locking using timestamp.</li>
-   * <li>WHERE clause is created from key columns and timestamp column (for exclusive control).</li>
-   * <li>Key columns and timestamp column must be included in the parameter values.</li>
-   * <li>Key column names and timestamp column name must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-   * <li>Use <code>#deleteOne(Connection, String, AbstractIoTypeMap, String[])</code>
-   * if timestamp exclusive control is not needed.</li>
+   * <li>Deletes one record by specifying table name.</li>
+   * <li>Throws a runtime exception if multiple records are deleted.</li>
+   * <li>Performs optimistic concurrency control with timestamp.</li>
+   * <li>WHERE clause is created by key columns and timestamp column (exclusive control).</li>
+   * <li>Key columns and timestamp column must be included in parameter values.</li>
+   * <li>Alphabetic characters of key column names and timestamp column name must be specified in lowercase. (<code>AbstractIoTypeMap</code>
+   * key rule)</li>
+   * <li>Uses
+   * <code>#deleteOne(Connection, String, AbstractIoTypeMap, String[])</code>
+   * when timestamp exclusive control is not required.</li>
    * </ul>
    *
-   * @param conn      Database connection
-   * @param tableName Table name
-   * @param params    Parameter values (including key column names)
-   * @param keyItems  Key column names
-   * @param tsItem    Timestamp column name (for optimistic locking)
+   * @param conn      the database connection
+   * @param tableName the table name
+   * @param params    the parameter values (including key column names)
+   * @param keyItems  the key column names
+   * @param tsItem    the timestamp column name (for optimistic concurrency control)
    *
-   * @return <code>true</code> if one record was deleted, <code>false</code> if zero records
+   * @return <code>true</code> if one record is deleted, <code>false</code> if zero records
    */
   public static boolean deleteOne(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] keyItems, final String tsItem) {
@@ -742,20 +742,20 @@ public final class SqlUtil {
   }
 
   /**
-   * Deletes records by specifying table.<br>
+   * Deletes with specified table.<br>
    * <ul>
-   * <li>Deletes multiple records by specifying the table name.</li>
-   * <li>WHERE clause is created from extraction condition columns.</li>
-   * <li>Extraction condition columns must be included in the parameter values.</li>
-   * <li>Extraction condition column names must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Deletes multiple records by specifying table name.</li>
+   * <li>WHERE clause is created by filter condition columns.</li>
+   * <li>Filter condition columns must be included in parameter values.</li>
+   * <li>Alphabetic characters of filter condition column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn Database connection
-   * @param tableName Table name
-   * @param params Parameter values (including extraction condition column names)
-   * @param whereItems Extraction condition column names
+   * @param conn the database connection
+   * @param tableName the table name
+   * @param params the parameter values (including filter condition column names)
+   * @param whereItems the filter condition column names
    *
-   * @return the number of deleted records
+   * @return the delete count
    */
   public static int delete(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] whereItems) {
@@ -766,11 +766,11 @@ public final class SqlUtil {
 
     final SqlBuilder sb = new SqlBuilder();
     try {
-      // Database column name to class type map
+      // Database column name and class type map
       final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
 
       sb.addQuery("DELETE FROM ").addQuery(tableName);
-      // Append WHERE clause
+      // Adds WHERE clause
       addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
       
     } catch (SQLException e) {
@@ -779,7 +779,7 @@ public final class SqlUtil {
     }
 
     try {
-      // Execute SQL
+      // Executes SQL
       final int ret = executeSql(conn, sb);
       return ret;
     } catch (SQLException e) {
@@ -788,20 +788,20 @@ public final class SqlUtil {
   }
 
   /**
-   * Appends SET clause.
+   * Adds SET clause.
    *
-   * @param sb         SQL builder
-   * @param params     Parameter values (including extraction condition column names)
-   * @param whereItems Extraction condition column names (optional) <code>null</code> if omitted
-   * @param itemClsMap Database column name to class type map
+   * @param sb         the SQL builder
+   * @param params     the parameter values (including filter condition column names)
+   * @param whereItems the filter condition column names (optional) <code>null</code> if omitted
+   * @param itemClsMap the database column name and class type map
    */
   private static void addSetQuery(final SqlBuilder sb, final AbstractIoTypeMap params,
       final String[] whereItems, final Map<String, ItemClsType> itemClsMap) {
 
-    // Create SET clause
+    // Creates SET clause
     sb.addQuery(" SET ");
 
-    // Extraction condition column list for existence check
+    // Filter condition column list for existence check
     final List<String> whereItemList;
     if (ValUtil.isEmpty(whereItems)) {
       whereItemList = Arrays.asList(new String[] {});
@@ -811,32 +811,32 @@ public final class SqlUtil {
 
     for (final String itemName : params.keySet()) {
       if (!itemClsMap.containsKey(itemName)) {
-        // Skip parameters not existing in the table
+        // Skips parameters that do not exist in the table
         continue;
       }
       if (whereItemList.contains(itemName)) {
-        // Skip if exists in extraction condition columns
+        // Skips if exists in filter condition columns
         continue;
       }
 
       // Column class type
       final ItemClsType itemCls = itemClsMap.get(itemName);
-      // Get value by column class type
+      // Value retrieval by column class type
       final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
-      // Append SQL
+      // Adds SQL
       sb.addQuery(itemName).addQuery("=?", param).addQuery(",");
     }
     sb.delLastChar();
   }
 
   /**
-   * Appends WHERE clause.
+   * Adds WHERE clause.
    *
-   * @param sb         SQL builder
-   * @param tableName  Table name
-   * @param params     Parameter values (including extraction condition column names)
-   * @param whereItems Extraction condition column names (optional) <code>null</code> if omitted
-   * @param itemClsMap Database column name to class type map
+   * @param sb         the SQL builder
+   * @param tableName  the table name
+   * @param params     the parameter values (including filter condition column names)
+   * @param whereItems the filter condition column names (optional) <code>null</code> if omitted
+   * @param itemClsMap the database column name and class type map
    */
   private static void addWhereQuery(final SqlBuilder sb, final String tableName,
       final AbstractIoTypeMap params, final String[] whereItems, final Map<String, ItemClsType> itemClsMap) {
@@ -845,40 +845,40 @@ public final class SqlUtil {
       return;
     }
 
-    // Create WHERE clause
+    // Creates WHERE clause
     sb.addQuery(" WHERE ");
     for (final String itemName : whereItems) {
       if (!itemClsMap.containsKey(itemName)) {
-        // Skip parameters not existing in the table
+        // Skips parameters that do not exist in the table
         continue;
       }
       if (!params.containsKey(itemName)) {
-        // Error if extraction condition column does not exist in parameters
+        // Throws error if filter condition column does not exist in parameters
         throw new RuntimeException("Extraction condition field does not exist in parameters. " + LogUtil.joinKeyVal("tableName",
             tableName, "whereItemName", itemName, "params", params));
       }
 
       // Column class type
       final ItemClsType itemCls = itemClsMap.get(itemName);
-      // Get value by column class type
+      // Value retrieval by column class type
       final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
-      // Append SQL
+      // Adds SQL
       sb.addQuery(itemName).addQuery("=?", param).addQuery(" AND ");
     }
     sb.delLastChar(4);
   }
 
   /**
-   * SQL insert/update/delete one record.<br>
+   * SQL one record insert, update, or delete.<br>
    * <ul>
-   * <li>Throws an exception error if the affected count is multiple records.</li>
+   * <li>Throws a runtime exception if the affected count is multiple records.</li>
    * </ul>
    *
-   * @param conn Database connection
-   * @param sb SQL builder
-   * @return <code>true</code> if affected count is one record, <code>false</code> if zero records
+   * @param conn the database connection
+   * @param sb the SQL Bean
+   * @return <code>true</code> if the affected count is one record, <code>false</code> if zero records
    */
-  public static boolean executeOne(final Connection conn, final SqlBuilder sb) {
+  public static boolean executeOne(final Connection conn, final SqlBean sb) {
     final int ret = execute(conn, sb);
     if (ret > 1) {
       throw new RuntimeException("Multiple records were affected. " + LogUtil.joinKeyVal("sql", sb));
@@ -887,13 +887,13 @@ public final class SqlUtil {
   }
 
   /**
-   * SQL insert/update/delete.
+   * SQL insert, update, or delete.
    *
-   * @param conn Database connection
-   * @param sb SQL builder
+   * @param conn the database connection
+   * @param sb the SQL Bean
    * @return the affected count
    */
-  public static int execute(final Connection conn, final SqlBuilder sb) {
+  public static int execute(final Connection conn, final SqlBean sb) {
     try {
       return executeSql(conn, sb);
     } catch (SQLException e) {
@@ -902,26 +902,26 @@ public final class SqlUtil {
   }
 
   /**
-   * Executes SQL builder.
+   * Executes SQL.
    *
-   * @param conn Database connection
-   * @param sb SQL builder
+   * @param conn the database connection
+   * @param sb the SQL Bean
    * @return the affected count
-   * @throws SQLException SQL exception error
+   * @throws SQLException the SQL exception error
    */
-  private static int executeSql(final Connection conn, final SqlBuilder sb)
+  private static int executeSql(final Connection conn, final SqlBean sb)
       throws SQLException {
         
     if (logger.isDevelopMode()) {
-      // Output SQL log
+      // Outputs SQL log
       logger.develop("SQL#EXECUTE execution. " + LogUtil.joinKeyVal("sql", sb));
     }
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
-    // Create statement
+    // Generates statement
     try (final PreparedStatement stmt = conn.prepareStatement(sb.getQuery());) {
-      // Set parameters to statement
-      setStmtParameters(stmt, sb.getParameters(), dbmsName);
-      // Execute SQL
+      // Sets parameters to statement
+      setStmtParameters(stmt, sb.getBindValues(), dbmsName);
+      // Executes SQL
       final int ret = stmt.executeUpdate();
       return ret;
     }
@@ -930,84 +930,84 @@ public final class SqlUtil {
   /**
    * Sets parameters to statement.
    *
-   * @param stmt     Statement
-   * @param params   Parameters
-   * @param dbmsName DBMS name
-   * @throws SQLException SQL exception error
+   * @param stmt     the statement
+   * @param bindValues   the bind value list
+   * @param dbmsName the DBMS name
+   * @throws SQLException the SQL exception error
    */
-  private static void setStmtParameters(final PreparedStatement stmt, final List<Object> params,
+  private static void setStmtParameters(final PreparedStatement stmt, final List<Object> bindValues,
       final DbmsName dbmsName) throws SQLException {
     int bindNo = 0;
-    for (final Object param : params) {
+    for (final Object bindValue : bindValues) {
       ++bindNo;
       if (dbmsName == DbmsName.SQLITE) {
-        if (ValUtil.isNull(param)) {
-          stmt.setObject(bindNo, param);
-        } else if (param instanceof java.sql.Timestamp) {
-          // Convert java.sql.Timestamp to String and set
-          final java.sql.Timestamp ts = (java.sql.Timestamp) param;
+        if (ValUtil.isNull(bindValue)) {
+          stmt.setObject(bindNo, bindValue);
+        } else if (bindValue instanceof java.sql.Timestamp) {
+          // Converts and sets to String for java.sql.Timestamp
+          final java.sql.Timestamp ts = (java.sql.Timestamp) bindValue;
           final LocalDateTime ldt = ts.toLocalDateTime();
           final String s = DTF_SQL_TIMESTAMP.format(ldt);
           stmt.setString(bindNo, s);
-        } else if (param instanceof java.sql.Date) {
-          // Convert java.sql.Date to String and set
-          final java.sql.Date dt = (java.sql.Date) param;
+        } else if (bindValue instanceof java.sql.Date) {
+          // Converts and sets to String for java.sql.Date
+          final java.sql.Date dt = (java.sql.Date) bindValue;
           final LocalDate ld = dt.toLocalDate();
           final String s = DTF_SQL_DATE.format(ld);
           stmt.setString(bindNo, s);
         } else {
-          stmt.setObject(bindNo, param);
+          stmt.setObject(bindNo, bindValue);
         }
       } else {
-        stmt.setObject(bindNo, param);
+        stmt.setObject(bindNo, bindValue);
       }
     }
   }
+
   /**
    * Sets fetch-related properties to statement.
    *
-   * @param stmt Statement
-   * @param fetchSize Fetch size
-   * @throws SQLException SQL exception error
+   * @param stmt the statement
+   * @param fetchSize the fetch size
+   * @throws SQLException the SQL exception error
    */
   private static void setStmtFetchProperty(final PreparedStatement stmt, final int fetchSize)
       throws SQLException {
-    // Set fetch direction and fetch size
+    // Sets fetch direction and fetch size
     stmt.setFetchDirection(ResultSet.FETCH_FORWARD);
     stmt.setFetchSize(fetchSize);
   }
 
   /**
-   * Creates a map of DB item name-to-class type from a result set.<br>
+   * Creates database column name and class type map from result set.<br>
    * <ul>
-   * <li>Creates a map of item names to class types from a result set.</li>
-   * <li>The map preserves item order.</li>
-   * <li>Item physical names are converted to lowercase letters. (Matches key rules of
-   *     <code>AbstractIoTypeMap</code>)</li>
+   * <li>Creates a map of column names and class types from the result set.</li>
+   * <li>The map preserves column order.</li>
+   * <li>Converts column physical names to lowercase alphabetic characters. (Aligns with key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param rset Result set
-   * @return DB item name-to-class type map
-   * @throws SQLException SQL exception error
+   * @param rset the result set
+   * @return the database column name and class type map
+   * @throws SQLException the SQL exception error
    */
   private static Map<String, ItemClsType> createItemNameClsMap(final ResultSet rset)
       throws SQLException {
 
-    // DB item name-to-class type map
+    // Database column name and class type map
     final Map<String, ItemClsType> itemClsMap = new LinkedHashMap<>();
 
     // DBMS name
     final DbmsName dbmsName = DbUtil.getDbmsName(rset);
-    // Result set meta information
+    // Result set metadata
     final ResultSetMetaData rmeta = rset.getMetaData();
     // Column count
     final int itemCount = rmeta.getColumnCount();
-    // Loop through result set columns
+    // Result set column loop
     for (int c = 1; c <= itemCount; c++) {
       // Column name
       final String itemName;
       if (DbmsName.DB2 == dbmsName) {
-        // DB2's #getColumnName returns the original item name, not alias
+        // Because DB2's #getColumnName returns original column name instead of alias
         itemName = rmeta.getColumnLabel(c).toLowerCase();
       } else {
         itemName = rmeta.getColumnName(c).toLowerCase();
@@ -1015,9 +1015,9 @@ public final class SqlUtil {
       // Type number
       final int typeNo = rmeta.getColumnType(c);
       // Type name
-      // Oracle's DATE type also holds time and is judged as TIMESTAMP, so judgment by type name is necessary.
+      // Oracle's DATE type also has time and is judged as TIMESTAMP, so needs to judge by type name.
       final String typeName = rmeta.getColumnTypeName(c).toUpperCase();
-      // Item class type
+      // Column class type
       final ItemClsType itemCls = convItemClsType(typeNo, typeName, dbmsName);
 
       itemClsMap.put(itemName, itemCls);
@@ -1026,27 +1026,26 @@ public final class SqlUtil {
   }
 
   /**
-   * Creates a map of DB item name-to-class type by specifying a table.<br>
+   * Creates database column name and class type map with specified table.<br>
    * <ul>
-   * <li>Creates a map of item names to class types from DB meta information.</li>
-   * <li>The map preserves item order.</li>
-   * <li>Item physical names are converted to lowercase letters. (Matches key rules of
-   *     <code>AbstractIoTypeMap</code>)</li>
+   * <li>Creates a map of column names and class types from database metadata.</li>
+   * <li>The map preserves column order.</li>
+   * <li>Converts column physical names to lowercase alphabetic characters. (Aligns with key rule of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn      Database connection
-   * @param tableName Table name
-   * @throws SQLException SQL exception error
+   * @param conn the database connection
+   * @param tableName the table name
+   * @throws SQLException the SQL exception error
    */
   private static Map<String, ItemClsType> createItemNameClsMapByMeta(final Connection conn,
       final String tableName) throws SQLException {
 
-    // DB item name-to-class type map
+    // Database column name and class type map
     final Map<String, ItemClsType> itemClsMap = new LinkedHashMap<>();
 
     // DBMS name
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
-    // DB meta information
+    // Database metadata
     final DatabaseMetaData cmeta = conn.getMetaData();
     // Column information result set
     final ResultSet rset = cmeta.getColumns(null, null, tableName, null);
@@ -1057,9 +1056,9 @@ public final class SqlUtil {
       // Type number
       final int typeNo = rset.getInt("DATA_TYPE");
       // Type name
-      // Oracle's DATE type also holds time and is judged as TIMESTAMP, so judgment by type name is necessary.
+      // Oracle's DATE type also has time and is judged as TIMESTAMP, so needs to judge by type name.
       final String typeName = rset.getString("TYPE_NAME");
-      // Item class type
+      // Column class type
       final ItemClsType itemCls = convItemClsType(typeNo, typeName, dbmsName);
 
       itemClsMap.put(itemName, itemCls);
@@ -1068,12 +1067,12 @@ public final class SqlUtil {
   }
 
   /**
-   * Converts DB item class type.
+   * Converts database column class type.
    *
-   * @param typeNo   Type number
-   * @param typeName Type name in uppercase
-   * @param dbmsName DBMS name
-   * @return Class type
+   * @param typeNo   the type number
+   * @param typeName the type name uppercase
+   * @param dbmsName the DBMS name
+   * @return the class type
    */
   private static ItemClsType convItemClsType(final int typeNo, final String typeName, final DbmsName dbmsName) {
     final ItemClsType itemCls;
@@ -1082,54 +1081,54 @@ public final class SqlUtil {
         || Types.INTEGER == typeNo || /* JDBC types mapped to Long */ Types.BIGINT == typeNo
         || /* JDBC types mapped to Float */ Types.FLOAT == typeNo || Types.REAL == typeNo
         || /* JDBC types mapped to Double */ Types.DOUBLE == typeNo) {
-      // Unify numeric types to BigDecimal
-      itemCls = ItemClsType.BigDecCls;
+      // Unifies numeric types to BigDecimal
+      itemCls = ItemClsType.BIGDECIMAL_CLS;
     } else if (Types.DATE == typeNo) {
       if ("DATETIME".equals(typeName) && DbmsName.MSSQL == dbmsName) {
-        itemCls = ItemClsType.TsCls;
+        itemCls = ItemClsType.TIMESTAMP_CLS;
       } else if (DbmsName.SQLITE == dbmsName) {
-        // When Types.DATE is returned from result set in SQLite, it is actually a string, so conversion is needed (see #createIoItemsFromResultSet)
-        itemCls = ItemClsType.StringToDateCls;
+        // When Types.DATE is returned from result set in SQLite, it is actually a string so needs conversion (see #createIoItemsFromResultSet)
+        itemCls = ItemClsType.STRING_TO_DATE_CLS;
       } else {
-        itemCls = ItemClsType.DateCls;
+        itemCls = ItemClsType.DATE_CLS;
       }
     } else if (Types.TIMESTAMP == typeNo || Types.TIMESTAMP_WITH_TIMEZONE == typeNo) {
       if ("DATE".equals(typeName) && DbmsName.ORACLE == dbmsName) {
-        itemCls = ItemClsType.DateCls;
+        itemCls = ItemClsType.DATE_CLS;
       } else if (DbmsName.SQLITE == dbmsName) {
-        // When Types.TIMESTAMP is returned from result set in SQLite, it is actually a string, so conversion is needed (see #createIoItemsFromResultSet)
-        itemCls = ItemClsType.StringToTsCls;
+        // When Types.TIMESTAMP is returned from result set in SQLite, it is actually a string so needs conversion (see #createIoItemsFromResultSet)
+        itemCls = ItemClsType.STRING_TO_TS_CLS;
       } else {
-        itemCls = ItemClsType.TsCls;
+        itemCls = ItemClsType.TIMESTAMP_CLS;
       }
     } else {
       if (DbmsName.SQLITE == dbmsName) {
         if ("DATE".equals(typeName)) {
-          // SQLite table meta information has Types.VARCHAR with type name "DATE"
-          itemCls = ItemClsType.StringToDateCls;
+          // SQLite table metadata has Types.VARCHAR with type name "DATE"
+          itemCls = ItemClsType.STRING_TO_DATE_CLS;
         } else if ("TIMESTAMP".equals(typeName)) {
-          // SQLite table meta information has Types.VARCHAR with type name "TIMESTAMP"
-          itemCls = ItemClsType.StringToTsCls;
+          // SQLite table metadata has Types.VARCHAR with type name "TIMESTAMP"
+          itemCls = ItemClsType.STRING_TO_TS_CLS;
         } else {
-          itemCls = ItemClsType.StringCls;
+          itemCls = ItemClsType.STRING_CLS;
         }
       } else {
-        // Unify string types to String
-        itemCls = ItemClsType.StringCls;
+        // Unifies string types to String
+        itemCls = ItemClsType.STRING_CLS;
       }
     }
     return itemCls;
   }
 
   /**
-   * Creates a row map from a result set.<br>
+   * Creates result set row map.<br>
    * <ul>
-   * <li>Returns the values of the current row of the result set as a map.</li>
+   * <li>Returns values of the current row of result set as a map.</li>
    * </ul>
    *
-   * @param rset Result set
-   * @param itemClsMap DB item name-to-class type map
-   * @return Row map
+   * @param rset the result set
+   * @param itemClsMap the database column name and class type map
+   * @return the row map
    */
   static IoItems createIoItemsFromResultSet(final ResultSet rset,
       final Map<String, ItemClsType> itemClsMap) {
@@ -1137,36 +1136,36 @@ public final class SqlUtil {
     // Row map
     final IoItems rowMap = new IoItems();
 
-    // Loop through DB items
+    // Database column loop
     for (final Map.Entry<String, ItemClsType> ent : itemClsMap.entrySet()) {
-      // Item name
+      // Column name
       final String itemName = ent.getKey();
       try {
-        // Item class type
+        // Column class type
         final ItemClsType itemCls = ent.getValue();
-        // Set value by item class type
-        if (ItemClsType.StringCls == itemCls) {
+        // Sets value by column class type
+        if (ItemClsType.STRING_CLS == itemCls) {
           final String value = rset.getString(itemName);
           rowMap.put(itemName, value);
-        } else if (ItemClsType.BigDecCls == itemCls) {
+        } else if (ItemClsType.BIGDECIMAL_CLS == itemCls) {
           final BigDecimal value = rset.getBigDecimal(itemName);
           rowMap.put(itemName, value);
-        } else if (ItemClsType.DateCls == itemCls) {
+        } else if (ItemClsType.DATE_CLS == itemCls) {
           final java.sql.Date value = rset.getDate(itemName);
           rowMap.put(itemName, value);
-        } else if (ItemClsType.TsCls == itemCls) {
+        } else if (ItemClsType.TIMESTAMP_CLS == itemCls) {
           final java.sql.Timestamp value = rset.getTimestamp(itemName);
           rowMap.put(itemName, value);
-        } else if (ItemClsType.StringToDateCls == itemCls) {
+        } else if (ItemClsType.STRING_TO_DATE_CLS == itemCls) {
           final String value = rset.getString(itemName);
           if (ValUtil.isBlank(value) || value.length() != 10) {
             rowMap.putNull(itemName);
             continue;
           }
           final LocalDate ld = LocalDate.parse(value, DTF_SQL_DATE);
-          // Originally should set as Date, but since IoItems converts to LocalDate internally, set as is
+          // Should set as Date originally, but sets as is because it is converted to LocalDate and set within IoItems
           rowMap.put(itemName, ld);
-        } else if (ItemClsType.StringToTsCls == itemCls) {
+        } else if (ItemClsType.STRING_TO_TS_CLS == itemCls) {
           final String value = rset.getString(itemName);
           if (ValUtil.isBlank(value)) {
             rowMap.putNull(itemName);
@@ -1175,22 +1174,22 @@ public final class SqlUtil {
           final String ajustVal;
           final int len = value.length();
           if (len == 19) {
-            // Add .000000 when fractional seconds are missing ("uuuu-MM-dd HH:mm:ss" = 19 characters)
+            // Adds .000000 when there is no fractional seconds ("uuuu-MM-dd HH:mm:ss" = 19 characters)
             ajustVal = value + ".000000";
           } else if (19 < len && len < 26) {
-            // Add 000000 when fractional seconds digits are insufficient ("uuuu-MM-dd HH:mm:ss.SSSSSS" = 26 characters)
+            // Adds 000000 for insufficient fractional seconds digits ("uuuu-MM-dd HH:mm:ss.SSSSSS" = 26 characters)
             ajustVal = ValUtil.substring(value + "000000", 0, 26);
           } else if (len == 26) {
             ajustVal = value;
           } else if (len > 26) {
-            // Truncate fractional seconds to 6 digits ("uuuu-MM-dd HH:mm:ss.SSSSSS" = 26 characters)
+            // Cuts fractional seconds digits at 6 digits ("uuuu-MM-dd HH:mm:ss.SSSSSS" = 26 characters)
             ajustVal = ValUtil.substring(value, 0, 26);
           } else {
             rowMap.putNull(itemName);
             continue;
           }
           final LocalDateTime ldt = LocalDateTime.parse(ajustVal, DTF_SQL_TIMESTAMP);
-          // Originally should set as Timestamp, but since IoItems converts to LocalDateTime internally, set as is
+          // Should set as Timestamp originally, but sets as is because it is converted to LocalDateTime and set within IoItems
           rowMap.put(itemName, ldt);
         } else {
           throw new RuntimeException("Item class type is invalid. "
@@ -1205,35 +1204,35 @@ public final class SqlUtil {
   }
 
   /**
-   * Gets parameter value.<br>
+   * Retrieves parameter value.<br>
    * <ul>
-   * <li>Uses different parameter getters based on DB item class type to retrieve and return the value.</li>
+   * <li>Retrieves and returns value by using parameter getter appropriately based on database column class type.</li>
    * </ul>
    *
-   * @param params Parameters
-   * @param itemName Item name
-   * @param itemCls DB item class type
-   * @return Parameter value
+   * @param params the parameters
+   * @param itemName the column name
+   * @param itemCls the database column class type
+   * @return the parameter value
    */
   private static Object getValueFromIoItemsByItemCls(final AbstractIoTypeMap params, final String itemName,
       final ItemClsType itemCls) {
     final Object param;
-    if (ItemClsType.StringCls == itemCls) {
+    if (ItemClsType.STRING_CLS == itemCls) {
       param = params.getStringNullable(itemName);
-    } else if (ItemClsType.BigDecCls == itemCls) {
+    } else if (ItemClsType.BIGDECIMAL_CLS == itemCls) {
       param = params.getBigDecimalNullable(itemName);
-    } else if (ItemClsType.DateCls == itemCls) {
+    } else if (ItemClsType.DATE_CLS == itemCls) {
       param = params.getSqlDateNullable(itemName);
-    } else if (ItemClsType.TsCls == itemCls) {
+    } else if (ItemClsType.TIMESTAMP_CLS == itemCls) {
       param = params.getSqlTimestampNullable(itemName);
-    } else if (ItemClsType.StringToDateCls == itemCls) {
+    } else if (ItemClsType.STRING_TO_DATE_CLS == itemCls) {
       final LocalDate ld = params.getDateNullable(itemName);
       if (ValUtil.isNull(ld)) {
         param = null;
       } else {
         param = ld.format(DTF_SQL_DATE);
       }
-    } else if (ItemClsType.StringToTsCls == itemCls) {
+    } else if (ItemClsType.STRING_TO_TS_CLS == itemCls) {
       final LocalDateTime ldt = params.getDateTimeNullable(itemName);
       if (ValUtil.isNull(ldt)) {
         param = null;
@@ -1248,36 +1247,36 @@ public final class SqlUtil {
   }
 
   /**
-   * Determines unique constraint violation error.<br>
+   * Judges unique constraint violation error.<br>
    * <ul>
-   * <li>Determines whether it is a unique constraint violation error for each DBMS.</li>
-   * <li>Returns <code>true</code> if it is a unique constraint violation.</li>
+   * <li>Judges whether it is a unique constraint violation error for each DBMS.</li>
+   * <li>Returns <code>true</code> for unique constraint violation.</li>
    * </ul>
    *
-   * @param e SQL exception
-   * @param dbmsName DBMS name
-   * @return <code>true</code> if it is a unique constraint violation error
+   * @param e the SQL exception
+   * @param dbmsName the DBMS name
+   * @return <code>true</code> for unique constraint violation error
    */
   private static boolean isUniqueKeyErr(final SQLException e, final DbmsName dbmsName) {
-    // Oracle unique constraint violation error determination
+    // Oracle unique constraint violation error check
     if (dbmsName == DbmsName.ORACLE && e.getErrorCode() == 1) {
       return true;
     }
-    // PostgreSQL unique constraint violation error determination
+    // PostgreSQL unique constraint violation error check
     if (dbmsName == DbmsName.POSTGRESQL && "23505".equals(e.getSQLState())) {
       return true;
     } 
-    // MS-SqlServer unique constraint violation error determination
+    // MS-SqlServer unique constraint violation error check
     if (dbmsName == DbmsName.MSSQL && "23000".equals(e.getSQLState())
         && e.getMessage().contains("Violation of UNIQUE KEY constraint")) {
       return true;
     }
-    // SQLite unique constraint violation error determination
+    // SQLite unique constraint violation error check
     if (dbmsName == DbmsName.SQLITE && e.getErrorCode() == 19
         && e.getMessage().contains("UNIQUE constraint failed")) {
       return true;
     }
-    // DB2 unique constraint violation error determination
+    // DB2 unique constraint violation error check
     if (dbmsName == DbmsName.DB2 && "23505".equals(e.getSQLState())) {
       return true;
     }
@@ -1285,102 +1284,100 @@ public final class SqlUtil {
     return false;
   }
 
-  /** Timestamp retrieval SQL (6 fractional second digits) map. */
+  /** Timestamp retrieval SQL (6 fractional seconds digits) map. */
   private static final Map<DbmsName, String> SQL_CUR_TS = new HashMap<>();
-  /** Timestamp retrieval SQL (6 fractional second digits) other. */
+  /** Timestamp retrieval SQL (6 fractional seconds digits) other. */
   private static final String SQL_CUR_TS_OTHER;
   static {
-    // SQLite can only retrieve 3 fractional second digits, so append 000 to make 6 digits
+    // SQLite can only retrieve 3 fractional seconds digits, so adds 000 to make it 6 digits
     SQL_CUR_TS.put(DbmsName.SQLITE, "strftime('%Y-%m-%d %H:%M:%f000', 'now', 'localtime')");
     SQL_CUR_TS.put(DbmsName.MSSQL, "SYSDATETIME()");
     SQL_CUR_TS_OTHER = "CURRENT_TIMESTAMP(6)";
   }
 
   /**
-   * Gets current timestamp value retrieval SQL by DBMS.
+   * Retrieves current timestamp value retrieval SQL by DBMS.
    *
-   * @param dbmsName DBMS name
-   * @return Current timestamp value retrieval SQL
+   * @param dbmsName the DBMS name
+   * @return the current timestamp value retrieval SQL
    */
   private static String getCurrentTimestampSql(final DbmsName dbmsName) {
     return SQL_CUR_TS.getOrDefault(dbmsName, SQL_CUR_TS_OTHER);
   }
 
   /** Date retrieval SELECT statement map. */
-  private static final Map<DbmsName, String> SQL_SELECT_TODAY = new HashMap<>();
+  private static final Map<DbmsName, SqlConst> SQL_SELECT_TODAY = new HashMap<>();
   static {
-    SQL_SELECT_TODAY.put(DbmsName.POSTGRESQL, "SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today");
-    SQL_SELECT_TODAY.put(DbmsName.ORACLE,    "SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM DUAL");
-    SQL_SELECT_TODAY.put(DbmsName.MSSQL,     "SELECT CONVERT(VARCHAR, FORMAT(GETDATE(), 'yyyyMMdd')) today");
-    SQL_SELECT_TODAY.put(DbmsName.SQLITE,    "SELECT strftime('%Y%m%d', 'now', 'localtime') today");
-    SQL_SELECT_TODAY.put(DbmsName.DB2, "SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM SYSIBM.DUAL");
+    SQL_SELECT_TODAY.put(DbmsName.POSTGRESQL, SqlConst.begin().addQuery("SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today").end());
+    SQL_SELECT_TODAY.put(DbmsName.ORACLE,    SqlConst.begin().addQuery("SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM DUAL").end());
+    SQL_SELECT_TODAY.put(DbmsName.MSSQL,     SqlConst.begin().addQuery("SELECT CONVERT(VARCHAR, FORMAT(GETDATE(), 'yyyyMMdd')) today").end());
+    SQL_SELECT_TODAY.put(DbmsName.SQLITE,    SqlConst.begin().addQuery("SELECT strftime('%Y%m%d', 'now', 'localtime') today").end());
+    SQL_SELECT_TODAY.put(DbmsName.DB2, SqlConst.begin().addQuery("SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM SYSIBM.DUAL").end());
   }
   
   /**
-   * Gets current date by DBMS.
+   * Retrieves current date by DBMS.
    *
-   * @param conn Database connection
-   * @return Current date (YYYYMMDD format)
+   * @param conn the database connection
+   * @return the current date (YYYYMMDD format)
    */
   public static String getToday(final Connection conn) {
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
-    final String sql = SQL_SELECT_TODAY.get(dbmsName);
-    if (ValUtil.isBlank(sql)) {
+    final SqlConst sc = SQL_SELECT_TODAY.get(dbmsName);
+    if (ValUtil.isNull(sc)) {
       throw new RuntimeException("Current date retrieval SQL is undefined for this DBMS. " + LogUtil.joinKeyVal("dbmsName", dbmsName));
     }
-    final SqlBuilder sb = new SqlBuilder();
-    sb.addQuery(sql);
-    final IoItems ret = selectOne(conn, sb);
+    final IoItems ret = selectOne(conn, sc);
     return ret.getString("today");
   }
 
-  /** Single-byte blank. */
+  /** One byte blank. */
   private static final String ONEBLANK = " ";
 
   /**
-   * Appends SQL.<br>
+   * Adds SQL.<br>
    * <ul>
-   * <li>Appends an SQL string to the StringBuilder.</li>
-   * <li>If the argument SQL starts with a blank, adds a single blank at the beginning. However, does not add if the existing SQL is empty or ends with a blank.</li>
-   * <li>Trims leading and trailing blanks of the argument SQL and replaces 2 or more consecutive blanks with a single blank.</li>
-   * <li>If the argument SQL ends with a blank, adds a single blank at the end.</li>
+   * <li>Adds SQL string to StringBuilder.</li>
+   * <li>Adds one character blank at the beginning if the beginning of parameter SQL is blank. (However does not add if existing SQL is empty or the last character is blank)</li>
+   * <li>Trims blanks before and after parameter SQL, and replaces two or more blanks with one character blank.</li>
+   * <li>Adds one character blank at the end if the end of parameter SQL is blank.</li>
    * </ul>
    * 
    * @param toSb  the destination StringBuilder
-   * @param sql the SQL to append
+   * @param sql the SQL to add
    */
   static void appendQuery(final StringBuilder toSb, final String sql) {
     if (ValUtil.isBlank(sql)) {
       return;
     }
 
-    // If the argument SQL starts with a blank, add a single blank at the beginning
-    // However, do not add if existing SQL is empty or ends with a blank
+    // Adds one character blank at the beginning if the beginning of parameter SQL is blank
+    // However does not add if existing SQL is empty or the last character is blank
     if (sql.startsWith(ONEBLANK) && toSb.length() > 0
         && toSb.charAt(toSb.length() - 1) != ' ') {
       toSb.append(ONEBLANK);
     }
 
-    // Trim leading and trailing blanks
-    // Replace 2 or more consecutive blanks with a single blank
-    // However, do not replace blanks enclosed in single quotes
+    // Trims blanks before and after
+    // Replaces two or more blanks with one character blank
+    // However does not replace blanks enclosed in single quotation marks
     toSb.append(trimQuerySpaces(sql));
 
-    // If the argument SQL ends with a blank, add a single blank at the end
+    // Adds one character blank at the end if the end of parameter SQL is blank
     if (sql.endsWith(ONEBLANK)) {
       toSb.append(ONEBLANK);
     }
   }
-  
+
   /**
-   * Replaces 2 or more consecutive blanks with a single blank in the SQL string.<br>
+   * Replaces two or more blanks with one character blank in SQL string.<br>
    * <ul>
-   * <li>Trims leading and trailing blanks.</li>
-   * <li>Replaces 2 or more consecutive blanks with a single blank.<br>
-   * However, blanks enclosed in single quotes are not replaced.</li>
+   * <li>Trims blanks before and after.</li>
+   * <li>Replaces two or more blanks with one character blank.</li>
+   * <li>Does not replace blanks enclosed in single quotation marks.</li>
    * </ul>
    * 
-   * @param sql SQL
+   * @param sql the SQL
    * @return the result SQL
    */
   private static String trimQuerySpaces(final String sql) {
@@ -1389,7 +1386,7 @@ public final class SqlUtil {
     }
     
     final int length = sql.length();
-    final char[] chars = sql.toCharArray(); // Use array access for performance
+    final char[] chars = sql.toCharArray(); // Speeds up with array access
     final StringBuilder ret = new StringBuilder(length);
     
     boolean inSq = false;
@@ -1397,7 +1394,7 @@ public final class SqlUtil {
     int beginPos = 0;
     int endPos = length;
     
-    // Pre-calculate leading and trailing trim positions
+    // Pre-calculates trim before and after
     while (beginPos < endPos && Character.isWhitespace(chars[beginPos])) {
         beginPos++;
     }
@@ -1407,7 +1404,7 @@ public final class SqlUtil {
     
     for (int i = beginPos; i < endPos; i++) {
         final char c = chars[i];
-        
+
         if (c == '\'' && (i == 0 || chars[i-1] != '\\')) {
             inSq = !inSq;
             ret.append(c);
@@ -1428,4 +1425,5 @@ public final class SqlUtil {
     
     return ret.toString();
   }
+
 }

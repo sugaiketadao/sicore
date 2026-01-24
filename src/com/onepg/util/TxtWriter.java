@@ -28,14 +28,37 @@ public class TxtWriter implements AutoCloseable {
    * Constructor.
    *
    * @param filePath the file path
-   * @param canAppend <code>true</code> if appending is allowed
-   * @param lineFlush <code>true</code> if flushing on line break
+   * @param lineSep the line separator
+   * @param charSet the character set
+   */
+  public TxtWriter(final String filePath, final LineSep lineSep, final CharSet charSet) {
+    this(filePath, lineSep, charSet, false, false, false);
+  }
+  
+  /**
+   * Constructor.
+   *
+   * @param filePath the file path
    * @param lineSep the line separator
    * @param charSet the character set
    * @param withBom <code>true</code> if with BOM
    */
-  public TxtWriter(final String filePath, final boolean canAppend, final boolean lineFlush,
-      final LineSep lineSep, final CharSet charSet, final boolean withBom) {
+  public TxtWriter(final String filePath, final LineSep lineSep, final CharSet charSet, final boolean withBom) {
+    this(filePath, lineSep, charSet, withBom, false, false);
+  }
+
+  /**
+   * Constructor.
+   *
+   * @param filePath the file path
+   * @param lineSep the line separator
+   * @param charSet the character set
+   * @param withBom <code>true</code> if with BOM
+   * @param canAppend <code>true</code> if appending is allowed
+   * @param lineFlush <code>true</code> if flushing on line break
+   */
+  public TxtWriter(final String filePath, final LineSep lineSep, final CharSet charSet, final boolean withBom, 
+    final boolean canAppend, final boolean lineFlush) {
     this.filePath = FileUtil.convAbsolutePath(filePath);
 
     // Error if file already exists and not appending
@@ -49,7 +72,7 @@ public class TxtWriter implements AutoCloseable {
 
     try {
       final FileOutputStream fos = new FileOutputStream(this.filePath, canAppend);
-      if (withBom && CharSet.UTF8.equals(charSet)) {
+      if (withBom && CharSet.UTF8 == charSet) {
         // BOM
         fos.write(0xef);
         fos.write(0xbb);

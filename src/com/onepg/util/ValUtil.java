@@ -35,11 +35,6 @@ public final class ValUtil {
   /** Category: OFF value. */
   public static final String OFF = "0";
 
-  /** Single quote character. */
-  public static final String SQ = "'";
-  /** Double quote character. */
-  public static final String DQ = "\"";
-
   /** JSON <code>null</code> string. */
   public static final String JSON_NULL = "null";
 
@@ -355,6 +350,87 @@ public final class ValUtil {
   }
 
   /**
+   * Joins array as CSV.<br>
+   * <ul>
+   * <li>Returns blank if the array is empty.</li>
+   * <li><code>null</code> is joined as blank.</li>
+   * </ul>
+   *
+   * @param values the array to join
+   * @return the joined CSV string
+   */
+  public static String joinCsv(final String[] values) {
+    if (isEmpty(values)) {
+      return BLANK;
+    }
+    final StringBuilder sb = new StringBuilder();
+    for (final String value : values) {
+      final String val = ValUtil.nvl(value);
+      sb.append(val);
+      sb.append(',');
+    }
+    ValUtil.deleteLastChar(sb);
+    return sb.toString();
+  }
+
+  /**
+   * Joins array as CSV with double quotes.<br>
+   * <ul>
+   * <li>Returns blank if the array is empty.</li>
+   * <li><code>null</code> is joined as blank.</li>
+   * <li>Outputs all array elements with double quotes.</li>
+   * <li>Double quotes in values are converted to two consecutive double quotes.</li>
+   * </ul>
+   *
+   * @param values the array to join
+   * @return the joined CSV string
+   */
+  public static String joinCsvAllDq(final String[] values) {
+    if (isEmpty(values)) {
+      return BLANK;
+    }
+    final StringBuilder sb = new StringBuilder();
+    for (final String value : values) {
+      final String val = ValUtil.nvl(value);
+      sb.append('"').append(val.replace("\"", "\"\"")).append('"');
+      sb.append(',');
+    }
+    ValUtil.deleteLastChar(sb);
+    return sb.toString();
+  }
+
+  /**
+   * Joins array as CSV with CSV-specification-compliant double quotes.<br>
+   * <ul>
+   * <li>Returns blank if the array is empty.</li>
+   * <li><code>null</code> is joined as blank.</li>
+   * <li>Outputs with double quotes added to elements that require them per CSV specification.</li>
+   * <li>Double quotes in values are converted to two consecutive double quotes.</li>
+   * </ul>
+   *
+   * @param values the array to join
+   * @return the joined CSV string
+   */
+  public static String joinCsvDq(final String[] values) {
+    if (isEmpty(values)) {
+      return BLANK;
+    }
+    final StringBuilder sb = new StringBuilder();
+    for (final String value : values) {
+      final String val = ValUtil.nvl(value);
+      // Quote only if comma, newline, or double quote is contained
+      if (val.contains(",") || val.contains("\"") || val.contains("\n") || val.contains("\r")) {
+        sb.append('"').append(val.replace("\"", "\"\"")).append('"');
+      } else {
+        sb.append(val);
+      }
+      sb.append(',');
+    }
+    ValUtil.deleteLastChar(sb);
+    return sb.toString();
+  }
+
+  /**
    * Splits into array.<br>
    * <ul>
    * <li>Returns zero-length array if string is <code>null</code>.</li>
@@ -405,6 +481,51 @@ public final class ValUtil {
       return new String[] {};
     }
     return value.split(sep, limitLength);
+  }
+
+  /**
+   * Splits CSV.<br>
+   * <ul>
+   * <li>Splits a CSV string into a string array.</li>
+   * <li>Returns a zero-length array if the CSV string is <code>null</code>.</li>
+   * </ul>
+   *
+   * @param csv the CSV string
+   * @return the split string array
+   */
+  public static String[] splitCsv(final String csv) {
+    if (isNull(csv)) {
+      return new String[] {};
+    }
+    final List<String> list = new ArrayList<>();
+
+    for (final String value : new SimpleSeparateParser(csv, ",")) {
+      list.add(value);
+    }
+    return list.toArray(new String[0]);
+  }
+
+  /**
+   * Splits double-quoted CSV.<br>
+   * <ul>
+   * <li>Splits a CSV string into a string array.</li>
+   * <li>Returns a zero-length array if the CSV string is <code>null</code>.</li>
+   * <li>Two consecutive double quotes in values are converted to a single double quote and stored.</li>
+   * </ul>
+   * 
+   * @param csv the CSV string
+   * @return the split string array
+   */
+  public static String[] splitCsvDq(final String csv) {
+    if (isNull(csv)) {
+      return new String[] {};
+    }
+    final List<String> list = new ArrayList<>();
+
+    for (final String value : new CsvDqParser(csv)) {
+      list.add(value.replace("\"\"", "\""));
+    }
+    return list.toArray(new String[0]);
   }
 
   /**

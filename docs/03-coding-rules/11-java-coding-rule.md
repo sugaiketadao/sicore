@@ -1,67 +1,67 @@
 # Java Coding Rules
 
 ## Overview
-- Define the coding rules for Java.
-- Following these rules aims to standardize program code and improve development and maintenance efficiency.
+- Defines coding rules for Java.
+- By following these rules, the code is standardized and development/maintenance efficiency is improved.
 
 ## Prerequisites
-- Follow the [Web Service Structure Standards](../02-develop-standards/11-web-service-structure.md).
-<!-- Follow the [Batch Processing Structure Standards](13-batch-processing-structures.md). -->
+- Follow the [Web Service Structure Standard](../02-develop-standards/11-web-service-structure.md).
+- Follow the [Batch Processing Structure Standard](../02-develop-standards/12-batch-structure.md).
 
-## Variable Names and Class Names
+## Variable/Class Names
 - Use lowerCamelCase for variable names.
     - [Example] `final String lowerCamelCase = map.getString("lower_snake_case")`
-- Use UPPER_SNAKE_CASE for variable names declared with static final (constant names).
+- Use UPPER_SNAKE_CASE for static final variable names (i.e., constant names).
     - [Example] `static final String UPPER_SNAKE_CASE = "SNAKE"`
 - Use UpperCamelCase for class names.
-    - [Example] `public class UpperCamelCase {`
-- Method names, variable names, and constant names starting with underscore `_` are reserved for this framework and MUST NOT be used by applications.
+    - [Example] `public class UowerCamelCase {`
+- DO NOT use method names, variable names, or constant names that begin with an underscore `_`, as they are reserved for use by this framework.
 
-## Declarations and Scope
-- As a rule, add the `final` modifier to variables and do not reuse them. The following uses are exceptions:
-    - Array index increments, etc.
-    - Progressive string additions or replacements.
-    - Member variables in Bean classes.
-    - When performance is significantly degraded.
+## Declarations/Scope
+- In principle, add the `final` modifier to variables and do not reuse them. The following use cases are exceptions:
+    - Incrementing array indices.
+    - Incremental string additions or replacements.
+    - Member variables of Bean classes.
+    - Cases where performance degrades significantly.
 - Declare local variables (variables within methods) immediately before use, in locations where the scope is as small as possible.
-- As a rule, do not use member variables (variables outside methods, excluding constants). Member variables in Bean classes are exceptions.
+- In principle, do not use member variables (variables outside methods, excluding constants). Member variables of Bean classes are exceptions.
 - Always add the `final` modifier to variables with the `static` modifier.
-- Create methods and constants in module classes with `private` scope or `package` scope (no scope specified), and do not use them from other modules. Abstract methods from this framework's abstract classes are exceptions.
-- Do not use class inheritance in module classes. This framework's abstract classes are exceptions.
+- Create methods and constants of module classes with `private` scope or `package` scope (no scope specified) and do not use them from other modules. Abstract methods of framework abstract classes are exceptions.
+- Do not perform class inheritance for module classes. Framework abstract classes are exceptions.
 - Create common components for modules as utility classes.
-- Add the `static` modifier to all methods and constants in utility classes, and use them without instantiation. Make constructors `private` scope.
-- Do not pass floating-point literals to `BigDecimal` constructors.
-    - [NG] `new BigDecimal(0.1)`
-    - [OK] `new BigDecimal("0.1")`
+- Add the `static` modifier to all methods and constants in utility classes and use them without instantiation. Make constructors `private` scope.
+- Do not pass floating-point number literals to the constructor of `BigDecimal`.
+    - [NG Example] `new BigDecimal(0.1)`
+    - [OK Example] `new BigDecimal("0.1")`
 
-## Access Method
-- Add `super.` when accessing methods or member variables in the superclass.
-- Add `this.` when accessing member variables (variables outside methods, excluding constants). As a rule, member variables should not be used; use `this.` to explicitly indicate exception locations.
+## Access Methods
+- Add `super.` when accessing methods or member variables possessed by the superclass.
+- Add `this.` when accessing member variables (variables outside methods, excluding constants). In principle, member variables should not be used, so clearly indicate the locations where they are used (exceptional cases).
 
-## Comparison and Evaluation
+## Comparison/Evaluation
 - Do not compare `boolean` variables with `true`/`false`.
-    - [NG] `if (hasError == true)`
-    - [OK] `if (hasError)`
-- Use this framework's utilities when checking if a variable's value is blank (including `null`). The same applies when checking if arrays, lists, or maps have zero elements.
-    - [NG] `if (val == null || val.trim().length == 0)`
-    - [OK 1] `if (ValUtil.isBlank(val))`
-    - [OK 2] `if (ValUtil.isEmpty(ary))`
-- When checking if a string constant and a string variable are equal, use the constant as the comparison source.
-    - [NG] `if (value.equals(CONST))`
-    - [OK] `if (CONST.equals(value))`
-- Use this framework's utilities when checking if two string variables (not constants) are equal.
+    - [NG Example] `if (hasError == true)`
+    - [OK Example] `if (hasError)`
+- When determining whether a variable's value is blank (including `null`), use framework components. The same applies when determining whether arrays, lists, or maps contain zero items.
+    - [NG Example] `if (val == null || val.trim().length == 0)`
+    - [OK Example 1] `if (ValUtil.isBlank(val))`
+    - [OK Example 2] `if (ValUtil.isEmpty(ary))`
+- When determining whether a string constant and a string variable are equal, use the constant as the comparison source.
+    - [NG Example] `if (value.equals(CONST))`
+    - [OK Example] `if (CONST.equals(value))`
+- When determining whether string variables (not constants) are equal, use framework components.
     - [Example] `if (ValUtil.equals(val1, val2))`
 
-## Processing Method
+## Processing Methods
 - Use `java.util.ArrayList` for list type classes.
-- Use this framework's `com.onepg.util.IoItem` for map type classes. Use `java.util.HashMap` when handling values (classes) that cannot be stored in `com.onepg.util.IoItem`.
-- Normally, use the enhanced `for` statement for loop processing.
+- Use `com.onepg.util.IoItem` from this framework for map type classes. Use `java.util.HashMap` when handling values (classes) that cannot be stored in `com.onepg.util.IoItem`.
+- Normally, use the enhanced `for` style for loop processing.
     - [Example 1] `for (final String val : list)`
     - [Example 2] `for (final Map.Entry<String, String> ent : map.entrySet()))`
-- When index values are needed, use the `length` attribute method for loop processing.
+- Use the style with the `length` attribute for loop processing when index values are needed.
     - [Example] `for (int i = 0; i < list.length; i++)`
-- Use `java.lang.StringBuilder` class when concatenating strings multiple times.
-- Declare classes that extend `java.lang.AutoCloseable` or `java.io.Closeable` in `try` clauses (try-with-resources statements). Calling the `close` method is not required.
+- Use the `java.lang.StringBuilder` class when concatenating strings multiple times.
+- Declare classes that inherit `java.lang.AutoCloseable` or `java.io.Closeable` in a `try` clause (try-with-resources statement). Calling the `close` method is not necessary.
     ```java
     try (final TxtReader tr = new TxtReader(filePath, ValUtil.UTF8);) {
       for (final String line : tr) {
@@ -69,56 +69,56 @@
       }
     }
     ```
-- Prohibit the use of `System.out`.
-- Prohibit catching subclasses of `java.lang.Exception` (hereinafter referred to as error classes) in module processing.
-- Prioritize readability of diffs during modifications; prohibit the use of ternary operators, lambda expressions `->`, method references `::`, and Stream API method chaining.
-- Declare constants when using the same literal value with the same meaning in multiple locations. Literal values are acceptable if used in only one location.
+- DO NOT use `System.out`.
+- DO NOT catch subclasses of `java.lang.Exception` (hereinafter referred to as error classes) in module processing.
+- Prioritize diff readability during modifications; DO NOT use ternary operators, lambda expressions `->`, method references `::`, or StreamAPI method chaining.
+- Declare constants when using the same literal value with the same meaning in multiple locations. Literal values may be used if only in one location.
 
 ## Unexpected Cases
-- When the following unexpected cases occur, create and throw a `java.lang.RuntimeException` error to abort processing:
-    - When unexpected arguments are passed.
+- When the following unexpected cases occur, generate and throw a `java.lang.RuntimeException` error to halt processing.
+    - When unexpected parameters are passed.
     - When unexpected database values are retrieved.
-    - When database data that should always exist does not exist.
-    - When database data that should exist as only one record exists as multiple records.
+    - When database data that should exist does not exist.
+    - When multiple database records exist where only one should exist.
 - Do not use error classes other than `java.lang.RuntimeException` in module processing.
-- The logic for throwing errors on unexpected arguments or database values is as follows:
-    - The `else` clause of expected `if`, `else if` statements (same applies to `default` clause in `case` statements).
-    - `if` statements that check for unexpected conditions.
+- Write logic to throw errors for unexpected parameters or database values as follows:
+    - In the `else` clause (similarly in the `default` clause of `case` statements) of `if` and `else if` statements where cases are expected.
+    - In `if` statements that check for unexpected cases
     ```java
     [Example 1]
     if (ValUtil.equals(kbn, "1")) {
-      // Expected
+      // Expected case
     } else if (ValUtil.equals(kbn, "2")) {
-      // Expected
+      // Expected case
     } else {
-      throw new RuntimeException("Unexpected category. " + LogUtil.joinKeyVal("category value", kbn));
+      throw new RuntimeException("Unexpected category. " + LogUtil.joinKeyVal("Category value", kbn));
     }
 
     [Example 2]
     if (!ValUtil.isDate(beforDate)) {
-      // Unexpected
-      throw new RuntimeException("Previous date is invalid. " + LogUtil.joinKeyVal("date", beforDate));
+      // Unexpected case
+      throw new RuntimeException("Invalid previous date. " + LogUtil.joinKeyVal("Date", beforDate));
     }
     ```
 
-- Use the following database retrieval methods of this framework's `com.onepg.util.SqlUtil` to throw errors in unexpected cases:
-    - `SqlUtil#selectOneExists`: Throws an error when zero or multiple records are retrieved.
-    - `SqlUtil#selectOne`: Throws an error when multiple records are retrieved.
-    - `SqlUtil#updateOne`: Throws an error when multiple records are updated.
-    - `SqlUtil#deleteOne`: Throws an error when multiple records are deleted.
-    - `SqlUtil#executeOne`: Throws an error when multiple records are affected.
+- Throw errors for unexpected cases by appropriately using the following database data retrieval methods of `com.onepg.util.SqlUtil` from this framework.
+    - `SqlUtil#selectOneExists`: Throws an error if zero or multiple records are retrieved.
+    - `SqlUtil#selectOne`: Throws an error if multiple records are retrieved.
+    - `SqlUtil#updateOne`: Throws an error if the number of updated records is multiple.
+    - `SqlUtil#deleteOne`: Throws an error if the number of deleted records is multiple.
+    - `SqlUtil#executeOne`: Throws an error if the number of affected records is multiple.
 
 ## Style
-- Use 2 space characters for indentation within methods and control structures (`if`, `for`, etc.). Do not use tab characters.
-- Do not omit braces `{ }` in control structures (`if`, `for`, etc.), and add a line break immediately after `{` and immediately before `}`.
-- Add a single space in the following locations. However, do not add spaces at the end of lines or immediately before semicolons at line ends.
-    - Between keywords (`if`, `return`, etc.) and the string that follows.
-    - Between keywords (`else`, `catch`, etc.) and the string that precedes.
-    - Between the opening brace `{` and the string that precedes it.
-    - Before and after all operators (`+`, `=`, `!==`, `&&`, etc.). However, increment and decrement operators are excluded.
-    - Between commas, colons, semicolons and the string that follows.
-- Target approximately 100 characters per line excluding indentation; wrap lines if they exceed this. Do not wrap unnecessarily if lines are shorter.
-- Actively use text blocks ("""...""") for multi-line strings. ***Only for JDK 15 or later***
+- Use 2 spaces for indentation within methods and control structures (`if`, `for`, etc.). Do not use tab characters.
+- Do not omit braces `{ }` for control structures (`if`, `for`, etc.); insert a line break immediately after `{` and immediately before `}`.
+- Insert one space in the following locations. However, do not insert spaces at the end of lines or immediately before semicolons at the end of lines.
+    - Between reserved words (`if`, `return`, etc.) and the following string.
+    - Between reserved words (`else`, `catch`, etc.) and the preceding string.
+    - Between the opening brace `{` and the preceding string.
+    - Before and after all operators (`+`, `=`, `!==`, `&&`, etc.). However, exclude increment and decrement operators.
+    - Between commas, colons, semicolons and the following string.
+- Aim for approximately 100 columns per line excluding indentation, and wrap lines if they exceed this. Do not wrap lines unnecessarily if they are shorter.
+- Actively use text blocks (Text Block """...""") for multi-line strings. ***JDK15 or later only***
     ```java
     sb.addQuery("SELECT ");
     sb.addQuery("  u.user_nm ");
@@ -136,24 +136,24 @@
     ```
 
 ## Comments
-- Do not comment out logic; delete it instead. If there are important notes, leave only those notes as comments.
-- Do not include change history comments. If there are important notes, leave only those notes as comments.
-- Write JavaDoc for all declarations except variables within methods. This does not mean variables within methods do not need explanations; write explanations as regular comments.
-- Explanations for `private` scope methods, variables, and constants may be simplified.
-- Enclose JavaDoc comments with `/** */`.
-- Write regular comments (other than JavaDoc) on a single line with `//` at the beginning of the line. Comments at the end of lines are prohibited.
+- Delete logic instead of commenting it out. If there are important notes, leave only the notes as comments.
+- Do not write change history comments. If there are important notes, leave only the notes as comments.
+- Write JavaDoc for all declarations except variables within methods. This does not mean that variables within methods do not need explanations; write explanations as regular comments.
+- Descriptions of methods, variables, and constants declared with `private` scope may be simplified.
+- Enclose JavaDoc comments in `/** */`.
+- Write regular comments (non-JavaDoc) using the format of adding `//` at the beginning of a line, using one line. DO NOT write comments at the end of lines.
 
 ## JavaDoc
-- Create `package-info.java` for each module package and include the module name.
-- The format for method declarations is as follows:
+- Create `package-info.java` for each module package and write the module name.
+- Format method declarations as follows:
     - Write the class name or method name on the first line. Add `.<br>` after the name.
-    - The class name or method name should concisely describe its role or responsibility in one phrase; do not write the English class/method name itself.
-    - From the second line onward, describe the role, responsibility, and processing as bullet points using `<ul>` or `<ol>`.
-    - Describe method arguments with `@param` tags.
-        - Write `@param` tags in the format "@param variableName description".
-    - Describe method return values with `@return` tags.
-        - Write `@return` tags in the format "@return description".
-        - If `null` may be returned, add "(nullable)" at the end of the "description".
+    - The class name or method name should concisely express its role or responsibility in one phrase; do not write the actual English class/method name itself.
+    - From the second line onward, describe the role, responsibility, or processing using bullet points with `<ul>` or `<ol>`.
+    - Describe method parameters using the `@param` tag.
+        - Write the `@param` tag in the format "@param variableName description".
+    - Describe method return values using the `@return` tag.
+        - Write the `@return` tag in the format "@return description".
+        - If `null` may be returned as a return value, write "(null possible)" at the end of the "description".
 - Add `{@inheritDoc}` to implementations of abstract methods. JavaDoc with only `{@inheritDoc}` is acceptable.
     ```java
     /**
@@ -161,12 +161,12 @@
      */
     @Override
     ```
-- Use `@see` tags to reference JavaDoc of other Java classes or methods.
-- Enclose sample code in text with `<pre><code>`. Use only `<code>` for short one-line code.
-- Also enclose the following names with `<code>`:
+- When referencing JavaDoc of other Java classes or methods, write using the `@see` tag.
+- Enclose sample code in text in `<pre><code>`. For short one-line code, enclose only in `<code>`.
+- Also enclose the following names in `<code>`:
     - Database table names
     - Field names
     - Java class names
     - Java method names
 - Write Java method names of other Java classes in the format `<code>JavaClassName#methodName</code>`.
-- When writing database table names and field names together, use the format `<code>tableName.fieldName</code>`.
+- When writing database table names and field names together, write in the format `<code>databaseTableName.fieldName</code>`.

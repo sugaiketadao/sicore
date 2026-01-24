@@ -1,62 +1,62 @@
-# SICore Framework Introduction for Programmers
+# SICore Framework - Introduction for Programmers
 
-This document introduces the features and basic usage of the SICore Framework.
+This document introduces the features and basic usage of the SICore framework.
 
 ---
 
 ## 1. Framework Features
 
-### 1.1 Prototype-Driven Development
+### 1.1 Prototype-driven Development
 
 ```html
-<!-- During prototyping -->
+<!-- Prototype -->
 <input type="text" name="user_nm" value="Mike Davis">
 
-<!-- Same HTML in production -->
+<!-- Production uses same HTML -->
 <input type="text" name="user_nm">
 ```
 
-**Advantages**:
-- Use HTML created by designers directly.
-- Verify usability during the prototype stage.
+**Benefits**:
+- HTML created by designers can be used as is.
+- Usability can be verified at the prototype stage.
 - No template engine required.
 
-### 1.2 JSON-Only Communication
+### 1.2 Communication Using Only JSON
 
 ```
-Browser             Server
+Browser              Server
   │                   │
   │------ JSON ------>│
-  │　　　　　　 Web Service Processing
+  │           Web service processing
   │<------ JSON ------│
 ```
 
-**Advantages**:
+**Benefits**:
 - Simple protocol.
-- Complete separation of frontend and backend.
-- API development and screen development use the same mechanism.
+- Frontend and backend are completely separated.
+- Both API development and screen development use the same mechanism.
 - Easy integration with mobile apps.
 
-### 1.3 URL Directly Maps to Class Name
+### 1.3 URL Maps Directly to Class Name
 
 ```
 URL: http://localhost:8080/services/exmodule/ExampleListSearch
-↓ Auto-mapping
-Executed Class: com.example.app.service.exmodule.ExampleListSearch
+↓ Automatic mapping
+Executed class: com.example.app.service.exmodule.ExampleListSearch
 ```
 
-**Advantages**:
+**Benefits**:
 - No routing configuration required.
 - No annotations required.
-- Class name is clearly identifiable from URL.
+- Class name can be clearly identified from URL.
 
 ### 1.4 Stateless Architecture
 
-- No server-side sessions.
-- State is managed in browser's `sessionStorage`.
+- No server-side session.
+- State managed by browser's `sessionStorage`.
 - Easy to scale out.
 
-### 1.5 Custom CSS (No External Frameworks)
+### 1.5 Original CSS (No External Framework)
 
 ```html
 <!-- 12-column grid system -->
@@ -65,24 +65,24 @@ Executed Class: com.example.app.service.exmodule.ExampleListSearch
   <div class="grid-col-6">1/2 of full width</div>
 </div>
 
-<!-- Responsive design included -->
-<!-- Smartphone: Columns automatically stack vertically -->
-<!-- Tablet: Labels and form input elements within columns automatically stack vertically -->
+<!-- Responsive ready -->
+<!-- Smartphone: Columns automatically switch to vertical layout -->
+<!-- Tablet: Label elements and form input elements within columns automatically switch to vertical layout -->
 ```
 
-**Advantages**:
-- No external frameworks like Bootstrap required.
-- Minimal CSS only (single file: onepg-base.css).
-- Responsive design included (PC, tablet, smartphone).
-- Low learning cost (few class names to remember).
+**Benefits**:
+- No external framework like Bootstrap required.
+- Consists of only minimal necessary CSS (onepg-base.css single file).
+- Responsive support ready (PC, tablet, smartphone).
+- Low learning cost (fewer class names to remember).
 
-### 1.6 Three-Tier Scope in Session Storage
+### 1.6 Three-tier Scope of Session Storage
 
-| Scope | Method | Use Case |
+| Scope | Method | Usage Example |
 |-|-|-|
-| Page | `get/setPageObj()` | Retain search conditions on list page. |
-| Module | `get/setModuleObj()` | Retain data being entered between pages. |
-| System | `get/setSystemObj()` | Retain login information. |
+| Page unit | `get/setPageObj()` | Hold search conditions on list page. |
+| Module unit | `get/setModuleObj()` | Hold data being entered between pages. |
+| System unit | `get/setSystemObj()` | Hold login information. |
 
 ---
 
@@ -91,32 +91,32 @@ Executed Class: com.example.app.service.exmodule.ExampleListSearch
 ```
 [Browser] listpage.html
      │
-     │ 1. Click search button
+     │ 1. Search button pressed
      ▼
 [JavaScript] listpage.js
      │ 2. PageUtil.getValues() → { user_id: "U001", user_nm: "Mike Davis" }
-     │ 3. Send JSON via HttpUtil.callJsonService()
+     │ 3. Send JSON with HttpUtil.callJsonService()
      ▼
 [Framework]
-     │ 4. Convert request JSON → Io object
+     │ 4. Request JSON → Convert to Io object
      ▼
 [Java] ExampleListSearch.java
      │ 5. Build SQL with SqlBuilder
-     │ 6. Retrieve data with SqlUtil.selectBulk()
-     │ 7. Store result → Io object
+     │ 6. Retrieve from database with SqlUtil.selectBulk()
+     │ 7. Result → Store in Io object
      ▼
 [Framework]
-     │ 8. Convert Io object → response JSON
+     │ 8. Io object → Convert to response JSON
      ▼
 [JavaScript]
      │ 9. Display in browser with PageUtil.setValues()
      ▼
-[Browser] Retrieved data displayed in list
+[Browser] Database retrieval result displayed on list
 ```
 
 ---
 
-## 3. HTML⇔JSON Auto-Conversion
+## 3. Automatic HTML⇔JSON Conversion
 
 ### 3.1 HTML to JSON
 
@@ -126,11 +126,11 @@ Executed Class: com.example.app.service.exmodule.ExampleListSearch
 
 <tbody id="list">
   <tr>
-    <td><input name="list.pet_nm" value="Buddy"></td>
+    <td><input name="list.pet_nm" value="Pochi"></td>
     <td><input name="list.weight_kg" value="5.0"></td>
   </tr>
   <tr>
-    <td><input name="list.pet_nm" value="Whiskers"></td>
+    <td><input name="list.pet_nm" value="Tama"></td>
     <td><input name="list.weight_kg" value="2.5"></td>
   </tr>
 </tbody>
@@ -142,14 +142,14 @@ const req = PageUtil.getValues();
 //   "user_id": "U001",
 //   "user_nm": "Mike Davis",
 //   "list": [
-//     {"pet_nm": "Buddy", "weight_kg": "5.0"},
-//     {"pet_nm": "Whiskers", "weight_kg": "2.5"}
+//     {"pet_nm": "Pochi", "weight_kg": "5.0"},
+//     {"pet_nm": "Tama", "weight_kg": "2.5"}
 //   ]
 // }
 ```
 
-- No `<form>` tag is required.
-- Values can be retrieved from elements with a `name` attribute.
+- No `<form>` tag required.
+- Values can be retrieved with just the `name` attribute.
 
 ### 3.2 JSON to HTML
 
@@ -170,7 +170,7 @@ PageUtil.setValues(res);
 
 ### 4.1 data-name Attribute
 
-Display only; does not retrieve the value:
+Display only, does not retrieve values:
 
 ```html
 <span data-name="user_nm"></span>
@@ -179,7 +179,7 @@ Display only; does not retrieve the value:
 
 ### 4.2 data-check-off-value Attribute
 
-Specifies the value to send when the checkbox is OFF:
+Specifies the value to send when checkbox is OFF:
 
 ```html
 <input type="checkbox" name="is_dog" value="1" data-check-off-value="0">
@@ -189,7 +189,7 @@ Specifies the value to send when the checkbox is OFF:
 
 Automatically formats display values:
 
-| Value | Field Value | Formatted Value |
+| Setting Value | Item Value | Formatted Value |
 |-|-|-|
 | `num` | `1000000` | `1,000,000` |
 | `ymd` | `20251231` | `2025/12/31` |
@@ -213,28 +213,28 @@ public class ExampleListSearch extends AbstractDbAccessWebService {
   
   @Override
   public void doExecute(Io io) throws Exception {
-    // Implementation
+    // Implement processing
   }
 }
 ```
 
-- Extend `AbstractDbAccessWebService`.
-- `io` is both the request and response.
+- Inherit from `AbstractDbAccessWebService`.
+- `io` is both the request and the response.
 
 ### 5.2 Io Class
 
 ```java
-// Retrieve values with type safety
+// Retrieve values type-safely
 String userId = io.getString("user_id");
 long incomeAm = io.getLong("income_am");
-LocalDate birthDt = io.getDateNullable("birth_dt"); // Explicitly indicates it may return null
+LocalDate birthDt = io.getDateNullable("birth_dt"); // Explicitly indicates possibility of returning null
 
-// Set values (no type specification needed)
+// Set values (no type specification required)
 io.put("user_nm", "Mike Davis");
 io.put("income_am", 1230000);
 ```
 
-### 5.3 Unified Request and Response
+### 5.3 Request and Response Integration
 
 ```java
 public void doExecute(Io io) throws Exception {
@@ -248,7 +248,7 @@ public void doExecute(Io io) throws Exception {
   } else {
     io.putMsg(MsgType.ERROR, "x0001");
   }
-  // io becomes the response as-is
+  // io becomes the response as is
 }
 ```
 
@@ -263,21 +263,21 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
   public void doExecute(Io io) throws Exception {
     if (ValUtil.isBlank(io.getString("user_id"))) {
       io.putMsg(MsgType.ERROR, "ev001", new String[]{"User ID"}, "user_id");
-      return; // → Error exists → Auto rollback
+      return; // → Has error → Automatic rollback
     }
     
     SqlUtil.upsert(getDbConn(), "t_user_header", "user_id", io);
     
     io.putMsg(MsgType.INFO, "i0002", new String[]{io.getString("user_id")});
-    // Normal completion (no error) → Auto commit
+    // Normal termination (no error) → Automatic commit
   }
 }
 ```
 
-**Advantages**:
-- No need to explicitly write commit or rollback.
-- No risk of forgetting to rollback on error.
-- Guaranteed that 1 request = 1 transaction.
+**Benefits**:
+- No need to explicitly write commit/rollback.
+- No forgetting rollback on error.
+- Guarantees 1 request = 1 transaction.
 
 ---
 
@@ -288,7 +288,7 @@ SqlBuilder sb = new SqlBuilder();
 sb.addQuery("SELECT u.user_id, u.user_nm, u.email ");
 sb.addQuery(" FROM t_user u WHERE 1=1 ");
 
-// Add conditions only when value exists
+// Add condition only when value exists
 sb.addQnotB(" AND u.user_id = ? ", io.getString("user_id"));
 sb.addQnotB(" AND u.user_nm LIKE '%' || ? || '%' ", io.getString("user_nm"));
 
@@ -297,10 +297,10 @@ sb.addQuery(" ORDER BY u.user_id ");
 IoRows rows = SqlUtil.selectBulk(getDbConn(), sb);
 ```
 
-**Advantages**:
-- Build SQL and parameters simultaneously.
-- SQL injection protection included.
-- Use `toString()` to verify SQL.
+**Benefits**:
+- SQL and parameters can be built simultaneously.
+- SQL injection protected.
+- SQL can be verified with `toString()`.
 
 ---
 
@@ -310,7 +310,7 @@ IoRows rows = SqlUtil.selectBulk(getDbConn(), sb);
 ```json
 {
   "ev001": "{0} is required.",
-  "i0002": "{0} has been registered."
+  "i0002": "Registered {0}."
 }
 ```
 
@@ -330,16 +330,16 @@ io.putMsg(MsgType.INFO, "i0002", new String[]{"U001"});
 
 ---
 
-## 9. Bug Prevention in Io Class
+## 9. Io Class Bug Prevention
 
-### 9.1 NULL-Safe
+### 9.1 NULL Safety
 
 ```java
 String value = io.getString("key");         // Returns "".
 String value = io.getStringNullable("key"); // Returns null (explicit).
 ```
 
-### 9.2 Type-Safe
+### 9.2 Type Safety
 
 ```java
 int age = io.getInt("age");
@@ -347,41 +347,41 @@ LocalDate birthDt = io.getDateNullable("birth_dt");
 BigDecimal income = io.getBigDecimal("income_am");
 ```
 
-### 9.3 Duplicate Key Check
+### 9.3 Key Duplication Check
 
 ```java
 io.put("user_id", "U001");
-io.put("user_id", "U002");      // Throws error.
-io.putForce("user_id", "U002"); // Explicitly overwrites.
+io.put("user_id", "U002");      // Causes error.
+io.putForce("user_id", "U002"); // Explicitly overwrite.
 ```
 
-### 9.4 Non-Existent Key
+### 9.4 Non-existent Key
 
 ```java
-io.getString("userid"); // Throws error for non-existent key.
+io.getString("userid"); // Non-existent key causes error.
 io.getStringOrDefault("userid", ""); // Returns default value.
 ```
 
-### 9.5 Safety through Deep Copy
+### 9.5 Safety Through Deep Copy
 
 ```java
-// Deep copy during storage
+// Deep copy on store
 List<String> srcList = new ArrayList<>(Arrays.asList("A", "B"));
 io.putList("items", srcList);
-srcList.add("C");  // Modify the original list
-// io.getList("items") remains ["A", "B"] (unaffected)
+srcList.add("C");  // Modify original list
+// io.getList("items") remains ["A", "B"] (no impact)
 
-// Deep copy during retrieval
+// Deep copy on retrieval
 List<String> gotList = io.getList("items");
-gotList.add("D");  // Modify the retrieved list
-// io.getList("items") remains ["A", "B"] (unaffected)
+gotList.add("D");  // Modify retrieved list
+// io.getList("items") remains ["A", "B"] (no impact)
 ```
 
-> **Note**: Performance may be affected when repeatedly storing and retrieving large data, due to deep copying.
+> **Note**: Deep copying is performed, so repeated storage and retrieval of large data may impact performance.
 
 ---
 
-## 10. Benefits of Unified Field Names
+## 10. Benefits of Unified Item Naming
 
 ```sql
 CREATE TABLE t_user (user_id VARCHAR(10), user_nm VARCHAR(50));
@@ -401,12 +401,13 @@ SqlUtil.insertOne(conn, "t_user", io);
 - No conversion code required.
 - No mapping processing required.
 - Reduces bugs.
-- DB design documents serve directly as specifications.
+- Database design document functions as specification document as is.
 
 ---
 
-## References
+## Related Documents
 
 - [Introduction for Managers](../01-introductions/02-manager-introduction.md)
-- [Web Page Structure Standards (HTML/JavaScript/CSS)](../02-develop-standards/01-web-page-structure.md)
-- [Web Service Structure Standards (Java)](../02-develop-standards/11-web-service-structure.md)
+- [Web Page Structure Standard (HTML/JavaScript/CSS)](../02-develop-standards/01-web-page-structure.md)
+- [Web Service Structure Standard (Java)](../02-develop-standards/11-web-service-structure.md)
+- [Batch Processing Structure Standard (Java)](../02-develop-standards/12-batch-structure.md)

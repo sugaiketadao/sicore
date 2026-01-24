@@ -1,6 +1,6 @@
-# AI Prompt Guide (for Business Screen Development)
+# AI Prompt Guide (Business Screen Creation)
 
-This guide standardizes the instruction methods for having AI create business screens.
+This document is a guide that standardizes the prompt methods for instructing AI to create business screens.
 
 ---
 
@@ -9,8 +9,8 @@ This guide standardizes the instruction methods for having AI create business sc
 - [1. Basic Instruction Flow](#1-basic-instruction-flow)
 - [2. Required Input Information](#2-required-input-information)
 - [3. Prompt Templates](#3-prompt-templates)
-- [4. DB Column to HTML Element Conversion Rules](#4-db-column-to-html-element-conversion-rules)
-- [5. How to Write Code Value Definitions](#5-how-to-write-code-value-definitions)
+- [4. DB Field → HTML Element Conversion Rules](#4-db-field--html-element-conversion-rules)
+- [5. How to Define Code Values](#5-how-to-define-code-values)
 - [6. List of Generated Files](#6-list-of-generated-files)
 - [7. Example: User Management Screen](#7-example-user-management-screen)
 - [8. Error Message Definitions](#8-error-message-definitions)
@@ -21,39 +21,39 @@ This guide standardizes the instruction methods for having AI create business sc
 ## 1. Basic Instruction Flow
 
 ```
-1. Provide table definitions
+1. Present table definition
 2. Specify screen type (list + edit / list only / edit only)
 3. Define code values
 4. Specify validation requirements
 5. Request generation
-6. Request compile error fixes
+6. Request compilation error fixes
 7. Verify functionality
 8. Request bug fixes
 ```
 
-> **Note**: For details on steps 6-8, refer to [AI Prompt Guide (for Debugging and Fixes)](02-ai-debug-guide.md).
+> **Note**: For details on steps 6-8, refer to [AI Prompt Guide (Debugging and Fixing)](02-ai-debug-guide.md).
 
 ---
 
 ## 2. Required Input Information
 
-### 2.1 Required Information
+### 2.1 Mandatory Information
 
 | Item | Description | Example |
-|------|-------------|---------|
-| Feature Name | Screen feature name | User Management |
-| Module Name | Directory/package name (lowercase letters) | usermst |
+|------|------|-----|
+| Function Name | Function name of the screen (Japanese) | User Management |
+| Module Name | Directory/package name (lowercase English letters) | usermst |
 | Table Definition | CREATE TABLE format | See below |
-| Screen Type | list + edit / list only / edit only | list + edit |
+| Screen Type | List + edit / List only / Edit only | List + edit |
 
 ### 2.2 Optional Information
 
 | Item | Description | Example |
-|------|-------------|---------|
+|------|------|-----|
 | Code Value Definition | Option values and display names | Gender: M=Male, F=Female |
-| Search Conditions | List screen search condition items | User ID (prefix match), Name (partial match) |
-| Validation | Required, length, format | User ID: required, 4 digits, alphanumeric |
-| Initial Values | Values to display initially | Today's date for birthday |
+| Search Conditions | Search condition fields for list page | User ID (prefix match), Name (partial match) |
+| Validation | Required/length/format | User ID: Required, 4 digits, alphanumeric |
+| Initial Value | Values to display initially | Today's date in birth date |
 
 ---
 
@@ -62,56 +62,55 @@ This guide standardizes the instruction methods for having AI create business sc
 ### 3.1 List + Edit Screen (Standard Pattern)
 
 ```markdown
-## Business Screen Development Request
+## Business Screen Creation Request
 
-### Feature Name
-{Feature Name}
+### Function Name
+{Function Name}
 
 ### Module Name
 {Module Name}
 
 ### Table Definition
 ```sql
-create table t_{table_name} (
-  {column definitions}
-  ,primary key ({primary key})
+create table t_{Table Name} (\n  {Column Definition}
+  ,primary key ({Primary Key})
 );
 ```
 
-### Code Value Definitions
-- {column_name}_cs: {code}={display name}, {code}={display name}
+### Code Value Definition
+- {Column Name}_cs: {Code}={Display Name}, {Code}={Display Name}
 
 ### Screen Type
-list + edit
+List + Edit
 
-### Search Conditions (List Screen)
-- {item name}: {search method}
+### Search Conditions (List Page)
+- {Field Name}: {Search Method}
 
-### Validation (Edit Screen)
-- {item name}: {validation content}
+### Validation (Edit Page)
+- {Field Name}: {Check Content}
 
 ### Generation Request
 Generate the following files with the above requirements:
-- pages/app/{module_name}/listpage.html
-- pages/app/{module_name}/listpage.js
-- pages/app/{module_name}/editpage.html
-- pages/app/{module_name}/editpage.js
-- src/com/example/app/service/{module_name}/{Module}ListInit.java
-- src/com/example/app/service/{module_name}/{Module}ListSearch.java
-- src/com/example/app/service/{module_name}/{Module}Load.java
-- src/com/example/app/service/{module_name}/{Module}Upsert.java
-- src/com/example/app/service/{module_name}/{Module}Delete.java
+- pages/app/{module name}/listpage.html
+- pages/app/{module name}/listpage.js
+- pages/app/{module name}/editpage.html
+- pages/app/{module name}/editpage.js
+- src/com/example/app/service/{module name}/{Module}ListInit.java
+- src/com/example/app/service/{module name}/{Module}ListSearch.java
+- src/com/example/app/service/{module name}/{Module}Load.java
+- src/com/example/app/service/{module name}/{Module}Upsert.java
+- src/com/example/app/service/{module name}/{Module}Delete.java
 
 Follow the implementation patterns in docs/02-develop-standards/21-event-coding-pattern.md.
 ```
 
-### 3.2 List Only (Reference Screen)
+### 3.2 List Only (View Page)
 
 ```markdown
-## Business Screen Development Request
+## Business Screen Creation Request
 
-### Feature Name
-{Feature Name}
+### Function Name
+{Function Name}
 
 ### Module Name
 {Module Name}
@@ -120,60 +119,60 @@ Follow the implementation patterns in docs/02-develop-standards/21-event-coding-
 {CREATE TABLE}
 
 ### Screen Type
-list only (reference only)
+List only (read-only)
 
 ### Generation Request
-- pages/app/{module_name}/listpage.html
-- pages/app/{module_name}/listpage.js
-- src/com/example/app/service/{module_name}/{Module}ListInit.java
-- src/com/example/app/service/{module_name}/{Module}ListSearch.java
+- pages/app/{module name}/listpage.html
+- pages/app/{module name}/listpage.js
+- src/com/example/app/service/{module name}/{Module}ListInit.java
+- src/com/example/app/service/{module name}/{Module}ListSearch.java
 ```
 
 ### 3.3 Header + Detail Screen
 
 ```markdown
-## Business Screen Development Request
+## Business Screen Creation Request
 
-### Feature Name
-{Feature Name}
+### Function Name
+{Function Name}
 
 ### Module Name
 {Module Name}
 
 ### Header Table
 ```sql
-create table t_{header} (
-  {column definitions}
-  ,primary key ({primary key})
+create table t_{Header} (
+  {Column Definition}
+  ,primary key ({Primary Key})
 );
 ```
 
 ### Detail Table
 ```sql
-create table t_{detail} (
-  {column definitions}
-  ,primary key ({header primary key}, {detail sequence number})
+create table t_{Detail} (
+  {Column Definition}
+  ,primary key ({Header Primary Key}, {Detail Sequence Number})
 );
 ```
 
 ### Screen Type
-list + edit (header-detail structure)
+List + Edit (header-detail structure)
 
 ### Generation Request
-Make the detail table editable together with the header on the edit screen.
+Enable editing of the detail table together with the header on the edit page.
 ```
 
 ---
 
-## 4. DB Column to HTML Element Conversion Rules
+## 4. DB Field → HTML Element Conversion Rules
 
 ### 4.1 Automatic Determination by Suffix
 
 | Suffix | Meaning | HTML Element | Example |
-|--------|---------|--------------|---------|
+|-------------|------|----------|-----|
 | `_id` | ID/Code | `<input type="text">` | user_id |
 | `_nm` | Name | `<input type="text">` | user_nm |
-| `_cs` | Code Classification | `<select>` or `<radio>` | gender_cs |
+| `_cs` | Code classification | `<select>` or `<radio>` | gender_cs |
 | `_dt` | Date | `<input>` + `data-value-format-type="ymd"` | birth_dt |
 | `_ts` | Timestamp | `<input type="hidden">` | upd_ts |
 | `_am` | Amount | `<input>` + `data-value-format-type="num"` | income_am |
@@ -183,9 +182,9 @@ Make the detail table editable together with the header on the edit screen.
 ### 4.2 Determination by Type
 
 | DB Type | HTML Element |
-|---------|--------------|
+|------|----------|
 | VARCHAR(1) + `_cs` | `<radio>` or `<checkbox>` |
-| VARCHAR(2+) + `_cs` | `<select>` |
+| VARCHAR(2~) + `_cs` | `<select>` |
 | NUMERIC | `<input type="text" class="align-right">` |
 | DATE | `<input>` + `data-value-format-type="ymd"` |
 | TIMESTAMP | `<input type="hidden">` (for optimistic locking) |
@@ -193,26 +192,26 @@ Make the detail table editable together with the header on the edit screen.
 ### 4.3 HTML Attribute Usage
 
 | Purpose | Attribute | Example |
-|---------|-----------|---------|
-| Input & Retrieval | `name` | `<input name="user_id">` |
+|------|------|-----|
+| Input & Retrieve | `name` | `<input name="user_id">` |
 | Display Only | `data-name` | `<td data-name="user_nm">` |
-| Numeric Comma Formatting | `data-value-format-type="num"` | `1000000` → `1,000,000` |
-| Date Slash Formatting | `data-value-format-type="ymd"` | `20251231` → `2025/12/31` |
+| Numeric Comma | `data-value-format-type="num"` | `1000000` → `1,000,000` |
+| Date Slash | `data-value-format-type="ymd"` | `20251231` → `2025/12/31` |
 | Checkbox OFF Value | `data-check-off-value` | `<input type="checkbox" data-check-off-value="N">` |
 
 ---
 
-## 5. How to Write Code Value Definitions
+## 5. How to Define Code Values
 
 ### 5.1 Standard Format
 
 ```markdown
-### Code Value Definitions
+### Code Value Definition
 - gender_cs (Gender): M=Male, F=Female
 - country_cs (Country): JP=Japan, US=United States, BR=Brazil, AU=Australia
 - type_cs (Type): DG=Dog, CT=Cat, BD=Bird
-- spouse_cs (Spouse): Y=Yes, N=No *Checkbox
-- vaccine_cs (Vaccinated): Y=Vaccinated, N=Not vaccinated *Checkbox
+- spouse_cs (Spouse): Y=Yes, N=No ※Checkbox
+- vaccine_cs (Vaccinated): Y=Vaccinated, N=Not Vaccinated ※Checkbox
 ```
 
 ### 5.2 HTML Generation Examples
@@ -220,7 +219,7 @@ Make the detail table editable together with the header on the edit screen.
 **For select**:
 ```html
 <select name="country_cs">
-  <option value="">Not selected</option>
+  <option value="">Not Selected</option>
   <option value="JP">Japan</option>
   <option value="US">United States</option>
 </select>
@@ -228,7 +227,7 @@ Make the detail table editable together with the header on the edit screen.
 
 **For radio**:
 ```html
-<label><input type="radio" name="gender_cs" value="">Not selected</label>
+<label><input type="radio" name="gender_cs" value="">Not Selected</label>
 <label><input type="radio" name="gender_cs" value="M">Male</label>
 <label><input type="radio" name="gender_cs" value="F">Female</label>
 ```
@@ -246,31 +245,31 @@ Make the detail table editable together with the header on the edit screen.
 
 ```
 pages/app/{module}/
-├── listpage.html      # List screen HTML
-├── listpage.js        # List screen JavaScript
-├── editpage.html      # Edit screen HTML
-└── editpage.js        # Edit screen JavaScript
+├── listpage.html      # List page HTML
+├── listpage.js        # List page JavaScript
+├── editpage.html      # Edit page HTML
+└── editpage.js        # Edit page JavaScript
 
 src/com/example/app/service/{module}/
 ├── {Module}ListInit.java    # List initialization
-├── {Module}ListSearch.java  # List search
+├── {Module}ListSearch.java  # List search processing
 ├── {Module}Load.java        # Data retrieval
-├── {Module}Upsert.java      # Insert/Update
-└── {Module}Delete.java      # Delete
+├── {Module}Upsert.java      # Registration/update processing
+└── {Module}Delete.java      # Deletion processing
 ```
 
-### 6.2 File Naming Conventions
+### 6.2 File Naming Rules
 
-| File Type | Naming Convention | Example |
-|-----------|-------------------|---------|
+| File Type | Naming Rule | Example |
+|-------------|---------|-----|
 | List HTML | listpage.html | listpage.html |
 | Edit HTML | editpage.html | editpage.html |
 | List JS | listpage.js | listpage.js |
 | Edit JS | editpage.js | editpage.js |
 | Java List Init | {Module}ListInit.java | UserListInit.java |
 | Java List Search | {Module}ListSearch.java | UserListSearch.java |
-| Java Data Retrieval | {Module}Load.java | UserLoad.java |
-| Java Insert/Update | {Module}Upsert.java | UserUpsert.java |
+| Java Data Load | {Module}Load.java | UserLoad.java |
+| Java Upsert | {Module}Upsert.java | UserUpsert.java |
 | Java Delete | {Module}Delete.java | UserDelete.java |
 
 ---
@@ -280,9 +279,9 @@ src/com/example/app/service/{module}/
 ### 7.1 Complete Prompt Example
 
 ```markdown
-## Business Screen Development Request
+## Business Screen Creation Request
 
-### Feature Name
+### Function Name
 User Management
 
 ### Module Name
@@ -320,39 +319,39 @@ create table t_user_pet (
 );
 ```
 
-### Code Value Definitions
-- country_cs (Country): JP=Japan, US=United States, BR=Brazil, AU=Australia
+### Code Value Definition
+- country_cs (Country of Origin): JP=Japan, US=United States, BR=Brazil, AU=Australia
 - gender_cs (Gender): M=Male, F=Female
-- spouse_cs (Spouse): Y=Yes, N=No *Checkbox
+- spouse_cs (Spouse): Y=Yes, N=No ※Checkbox
 - type_cs (Pet Type): DG=Dog, CT=Cat, BD=Bird
-- vaccine_cs (Vaccination): Y=Vaccinated, N=Not vaccinated *Checkbox
+- vaccine_cs (Vaccination): Y=Vaccinated, N=Not Vaccinated ※Checkbox
 
 ### Screen Type
-list + edit (header-detail structure)
+List + Edit (header-detail structure)
 
-### Search Conditions (List Screen)
-- user_id: prefix match
-- user_nm: partial match
-- email: partial match
-- country_cs: exact match (dropdown)
-- gender_cs: exact match (radio)
-- spouse_cs: condition only when checked
-- income_am: greater than or equal
-- birth_dt: on or after
+### Search Conditions (List Page)
+- user_id: Prefix match
+- user_nm: Partial match
+- email: Partial match
+- country_cs: Exact match (dropdown)
+- gender_cs: Exact match (radio)
+- spouse_cs: Condition only when checked
+- income_am: Greater than or equal to
+- birth_dt: On or after
 
-### Validation (Edit Screen)
+### Validation (Edit Page)
 Header:
-- user_id: required, fixed 4 digits, alphanumeric
-- user_nm: required, 20 characters or less
-- email: 50 characters or less
-- income_am: numeric, 10 digits or less
-- birth_dt: date format
+- user_id: Required, 4 digits fixed, alphanumeric
+- user_nm: Required, within 20 digits
+- email: Within 50 digits
+- income_am: Numeric, within 10 digits
+- birth_dt: Date format
 
 Detail:
-- pet_nm: required, 10 characters or less
-- weight_kg: numeric (1 decimal place)
+- pet_nm: Required, within 10 digits
+- weight_kg: Numeric (1 decimal place)
 
-### Initial Values
+### Initial Value
 - Display 5 empty detail rows for new registration
 
 ### Generation Request
@@ -378,33 +377,33 @@ Follow the implementation patterns in docs/02-develop-standards/21-event-coding-
 
 **Validation Errors (ev***)**:
 | ID | Message | Usage |
-|----|---------|-------|
-| ev001 | {0} is required. | Required check |
+|----|-----------|------|
+| ev001 | {0} is required. | Required field check |
 | ev011 | {0} must be alphanumeric. | Format check |
-| ev012 | {0} must be a number. | Numeric check |
+| ev012 | {0} must be numeric. | Numeric check |
 | ev013 | {0} must be in date format. | Date check |
-| ev021 | {0} must be {1} characters or less. | Length check |
-| ev022 | {0} must be exactly {1} characters. | Fixed length check |
+| ev021 | {0} must be within {1} digits. | Length check |
+| ev022 | {0} must be exactly {1} digits. | Fixed length check |
 
 **Business Errors (e****)**:
 | ID | Message | Usage |
-|----|---------|-------|
+|----|-----------|------|
 | e0001 | {0} is already registered. | Duplicate error |
-| e0002 | {0} has been updated by another user. | Optimistic locking error |
+| e0002 | {0} was updated by another user. | Optimistic locking error |
 
 **Success Messages (i****)**:
 | ID | Message | Usage |
-|----|---------|-------|
+|----|-----------|------|
 | i0001 | {0} has been registered. | New registration success |
 | i0002 | {0} has been updated. | Update success |
-| i0003 | {0} has been deleted. | Delete success |
+| i0003 | {0} has been deleted. | Deletion success |
 
 ---
 
 ## 9. References
 
 - [Prompt Generation Template](11-ai-prompt-generator-template.md) - Template for generating prompts from table definitions
-- [Event-based Coding Patterns](../02-develop-standards/21-event-coding-pattern.md) - Implementation pattern details
-- [Web Page Structure Standard](../02-develop-standards/01-web-page-structure.md) - HTML/JS structure details
-- [Web Service Structure Standard](../02-develop-standards/11-web-service-structure.md) - Java structure details
+- [Event-Based Coding Patterns](../02-develop-standards/21-event-coding-pattern.md) - Implementation pattern details
+- [Web Page Structure Standards](../02-develop-standards/01-web-page-structure.md) - HTML/JS structure details
+- [Web Service Structure Standards](../02-develop-standards/11-web-service-structure.md) - Java structure details
 - Samples: `pages/app/exmodule/`, `src/com/example/app/service/exmodule/`

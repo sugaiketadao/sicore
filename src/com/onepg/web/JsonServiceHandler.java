@@ -47,7 +47,7 @@ final class JsonServiceHandler extends AbstractHttpHandler {
    * {@inheritDoc}
    * <ul>
    * <li>Dynamically resolves and executes service class from request URL.</li>
-   * <li>Processes parameters according to GET/POST method.</li>
+   * <li>Processes parameters according to <code>GET/POST</code> method.</li>
    * </ul>
    */
   @Override
@@ -136,7 +136,7 @@ final class JsonServiceHandler extends AbstractHttpHandler {
   /**
    * Converts request parameters to I/O parameters.<br>
    * <ul>
-   * <li>Parses parameters according to HTTP method and sets to Io object.</li>
+   * <li>Parses parameters according to HTTP method and sets to <code>Io</code> object.</li>
    * </ul>
    *
    * @param exchange HTTP exchange data

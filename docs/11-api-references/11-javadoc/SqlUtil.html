@@ -48,14 +48,14 @@
       <div class="method" id="selectOneExists">
         <h3 class="method-name">selectOneExists</h3>
         <div class="method-signature">
-          <code>public IoItems selectOneExists(Connection conn, SqlBuilder sb)</code>
+          <code>public IoItems selectOneExists(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Gets one record (error if zero records).<br>
+          Retrieves one record (error on zero records).<br>
 <ul>
-<li>Use when exactly one record is expected to exist.</li>
-<li>Throws an exception error if zero records are returned.</li>
-<li>Throws an exception error if multiple records are returned.</li>
+<li>Uses this method with the premise that only one target record exists.</li>
+<li>Throws a runtime exception if the result is zero records.</li>
+<li>Throws a runtime exception if the result is multiple records.</li>
 </ul>
 
         </div>
@@ -73,12 +73,12 @@
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>SqlBean</code></td>
+                <td>the SQL Bean</td>
               </tr>
             </tbody>
           </table>
@@ -91,15 +91,15 @@
       <div class="method" id="selectOne">
         <h3 class="method-name">selectOne</h3>
         <div class="method-signature">
-          <code>public IoItems selectOne(Connection conn, SqlBuilder sb)</code>
+          <code>public IoItems selectOne(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Gets one record.<br>
+          Retrieves one record.<br>
 <ul>
-<li>Use when exactly one record is expected to exist.</li>
-<li>Returns <code>null</code> if zero records are returned.</li>
-<li>Throws an exception error if multiple records are returned.</li>
-<li>Column physical names are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Uses this method with the premise that only one target record exists.</li>
+<li>Returns <code>null</code> if the result is zero records.</li>
+<li>Throws a runtime exception if the result is multiple records.</li>
+<li>Column physical names become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -117,12 +117,12 @@
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>SqlBean</code></td>
+                <td>the SQL Bean</td>
               </tr>
             </tbody>
           </table>
@@ -135,14 +135,14 @@
       <div class="method" id="selectOneMultiIgnore">
         <h3 class="method-name">selectOneMultiIgnore</h3>
         <div class="method-signature">
-          <code>public IoItems selectOneMultiIgnore(Connection conn, SqlBuilder sb)</code>
+          <code>public IoItems selectOneMultiIgnore(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Gets one record (multiple records OK).<br>
+          Retrieves one record (multiple records acceptable).<br>
 <ul>
-<li>Returns <code>null</code> if zero records are returned.</li>
-<li>Returns the first record without error even if multiple records are retrieved.</li>
-<li>Column physical names are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Returns <code>null</code> if the result is zero records.</li>
+<li>Returns the first record without error even if multiple records can be retrieved.</li>
+<li>Column physical names become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -160,12 +160,12 @@
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>SqlBean</code></td>
+                <td>the SQL Bean</td>
               </tr>
             </tbody>
           </table>
@@ -178,38 +178,35 @@
       <div class="method" id="select">
         <h3 class="method-name">select</h3>
         <div class="method-signature">
-          <code>public SqlResultSet select(Connection conn, SqlBuilder sb)</code>
+          <code>public SqlResultSet select(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Gets multiple records.<br>
+          Retrieves multiple records.<br>
 <ul>
 <li>Returns as <code>SqlResultSet</code>.</li>
-<li>Column physical names in the row map obtained from <code>SqlResultSet</code>
-iterator are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>Use in try clause (try-with-resources statement).</li>
-<li>This class sets the default fetch size to 500. To fetch all records, use <code>SqlUtil#selectFetchAll(Connection, SqlBuilder)</code>.</li>
-<li>About fetch size per DBMS:
+<li>Column physical names of row maps retrieved from the <code>SqlResultSet</code>
+iterator become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Uses in try clause (try-with-resources statement).</li>
+<li>This class sets the default fetch size to 500. Uses <code>SqlUtil#selectFetchAll(Connection, SqlBean)</code> to fetch all records.</li>
+<li>About fetch size per DBMS
 <ul>
-<li>Oracle default is 10 records which is small, so fetch size is specified.</li>
-<li>PostgreSQL default fetches all records which may cause OutOfMemory, so fetch size is specified.</li>
-<li>In PostgreSQL, if fetch size is specified (not fetching all), updated retrieved data,
-and intermediate commit, cursor invalid error (SQLSTATE 34000) occurs. In that case,
-stop intermediate commits or fetch all records.<br>
-Alternatively, though more complex, data can be retrieved in chunks using SQL LIMIT clause.</li>
-<li>In MS-SqlServer, fetch size may not work as specified, so if OutOfMemory is possible,
-data must be retrieved in chunks using SQL LIMIT clause.</li>
+<li>Oracle defaults to 10 records which is small, so specifies fetch size.</li>
+<li>PostgreSQL defaults to fetch all records which may cause OutOfMemory, so specifies fetch size.</li>
+<li>PostgreSQL causes cursor invalid error (SQLSTATE 34000) when specifying fetch size (not fetching all records), updating retrieved data, and performing intermediate commit. In such case, stops intermediate commit or fetches all records.<br>
+Also resolves by dividing and retrieving data with SQL LIMIT clause though processing becomes complex.</li>
+<li>MS-SqlServer may not follow the specified fetch size, so divides and retrieves data with SQL LIMIT clause when there is a possibility of OutOfMemory.</li>
 </ul>
 </li>
 </ul>
 <pre>[Example]
 <code>try (final SqlResultSet rSet = SqlUtil.select(getDbConn(), sqlBuilder);) {
   for (final IoItems row : rSet) {
-    : omitted
-  </code>
-  if (rSet.getReadedCount() <= 0) {
-    // If zero records
+    : Omitted
   }
-}}
+  if (rSet.getReadedCount() <= 0) {
+    // For zero records case
+  }
+}</code>
 </pre>
 
         </div>
@@ -227,12 +224,12 @@ data must be retrieved in chunks using SQL LIMIT clause.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>SqlBean</code></td>
+                <td>the SQL Bean</td>
               </tr>
             </tbody>
           </table>
@@ -245,14 +242,14 @@ data must be retrieved in chunks using SQL LIMIT clause.</li>
       <div class="method" id="selectFetchAll">
         <h3 class="method-name">selectFetchAll</h3>
         <div class="method-signature">
-          <code>public SqlResultSet selectFetchAll(Connection conn, SqlBuilder sb)</code>
+          <code>public SqlResultSet selectFetchAll(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Gets multiple records (fetch all).<br>
+          Retrieves multiple records (fetch all records).<br>
 <ul>
-<li>Basically, do not use this method.</li>
-<li>Use only when issues occur without fetching all.</li>
-<li>Retrieving a large number of records with this method may cause memory errors.</li>
+<li>Basically does not use this method.</li>
+<li>Uses this method only when defects occur without fetching all records.</li>
+<li>This method may cause memory error when retrieving a large number of records.</li>
 </ul>
 
         </div>
@@ -270,12 +267,12 @@ data must be retrieved in chunks using SQL LIMIT clause.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>SqlBean</code></td>
+                <td>the SQL Bean</td>
               </tr>
             </tbody>
           </table>
@@ -287,24 +284,24 @@ data must be retrieved in chunks using SQL LIMIT clause.</li>
         <div class="see-also">
           <h4>See Also</h4>
           <ul>
-            <li><a href="#select">#select(Connection, SqlBuilder)</a></li>
+            <li><a href="#select">#select(Connection, SqlBean)</a></li>
           </ul>
         </div>
       </div>
       <div class="method" id="selectBulk">
         <h3 class="method-name">selectBulk</h3>
         <div class="method-signature">
-          <code>public IoRows selectBulk(Connection conn, SqlBuilder sb, int limitCount)</code>
+          <code>public IoRows selectBulk(Connection conn, SqlBean sb, int limitCount)</code>
         </div>
         <div class="method-description">
-          Gets multiple records in bulk.<br>
+          Retrieves multiple records in bulk.<br>
 <ul>
-<li>Returns a multiple row list.</li>
-<li>Returns a list with size zero if zero records are returned.</li>
-<li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
+<li>Returns multiple row list.</li>
+<li>Returns a list with zero size if the result is zero records.</li>
+<li>Column physical names of the map for one row become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>This method consumes memory, so uses <code>#select(Connection, SqlBean)</code>
 for loop processing.</li>
-<li>Retrieving a large number of records with this method may cause memory errors.</li>
+<li>This method may cause memory error when retrieving a large number of records.</li>
 </ul>
 
         </div>
@@ -322,17 +319,17 @@ for loop processing.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>SqlBean</code></td>
+                <td>the SQL Bean</td>
               </tr>
               <tr>
                 <td><code>limitCount</code></td>
                 <td><code>int</code></td>
-                <td>Maximum number of records to retrieve</td>
+                <td>the retrieval count limit</td>
               </tr>
             </tbody>
           </table>
@@ -345,17 +342,17 @@ for loop processing.</li>
       <div class="method" id="selectBulkAll">
         <h3 class="method-name">selectBulkAll</h3>
         <div class="method-signature">
-          <code>public IoRows selectBulkAll(Connection conn, SqlBuilder sb)</code>
+          <code>public IoRows selectBulkAll(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Gets multiple records in bulk (all records).<br>
+          Retrieves multiple records in bulk (retrieves all records).<br>
 <ul>
-<li>Returns a multiple row list.</li>
-<li>Returns a list with size zero if zero records are returned.</li>
-<li>Column physical names of each row map are lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>This method consumes memory, so use <code>#select(Connection, SqlBuilder)</code>
+<li>Returns multiple row list.</li>
+<li>Returns a list with zero size if the result is zero records.</li>
+<li>Column physical names of the map for one row become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>This method consumes memory, so uses <code>#select(Connection, SqlBean)</code>
 for loop processing.</li>
-<li>Retrieving a large number of records with this method may cause memory errors.</li>
+<li>This method may cause memory error when retrieving a large number of records.</li>
 </ul>
 
         </div>
@@ -373,12 +370,12 @@ for loop processing.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>SqlBean</code></td>
+                <td>the SQL Bean</td>
               </tr>
             </tbody>
           </table>
@@ -394,13 +391,13 @@ for loop processing.</li>
           <code>public boolean insertOne(Connection conn, String tableName, AbstractIoTypeMap params)</code>
         </div>
         <div class="method-description">
-          Inserts one record by specifying table.<br>
+          Inserts one record with specified table.<br>
 <ul>
-<li>Inserts one record by specifying the table name.</li>
-<li>Parameters not existing in the table are ignored.</li>
-<li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-values will be inserted into the added column without implementation changes, so caution is needed.</li>
-<li>Throws an exception error if the affected count is zero for reasons other than unique constraint violation.</li>
+<li>Inserts one record by specifying table name.</li>
+<li>Ignores parameters that do not exist in the table.</li>
+<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+the value will be inserted into the added column without implementation modification.</li>
+<li>Throws a runtime exception if the affected count is zero for reasons other than unique constraint violation.</li>
 </ul>
 
         </div>
@@ -418,24 +415,24 @@ values will be inserted into the added column without implementation changes, so
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>tableName</code></td>
                 <td><code>String</code></td>
-                <td>Table name</td>
+                <td>the table name</td>
               </tr>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>Parameter values</td>
+                <td>the parameter values</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>false</code> if unique constraint violation, <code>true</code> if one record was inserted successfully</p>
+          <p><code>boolean</code> - <code>false</code> for unique constraint violation, <code>true</code> if one record is normally inserted</p>
         </div>
       </div>
       <div class="method" id="insertOne">
@@ -444,14 +441,14 @@ values will be inserted into the added column without implementation changes, so
           <code>public boolean insertOne(Connection conn, String tableName, AbstractIoTypeMap params, String tsItem)</code>
         </div>
         <div class="method-description">
-          Inserts one record by specifying table (timestamp auto-set).<br>
+          Inserts one record with specified table (automatic timestamp setting).<br>
 <ul>
-<li>Inserts one record by specifying the table name.</li>
-<li>Sets the timestamp for optimistic locking.</li>
-<li>Parameters not existing in the table are ignored.</li>
-<li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-values will be inserted into the added column without implementation changes, so caution is needed.</li>
-<li>Throws an exception error if the affected count is zero for reasons other than unique constraint violation.</li>
+<li>Inserts one record by specifying table name.</li>
+<li>Sets timestamp for optimistic concurrency control.</li>
+<li>Ignores parameters that do not exist in the table.</li>
+<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+the value will be inserted into the added column without implementation modification.</li>
+<li>Throws a runtime exception if the affected count is zero for reasons other than unique constraint violation.</li>
 </ul>
 
         </div>
@@ -469,29 +466,29 @@ values will be inserted into the added column without implementation changes, so
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>tableName</code></td>
                 <td><code>String</code></td>
-                <td>Table name</td>
+                <td>the table name</td>
               </tr>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>Parameter values</td>
+                <td>the parameter values</td>
               </tr>
               <tr>
                 <td><code>tsItem</code></td>
                 <td><code>String</code></td>
-                <td>Timestamp column name (for optimistic locking)</td>
+                <td>the timestamp column name (for optimistic concurrency control)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>false</code> if unique constraint violation, <code>true</code> if one record was inserted successfully</p>
+          <p><code>boolean</code> - <code>false</code> for unique constraint violation, <code>true</code> if one record is normally inserted</p>
         </div>
       </div>
       <div class="method" id="updateOne">
@@ -500,16 +497,16 @@ values will be inserted into the added column without implementation changes, so
           <code>public boolean updateOne(Connection conn, String tableName, AbstractIoTypeMap params, String[] keyItems)</code>
         </div>
         <div class="method-description">
-          Updates one record by specifying table.<br>
+          Updates one record with specified table.<br>
 <ul>
-<li>Updates one record by specifying the table name.</li>
-<li>Throws an exception error if multiple records are updated.</li>
-<li>Parameters not existing in the table are ignored.</li>
-<li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-values will be updated in the added column without implementation changes, so caution is needed.</li>
-<li>WHERE clause is created from key columns.</li>
-<li>Key columns must be included in the parameter values.</li>
-<li>Key column names must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Updates one record by specifying table name.</li>
+<li>Throws a runtime exception if multiple records are updated.</li>
+<li>Ignores parameters that do not exist in the table.</li>
+<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+the value will be updated in the added column without implementation modification.</li>
+<li>WHERE clause is created by key columns.</li>
+<li>Key columns must be included in parameter values.</li>
+<li>Alphabetic characters of key column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -527,29 +524,29 @@ values will be updated in the added column without implementation changes, so ca
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>tableName</code></td>
                 <td><code>String</code></td>
-                <td>Table name</td>
+                <td>the table name</td>
               </tr>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>Parameter values (including key column names)</td>
+                <td>the parameter values (including key column names)</td>
               </tr>
               <tr>
                 <td><code>keyItems</code></td>
                 <td><code>String[]</code></td>
-                <td>Key column names</td>
+                <td>the key column names</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if one record was updated, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - <code>true</code> if one record is updated, <code>false</code> if zero records</p>
         </div>
       </div>
       <div class="method" id="updateOne">
@@ -558,19 +555,20 @@ values will be updated in the added column without implementation changes, so ca
           <code>public boolean updateOne(Connection conn, String tableName, AbstractIoTypeMap params, String[] keyItems, String tsItem)</code>
         </div>
         <div class="method-description">
-          Updates one record by specifying table (timestamp exclusive control update).<br>
+          Updates one record with specified table (timestamp exclusive control update).<br>
 <ul>
-<li>Updates one record by specifying the table name.</li>
-<li>Throws an exception error if multiple records are updated.</li>
-<li>Performs optimistic locking using timestamp.</li>
-<li>Parameters not existing in the table are ignored.</li>
-<li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-values will be updated in the added column without implementation changes, so caution is needed.</li>
-<li>WHERE clause is created from key columns and timestamp column (for exclusive control).</li>
-<li>Key columns and timestamp column must be included in the parameter values.</li>
-<li>Key column names and timestamp column name must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>Timestamp column is updated with the current datetime.</li>
-<li>Use <code>#updateOne(Connection, String, AbstractIoTypeMap, String[])</code> if timestamp exclusive control is not needed.</li>
+<li>Updates one record by specifying table name.</li>
+<li>Throws a runtime exception if multiple records are updated.</li>
+<li>Performs optimistic concurrency control with timestamp.</li>
+<li>Ignores parameters that do not exist in the table.</li>
+<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+the value will be updated in the added column without implementation modification.</li>
+<li>WHERE clause is created by key columns and timestamp column (exclusive control).</li>
+<li>Key columns and timestamp column must be included in parameter values.</li>
+<li>Alphabetic characters of key column names and timestamp column name must be specified in lowercase. (<code>AbstractIoTypeMap</code>
+key rule)</li>
+<li>Timestamp column is updated with current date/time.</li>
+<li>Uses <code>#updateOne(Connection, String, AbstractIoTypeMap, String[])</code> when timestamp exclusive control is not required.</li>
 </ul>
 
         </div>
@@ -588,34 +586,34 @@ values will be updated in the added column without implementation changes, so ca
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>tableName</code></td>
                 <td><code>String</code></td>
-                <td>Table name</td>
+                <td>the table name</td>
               </tr>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>Parameter values (including key column names)</td>
+                <td>the parameter values (including key column names)</td>
               </tr>
               <tr>
                 <td><code>keyItems</code></td>
                 <td><code>String[]</code></td>
-                <td>Key column names</td>
+                <td>the key column names</td>
               </tr>
               <tr>
                 <td><code>tsItem</code></td>
                 <td><code>String</code></td>
-                <td>Timestamp column name (for optimistic locking)</td>
+                <td>the timestamp column name (for optimistic concurrency control)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if one record was updated, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - <code>true</code> if one record is updated, <code>false</code> if zero records</p>
         </div>
       </div>
       <div class="method" id="update">
@@ -624,15 +622,15 @@ values will be updated in the added column without implementation changes, so ca
           <code>public int update(Connection conn, String tableName, AbstractIoTypeMap params, String[] whereItems)</code>
         </div>
         <div class="method-description">
-          Updates records by specifying table.<br>
+          Updates with specified table.<br>
 <ul>
-<li>Updates multiple records by specifying the table name.</li>
-<li>Parameters not existing in the table are ignored.</li>
-<li>If a column is added to the table after implementation and that column name already exists in the parameters,<br>
-values will be updated in the added column without implementation changes, so caution is needed.</li>
-<li>WHERE clause is created from extraction condition columns.</li>
-<li>Extraction condition columns must be included in the parameter values.</li>
-<li>Extraction condition column names must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Updates multiple records by specifying table name.</li>
+<li>Ignores parameters that do not exist in the table.</li>
+<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+the value will be updated in the added column without implementation modification.</li>
+<li>WHERE clause is created by filter condition columns.</li>
+<li>Filter condition columns must be included in parameter values.</li>
+<li>Alphabetic characters of filter condition column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -650,29 +648,29 @@ values will be updated in the added column without implementation changes, so ca
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>tableName</code></td>
                 <td><code>String</code></td>
-                <td>Table name</td>
+                <td>the table name</td>
               </tr>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>Parameter values (including extraction condition column names)</td>
+                <td>the parameter values (including filter condition column names)</td>
               </tr>
               <tr>
                 <td><code>whereItems</code></td>
                 <td><code>String[]</code></td>
-                <td>Extraction condition column names (optional) <code>null</code> if omitted</td>
+                <td>the filter condition column names (optional) <code>null</code> if omitted</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the number of updated records</p>
+          <p><code>int</code> - the update count</p>
         </div>
       </div>
       <div class="method" id="deleteOne">
@@ -681,13 +679,13 @@ values will be updated in the added column without implementation changes, so ca
           <code>public boolean deleteOne(Connection conn, String tableName, AbstractIoTypeMap params, String[] keyItems)</code>
         </div>
         <div class="method-description">
-          Deletes one record by specifying table.<br>
+          Deletes one record with specified table.<br>
 <ul>
-<li>Deletes one record by specifying the table name.</li>
-<li>Throws an exception error if multiple records are deleted.</li>
-<li>WHERE clause is created from key columns.</li>
-<li>Key columns must be included in the parameter values.</li>
-<li>Key column names must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Deletes one record by specifying table name.</li>
+<li>Throws a runtime exception if multiple records are deleted.</li>
+<li>WHERE clause is created by key columns.</li>
+<li>Key columns must be included in parameter values.</li>
+<li>Alphabetic characters of key column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -705,29 +703,29 @@ values will be updated in the added column without implementation changes, so ca
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>tableName</code></td>
                 <td><code>String</code></td>
-                <td>Table name</td>
+                <td>the table name</td>
               </tr>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>Parameter values (including key column names)</td>
+                <td>the parameter values (including key column names)</td>
               </tr>
               <tr>
                 <td><code>keyItems</code></td>
                 <td><code>String[]</code></td>
-                <td>Key column names</td>
+                <td>the key column names</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if one record was deleted, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - <code>true</code> if one record is deleted, <code>false</code> if zero records</p>
         </div>
       </div>
       <div class="method" id="deleteOne">
@@ -736,16 +734,18 @@ values will be updated in the added column without implementation changes, so ca
           <code>public boolean deleteOne(Connection conn, String tableName, AbstractIoTypeMap params, String[] keyItems, String tsItem)</code>
         </div>
         <div class="method-description">
-          Deletes one record by specifying table (timestamp exclusive control delete).<br>
+          Deletes one record with specified table (timestamp exclusive control delete).<br>
 <ul>
-<li>Deletes one record by specifying the table name.</li>
-<li>Throws an exception error if multiple records are deleted.</li>
-<li>Performs optimistic locking using timestamp.</li>
-<li>WHERE clause is created from key columns and timestamp column (for exclusive control).</li>
-<li>Key columns and timestamp column must be included in the parameter values.</li>
-<li>Key column names and timestamp column name must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>Use <code>#deleteOne(Connection, String, AbstractIoTypeMap, String[])</code>
-if timestamp exclusive control is not needed.</li>
+<li>Deletes one record by specifying table name.</li>
+<li>Throws a runtime exception if multiple records are deleted.</li>
+<li>Performs optimistic concurrency control with timestamp.</li>
+<li>WHERE clause is created by key columns and timestamp column (exclusive control).</li>
+<li>Key columns and timestamp column must be included in parameter values.</li>
+<li>Alphabetic characters of key column names and timestamp column name must be specified in lowercase. (<code>AbstractIoTypeMap</code>
+key rule)</li>
+<li>Uses
+<code>#deleteOne(Connection, String, AbstractIoTypeMap, String[])</code>
+when timestamp exclusive control is not required.</li>
 </ul>
 
         </div>
@@ -763,34 +763,34 @@ if timestamp exclusive control is not needed.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>tableName</code></td>
                 <td><code>String</code></td>
-                <td>Table name</td>
+                <td>the table name</td>
               </tr>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>Parameter values (including key column names)</td>
+                <td>the parameter values (including key column names)</td>
               </tr>
               <tr>
                 <td><code>keyItems</code></td>
                 <td><code>String[]</code></td>
-                <td>Key column names</td>
+                <td>the key column names</td>
               </tr>
               <tr>
                 <td><code>tsItem</code></td>
                 <td><code>String</code></td>
-                <td>Timestamp column name (for optimistic locking)</td>
+                <td>the timestamp column name (for optimistic concurrency control)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if one record was deleted, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - <code>true</code> if one record is deleted, <code>false</code> if zero records</p>
         </div>
       </div>
       <div class="method" id="delete">
@@ -799,12 +799,12 @@ if timestamp exclusive control is not needed.</li>
           <code>public int delete(Connection conn, String tableName, AbstractIoTypeMap params, String[] whereItems)</code>
         </div>
         <div class="method-description">
-          Deletes records by specifying table.<br>
+          Deletes with specified table.<br>
 <ul>
-<li>Deletes multiple records by specifying the table name.</li>
-<li>WHERE clause is created from extraction condition columns.</li>
-<li>Extraction condition columns must be included in the parameter values.</li>
-<li>Extraction condition column names must be specified in lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Deletes multiple records by specifying table name.</li>
+<li>WHERE clause is created by filter condition columns.</li>
+<li>Filter condition columns must be included in parameter values.</li>
+<li>Alphabetic characters of filter condition column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -822,40 +822,40 @@ if timestamp exclusive control is not needed.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>tableName</code></td>
                 <td><code>String</code></td>
-                <td>Table name</td>
+                <td>the table name</td>
               </tr>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>Parameter values (including extraction condition column names)</td>
+                <td>the parameter values (including filter condition column names)</td>
               </tr>
               <tr>
                 <td><code>whereItems</code></td>
                 <td><code>String[]</code></td>
-                <td>Extraction condition column names</td>
+                <td>the filter condition column names</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the number of deleted records</p>
+          <p><code>int</code> - the delete count</p>
         </div>
       </div>
       <div class="method" id="executeOne">
         <h3 class="method-name">executeOne</h3>
         <div class="method-signature">
-          <code>public boolean executeOne(Connection conn, SqlBuilder sb)</code>
+          <code>public boolean executeOne(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          SQL insert/update/delete one record.<br>
+          SQL one record insert, update, or delete.<br>
 <ul>
-<li>Throws an exception error if the affected count is multiple records.</li>
+<li>Throws a runtime exception if the affected count is multiple records.</li>
 </ul>
 
         </div>
@@ -873,28 +873,28 @@ if timestamp exclusive control is not needed.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>SqlBean</code></td>
+                <td>the SQL Bean</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if affected count is one record, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - <code>true</code> if the affected count is one record, <code>false</code> if zero records</p>
         </div>
       </div>
       <div class="method" id="execute">
         <h3 class="method-name">execute</h3>
         <div class="method-signature">
-          <code>public int execute(Connection conn, SqlBuilder sb)</code>
+          <code>public int execute(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          SQL insert/update/delete.
+          SQL insert, update, or delete.
 
         </div>
         <div class="method-parameters">
@@ -911,12 +911,12 @@ if timestamp exclusive control is not needed.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
-                <td><code>SqlBuilder</code></td>
-                <td>SQL builder</td>
+                <td><code>SqlBean</code></td>
+                <td>the SQL Bean</td>
               </tr>
             </tbody>
           </table>
@@ -932,7 +932,7 @@ if timestamp exclusive control is not needed.</li>
           <code>public String getToday(Connection conn)</code>
         </div>
         <div class="method-description">
-          Gets current date by DBMS.
+          Retrieves current date by DBMS.
 
         </div>
         <div class="method-parameters">
@@ -949,14 +949,14 @@ if timestamp exclusive control is not needed.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>Database connection</td>
+                <td>the database connection</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - Current date (YYYYMMDD format)</p>
+          <p><code>String</code> - the current date (YYYYMMDD format)</p>
         </div>
       </div>
     </div>

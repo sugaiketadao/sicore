@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AbstractBatch - JavaDoc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>AbstractBatch <span class="abstract-badge">(Abstract Class)</span></h1>
+      <p>Framework Components [com.onepg.bat]</p>
+      <a href="index.html" class="back-link">← Back to Class List</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section">
+      <h2>Class Information</h2>
+      <div class="class-details">
+        <p><strong>Package:</strong> com.onepg.bat</p>
+        <p><strong>Class Name:</strong> AbstractBatch <span class="abstract-badge">(Abstract Class)</span></p>
+      </div>
+      <div class="class-description">
+        <h3>Description</h3>
+        <div>Batch processing base class.<br>
+<ul>
+<li>Provides common processing (log output, exception handling, etc.) for each batch processing.</li>
+<li>Subclasses define specific batch processing by implementing the <code>doExecute</code> method.</li>
+<li>When a subclass calls the <code>callMain</code> method of this class from the <code>main</code> method, the <code>doExecute</code> method is executed.</li>
+<li>Arguments to the subclass <code>main</code> method are assumed to use only the first argument (<code>args[0]</code>) in URL parameter format and pass it to the <code>callMain</code> method.</li>
+<li>Arguments in URL parameter format are converted to map format and passed to the <code>doExecute</code> method as the <code>IoItems</code> class.</li>
+<li>In case of error within the subclass <code>doExecute</code> method, Exception is assumed to be thrown.</li>
+<li>The return value to the caller of the <code>main</code> method (mainly batch or shell) on normal termination is 0.</li>
+<li>The return value when Exception is thrown is 1.</li>
+</ul>
+<pre>
+[Implementation Example]<code>public class ExampleBatch extends AbstractBatch {
+   public static void main(String[] args) {
+     final ExampleBatch batch = new ExampleBatch();
+     batch.callMain(args);
+   }
+</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Constants and Variables</h2>
+      <div class="field-list">
+        <div class="field-item" id="traceCode">
+          <h3 class="field-name">traceCode</h3>
+          <div class="field-signature">
+            <code>protected String traceCode</code>
+          </div>
+          <div class="field-description">
+            Trace code. 
+          </div>
+        </div>
+        <div class="field-item" id="logger">
+          <h3 class="field-name">logger</h3>
+          <div class="field-signature">
+            <code>protected LogWriter logger</code>
+          </div>
+          <div class="field-description">
+            Log writer. 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Method List</h2>
+      <div class="method" id="doExecute">
+        <h3 class="method-name">doExecute <span class="abstract-badge">(Abstract Method)</span></h3>
+        <div class="method-signature">
+          <code>protected int doExecute(IoItems args)</code>
+        </div>
+        <div class="method-description">
+          Main processing.<br>
+<ul>
+<li>Subclasses implement specific batch processing.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>args</code></td>
+                <td><code>IoItems</code></td>
+                <td>the arguments</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the return value of the main method</p>
+        </div>
+      </div>
+      <div class="method" id="callMain">
+        <h3 class="method-name">callMain</h3>
+        <div class="method-signature">
+          <code>protected void callMain(String[] args)</code>
+        </div>
+        <div class="method-description">
+          Invokes main processing.<br>
+<ul>
+<li>Converts arguments from URL parameter format to map format, executes log start processing, and then calls the <code>doExecute</code> method.</li>
+<li>The converted arguments are passed to the <code>doExecute</code> method as the <code>IoItems</code> class.</li>
+<li>If the return value of the <code>doExecute</code> method is 0, the processing is considered to have terminated normally.</li>
+<li>If the return value of the <code>doExecute</code> method is other than 0 or an exception error occurs, the processing is considered to have terminated abnormally.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>args</code></td>
+                <td><code>String[]</code></td>
+                <td>the arguments</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Generated by JavaDocGenerator - 2026</p>
+  </div>
+</body>
+</html>

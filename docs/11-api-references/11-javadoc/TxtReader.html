@@ -155,6 +155,27 @@
           <p><code>boolean</code> - <code>false</code> if there were insufficient rows</p>
         </div>
       </div>
+      <div class="method" id="getFirstLine">
+        <h3 class="method-name">getFirstLine</h3>
+        <div class="method-signature">
+          <code>public String getFirstLine()</code>
+        </div>
+        <div class="method-description">
+          Gets the first line.<br>
+<ul>
+<li>Gets the first line of the file.</li>
+<li>The read row count is incremented after retrieval.</li>
+<li>Returns <code>null</code> in the following cases:
+  <ul><li>The file is already closed.</li>
+      <li>The file is empty (zero rows), or the last row has already been reached.</li></ul>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the first line string</p>
+        </div>
+      </div>
       <div class="method" id="hasNext">
         <h3 class="method-name">hasNext</h3>
         <div class="method-signature">

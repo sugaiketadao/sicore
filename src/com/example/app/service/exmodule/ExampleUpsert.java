@@ -197,8 +197,8 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
 
     if (!io.containsKeyRows("detail")) {
       // Skip detail insert if detail does not exist
-      if (logger.isDevelopMode()) {
-        logger.develop(LogUtil.joinKeyVal("deleted count", delCnt, "inserted count", 0));
+      if (super.logger.isDevelopMode()) {
+        super.logger.develop(LogUtil.joinKeyVal("deleted count", delCnt, "inserted count", 0));
       }
       return;
     }
@@ -215,8 +215,8 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
       // Insert one record to database
       SqlUtil.insertOne(conn, "t_user_pet", row);
     }
-    if (logger.isDevelopMode()) {
-      logger.develop(LogUtil.joinKeyVal("deleted count", delCnt, "inserted count", dno));
+    if (super.logger.isDevelopMode()) {
+      super.logger.develop(LogUtil.joinKeyVal("deleted count", delCnt, "inserted count", dno));
     }
   }
 }

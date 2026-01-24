@@ -154,6 +154,20 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   }
 
   /**
+   * Gets the database column names.
+   *
+   * @return the database column name string array
+   */
+  public String[] getItemNames() {
+    final String[] itemNames = new String[this.nameClsMap.size()];
+    int idx = 0;
+    for (final String name : this.nameClsMap.keySet()) {
+      itemNames[idx++] = name;
+    }
+    return itemNames;
+  }
+
+  /**
    * Result row iterator class.
    * <ul>
    * <li>An iterator class for <code>ResultSet</code>.</li>

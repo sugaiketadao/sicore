@@ -1,5 +1,54 @@
 # Java API Reference
 
+## AbstractBatch (Abstract Class)
+
+**Package**: com.onepg.bat
+
+### Methods
+
+#### doExecute (Abstract Method)
+
+```
+protected int doExecute(IoItems args)
+```
+
+**Parameters**:
+- `args`: `IoItems`
+
+**Returns**: `int`
+
+#### callMain
+
+```
+protected void callMain(String[] args)
+```
+
+**Parameters**:
+- `args`: `String[]`
+
+## AbstractDbAccessBatch (Abstract Class)
+
+**Package**: com.onepg.bat
+
+### Methods
+
+#### callMain
+
+```
+protected void callMain(String[] args)
+```
+
+**Parameters**:
+- `args`: `String[]`
+
+#### getDbConn
+
+```
+protected Connection getDbConn()
+```
+
+**Returns**: `Connection`
+
 ## AbstractDbAccessWebService (Abstract Class)
 
 **Package**: com.onepg.web
@@ -951,6 +1000,25 @@ public Set<Entry<String, String>> entrySet()
 
 **Returns**: `Set<Entry<String, String>>`
 
+#### equals
+
+```
+public boolean equals(Object obj)
+```
+
+**Parameters**:
+- `obj`: `Object`
+
+**Returns**: `boolean`
+
+#### hashCode
+
+```
+public int hashCode()
+```
+
+**Returns**: `int`
+
 #### getList
 
 ```
@@ -1891,6 +1959,25 @@ public Set<Entry<String, String>> entrySet()
 
 **Returns**: `Set<Entry<String, String>>`
 
+#### equals
+
+```
+public boolean equals(Object obj)
+```
+
+**Parameters**:
+- `obj`: `Object`
+
+**Returns**: `boolean`
+
+#### hashCode
+
+```
+public int hashCode()
+```
+
+**Returns**: `int`
+
 #### createCsv
 
 ```
@@ -1899,10 +1986,10 @@ public String createCsv()
 
 **Returns**: `String`
 
-#### createCsAllDq
+#### createCsvAllDq
 
 ```
-public String createCsAllDq()
+public String createCsvAllDq()
 ```
 
 **Returns**: `String`
@@ -2185,6 +2272,17 @@ public String formatDaysTime(long msec)
 
 **Returns**: `String`
 
+#### getClassNameAndLineNo
+
+```
+public String getClassNameAndLineNo(Class<?> callerClass)
+```
+
+**Parameters**:
+- `callerClass`: `Class<?>`
+
+**Returns**: `String`
+
 ## LogWriter
 
 **Package**: com.onepg.util
@@ -2245,6 +2343,15 @@ public void begin()
 ```
 public void end()
 ```
+
+#### end
+
+```
+public void end(int exitStatus)
+```
+
+**Parameters**:
+- `exitStatus`: `int`
 
 #### develop
 
@@ -2327,6 +2434,10 @@ public IoItems getJson(String fileName)
 - `fileName`: `String`
 
 **Returns**: `IoItems`
+
+## SqlBean
+
+**Package**: com.onepg.db
 
 ## SqlBuilder
 
@@ -2420,13 +2531,62 @@ public SqlBuilder delLastChar(int deleteCharCount)
 
 **Returns**: `SqlBuilder`
 
-#### length
+## SqlConst
+
+**Package**: com.onepg.db
+
+### Methods
+
+#### begin
 
 ```
-public int length()
+public SqlConstBuilder begin()
 ```
 
-**Returns**: `int`
+**Returns**: `SqlConstBuilder`
+
+#### bind
+
+```
+public SqlBean bind(AbstractIoTypeMap params)
+```
+
+**Parameters**:
+- `params`: `AbstractIoTypeMap`
+
+**Returns**: `SqlBean`
+
+#### end
+
+```
+public SqlConst end()
+```
+
+**Returns**: `SqlConst`
+
+#### addQuery
+
+```
+public SqlConstBuilder addQuery(String sql)
+```
+
+**Parameters**:
+- `sql`: `String`
+
+**Returns**: `SqlConstBuilder`
+
+#### addQuery
+
+```
+public SqlConstBuilder addQuery(String sql, String itemName, BindType bindType)
+```
+
+**Parameters**:
+- `sql`: `String`
+- `itemName`: `String`
+- `bindType`: `BindType`
+
+**Returns**: `SqlConstBuilder`
 
 ## SqlResultSet
 
@@ -2472,6 +2632,14 @@ public boolean isReadedEndRow()
 
 **Returns**: `boolean`
 
+#### getItemNames
+
+```
+public String[] getItemNames()
+```
+
+**Returns**: `String[]`
+
 #### hasNext
 
 ```
@@ -2497,72 +2665,72 @@ public IoItems next()
 #### selectOneExists
 
 ```
-public IoItems selectOneExists(Connection conn, SqlBuilder sb)
+public IoItems selectOneExists(Connection conn, SqlBean sb)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sb`: `SqlBuilder`
+- `sb`: `SqlBean`
 
 **Returns**: `IoItems`
 
 #### selectOne
 
 ```
-public IoItems selectOne(Connection conn, SqlBuilder sb)
+public IoItems selectOne(Connection conn, SqlBean sb)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sb`: `SqlBuilder`
+- `sb`: `SqlBean`
 
 **Returns**: `IoItems`
 
 #### selectOneMultiIgnore
 
 ```
-public IoItems selectOneMultiIgnore(Connection conn, SqlBuilder sb)
+public IoItems selectOneMultiIgnore(Connection conn, SqlBean sb)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sb`: `SqlBuilder`
+- `sb`: `SqlBean`
 
 **Returns**: `IoItems`
 
 #### select
 
 ```
-public SqlResultSet select(Connection conn, SqlBuilder sb)
+public SqlResultSet select(Connection conn, SqlBean sb)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sb`: `SqlBuilder`
+- `sb`: `SqlBean`
 
 **Returns**: `SqlResultSet`
 
 #### selectFetchAll
 
 ```
-public SqlResultSet selectFetchAll(Connection conn, SqlBuilder sb)
+public SqlResultSet selectFetchAll(Connection conn, SqlBean sb)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sb`: `SqlBuilder`
+- `sb`: `SqlBean`
 
 **Returns**: `SqlResultSet`
 
 #### selectBulk
 
 ```
-public IoRows selectBulk(Connection conn, SqlBuilder sb, int limitCount)
+public IoRows selectBulk(Connection conn, SqlBean sb, int limitCount)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sb`: `SqlBuilder`
+- `sb`: `SqlBean`
 - `limitCount`: `int`
 
 **Returns**: `IoRows`
@@ -2570,12 +2738,12 @@ public IoRows selectBulk(Connection conn, SqlBuilder sb, int limitCount)
 #### selectBulkAll
 
 ```
-public IoRows selectBulkAll(Connection conn, SqlBuilder sb)
+public IoRows selectBulkAll(Connection conn, SqlBean sb)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sb`: `SqlBuilder`
+- `sb`: `SqlBean`
 
 **Returns**: `IoRows`
 
@@ -2695,24 +2863,24 @@ public int delete(Connection conn, String tableName, AbstractIoTypeMap params, S
 #### executeOne
 
 ```
-public boolean executeOne(Connection conn, SqlBuilder sb)
+public boolean executeOne(Connection conn, SqlBean sb)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sb`: `SqlBuilder`
+- `sb`: `SqlBean`
 
 **Returns**: `boolean`
 
 #### execute
 
 ```
-public int execute(Connection conn, SqlBuilder sb)
+public int execute(Connection conn, SqlBean sb)
 ```
 
 **Parameters**:
 - `conn`: `Connection`
-- `sb`: `SqlBuilder`
+- `sb`: `SqlBean`
 
 **Returns**: `int`
 
@@ -2781,6 +2949,14 @@ public boolean skip(int count)
 - `count`: `int`
 
 **Returns**: `boolean`
+
+#### getFirstLine
+
+```
+public String getFirstLine()
+```
+
+**Returns**: `String`
 
 #### hasNext
 
@@ -3004,6 +3180,39 @@ public String join(String joint, Set<String> list)
 
 **Returns**: `String`
 
+#### joinCsv
+
+```
+public String joinCsv(String[] values)
+```
+
+**Parameters**:
+- `values`: `String[]`
+
+**Returns**: `String`
+
+#### joinCsvAllDq
+
+```
+public String joinCsvAllDq(String[] values)
+```
+
+**Parameters**:
+- `values`: `String[]`
+
+**Returns**: `String`
+
+#### joinCsvDq
+
+```
+public String joinCsvDq(String[] values)
+```
+
+**Parameters**:
+- `values`: `String[]`
+
+**Returns**: `String`
+
 #### split
 
 ```
@@ -3038,6 +3247,28 @@ public String[] splitReg(String value, String sep, int limitLength)
 - `value`: `String`
 - `sep`: `String`
 - `limitLength`: `int`
+
+**Returns**: `String[]`
+
+#### splitCsv
+
+```
+public String[] splitCsv(String csv)
+```
+
+**Parameters**:
+- `csv`: `String`
+
+**Returns**: `String[]`
+
+#### splitCsvDq
+
+```
+public String[] splitCsvDq(String csv)
+```
+
+**Parameters**:
+- `csv`: `String`
 
 **Returns**: `String[]`
 

@@ -1,24 +1,24 @@
-# SICore Framework Introduction for Managers
+# SICore Framework - Introduction for Managers
 
-This document explains the benefits of this framework for managers considering adoption in their development teams.
+This document explains the benefits of the framework for managers considering adoption by their development team.
 
 ---
 
 ## 1. What This Framework Can Do
 
-### Develop Screen Features and API Features with the Same Mechanism
+### Develop Screen Functionality and API Functionality with Same Mechanism
 
 ```
 Browser              Server
   │                   │
   │------------------>│
-  │　　　　　　  Web Service
+  │           Web service processing
   │<------------------│
 
 Server               Server
   │                   │
   │------------------>│
-  │　　　　　　  API Service
+  │           API service processing
   │<------------------│
 ```
 
@@ -27,101 +27,101 @@ Server               Server
 
 ---
 
-## 2. Why Development is Efficient
+## 2. Reasons for High Development Efficiency
 
-### 2.1 Prototypes Become Production Directly
-
-| Traditional Development | This Framework |
-|------------------------|----------------|
-| Create design mockup. | Create design mockup. |
-| Rebuild for programming. | **Use as-is.** |
-| Test and fix. | Test and fix. |
-
-**Effect**: No conversion work needed from design to program.
-
-### 2.2 Fewer Configuration Files
+### 2.1 Prototype Becomes Production Directly
 
 | Traditional Development | This Framework |
-|------------------------|----------------|
-| Multiple config files required. | Minimal configuration needed. |
-| URL configuration required. | No URL configuration (automatic). |
-| Complex DB connection settings. | Only DB connection settings needed. |
+|-----------|------------------|
+| Create design screen. | Create design screen. |
+| Recreate for programming. | **Can use as is.** |
+| Verify operation and fix. | Verify operation and fix. |
 
-**Effect**: Reduces troubles caused by configuration errors.
+**Effect**: No conversion work required from design to program.
+
+### 2.2 Few Configuration Files
+
+| Traditional Development | This Framework |
+|-----------|------------------|
+| Multiple configuration files required. | Minimal configuration needed. |
+| URL configuration required. | No URL configuration required (automatic). |
+| DB connection configuration is complex. | Only DB connection configuration needed. |
+
+**Effect**: Fewer troubles due to configuration errors.
 
 ### 2.3 Unified Coding Style
 
-- The framework enforces coding conventions.
-- Anyone writes code with the same structure.
+- Framework enforces coding style.
+- Anyone writes with similar structure.
 - Easy handover and maintenance.
 
 ---
 
 ## 3. Compatibility with AI
 
-### Designed for Easy AI Code Generation
+### Design That Makes It Easy for AI to Create Programs
 
-This framework is designed for **AI (generative AI) and beginner developers**.
+This framework is designed to be suitable for **AI (generative AI) and programming beginners**.
 
 | Feature | Benefit for AI |
-|---------|----------------|
-| Clear rules. | Generates code without confusion. |
-| Unified patterns. | Easy to reference past examples. |
-| Few config files. | Less likely to cause config errors. |
-| Built-in error prevention. | Less likely to introduce bugs. |
-| Entire framework provided as source code. | Easy to trace the code execution flow. |
+|------|---------------------|
+| Clear rules. | Can generate code without hesitation. |
+| Unified patterns. | Easy to refer to past examples. |
+| Few configuration files. | Configuration errors are less likely. |
+| Error prevention built-in. | Bugs are less likely to enter. |
+| Entire framework provided as source code. | Easy to trace code execution flow. |
 
-- Simply instruct AI to "create a search screen" and it generates working code.
-- Provide existing samples and AI automatically creates similar features.
+- Just instruct AI to "create a search screen" to generate working code.
+- Provide existing samples to automatically create similar functionality.
 
 ---
 
-## 4. Stability and Reliability
+## 4. Stability & Reliability
 
 ### 4.1 No External Library Dependencies
-External library dependencies are minimized. No Tomcat required.
+External library dependencies are minimized. Tomcat is not required.
 
-| Item | Description |
-|------|-------------|
-| Technologies Used | Standard Java, HTML, JavaScript, and CSS. |
-| External Dependencies | Limited to special processing such as DB, Excel, and PDF only. |
+| Item | Content |
+|------|------|
+| Technology Used | Uses standard Java, HTML, JavaScript, CSS. |
+| External Dependencies | Limited to only special processing like DB, Excel, PDF. |
 | Update Risk | Low (minimal impact from external library updates). |
 
 **Effect**: 
 - Easy security patch response.
-- Long-term stable operation possible.
+- Stable long-term operation possible.
 
-### 4.2 Built-in Bug Prevention
+### 4.2 Mechanism That Prevents Bugs
 
-The framework includes the following safeguards:
+The framework itself has the following measures built-in.
 
-- **NULL prevention**: Prevents unexpected errors from empty values.
-- **Type checking**: Enables early detection of data type errors.
-- **Duplicate checking**: Prevents duplicate registrations with the same name.
-- **Auto rollback**: Prevents data inconsistency on errors.
+- **NULL protection**: Prevents unexpected errors due to empty values.
+- **Type checking**: Can detect data type errors early.
+- **Duplication check**: Prevents double registration with same name.
+- **Automatic rollback**: Prevents data inconsistency on error.
 
-### 4.3 Custom CSS (No External Frameworks)
+### 4.3 Original CSS (No External Framework)
 
 Design components needed for screen display are also developed in-house.
 
-- No external CSS frameworks like Bootstrap required.
-- Minimal CSS only (single file).
-- Responsive design included (PC, tablet, smartphone).
-- Low learning cost (few design elements to remember).
+- No external CSS framework like Bootstrap required.
+- Consists of only minimal necessary CSS (single file only).
+- Responsive support ready (PC, tablet, smartphone).
+- Low learning cost (fewer design elements to remember).
 
 **Effect**:
-- No need to handle external framework version upgrades.
+- No need to respond to external framework version updates.
 - Easy to maintain design consistency.
-- Fast page load speed.
+- Fast page loading speed.
 
 ---
 
-## 5. Effects on Development Costs
+## 5. Impact on Development Costs
 
-### Work That Can Be Reduced
+### Work That Can Be Eliminated
 
-| Task | Traditional | This Framework |
-|------|-------------|----------------|
+| Work | Traditional | This Framework |
+|------|------|------------------|
 | Screen design conversion | Required | Not required |
 | URL configuration | Required | Not required |
 | Data conversion code | Required | Not required |
@@ -131,42 +131,42 @@ Design components needed for screen display are also developed in-house.
 ### Estimated Learning Period
 
 | Target | Period |
-|--------|--------|
-| Programmers | About 1-2 weeks. |
-| AI (Generative AI) | Immediate response when samples are provided. |
+|------|------|
+| Programmer | About 1-2 weeks. |
+| AI (generative AI) | Can respond immediately when given samples. |
 
 ---
 
-## 6. Application Areas
+## 6. Application Domain
 
-### Suitable Fields
+### Strong Areas
 
-- Business systems (data registration, search, update, deletion).
-- Admin screens.
-- API provision (external system integration).
-- Microservice architecture.
+- Suitable for business systems (data registration, search, update, deletion).
+- Suitable for admin screens.
+- Suitable for API provision (external system integration).
+- Suitable for microservice architecture.
 
-### Particularly Effective Cases
+### Cases with Particularly High Impact
 
-- Small to medium-scale system development.
+- Small to medium scale system development.
 - Short-term development.
-- Development and maintenance with small teams.
-- AI-assisted development.
+- Development and maintenance with small team.
+- Development utilizing AI.
 
 ---
 
 ## 7. Summary
 
-| Item | Benefits |
-|------|----------|
-| **Development Efficiency** | Prototypes can be used directly, reducing configuration work. |
-| **Maintainability** | Unified code makes handover easy. |
-| **Stability** | No external dependencies, built-in bug prevention. |
+| Item | Benefit |
+|------|------|
+| **Development Efficiency** | Can use prototype directly and reduce configuration work. |
+| **Maintainability** | Code is unified and handover is easy. |
+| **Stability** | No external dependencies and bug prevention built-in. |
 | **AI Utilization** | Clear rules make it easy for AI to generate code. |
-| **Cost** | Shortened learning period, reduced work hours. |
+| **Cost** | Can shorten learning period and reduce work effort. |
 
 ---
 
-## References
+## Related Documents
 
 - [Introduction for Programmers](../01-introductions/01-programmer-introduction.md)

@@ -1,8 +1,8 @@
-# Event-Based Coding Patterns
+# Event Coding Pattern
 
 <!-- AI_SKIP_START -->
 Implementation patterns for each event based on sample programs.
-Both humans and AI can quickly create similar features by following these patterns.
+Both humans and AI can quickly create similar functions by following these patterns.
 <!-- AI_SKIP_END -->
 
 ---
@@ -16,22 +16,22 @@ Both humans and AI can quickly create similar features by following these patter
 - [4. Edit Initialization (New/Update Determination)](#4-edit-initialization-newupdate-determination)
 - [5. Data Retrieval Processing](#5-data-retrieval-processing)
 - [6. Registration/Update Processing](#6-registrationupdate-processing)
-- [7. Delete Processing](#7-delete-processing)
-- [8. Row Add/Row Delete Processing](#8-row-addrow-delete-processing)
+- [7. Deletion Processing](#7-deletion-processing)
+- [8. Add Row/Remove Row Processing](#8-add-rowremove-row-processing)
 - [9. Cancel Processing](#9-cancel-processing)
-- [Validation Patterns](#validation-patterns)
-- [Message Patterns](#message-patterns)
-- [File Naming Conventions](#file-naming-conventions)
-- [References](#references)
+- [Validation Pattern List](#validation-pattern-list)
+- [Message Pattern](#message-pattern)
+- [File Naming Rules](#file-naming-rules)
+- [Reference](#reference)
 
 ---
 
 ## Sample Data Structure
 
-### Table Definitions
+### Table Definition
 
 **Header table: t_user**
-| Field | Physical Name | Type | Notes |
+| Item | Physical Name | Type | Notes |
 |------|--------|-----|------|
 | User ID | user_id | VARCHAR(4) | PK |
 | User Name | user_nm | VARCHAR(20) | |
@@ -40,11 +40,11 @@ Both humans and AI can quickly create similar features by following these patter
 | Gender | gender_cs | VARCHAR(1) | M/F |
 | Spouse | spouse_cs | VARCHAR(1) | Y/N |
 | Annual Income | income_am | NUMERIC(10) | |
-| Birthday | birth_dt | DATE | |
+| Birth Date | birth_dt | DATE | |
 | Update Timestamp | upd_ts | TIMESTAMP(6) | For logging and optimistic locking. |
 
 **Detail table: t_user_pet**
-| Field | Physical Name | Type | Notes |
+| Item | Physical Name | Type | Notes |
 |------|--------|-----|------|
 | User ID | user_id | VARCHAR(4) | PK1 |
 | Pet Number | pet_no | NUMERIC(2) | PK2 |
@@ -53,27 +53,27 @@ Both humans and AI can quickly create similar features by following these patter
 | Gender | gender_cs | VARCHAR(1) | M/F |
 | Vaccinated | vaccine_cs | VARCHAR(1) | Y/N |
 | Weight | weight_kg | NUMERIC(3,1) | |
-| Birthday | birth_dt | DATE | |
+| Birth Date | birth_dt | DATE | |
 | Update Timestamp | upd_ts | TIMESTAMP(6) | For logging. |
 
 ---
 
 ## 1. List Initialization
 
-**Purpose**: Set initial values when opening the list page.
+**Usage**: Set initial values when opening list page.
 
 <!-- AI_SKIP_START -->
-**Processing Flow**:
-1. Access URL `pages/app/exmodule/listpage.html` from the browser.
-2. HTML, CSS, and JavaScript files are returned from the web server to the browser.
-3. Initialization processing `listpage.js#init` is automatically executed in the browser.
+**Processing flow**:
+1. Access URL `pages/app/exmodule/listpage.html` from browser.
+2. HTML, CSS, JavaScript files are returned from web server to browser.
+3. Initialization `listpage.js#init` is automatically executed in browser.
     1. Clear messages.
     2. Call initialization web service `/services/exmodule/ExampleListInit`.
     3. Web service class `ExampleListInit` is executed.
-    4. Web service response is returned to the browser.
-    5. Retrieve previous search conditions from session.
-    6. Merge web service response with previous search conditions.
-    7. Set merged values to the search conditions area.
+    4. Web service response is returned to browser.
+    5. Retrieve previous database retrieval conditions from session.
+    6. Merge web service response with previous database retrieval conditions.
+    7. Set merged values to database retrieval conditions area.
 <!-- AI_SKIP_END -->
 
 ### JavaScript (listpage.js)
@@ -84,7 +84,7 @@ const init = async function () {
   PageUtil.clearMsg();
   // Call web service
   const res = await HttpUtil.callJsonService('/services/exmodule/ExampleListInit');
-  // Get previous search conditions (optional)
+  // Retrieve previous search conditions (optional)
   const old = StorageUtil.getPageObj('searchConditions');
   // Merge and set
   Object.assign(res, old);
@@ -102,7 +102,7 @@ public class ExampleListInit extends AbstractDbAccessWebService {
 
   @Override
   public void doExecute(final Io io) throws Exception {
-    // Set initial values (e.g., today's date)
+    // Set initial value (example: today's date)
     final String today = SqlUtil.getToday(getDbConn());
     io.put("birth_dt", today);
   }
@@ -112,7 +112,7 @@ public class ExampleListInit extends AbstractDbAccessWebService {
 <!-- AI_SKIP_START -->
 ### Application Points
 
-- Retrieve options for initial display (dropdowns, etc.) from the database and set them.
+- Retrieve options (dropdown, etc.) to display initially from DB and set them.
 - Set initial values based on logged-in user information.
 <!-- AI_SKIP_END -->
 
@@ -120,28 +120,28 @@ public class ExampleListInit extends AbstractDbAccessWebService {
 
 ## 2. List Search Processing
 
-**Purpose**: Retrieve data with search conditions when the search button is clicked.
+**Usage**: Retrieve data from DB based on search conditions when search button is clicked.
 
 <!-- AI_SKIP_START -->
-**Processing Flow**:
+**Processing flow**:
 1. User enters search conditions and clicks the search button.
 2. JavaScript `listpage.js#search` is executed.
     1. Clear messages.
     2. Clear list area.
-    3. Get search conditions from the search conditions area.
-    4. Save search conditions to session (for next initial display).
+    3. Retrieve search conditions from DB extraction conditions area.
+    4. Save search conditions to session (for next initialization).
     5. Call search web service `/services/exmodule/ExampleListSearch`.
     6. Web service class `ExampleListSearch` is executed.
-        1. Execute validation (on error, set error message and exit).
+        1. Execute validation (if error, set error message and terminate).
         2. Build dynamic SQL with SqlBuilder.
-        3. Execute database retrieval.
-        4. Set retrieval results to response.
-    7. Web service response is returned to the browser.
-    8. Display messages (exit on error).
-    9. Set retrieval results to list area (generate rows from template).
+        3. Execute DB extraction.
+        4. Set extraction results to response.
+    7. Web service response is returned to browser.
+    8. Display messages (if error, terminate).
+    9. Set extraction results to list area (generate rows from template).
 <!-- AI_SKIP_END -->
 
-### JavaScript (listpage.js)
+### JavaScript（listpage.js）
 
 ```javascript
 const search = async function () {
@@ -149,7 +149,7 @@ const search = async function () {
   PageUtil.clearMsg();
   // Clear list
   PageUtil.clearRows('list');
-  // Get search conditions
+  // Retrieve search conditions
   const req = PageUtil.getValues(DomUtil.getById('searchConditionsArea'));
   // Save search conditions to session (optional)
   StorageUtil.setPageObj('searchConditions', req);
@@ -157,7 +157,7 @@ const search = async function () {
   const res = await HttpUtil.callJsonService('/services/exmodule/ExampleListSearch', req);
   // Display messages
   PageUtil.setMsg(res);
-  // Exit on error
+  // Terminate if error
   if (PageUtil.hasError(res)) {
     return;
   }
@@ -178,7 +178,7 @@ public class ExampleListSearch extends AbstractDbAccessWebService {
     if (io.hasErrorMsg()) {
       return;
     }
-    // Database retrieval
+    // DB extraction
     getList(io);
   }
 
@@ -195,7 +195,7 @@ public class ExampleListSearch extends AbstractDbAccessWebService {
     sb.addQuery(", u.birth_dt ");
     sb.addQuery(", u.upd_ts ");
     sb.addQuery(" FROM t_user u WHERE 1=1 ");
-    // Add condition only if value exists
+    // Add condition only when value exists
     sb.addQnotB(" AND u.user_id = ? ", io.getString("user_id"));
     sb.addQnotB(" AND u.user_nm LIKE '%' || ? || '%' ", io.getString("user_nm"));
     sb.addQnotB(" AND u.email LIKE ? || '%' ", io.getString("email"));
@@ -225,13 +225,13 @@ public class ExampleListSearch extends AbstractDbAccessWebService {
     // Date check
     final String birthDt = io.getString("birth_dt");
     if (!ValUtil.isBlank(birthDt) && !ValUtil.isDate(birthDt)) {
-      io.putMsg(MsgType.ERROR, "ev013", new String[] { "Birthday" }, "birth_dt");
+      io.putMsg(MsgType.ERROR, "ev013", new String[] { "Birth Date" }, "birth_dt");
     }
   }
 }
 ```
 
-### List HTML (Template Section)
+### List HTML (Template Part)
 
 ```html
 <tbody id="list">
@@ -253,22 +253,22 @@ public class ExampleListSearch extends AbstractDbAccessWebService {
 <!-- AI_SKIP_START -->
 ### Application Points
 
-- `addQnotB`: Add condition only if value is not blank.
-- `selectBulk(conn, sb, count)`: Retrieve with maximum record count specified.
-- `selectBulkAll(conn, sb)`: Retrieve all records.
+- `addQnotB`: Adds condition only when value is not blank.
+- `selectBulk(conn, sb, count)`: Retrieves records with specified maximum count.
+- `selectBulkAll(conn, sb)`: Retrieves all records.
 <!-- AI_SKIP_END -->
 
 ---
 
 ## 3. Edit Page Navigation
 
-**Purpose**: Navigate from list to edit page (passing key values).
+**Usage**: Navigate from list to edit page (pass key values).
 
 <!-- AI_SKIP_START -->
-**Processing Flow**:
-1. User clicks the "Edit" button in the list.
+**Processing flow**:
+1. User clicks the "Edit" button on the list.
 2. `editMove(btnElm)` is executed.
-   1. Get data from the row containing the button (`getRowValuesByInnerElm`).
+   1. Retrieve data from the row containing the button (`getRowValuesByInnerElm`).
    2. Navigate to page with parameters (`HttpUtil.movePage`).
 3. Browser navigates to `editpage.html?user_id=xxx&upd_ts=xxx`.
 4. Continues to edit page initialization (see Section 4).
@@ -279,7 +279,7 @@ public class ExampleListSearch extends AbstractDbAccessWebService {
 ```javascript
 // Edit button processing
 const editMove = async function (btnElm) {
-  // Get data from the row containing the button
+  // Retrieve data from row containing button
   const req = PageUtil.getRowValuesByInnerElm(btnElm);
   // Navigate with parameters
   HttpUtil.movePage('editpage.html', req);
@@ -295,25 +295,25 @@ const create = async function () {
 <!-- AI_SKIP_START -->
 ### Application Points
 
-- `getRowValuesByInnerElm(elm)`: Get data from the row containing the button or other element.
-- Use `HttpUtil.getUrlParams()` to retrieve parameters at the destination page.
+- `getRowValuesByInnerElm(elm)`: Retrieves data from row containing button or element.
+- At destination, retrieve parameters with `HttpUtil.getUrlParams()`.
 <!-- AI_SKIP_END -->
 
 ---
 
 ## 4. Edit Initialization (New/Update Determination)
 
-**Purpose**: Determine whether it's a new registration or update when opening the edit page.
+**Usage**: Determine whether to perform new registration or update when opening edit page.
 
 <!-- AI_SKIP_START -->
-**Processing Flow**:
-1. Edit page is loaded in the browser.
+**Processing flow**:
+1. Edit page is loaded in browser.
 2. `init()` is executed.
    1. Clear messages.
-   2. Get URL parameters (`HttpUtil.getUrlParams()`).
+   2. Retrieve URL parameters (`HttpUtil.getUrlParams()`).
    3. Branch based on presence of key value.
       - **No key (new)**: `initInsert()` → Add empty detail rows.
-      - **Key exists (update)**: `initUpdate()` → Proceed to data retrieval in Section 5.
+      - **Has key (update)**: `initUpdate()` → Proceed to data retrieval in Section 5.
 <!-- AI_SKIP_END -->
 
 ### JavaScript (editpage.js)
@@ -321,15 +321,15 @@ const create = async function () {
 ```javascript
 const init = async function () {
   PageUtil.clearMsg();
-  // Get URL parameters
+  // Retrieve URL parameters
   const params = HttpUtil.getUrlParams();
 
   if (ValUtil.isBlank(params['user_id'])) {
-    // No key → new registration
+    // No key → New registration
     initInsert();
     return;
   }
-  // Key exists → update
+  // Has key → Update
   await initUpdate(params);
 };
 
@@ -343,14 +343,14 @@ const initInsert = function () {
 const initUpdate = async function (params) {
   // Disable key field
   DomUtil.setEnable(DomUtil.getByName('user_id'), false);
-  // Get data
+  // Retrieve data
   const res = await HttpUtil.callJsonService('/services/exmodule/ExampleLoad', params);
   PageUtil.setMsg(res);
   if (PageUtil.hasError(res)) {
     return;
   }
   PageUtil.setValues(res);
-  // Add 5 rows if detail is empty
+  // If no detail records, add 5 rows
   if (ValUtil.isEmpty(res['detail'])) {
     PageUtil.addRow('detail', new Array(5));
   }
@@ -363,20 +363,20 @@ init();
 
 ## 5. Data Retrieval Processing
 
-**Purpose**: Retrieve header and detail by specifying a key.
+**Usage**: Retrieve header and details by specifying key.
 
 <!-- AI_SKIP_START -->
-**Processing Flow**:
-1. Called from edit initialization (update mode only).
+**Processing flow**:
+1. Called from edit initialization (update only).
 2. Disable key field (`DomUtil.setEnable`).
 3. Call web service `ExampleLoad`.
-   1. Retrieve header (`selectOne` with key and optimistic lock check).
-   2. Exit if optimistic lock error (another user has already updated).
+   1. Retrieve header (`selectOne` performs key and optimistic locking check).
+   2. If optimistic locking error, terminate (another user has already updated).
    3. Retrieve details (`selectBulkAll`).
    4. Return results.
-4. Display response messages (`PageUtil.setMsg`).
-5. If no errors, set values to screen (`PageUtil.setValues`).
-6. Add empty rows if detail is empty.
+4. Display messages from response (`PageUtil.setMsg`).
+5. If no error, set values to screen (`PageUtil.setValues`).
+6. If no detail records, add empty rows.
 <!-- AI_SKIP_END -->
 
 ### Java (ExampleLoad.java)
@@ -386,12 +386,12 @@ public class ExampleLoad extends AbstractDbAccessWebService {
 
   @Override
   public void doExecute(final Io io) throws Exception {
-    // Get header
+    // Retrieve header
     getHead(io);
     if (io.hasErrorMsg()) {
       return;
     }
-    // Get details
+    // Retrieve details
     getDetail(io);
   }
 
@@ -407,7 +407,7 @@ public class ExampleLoad extends AbstractDbAccessWebService {
 
     final IoItems head = SqlUtil.selectOne(getDbConn(), sb);
     if (ValUtil.isNull(head)) {
-      // Optimistic lock error
+      // Optimistic locking error
       io.putMsg(MsgType.ERROR, "e0002", new String[]{io.getString("user_id")});
       return;
     }
@@ -433,33 +433,33 @@ public class ExampleLoad extends AbstractDbAccessWebService {
 <!-- AI_SKIP_START -->
 ### Application Points
 
-- Use `upd_ts` for optimistic locking (detect updates by other users).
-- `selectOne`: Retrieve one record (returns null if not found).
-- `putAll(row)`: Merge retrieval results directly into response.
+- `upd_ts` performs optimistic locking (detects updates by other users).
+- `selectOne`: Retrieves one record (returns null if not found).
+- `putAll(row)`: Merges retrieved results directly into response.
 <!-- AI_SKIP_END -->
 
 ---
 
 ## 6. Registration/Update Processing
 
-**Purpose**: Register or update header and details.
+**Usage**: Register or update header and details.
 
 <!-- AI_SKIP_START -->
-**Processing Flow**:
-1. User clicks the "Register" button.
+**Processing flow**:
+1. User clicks "Register" button.
 2. `upsert()` is executed.
    1. Clear messages.
-   2. Get values from entire page (`PageUtil.getValues`).
+   2. Retrieve values from entire page (`PageUtil.getValues`).
    3. Call web service `ExampleUpsert`.
 3. Execute server-side processing.
    1. Execute header validation (required, format, length).
-   2. Exit if errors exist (return error messages).
+   2. If error exists, terminate (return error message).
    3. Execute detail validation (for each row).
-   4. Exit if errors exist.
+   4. If error exists, terminate.
    5. Register/update header (determine new/update by `upd_ts`).
    6. Delete all details then register all.
    7. Set success message.
-4. Display response messages (`PageUtil.setMsg`).
+4. Display messages from response (`PageUtil.setMsg`).
 <!-- AI_SKIP_END -->
 
 ### JavaScript (editpage.js)
@@ -467,7 +467,7 @@ public class ExampleLoad extends AbstractDbAccessWebService {
 ```javascript
 const upsert = async function () {
   PageUtil.clearMsg();
-  // Get values from entire page
+  // Retrieve values from entire page
   const req = PageUtil.getValues();
   // Call web service
   const res = await HttpUtil.callJsonService('/services/exmodule/ExampleUpsert', req);
@@ -492,12 +492,12 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
     if (io.hasErrorMsg()) {
       return;
     }
-    // Header registration/update
+    // Register/update header
     upsertHead(io);
     if (io.hasErrorMsg()) {
       return;
     }
-    // Detail delete → register
+    // Delete details → Register
     delInsDetail(io);
     // Success message
     if (ValUtil.isBlank(io.getString("upd_ts"))) {
@@ -508,7 +508,7 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
   }
 
   private void validateHeader(final Io io) throws Exception {
-    // Required check
+    // Required field check
     final String userId = io.getString("user_id");
     if (ValUtil.isBlank(userId)) {
       io.putMsg(MsgType.ERROR, "ev001", new String[]{"User ID"}, "user_id");
@@ -522,7 +522,7 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
     if (ValUtil.isBlank(userNm)) {
       io.putMsg(MsgType.ERROR, "ev001", new String[] { "User Name" }, "user_nm");
     }
-    // Check other fields in the same way...
+    // Check other fields similarly...
   }
 
   private void validateDetail(final Io io) throws Exception {
@@ -535,7 +535,7 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
       // Check for each detail row
       final String petNm = row.getString("pet_nm");
       if (ValUtil.isBlank(petNm)) {
-        // Specify row index for detail errors
+        // Detail error specifies row index
         io.putMsg(MsgType.ERROR, "ev001", new String[] { "Pet Name" }, "pet_nm", "detail", rowIdx);
       }
     }
@@ -563,7 +563,7 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
     if (!io.containsKeyRows("detail")) {
       return;
     }
-    // Register new details
+    // Register details as new
     final IoRows detail = io.getRows("detail");
     final String userId = io.getString("user_id");
     int dno = 0;
@@ -580,31 +580,31 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
 <!-- AI_SKIP_START -->
 ### Application Points
 
-- If `upd_ts` is blank, determine it as new registration.
-- "Delete all → Register all" pattern is simple for details.
+- If `upd_ts` is blank, it is determined as new registration.
+- For details, the "delete all → register all" pattern is concise.
 - `insertOne(conn, table, io, "upd_ts")`: Automatically sets current timestamp to upd_ts.
 - `updateOne(conn, table, io, keys, "upd_ts")`: Performs optimistic locking with upd_ts.
 <!-- AI_SKIP_END -->
 
 ---
 
-## 7. Delete Processing
+## 7. Deletion Processing
 
-**Purpose**: Delete header and details.
+**Usage**: Delete header and details.
 
 <!-- AI_SKIP_START -->
-**Processing Flow**:
-1. User clicks the "Delete" button.
+**Processing flow**:
+1. User clicks "Delete" button.
 2. `del()` is executed.
    1. Clear messages.
-   2. Get values from entire page.
+   2. Retrieve values from entire page.
    3. Call web service `ExampleDelete`.
 3. Execute server-side processing.
-   1. Delete header (`deleteOne` with optimistic lock check).
-   2. Exit if optimistic lock error.
-   3. Delete details (`delete` to delete all records).
+   1. Delete header (`deleteOne` with optimistic locking check).
+   2. If optimistic locking error, terminate.
+   3. Delete details (`delete` deletes all records).
    4. Set success message.
-4. Display response messages.
+4. Display messages from response.
 <!-- AI_SKIP_END -->
 
 ### JavaScript (editpage.js)
@@ -650,23 +650,23 @@ public class ExampleDelete extends AbstractDbAccessWebService {
 
 ---
 
-## 8. Row Add/Row Delete Processing
+## 8. Add Row/Remove Row Processing
 
-**Purpose**: Dynamically add or delete detail rows.
+**Usage**: Dynamically add or remove detail rows.
 
 <!-- AI_SKIP_START -->
-**Processing Flow (Add Row)**:
-1. User clicks the "Add Row" button.
+**Processing flow (Add row)**:
+1. User clicks "Add Row" button.
 2. `addRow()` is executed.
-   1. Generate a new row from template with `PageUtil.addRow('detail')`.
-   2. Row is appended to the end of the detail table.
+   1. Generate new row from template with `PageUtil.addRow('detail')`.
+   2. Row is added at the end of detail table.
 
-**Processing Flow (Delete Row)**:
-1. User selects checkboxes of rows to delete.
-2. Click the "Delete Row" button.
+**Processing flow (Remove row)**:
+1. User selects checkbox of row to delete.
+2. Click "Remove Row" button.
 3. `removeRow()` is executed.
    1. Delete checked rows with `PageUtil.removeRow('detail.chk', '1')`.
-   2. Corresponding rows are removed from the DOM.
+   2. Corresponding rows are removed from DOM.
 <!-- AI_SKIP_END -->
 
 ### JavaScript (editpage.js)
@@ -677,7 +677,7 @@ const addRow = function () {
   PageUtil.addRow('detail');
 };
 
-// Delete row (delete checked rows)
+// Remove row (delete checked rows)
 const removeRow = function () {
   PageUtil.removeRow('detail.chk', '1');
 };
@@ -707,11 +707,11 @@ const removeRow = function () {
 
 ## 9. Cancel Processing
 
-**Purpose**: Cancel editing and return to list page.
+**Usage**: Cancel editing and return to list.
 
 <!-- AI_SKIP_START -->
-**Processing Flow**:
-1. User clicks the "Cancel" button.
+**Processing flow**:
+1. User clicks "Cancel" button.
 2. `cancel()` is executed.
    1. Navigate to list page with `HttpUtil.movePage('listpage.html')`.
 3. List page initialization is executed (see Section 1).
@@ -727,11 +727,11 @@ const cancel = async function () {
 
 ---
 
-## Validation Patterns
+## Validation Pattern List
 
-| Check Content | Method | Usage Example |
-|--------------|--------|---------------|
-| Required check. | `ValUtil.isBlank(str)` | `if (ValUtil.isBlank(userId))` |
+| Check Description | Method | Usage Example |
+|-------------|---------|--------|
+| Required field check. | `ValUtil.isBlank(str)` | `if (ValUtil.isBlank(userId))` |
 | Alphanumeric check. | `ValUtil.isAlphabetNumber(str)` | `if (!ValUtil.isAlphabetNumber(userId))` |
 | Number check. | `ValUtil.isNumber(str)` | `if (!ValUtil.isNumber(incomeAm))` |
 | Date check. | `ValUtil.isDate(str)` | `if (!ValUtil.isDate(birthDt))` |
@@ -740,7 +740,7 @@ const cancel = async function () {
 
 ---
 
-## Message Patterns
+## Message Pattern
 
 ### Header Field Error
 
@@ -760,24 +760,24 @@ io.putMsg(MsgType.ERROR, "ev001", new String[] { "Pet Name" }, "pet_nm", "detail
 
 ```java
 io.putMsg(MsgType.INFO, "i0001", new String[] { io.getString("user_id") });
-// → "U001 has been registered."
+// → "U001 was registered."
 ```
 
 ---
 
-## File Naming Conventions
+## File Naming Rules
 
 | Type | File Name | Class Name |
-|------|-----------|------------|
+|------|-----------|----------|
 | List initialization. | ExampleListInit.java | ExampleListInit |
 | List search processing. | ExampleListSearch.java | ExampleListSearch |
 | Data retrieval processing. | ExampleLoad.java | ExampleLoad |
 | Registration/update processing. | ExampleUpsert.java | ExampleUpsert |
-| Delete processing. | ExampleDelete.java | ExampleDelete |
+| Deletion processing. | ExampleDelete.java | ExampleDelete |
 
 ---
 
-### Sample Code
+## Sample Code
 - HTML/JavaScript: `pages/app/exmodule/`
 - Java: `src/com/example/app/service/exmodule/`
 - DB Definitions/Test Data: `example_db/example_data_create.sql`

@@ -1,19 +1,19 @@
-## Installing Docker on WSL
+## Docker Installation on WSL
 
 ***All operations are performed on WSL***
 
-1. Download and execute the installation shell.
+1. Retrieve and execute the installation shell.
 ```Command
 $ curl -fsSL https://get.docker.com -o get-docker.sh
 $ sudo sh get-docker.sh
-Enter the password you set during user creation.
+Enter the password set during user creation.
 ```
 
 2. Verify that systemd is enabled.
 ```Command
 $ sudo vi /etc/wsl.conf
 
-If the content is as follows, the configuration is complete.
+If the following content is present, the configuration is complete.
 --------------------
 [boot]
 systemd=true
@@ -27,37 +27,37 @@ If the above content is already present:
   Type :q and press Enter to exit vi.
 ```
 
-3. Configure permissions to allow Docker to be used by non-root users.
+3. Configure permissions to allow Docker to be used by users other than root.
 ```Command
 $ sudo usermod -aG docker ${USER}
 ```
 
 4. Restart WSL.
-    - Stopping WSL: Launch Command Prompt from the Start menu and execute the `wsl --shutdown` command.
-    - Starting WSL: Launch Ubuntu from the Start menu.
+    - How to stop WSL: Execute Command Prompt from the Start menu and run the `wsl --shutdown` command.
+    - How to start WSL: Execute Ubuntu from the Start menu.
 
 5. Start the Docker service.
 ```Command
 $ sudo service docker start
-Enter the password you set during user creation.
+Enter the password set during user creation.
 ```
 
 6. Test Docker execution.
 ```Command
 $ docker run hello-world
 
-The following will be displayed (along with other messages):
+A message containing the following will be displayed:
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```
 
 ---
-- Docker 停止コマンド
+- Docker stop command
 ```Command
 $ docker compose down
 ```
 
-- Docker 起動コマンド
+- Docker start command
 ```Command
 $ docker compose up -d
 ```

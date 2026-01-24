@@ -21,7 +21,7 @@ import java.util.Map;
  * 
  * <li>About string lists
  * <ul>
- * <li>Handle with **List methods such as <code>#getList(String)</code>, <code>#putList(String, List)</code>, <code>#containsKeyList(String)</code>,
+ * <li>Handle with <code>**List</code> methods such as <code>#getList(String)</code>, <code>#putList(String, List)</code>, <code>#containsKeyList(String)</code>,
  * <code>#removeList(String)</code>.</li>
  * <li>String lists are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
  * <code>#keySet()</code>.<br>
@@ -37,7 +37,7 @@ import java.util.Map;
  * 
  * <li>About nested maps
  * <ul>
- * <li>Handle with **Nest methods such as <code>#getNest(String)</code>, <code>#putNest(String, Map)</code>, <code>#containsKeyNest(String)</code>,
+ * <li>Handle with <code>**Nest</code> methods such as <code>#getNest(String)</code>, <code>#putNest(String, Map)</code>, <code>#containsKeyNest(String)</code>,
  * <code>#removeNest(String)</code>.</li>
  * <li>Nested maps are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
  * <code>#keySet()</code>.<br>
@@ -52,7 +52,7 @@ import java.util.Map;
  * 
  * <li>About multiple rows lists
  * <ul>
- * <li>Handle with **Rows methods such as <code>#getRows(String)</code>, <code>#putRows(String, Collection)</code>,
+ * <li>Handle with <code>**Rows</code> methods such as <code>#getRows(String)</code>, <code>#putRows(String, Collection)</code>,
  * <code>#containsKeyRows(String)</code>, <code>#removeRows(List)</code>.</li>
  * <li>Multiple rows lists are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
  * <code>#keySet()</code>.<br>
@@ -67,7 +67,7 @@ import java.util.Map;
  * 
  * <li>About array lists
  * <ul>
- * <li>Handle with **Arys methods such as <code>#getArys(String)</code>, <code>#putArys(String, Collection)</code>,
+ * <li>Handle with <code>**Arys</code> methods such as <code>#getArys(String)</code>, <code>#putArys(String, Collection)</code>,
  * <code>#containsKeyArys(String)</code>, <code>#removeArys(List)</code>.</li>
  * <li>Array lists are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
  * <code>#keySet()</code>.<br>

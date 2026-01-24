@@ -468,4 +468,25 @@ public final class LogUtil {
     }
   }
 
+  /**
+   * Retrieves caller information.
+   * <ul>
+   * <li>Retrieves the class package + class name + line number of the caller from the stack trace.</li>
+   * </ul>
+   * @param callerClass the caller class
+   * @return the class package + class name + line number
+   */
+  public static String getClassNameAndLineNo(final Class<?> callerClass) {
+    final String callerClassName = callerClass.getName();
+    final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+    for (final StackTraceElement element : stackTrace) {
+      final String className = element.getClassName();
+      if (!className.equals(callerClassName)
+          && !className.equals(Thread.class.getName())) {
+        return className + "[" + element.getLineNumber() + "]";
+      }
+    }
+    return "UnknownSource";
+  }
+  
 }

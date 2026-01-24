@@ -109,8 +109,8 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
   protected void trimDqPosAdd(final List<int[]> retList, final int beginPos, final int endPos,
       final String value) {
     if (beginPos < value.length() && endPos > 0 && beginPos + 1 < endPos
-        && ValUtil.DQ.equals(value.substring(beginPos, beginPos + 1))
-        && ValUtil.DQ.equals(value.substring(endPos - 1, endPos))) {
+        && "\"".equals(value.substring(beginPos, beginPos + 1))
+        && "\"".equals(value.substring(endPos - 1, endPos))) {
         retList.add(new int[] {beginPos + 1, endPos - 1});
     } else {
         retList.add(new int[] {beginPos, endPos});

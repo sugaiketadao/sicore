@@ -24,6 +24,7 @@ public final class CsvDqParser extends AbstractStringSeparateParser {
    * <li>Separates at comma positions not enclosed in (unescaped) double quotes.</li>
    * <li>Commas inside double quotes are not treated as delimiters.</li>
    * <li>Escaped double quotes (backslash-double quote) are treated as characters.</li>
+   * <li>Two consecutive double quotes ("") are treated as a character.</li>
    * <li>Leading and trailing whitespace are removed.</li>
    * </ul>
    *
@@ -34,7 +35,7 @@ public final class CsvDqParser extends AbstractStringSeparateParser {
   protected List<int[]> findBeginEnds(final String value) {
     final List<int[]> idxs = new ArrayList<>();
     if (ValUtil.isBlank(value)) {
-      // 空の場合
+      // If empty
       return idxs;
     }
 
@@ -59,6 +60,15 @@ public final class CsvDqParser extends AbstractStringSeparateParser {
       if (c == '"') {
         if (isPreEsc(value, i)) {
           continue;
+        }
+        // If the next character after a double quote is also a double quote, treat it as an escape sequence ("" → ")
+        if (i + 1 < value.length() && value.charAt(i + 1) == '"') {
+          if (inDq) {
+            // Valid only inside double quotes
+            // Skip the next double quote as well
+            i++; 
+            continue;
+          }
         }
         // Toggle inside double quotes only when not escaped
         inDq = !inDq;

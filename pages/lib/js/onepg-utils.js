@@ -683,7 +683,7 @@ const HttpUtil = /** @lends HttpUtil */ {
   },  /**
    * JSON Web service execution (async/await compatible).<br>
    * <ul>
-   * <li>Sends a JSON request via POST method to the specified URL and receives a JSON response.</li>
+   * <li>Sends a JSON request via <code>POST</code> method to the specified URL and receives a JSON response.</li>
    * <li>Request/response is handled as associative arrays.</li>
    * </ul>
    * 
@@ -1179,7 +1179,7 @@ const DomUtil = /** @lends DomUtil */ {
    * <li>Returns <code>null</code> if argument is invalid.</li>
    * </ul>
    * @param {Element} elm Target element
-   * @returns {string|null} Value
+   * @returns {string|null} Value (unformatted)
    */
   getVal: function(elm) {
     if (!DomUtil.isExists(elm)) {
@@ -1197,7 +1197,7 @@ const DomUtil = /** @lends DomUtil */ {
    * <li>Returns <code>false</code> if argument is invalid.</li>
    * </ul>
    * @param {Element} elm Target element
-   * @param {string} value Value to set
+   * @param {string} value Value to set (value before formatting)
    * @returns {boolean} <code>true</code> on success
    */
   setVal: function(elm, value) {
@@ -1216,7 +1216,7 @@ const DomUtil = /** @lends DomUtil */ {
    * <li>Returns <code>null</code> if argument is invalid.</li>
    * </ul>
    * @param {Element} elm Target element
-   * @returns {string|null} Text
+   * @returns {string|null} Text (unformatted)
    */
   getTxt: function(elm) {
     if (!DomUtil.isExists(elm)) {
@@ -1234,7 +1234,7 @@ const DomUtil = /** @lends DomUtil */ {
    * <li>Returns <code>false</code> if argument is invalid.</li>
    * </ul>
    * @param {Element} elm Target element
-   * @param {string} text Text to set
+   * @param {string} text Text to set (value before formatting)
    * @returns {boolean} <code>true</code> on success
    */
   setTxt: function(elm, text) {
@@ -1764,7 +1764,7 @@ const PageUtil = /** @lends PageUtil */ {
    *   <li>Radio buttons within rows have [row index] removed from end of <code>name</code> attribute for return value key. (See <code>PageUtil#setValue</code>)</li>
    * </ul>
    * @param {Object} [outerElm] Scope element (optional)
-   * @returns {Object} Page data associative array
+   * @returns {Object} Page data associative array (unformatted)
    */
   getValues: function(outerElm) {
     outerElm = outerElm || DomUtil._getByTag('main') || document.body;
@@ -1847,7 +1847,7 @@ const PageUtil = /** @lends PageUtil */ {
    *   <li>For radio buttons within row, [row index] at end of <code>name</code> attribute is removed to create return value key. (See <code>PageUtil#setValues</code>)</li>
    * </ul>
    * @param {Element} rowElm Row element (typically <code>&lt;tr&gt;</code>)
-   * @returns {Object} Row data associative array
+   * @returns {Object} Row data associative array (unformatted)
    */
   getRowValues: function(rowElm) {
     if (!DomUtil.isExists(rowElm)) {
@@ -1893,7 +1893,7 @@ const PageUtil = /** @lends PageUtil */ {
    * </ul> 
    * @param {Element} baseElm Base element
    * @param {string} [rowTag] Row element tag name (optional) defaults to 'tr' if omitted
-   * @returns {Object} Row data associative array
+   * @returns {Object} Row data associative array (unformatted)
    */
   getRowValuesByInnerElm: function(baseElm, rowTag) {
     rowTag = rowTag || 'tr';

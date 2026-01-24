@@ -4,38 +4,38 @@ English | [Japanese](https://github.com/sugaiketadao/sicore-ja)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-SICore Framework is a lightweight Java framework designed to support **"programming beginners"** and **"AI-powered code generation"**.
+The SICore framework is a lightweight Java framework designed to support **"programming beginners"** and **"code generation by AI"**.
 
-Unlike heavyweight frameworks, SICore eliminates annotations and complex configurations, adopting a simple and easy-to-understand architecture.
+In contrast to feature-rich frameworks, it eliminates annotations and complex configurations, adopting a simple and understandable architecture.
 
-> ⚠️ **Note**: This project is under development. Some parts are incomplete, but the basic features are available for you to try.
+> ⚠️ **Note**: This project is under development. Some parts are incomplete, but basic features are available for trial.
 
-> 📝 **Translation Notice**: All English text in this project, including documents and code comments, has been translated by AI. Please excuse any awkward or unnatural expressions.
+> 📝 **About Translation**: All English text in this project (including documentation and code comments) is translated by AI. Please understand that there may be awkward or difficult-to-understand expressions.
 
 ## 🚀 Features
 
-### 1. Simple, Lightweight & Clear
-- **JSON-Centric Design**: Uses only JSON for communication between browser and server. No template engine is used; HTML is treated as static files.
-- **Minimal Dependencies**: Minimizes dependencies on external libraries. No Tomcat required. (Runs on standard JDK APIs only)
-- **URL = Class Name**: No routing configuration needed. URLs are directly mapped to the Java classes to be executed.
+### 1. Simple & Lightweight & Clear
+- **JSON-centric design**: Communication between browser and server uses only JSON. No template engines are used, and HTML is treated as static files.
+- **Library-less**: External library dependencies are minimized. Tomcat is not required. (Runs on JDK standard features only)
+- **URL = Class name**: No routing configuration required. URL paths are directly mapped to Java class names.
   - URL: `/services/exmodule/ExampleListSearch`
   - Class: `com.example.app.service.exmodule.ExampleListSearch`
-- **Annotation-Free**: Eliminates annotations that tend to obscure processing details. This makes code execution flow easier to trace.
+- **Annotation-less**: Eliminates annotations that tend to obscure code processing content. This makes code execution flow easier to trace.
 
-### 2. Robust Data Handling
-- **Io Class**: The `Io` class, which extends `Map<String, String>`, provides NULL-safe and type-safe data operations.
-- **Bug Prevention**: Duplicate key checks and existence checks prevent simple mistakes.
+### 2. Robust Data Processing
+- **Io class**: The `Io` class extends `Map<String, String>` to achieve NULL-safe and type-safe data operations.
+- **Bug prevention**: Duplicate key checks and existence check features prevent simple mistakes.
 
-### 3. Prototype-Driven
-- **HTML Reuse**: Developers can use HTML mockups created by web designers directly as production code.
-- **Custom CSS Framework**: Provides a custom CSS framework that enables responsive design with minimal CSS class declarations.
+### 3. Prototype-driven
+- **HTML reuse**: Developers can use HTML mockups created by web designers directly as production code.
+- **Original CSS framework**: Provides an original CSS framework that enables responsive design implementation with minimal CSS class specifications.
 
-### 4. AI-Native Development
-GitHub Copilot and other AI coding assistants can easily generate high-quality code with this framework.
-- **AI Guidelines**: `.github/copilot-instructions.md` enables AI to accurately understand the framework conventions.
-- **Token Optimization**: In addition to human-oriented documentation, we provide concise documentation specifically for AI. Also, in documentation shared with humans, wrapping AI-unnecessary sections with `<!-- AI_SKIP_START -->` markers reduces the token count that AI reads.
-- **Standardized Patterns**: Unified patterns for screens and logic enable AI to generate code with high accuracy.
-- **Easy-to-Trace Code**: The entire framework is provided as source code, making it easier for AI to trace the code execution flow.
+### 4. AI-native Development
+Designed to make it easy for AI coding assistants such as GitHub Copilot to generate high-quality code.
+- **AI guidelines**: `.github/copilot-instructions.md` enables AI to accurately understand the framework conventions.
+- **Token optimization**: In addition to human-oriented documentation, provides concise AI-specific documentation. Also, in documentation shared with humans, AI-unnecessary parts are enclosed with `<!-- AI_SKIP_START -->` markers to reduce the amount of tokens AI reads.
+- **Standardized patterns**: UI implementation patterns and business logic implementation patterns are unified, enabling AI to generate highly accurate code.
+- **Traceable code**: The entire framework is provided as source code, making it easier for AI to trace code execution flow.
 
 ## 📂 Directory Structure
 
@@ -46,15 +46,15 @@ GitHub Copilot and other AI coding assistants can easily generate high-quality c
 │   ├── 02-develop-standards/ # Development standards & patterns
 │   ├── 03-coding-rules/      # Coding rules
 │   ├── 11-api-references/    # API references
-│   ├── 21-ai-guides/         # AI Prompt Guide
+│   ├── 21-ai-guides/         # AI prompt guides
 │   └── 31-ai-api-references/ # AI API references
 ├── pages/                     # Frontend (HTML/JavaScript)
-│   ├── app/                  # Example screens
+│   ├── app/                  # Sample screens
 │   └── lib/                  # Framework core (JavaScript/CSS)
 ├── src/                       # Backend (Java)
-│   ├── com/example/app/      # Example code
+│   ├── com/example/app/      # Sample code
 │   └── com/onpg/             # Framework core (Java)
-└── ai-test-prompts/           # AI test prompts
+└── ai-test-prompts/           # Test AI prompt guides
 ```
 
 ## 📖 Documentation
@@ -66,9 +66,11 @@ Refer to the following documentation before starting development.
 - [Introduction for Managers](docs/01-introductions/02-manager-introduction.md)
 
 ### Development Standards
-- [Web Page Structure Standards ((HTML/JavaScript/CSS)](docs/02-develop-standards/01-web-page-structure.md)
-- [Web Service Structure Standards (Java)](docs/02-develop-standards/11-web-service-structure.md)
-- [Event-Based Coding Patterns](docs/02-develop-standards/21-event-coding-pattern.md)
+- [Web Page Structure Standard (HTML/JavaScript/CSS)](docs/02-develop-standards/01-web-page-structure.md)
+- [Web Service Structure Standard (Java)](docs/02-develop-standards/11-web-service-structure.md)
+- [Batch Processing Structure Standard (Java)](docs/02-develop-standards/12-batch-structure.md)
+- [Event Coding Patterns](docs/02-develop-standards/21-event-coding-pattern.md)
+- [Batch Processing Coding Patterns](docs/02-develop-standards/22-batch-coding-pattern.md)
 
 ### Coding Rules
 - [HTML/CSS Coding Rules](docs/03-coding-rules/01-html-css-coding-rule.md)
@@ -82,15 +84,15 @@ Refer to the following documentation before starting development.
 - JavaDoc: `docs/11-api-references/11-javadoc/`
 
 ### AI Prompt Guides
-- [AI Prompt Guide (for Business Screen Development)](docs/21-ai-guides/01-ai-prompt-guide.md)
-- [AI Prompt Guide (for Debugging and Fixes)](docs/21-ai-guides/02-ai-debug-guide.md)
+- [AI Prompt Guide (Business Screen Creation)](docs/21-ai-guides/01-ai-prompt-guide.md)
+- [AI Prompt Guide (Debug & Fix)](docs/21-ai-guides/02-ai-debug-guide.md)
 
 ---
 
-## 🖥️ How to View Example Screens - VS Code
-⚠️ The following steps assume that VS Code and Java 11 or later are installed.
+## 🖥️ How to Verify Sample Screens - VS Code
+⚠️ The following steps assume an environment with VS Code and Java 11 or later installed.
 
-### 1. Download the Project
+### 1. Download Project
 
 Download the project from GitHub.
 
@@ -98,19 +100,19 @@ Download the project from GitHub.
 2. Select "Download ZIP".
 3. Extract the downloaded ZIP file to any folder.
 
-### 2. Open the Project in VS Code
+### 2. Open Project in VS Code
 
 1. Launch VS Code.
-2. Select "File" → "Open Folder" and choose the folder where you extracted the ZIP file.
-3. If the "Do you trust the authors?" dialog appears, select "Yes".
+2. Select the folder where the ZIP file was extracted via "File" → "Open Folder".
+3. When the VS Code "Do you trust the authors?" dialog box appears, select "Yes".
 
-### 3. Start the Server
+### 3. Start Server
 
 1. Select `src/com/onepg/web/StandaloneServerStarter.java`.
-2. Press `F5` or select "Debug Java" from the right-click menu.
-3. Wait until the startup completion message appears in the console.
+2. Press the `F5` key or select "Debug Java" from the right-click menu.
+3. Wait until the startup completion message is displayed in the console.
 
-### 4. Access the Example Screens
+### 4. Access Sample Screens
 
 Access the following URL in your browser.
 
@@ -118,47 +120,46 @@ Access the following URL in your browser.
 http://localhost:8000/pages/
 ```
 
-- A list of example screens is displayed. Click on each screen link to verify the functionality.
+- A list of sample screens is displayed. You can check the operation by clicking the link for each screen.
 - To stop the server, run `src/com/onepg/web/StandaloneServerStopper.java`.
 
-### 5. Sample Code
+## 5. Sample Code
 - HTML/JavaScript: `pages/app/exmodule/`
 - Java: `src/com/example/app/service/exmodule/`
-- DB Definitions/Test Data: `example_db/example_data_create.sql`, `example_db/data/example.dbf`
+- DB definitions/Test data: `example_db/example_data_create.sql`, `example_db/data/example.dbf`
 
 ---
-
 
 ## 🤖 Getting Started with AI Development
 
-Follow these steps to develop with AI tools such as GitHub Copilot:
+The development procedure using AI tools such as GitHub Copilot is as follows.
 
-1. **Create Requirements**: Write the requirements for the feature you want to create in a markdown file.
-2. **Instruct AI**: Specify the markdown file and instruct the AI to generate code. The AI follows `.github/copilot-instructions.md`, reads the necessary documentation, and generates code according to the requirements.
-3. **Verify**: Test the generated code and report any issues to the AI. The AI identifies the cause and fixes the code.
+1. **Create requirements**: Describe the requirements for the feature you want to create in an md file.
+2. **Instruct AI**: Specify the md file and instruct AI to code. AI follows `.github/copilot-instructions.md`, reads the necessary documentation, and generates code according to the requirements.
+3. **Verify operation**: Verify the operation of the generated code, and if there are any issues, inform AI of the content. AI identifies the cause and fixes the code.
 
 ### 🧪 Try It Now
 
-Use the sample requirements included in the repository to experience AI-powered coding.
-Enter the following prompt in Copilot Chat:
+You can experience actual AI coding using the sample requirements included in the repository.
+Enter the following prompt in Copilot chat.
 
-> Generate screen functionality based on the requirements in `ai-test-prompts/order-prompt.md`.
+> Generate screen functionality with the requirements in `ai-test-prompts/order-prompt.md`.
 
-- The AI reads the requirements document and automatically generates the necessary HTML, JavaScript, and Java code.
-- After generation, refer to [AI Prompt Guide (for Debugging and Fixes)](docs/21-ai-guides/02-ai-debug-guide.md).
-- ⚠️ Use an AI agent that strictly follows instructions. (As of December 2025, Claude Opus 4.5 is recommended.)
+- AI reads the requirements definition document and automatically generates the necessary HTML, JavaScript, and Java code.
+- After generation, refer to [AI Prompt Guide (Debug & Fix)](docs/21-ai-guides/02-ai-debug-guide.md).
+- ⚠️ Use an AI agent that strictly adheres to instructions. (As of December 2025, Claude Opus 4.5 is recommended)
 - 🚫 Highly creative AI agents may not be suitable for this task.
 
 ---
-## 💬 Contributing
+## 💬 Contribution
 
-This project is currently under development, so **pull requests are not accepted at this time**. However, bug reports and feedback are welcome! Please create an [Issue](../../issues) to share your thoughts.
+Currently, this project is under development, so **pull requests are not accepted**. However, bug reports and opinions/requests are welcome! Please create from [Issue](../../issues).
 
-## 💖 Sponsors
+## 💖 Sponsor
 
-If you like this project, please consider supporting it through [GitHub Sponsors](https://github.com/sponsors/sugaiketadao). Your support helps me dedicate time to coding and documentation, and maintain the development environment and AI tools.
+If you like this project, please consider supporting on [GitHub Sponsors](https://github.com/sponsors/sugaiketadao). Your support will be used to secure time for coding and documentation creation, and to maintain the development environment and AI tools.
 
-⭐ Even just giving a star is a great encouragement!
+⭐ Just starring us is a great encouragement!
 
 [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/sugaiketadao)
 
@@ -167,15 +168,15 @@ If you like this project, please consider supporting it through [GitHub Sponsors
 
 ### Bundled Software
 
-This project includes the following third-party software:
+This project includes the following third-party software.
 
 | Software | License | Description |
 |-|-|-|
 | [SQLite](https://www.sqlite.org/) (`sqlite3.exe`) | Public Domain | SQLite database engine |
 | [SQLite JDBC Driver](https://github.com/xerial/sqlite-jdbc) (`sqlite-jdbc-3.50.2.0.jar`) | Apache License 2.0 | JDBC driver for SQLite |
 
-SQLite is in the public domain with no restrictions on use, modification, or redistribution.
-SQLite JDBC Driver is distributed under the Apache License 2.0. See the `licenses/` folder for the full license text.
+SQLite is in the public domain and has no restrictions on use, modification, or redistribution.
+SQLite JDBC Driver is distributed under Apache License 2.0. Refer to the `licenses/` folder for the full license text.
 
 ---
 © 2025 sugaiketadao (onepg.com)

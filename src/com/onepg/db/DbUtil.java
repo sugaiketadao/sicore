@@ -7,6 +7,7 @@ import com.onepg.util.IoItems;
 import com.onepg.util.ValUtil;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -243,7 +244,7 @@ public final class DbUtil {
       if (!connBusyList.contains(serialCode)) {
         // Not in busy connection list
         final Connection conn = connEnt.getValue();
-        if (isClosedForce(conn)) {
+        if (isClosedQuietly(conn)) {
           // If disconnected for some reason, remove from map and search next
           connPoolMap.remove(serialCode);
           continue;
@@ -261,7 +262,7 @@ public final class DbUtil {
     // Max connections (pool size)
     final int maxSize = PROP_MAP.getInt(connName + PKEY_SUFFIX_MAX);
 
-    if (connPoolMap.size() > maxSize) {
+    if (connPoolMap.size() >= maxSize) {
       throw new RuntimeException("Database connection limit reached. " + LogUtil.joinKeyVal("maxSize", maxSize));
     }
 
@@ -282,6 +283,7 @@ public final class DbUtil {
    * Closes pooled database connections.<br>
    * <ul>
    * <li>Closes all pooled database connections.</li>
+   * <li>Also closes connections in use.</li>
    * </ul>
    * 
    * @return <code>true</code> if any connections were closed
@@ -304,6 +306,8 @@ public final class DbUtil {
         final String serialCode = connEnt.getKey();
         if (connBusyList.contains(serialCode)) {
           // Connection is in use
+          LogUtil.stdout("Warninng! Database connection is currently busy during close pooled connections. "
+              + LogUtil.joinKeyVal("serialCode", serialCode));
         }
         // Database connection
         final Connection conn = connEnt.getValue();
@@ -356,7 +360,7 @@ public final class DbUtil {
   }
 
   /**
-   * Forcibly checks if the database connection is closed.<br>
+   * Checks if database connection is closed ignoring errors.<br>
    * <ul>
    * <li>Use this method instead of <code>#isClosed()</code> from components to avoid throwing errors.</li>
    * </ul>
@@ -364,7 +368,7 @@ public final class DbUtil {
    * @param conn Database connection
    * @return <code>true</code> if the database connection is closed (also returns <code>true</code> on error)
    */
-  private static boolean isClosedForce(final Connection conn) {
+  private static boolean isClosedQuietly(final Connection conn) {
     try {
       if (conn.isClosed()) {
         return true;
@@ -465,5 +469,42 @@ public final class DbUtil {
     return ret;
   }
 
+  /**
+   * Closes prepared statement ignoring errors.
+   *
+   * @param stmt the prepared statement
+   */
+  static void closeQuietly(final PreparedStatement stmt) {
+    if (ValUtil.isNull(stmt)) {
+      return;
+    }
+    try {
+      if (stmt.isClosed()) {
+        return;
+      }
+      stmt.close();
+    } catch (SQLException ignore) {
+      // No processing
+    }
+  }
+  
+  /**
+   * Closes result set ignoring errors.
+   *
+   * @param rset the result set
+   */
+  static void closeQuietly(final ResultSet rset) {
+    if (ValUtil.isNull(rset)) {
+      return;
+    }
+    try {
+      if (rset.isClosed()) {
+        return;
+      }
+      rset.close();
+    } catch (SQLException ignore) {
+      // No processing
+    }
+  }
 }
 

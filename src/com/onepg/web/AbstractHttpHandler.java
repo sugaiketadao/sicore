@@ -10,7 +10,7 @@ import java.io.IOException;
  * HTTP handler base class.<br>
  * <ul>
  * <li>Provides common error handling.</li>
- * <li>Defines concrete HTTP request processing by implementing doExecute method in subclasses.</li>
+ * <li>Defines concrete HTTP request processing by implementing <code>doExecute</code> method in subclasses.</li>
  * <li>If class variables are used in subclasses, those variables are shared across multiple requests.</li>
  * </ul>
  * @hidden

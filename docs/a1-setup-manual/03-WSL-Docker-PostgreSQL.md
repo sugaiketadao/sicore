@@ -1,10 +1,10 @@
 ## Creating a PostgreSQL Container in Docker on WSL
 
 1. Create a Docker configuration file on Windows.
-    - Save the following text with the filename `docker-compose.yml`. (Encoding: UTF-8 without BOM, Line ending: LF)
-    - The version `17.2` after `image: postgres:` can be any version you specify.
-    - The password `dcpgpass` after `POSTGRES_PASSWORD:` is the password for the postgres user on Docker and can be any value you specify.
-    - `/tmp/share_docker:/tmp/share_host` links `/tmp/share_docker` on WSL to `/tmp/share_host` on Docker, creating a shared directory between Ubuntu on WSL and Ubuntu on Docker.
+    - Save the following text as `docker-compose.yml`. (Encoding: UTF-8 without BOM, Line ending: LF)
+    - You can specify any version for `17.2` after `image: postgres:`.
+    - You can specify any value for the password `dcpgpass` after `POSTGRES_PASSWORD:`, which is the password for the postgres user on Docker.
+    - `/tmp/share_docker:/tmp/share_host` links `/tmp/share_docker` on WSL and `/tmp/share_host` on Docker, creating a shared directory between Ubuntu on WSL and Ubuntu on Docker.
 
 ```docker-compose
 services:
@@ -22,37 +22,37 @@ volumes:
 ```
 
 2. Copy the Docker configuration file to the Ubuntu directory on WSL.
-    - Use File Explorer to copy docker-compose.yml to `\\wsl.localhost\Ubuntu\home\user01`. (`user01` is the username you created during WSL installation)
+    - Copy docker-compose.yml to the HOME directory `\\wsl.localhost\Ubuntu\home\user01` of user `user01` created during installation using Explorer.
 
 3. Start WSL. If WSL is already running, restart it.
-    - Stopping WSL: Launch Command Prompt from the Start menu and execute the `wsl --shutdown` command.
-    - Starting WSL: Launch Ubuntu from the Start menu.
+    - To stop WSL: Run Command Prompt from the Start menu and execute the `wsl --shutdown` command.
+    - To start WSL: Run Ubuntu from the Start menu.
 
-***All following operations are performed on WSL***
+***All the following procedures will be performed on WSL***
 
 4. Start Docker.
 ```Command
 $ docker compose up -d
-The first execution will download the Docker image, which takes time.
+The first execution will take some time as the Docker image will be downloaded.
 ```
 
 5. Log in to Ubuntu on Docker.
 ```Command
 $ docker ps
 
-Copy the container name from the results (e.g., user01-postgres-1) and use the following command to log in.
+Copy the container name (e.g., user01-postgres-1) from the result and log in with the following command.
 $ docker exec -it container_name bash
 (Example: docker exec -it user01-postgres-1 bash)
 ```
 
 6. Log in to PostgreSQL on Docker-Ubuntu.
 ```Command
-Switch to the postgres OS user
+Switch to postgres OS user
 # su - postgres
 $ psql -h localhost -p 5432 -U postgres
 ```
 
-7. Create a role (user) and database. (Role name `dbuser01`, password `dbpass01`, and database name `db01` can be any values you specify)
+7. Create a role (user) and database. (You can specify any values for role name `dbuser01`, password `dbpass01`, and database name `db01`)
 ```SQL
 # CREATE ROLE dbuser01 WITH LOGIN PASSWORD 'dbpass01';
 # CREATE DATABASE db01 OWNER dbuser01;
@@ -65,7 +65,7 @@ $ psql -h localhost -p 5432 -U postgres
 $ psql -h localhost -p 5432 -d db01 -U postgres
 ```
 
-9. Create a schema. (Schema name `schema01` can be any value you specify) ***Skip this step if you only use the public schema***
+9. Create a schema. (You can specify any value for schema name `schema01`)　***Skip this step if using only the public schema***
 ```SQL
 # CREATE SCHEMA schema01 AUTHORIZATION dbuser01;
 # GRANT ALL PRIVILEGES ON SCHEMA schema01 TO dbuser01;
@@ -75,7 +75,7 @@ Change the schema priority of the created database. (Specify the created schema 
 # quit
 ```
 
-10. Verify the current schema. ***Skip this step if you only use the public schema***
+10. Verify the current schema.　***Skip this step if using only the public schema***
 ```Command
 Log in to the database with the created user.
 $ psql -h localhost -p 5432 -d db01 -U dbuser01
@@ -90,12 +90,12 @@ $ psql -h localhost -p 5432 -d db01 -U dbuser01
 11. Log out from Docker-Ubuntu.
 ```Command
 $ exit
-You are now exited from "su - postgres".
+Exited from "su - postgres".
 # exit
-You are now exited from Docker-Ubuntu.
+Log out from Docker-Ubuntu.
 ```
 
-12. Connect to the database from the host Windows using the following information. (Connect with tools like A5 or psqledit)
+12. Connect to the database from the host Windows with the following information. (Connect using A5 or psqledit)
     - HOST: localhost
     - PORT: 5432
     - DB: db01
@@ -114,15 +114,15 @@ $ docker compose up -d
 ```
 
 
-- Log in to the database on Ubuntu in Docker.
+- Log in to the database on Ubuntu on Docker.
 ```Command
 $ docker ps
 
-Copy the container name from the results (e.g., user01-postgres-1) and use the following command to log in to Ubuntu on Docker.
+Copy the container name (e.g., user01-postgres-1) from the result and log in to Ubuntu on Docker with the following command.
 $ docker exec -it container_name bash
 (Example: docker exec -it user01-postgres-1 bash)
 
-Switch to the postgres OS user.
+Switch to postgres OS user.
 # su - postgres
 
 Log in to the database.
@@ -130,18 +130,18 @@ $ psql -h localhost -p 5432 -d db01 -U dbuser01
 ```
 
 ---
-## Procedure to Execute SQL Files in psql on Docker
+## Procedure to Execute SQL Files with psql on Docker
 
-1. Grant write permissions to the shared directory on WSL.
+1. Grant write permission to the shared directory on WSL.
 
 ```Command
 $ sudo chmod 777 /tmp/share_docker/
 ```
 
 2. Copy the target SQL file to the Ubuntu directory on WSL.
-    - Use File Explorer to copy the SQL file to `\\wsl.localhost\Ubuntu\tmp\share_docker`.
+    - Copy the SQL file to `\\wsl.localhost\Ubuntu\tmp\share_docker` using Explorer.
 
-3. Log in to the database on Ubuntu in Docker and execute the SQL file.
+3. Log in to the database on Ubuntu on Docker and execute the SQL file.
 
 ```SQL
 [Example]
@@ -149,19 +149,19 @@ $ sudo chmod 777 /tmp/share_docker/
 ```
 
 ---
-## Docker Image Recreation Commands
+## Docker Image Recreate Commands
 
-***This is normally an unnecessary procedure.***
+***This procedure is usually not required.***
 
 ```Command
 Stop Docker.
 $ docker compose down
 
-Verify and delete the image name.
+Verify and remove the image.
 $ docker images
 $ docker rmi postgres:17.2
 
-Verify and delete the volume.
+Verify and remove the volume.
 $ docker volume ls
 $ docker volume rm user01_pgdata
 

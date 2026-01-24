@@ -23,29 +23,30 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>I/O variable type map base class.<br>
+        <div>I/O variable-type map base class.<br>
 <ul>
-<li>A map class with typed value retrieval and storage methods.</li>
+<li>A map class that provides value retrieval methods and value storage methods for each type.</li>
 <li>Internally stores values as strings.</li>
-<li>Preserves insertion order of values.</li>
-<li>Extends Map&lt;String, String&gt; for versatility.</li>
-<li>Can be made read-only via constructor parameter.</li>
+<li>Preserves the storage order of values.</li>
+<li>Provides versatility by extending Map&lt;String, String&gt;.</li>
+<li>Can be made read-only by specifying a constructor argument.</li>
 <li>Basic rules and restrictions:
 <ul>
-<li>Keys are limited to lowercase letters, digits, underscores, hyphens, and dots only.<br>
-(Only characters valid in JSON, and lowercase letters to eliminate DBMS differences)</li>
+<li>Characters that can be used as keys are limited to lowercase letters, numbers, underscores, hyphens, and dots only.<br>
+(Only characters that can be used in JSON, and letters are unified to lowercase to eliminate DBMS differences)</li>
 <li>In principle, value retrieval methods do not return <code>null</code>.</li>
-<li>To retrieve <code>null</code>, use an explicit method [e.g.] <code>#getStringNullable(String)</code>.</li>
-<li>In principle, retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>,
-or use an explicit method that specifies a default value [e.g.] <code>#getStringOrDefault(String, String)</code>.</li>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use an explicit method [e.g.] <code>#putForce(String, String)</code>.</li>
-<li>To explicitly store <code>null</code>, also use an explicit method [e.g.] <code>#putNull(String)</code>.</li>
-<li>Unlike regular maps, results of <code>#keySet()</code>, <code>#entrySet()</code>, and <code>#values()</code>
+<li>If you want to retrieve <code>null</code>, use an explicit method such as <code>#getStringNullable(String)</code>.</li>
+<li>In principle, value retrieval with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>,
+or retrieve using an explicit method such as <code>#getStringOrDefault(String, String)</code>
+that specifies a return value for non-existent keys.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, use an explicit method such as <code>#putForce(String, String)</code>.</li>
+<li>When explicitly storing <code>null</code>, use an explicit method such as <code>#putNull(String)</code>.</li>
+<li>Unlike normal maps, the results of <code>#keySet()</code>, <code>#entrySet()</code>, and <code>#values()</code>
 are read-only.<br>
-(Keys are managed separately internally, and removing from results would break consistency)</li>
-<li>Timestamps are stored with up to 6 fractional digits.</li>
+(Keys are managed separately internally, and removal from the results would break consistency)</li>
+<li>Timestamps are stored with up to 6 decimal places.</li>
 </ul>
 </ul>
 </div>
@@ -59,7 +60,7 @@ are read-only.<br>
           <code>protected Map&lt;String, String&gt; getValMap()</code>
         </div>
         <div class="method-description">
-          Gets value storage map.
+          Retrieves the value storage map.
 
         </div>
         <div class="method-returns">
@@ -73,7 +74,7 @@ are read-only.<br>
           <code>protected Set&lt;String&gt; allKeySet()</code>
         </div>
         <div class="method-description">
-          Gets all key set.
+          Retrieves the all key set.
 
         </div>
         <div class="method-returns">
@@ -87,7 +88,7 @@ are read-only.<br>
           <code>protected void validateKey(String key)</code>
         </div>
         <div class="method-description">
-          Validates key.
+          Validates the key.
 
         </div>
         <div class="method-parameters">
@@ -104,7 +105,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key</td>
+                <td>the key</td>
               </tr>
             </tbody>
           </table>
@@ -116,7 +117,7 @@ are read-only.<br>
           <code>protected String getVal(String key)</code>
         </div>
         <div class="method-description">
-          Validates key and retrieves value.
+          Validates the key and retrieves the value.
 
         </div>
         <div class="method-parameters">
@@ -133,7 +134,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key</td>
+                <td>the key</td>
               </tr>
             </tbody>
           </table>
@@ -149,7 +150,7 @@ are read-only.<br>
           <code>protected String putVal(String key, String value, boolean canOverwrite)</code>
         </div>
         <div class="method-description">
-          Validates key and stores value.
+          Validates the key and stores the value.
 
         </div>
         <div class="method-parameters">
@@ -166,24 +167,24 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key</td>
+                <td>the key</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>value</td>
+                <td>the value</td>
               </tr>
               <tr>
                 <td><code>canOverwrite</code></td>
                 <td><code>boolean</code></td>
-                <td>overwrite allowed</td>
+                <td>whether to allow overwriting</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the previously stored value</p>
+          <p><code>String</code> - the previous stored value</p>
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ import com.onepg.util.ValUtil;
  * Web service base class.<br>
  * <ul>
  * <li>Provides common processing (logging, exception handling, etc.) for each web service.</li>
- * <li>Defines concrete web service processing by implementing doExecute method in subclasses.</li>
+ * <li>Defines concrete web service processing by implementing <code>doExecute</code> method in subclasses.</li>
  * </ul>
  */
 public abstract class AbstractWebService {
@@ -42,8 +42,8 @@ public abstract class AbstractWebService {
   /**
    * Invokes main processing.<br>
    * <ul>
+   * <li>Executes log begin processing, calls the <code>doExecute</code> method, and finally executes log end processing.</li>
    * <li>Package-private to prevent direct external calls.</li>
-   * <li>Executes common processing including logging and exception handling, then invokes concrete business processing.</li>
    * </ul>
    *
    * @param io the argument and return value (request and response)

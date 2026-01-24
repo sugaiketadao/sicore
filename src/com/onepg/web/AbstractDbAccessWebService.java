@@ -60,7 +60,7 @@ public abstract class AbstractDbAccessWebService extends AbstractWebService {
    * Gets database connection.<br>
    * <ul>
    * <li>Returns the current database connection.</li>
-   * <li>The connection is valid only within the execute method.</li>
+   * <li>The connection is valid only within the <code>execute</code> method.</li>
    * </ul>
    *
    * @return the database connection

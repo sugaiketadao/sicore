@@ -1,34 +1,28 @@
 package com.onepg.db;
 
-import com.onepg.util.LogUtil;
 import com.onepg.util.ValUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * SQL builder.<br>
  * <ul>
- * <li>Encapsulates SQL and parameter list required for database access.</li>
- * <li>Has methods that can assemble SQL and set parameters simultaneously.</li>
- * <li>Methods starting with add* return this instance, enabling method chaining.</li>
+ * <li>A class that encapsulates SQL and parameter list required for database access.</li>
+ * <li>Has methods that can build SQL and set parameters simultaneously.</li>
+ * <li><code>add*</code> methods return the instance itself, so they can be used in method chains.</li>
  * </ul>
  * <pre>
- * [Example 1] <code>sqlBuilder.addQuery("AND a.user_id IS NOT NULL ");</code>
- * [Example 2] <code>sqlBuilder.addQuery("AND a.user_id = ? ", userId);</code>
- * [Example 3] <code>sqlBuilder.addQuery("AND ? <= a.birth_dt AND a.birth_dt <= ?", birthDtFrom, birthDtTo);</code>
- * [Example 4] <code>sqlBuilder.addQnotB("AND a.user_id = ? ", userId);</code>
- * [Example 5] <code>sqlBuilder.addQnotB("AND a.user_id = ? ", userId).addQnotB("AND a.user_nm LIKE ? ", '%' + name + '%');</code>
+ * [SQL Addition Example 1] <code>sqlBuilder.addQuery("AND a.user_id IS NOT NULL ");</code>
+ * [SQL Addition Example 2] <code>sqlBuilder.addQuery("AND a.user_id = ? ", userId);</code>
+ * [SQL Addition Example 3] <code>sqlBuilder.addQuery("AND ? <= a.birth_dt AND a.birth_dt <= ?", birthDtFrom, birthDtTo);</code>
+ * [SQL Addition Example 4] <code>sqlBuilder.addQnotB("AND a.user_id = ? ", userId);</code>
+ * [SQL Addition Example 5] <code>sqlBuilder.addQnotB("AND a.user_id = ? ", userId).addQnotB("AND a.user_nm LIKE ? ", '%' + name + '%');</code>
+ * [SQL Execution Example] <code>SqlResultSet rSet = SqlUtil.select(getDbConn(), sqlBuilder);</code>
  * </pre>
  * 
  */
-public final class SqlBuilder {
+public final class SqlBuilder extends SqlBean {
 
-  /** SQL string. */
-  private final StringBuilder query = new StringBuilder();
-  /** Parameters. */
-  private final List<Object> parameters = new ArrayList<>();
-  
   /**
    * Constructor.
    */
@@ -37,114 +31,96 @@ public final class SqlBuilder {
   }
 
   /**
-   * Appends an SQL string.<br>
+   * Appends SQL string.<br>
    * <ul>
-   * <li>Appends an SQL string.</li>
+   * <li>Appends SQL string.</li>
    * <li>Replaces 2 or more consecutive blanks with a single blank when appending.</li>
    * </ul>
    * 
-   * @param sql SQL string
+   * @param sql the SQL string
    */
   private void appendQuery(final String sql) {
-    SqlUtil.appendQuery(this.query, sql);
+    SqlUtil.appendQuery(super.queryBuilder, sql);
   }
 
   /**
    * Adds parameters.<br>
    * <ul>
-   * <li>Multiple values can be passed.</li>
+   * <li>Can pass multiple parameters.</li>
    * </ul>
    *
-   * @param params Parameters (multiple allowed)
+   * @param params the parameters (multiple allowed)
    */
   private void addAllParameters(final Object... params) {
     if (ValUtil.isEmpty(params)) {
       return;
     }
     for (final Object param : params) {
-      this.parameters.add(param);
+      super.bindValues.add(param);
     }
   }
 
   /**
-   * Adds a parameter list.
+   * Adds parameter list.
    *
-   * @param params Parameter list
+   * @param params the parameter list
    */
   private void addAllParameters(final List<Object> params) {
     if (ValUtil.isEmpty(params)) {
       return;
     }
-    this.parameters.addAll(params);
+    super.bindValues.addAll(params);
   }
 
   /**
-   * Gets the SQL string.
-   *
-   * @return the SQL string
-   */
-  String getQuery() {
-    return this.query.toString();
-  }
-
-  /**
-   * Gets the parameters.
-   *
-   * @return the parameters
-   */
-  List<Object> getParameters() {
-    return this.parameters;
-  }
-
-  /**
-   * Appends an SQL builder.<br>
+   * Adds SQL builder.<br>
    * <ul>
    * <li>Inherits SQL and parameters.</li>
    * </ul>
    *
-   * @param sb SQL builder
+   * @param sb the SQL builder
    */
   public void addSqlBuilder(final SqlBuilder sb) {
-    // Append SQL
+    // Add SQL
     appendQuery(sb.getQuery());
-    // Append parameters
-    addAllParameters(sb.getParameters());
+    // Add parameters
+    addAllParameters(sb.getBindValues());
   }
 
   /**
-   * Appends SQL and parameters.<br>
+   * Adds SQL and parameters.<br>
    * <ul>
-   * <li>Parameter arguments are optional and can be passed as single or multiple values.</li>
+   * <li>Parameter arguments are optional and can be passed as single or multiple.</li>
    * </ul>
    * <pre>
    * [Example 1] <code>sqlBuilder.addQuery("AND a.user_id IS NOT NULL ");</code>
    * [Example 2] <code>sqlBuilder.addQuery("AND a.user_id = ? ", userId);</code>
    * [Example 3] <code>sqlBuilder.addQuery("AND ? <= a.birth_dt AND a.birth_dt <= ?", birthDtFrom, birthDtTo);</code>
    * </pre>
-   * @param sql    SQL
-   * @param params Parameters (multiple allowed) (optional)
-   * @return this instance
+   * @param sql    the SQL
+   * @param params the parameters (multiple allowed) (optional)
+   * @return the instance itself
    */
   public SqlBuilder addQuery(final String sql, final Object... params) {
-    // Append SQL
+    // Add SQL
     appendQuery(sql);
-    // Append parameters
+    // Add parameters
     addAllParameters(params);
     return this;
   }
 
   /**
-   * Appends parameters.<br>
+   * Adds parameters.<br>
    * <ul>
-   * <li>Multiple values can be passed.</li>
+   * <li>Can pass multiple parameters.</li>
    * </ul>
    * <pre>
    * [Example 1] <code>sqlBuilder.addParams(userId);</code>
    * [Example 2] <code>sqlBuilder.addParams(birthDtFrom, birthDtTo);</code>
    * </pre>
    *
-   * @param params Parameters (multiple allowed)
-   * @return this instance
+   * @param params the parameters (multiple allowed)
+   * @return the instance itself
    */
   public SqlBuilder addParams(final Object... params) {
     addAllParameters(params);
@@ -152,19 +128,19 @@ public final class SqlBuilder {
   }
 
   /**
-   * Appends comma-separated SQL bind placeholders.<br>
+   * Adds comma-separated SQL bind characters.<br>
    * <ul>
-   * <li>Appends SQL bind placeholders "?" to SQL, comma-separated for the number of elements in the list.</li>
-   * <li>If the list contains 3 elements, "?,?,?" is appended to SQL.</li>
-   * <li>The values in the list are added as SQL bind variable parameters.</li>
-   * <li>Intended for use in IN clauses with a variable number of bind placeholders.</li>
+   * <li>Adds SQL bind characters "?" separated by commas to SQL for the number of elements in the list.</li>
+   * <li>If the list contains 3 elements, "?,?,?" is added to SQL.</li>
+   * <li>Values in the list are added as SQL bind character parameters.</li>
+   * <li>Intended for use in IN clauses with variable number of SQL bind characters.</li>
    * </ul>
    * <pre>
-   * [Example] <code>sqlBuilder.addQuery("AND type_cs IN (").addListInBind(list).addQuery(")");</code>
+   * [Example]<code>sqlBuilder.addQuery("AND type_cs IN (").addListInBind(list).addQuery(")");</code>
    * </pre>
    *
-   * @param params Parameter list
-   * @return this instance
+   * @param params the parameter list
+   * @return the instance itself
    */
   public SqlBuilder addListInBind(final List<Object> params) {
     if (ValUtil.isEmpty(params)) {
@@ -182,19 +158,19 @@ public final class SqlBuilder {
   }
 
   /**
-   * Appends SQL and parameter only if the parameter is not <code>null</code> and not blank.<br>
+   * Adds SQL and parameter only if the parameter is not <code>null</code> and not blank.<br>
    * <ul>
-   * <li>Appends SQL and parameter only if the parameter is not <code>null</code> and not blank.</li>
+   * <li>Adds SQL and parameter only if the parameter is not <code>null</code> and not blank.</li>
    * <li>Other specifications are the same as <code>#addQuery(String, Object...)</code>.</li>
-   * <li>Basically, use the shortcut method <code>#addQnotB(String, Object)</code>.</li>
+   * <li>Use the shortcut method <code>#addQnotB(String, Object)</code> for this method.</li>
    * </ul>
-   * <pre>In the example below, SQL is appended only if <code>userId</code> is not <code>null</code> or blank.
+   * <pre>In the example below, SQL is added only if <code>userId</code> is not <code>null</code> and not blank.
    * [Example] <code>sqlBuilder.addQueryIfNotBlankParameter("AND user_id = ? ", userId);</code>
    * </pre>
    * @see #addQuery(String, Object...)
    * @see #addQnotB(String, Object)
-   * @param sql SQL
-   * @param param Parameter (single only)
+   * @param sql the SQL
+   * @param param the parameter (single only)
    * @return this instance
    */
   public SqlBuilder addQueryIfNotBlankParameter(final String sql, final Object param) {
@@ -212,19 +188,19 @@ public final class SqlBuilder {
   }
 
   /**
-   * Appends SQL and parameter only if the parameter is not <code>null</code> and not blank.<br>
+   * Adds SQL and parameter only if the parameter is not <code>null</code> and not blank.<br>
    * <ul>
    * <li>Shortcut for <code>#addQueryIfNotBlankParameter(String, Object)</code>.</li>
-   * <li>Appends SQL and parameter only if the parameter is not <code>null</code> and not blank.</li>
+   * <li>Adds SQL and parameter only if the parameter is not <code>null</code> and not blank.</li>
    * <li>Other specifications are the same as <code>#addQuery(String, Object...)</code>.</li>
    * </ul>
-   * <pre>In the example below, SQL is appended only if <code>userId</code> is not <code>null</code> or blank.
+   * <pre>In the example below, SQL is added only if <code>userId</code> is not <code>null</code> and not blank.
    * [Example] <code>sqlBuilder.addQnotB("AND user_id = ? ", userId);</code>
    * </pre>
    *
    * @see #addQueryIfNotBlankParameter(String, Object)
-   * @param sql SQL
-   * @param param Parameter (single only)
+   * @param sql the SQL
+   * @param param the parameter (single only)
    * @return this instance
    */
   @SuppressWarnings("all")
@@ -233,27 +209,27 @@ public final class SqlBuilder {
   }
 
   /**
-   * Deletes characters from the end of the SQL string.
+   * Deletes the last SQL character.
    * <ul>
-   * <li>Deletes the last character (1 character) from the SQL string.</li>
+   * <li>Deletes the last character (one character) of the SQL string.</li>
    * </ul>
    * <pre>[Example]
    * <code>for (final String key : params.keySet()) {
    *   sb.addQuery(key).addQuery("=?", params.get(key)).addQuery(",");
    * }
-   * // Delete last comma
+   * // Delete the last comma
    * sb.deleteLastChar();
    * </code></pre>
    * 
-   * @return this instance
+   * @return the instance itself
    */
   public SqlBuilder delLastChar() {
-    ValUtil.deleteLastChar(this.query);
+    ValUtil.deleteLastChar(super.queryBuilder);
     return this;
   }
   
   /**
-   * Deletes characters from the end of the SQL string.
+   * Deletes the last SQL characters.
    * <ul>
    * <li>Deletes the specified number of characters from the end of the SQL string.</li>
    * </ul>
@@ -261,38 +237,16 @@ public final class SqlBuilder {
    * <code>for (final String key : params.keySet()) {
    *   sb.addQuery(key).addQuery("=?", params.get(key)).addQuery(" AND ");
    * }
-   * // Delete last AND
+   * // Delete the last AND
    * sb.delLastChar(4);
    * </code></pre>
    * 
-   * @param deleteCharCount Number of characters to delete
-   * @return this instance
+   * @param deleteCharCount the number of characters to delete
+   * @return the instance itself
    */
   public SqlBuilder delLastChar(final int deleteCharCount) {
-    ValUtil.deleteLastChar(this.query, deleteCharCount);
+    ValUtil.deleteLastChar(super.queryBuilder, deleteCharCount);
     return this;
   }
   
-  /**
-   * Gets the SQL string length.
-   *
-   * @return the SQL string length
-   */
-  public int length() {
-    return this.query.length();
-  }
-
-  /**
-   * Returns a string for logging.
-   */
-  public String toString() {
-    final StringBuilder sb = new StringBuilder();
-    try {
-      sb.append("{\"").append(this.query.toString()).append("\"<-");
-      sb.append(LogUtil.join(this.parameters)).append("}");
-    } catch (Exception ignore) {
-      // No processing
-    }
-    return sb.toString();
-  }
 }

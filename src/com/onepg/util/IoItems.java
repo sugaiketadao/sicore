@@ -70,6 +70,7 @@ public final class IoItems extends AbstractIoTypeMap {
   /**
    * Creates CSV with double quotes.<br>
    * <ul>
+   * <li>Creates a CSV string in the order values were added.</li>
    * <li>Outputs all fields with double quotes.</li>
    * <li>Double quotes in values are converted to two double quote characters.</li>
    * <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
@@ -77,7 +78,7 @@ public final class IoItems extends AbstractIoTypeMap {
    *
    * @return the CSV string
    */
-  public String createCsAllDq() {
+  public String createCsvAllDq() {
     final StringBuilder sb = new StringBuilder();
     for (final Entry<String, String> ent : super.getValMap().entrySet()) {
       final String val = ValUtil.nvl(ent.getValue());
@@ -91,6 +92,7 @@ public final class IoItems extends AbstractIoTypeMap {
   /**
    * Creates CSV with CSV-specification-compliant double quotes.<br>
    * <ul>
+   * <li>Creates a CSV string in the order values were added.</li>
    * <li>Outputs with double quotes added to fields that require them per CSV specification.</li>
    * <li>Double quotes in values are converted to two double quote characters.</li>
    * <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
@@ -183,7 +185,7 @@ public final class IoItems extends AbstractIoTypeMap {
    * Stores CSV.<br>
    * <ul>
    * <li>Storing with an already existing key causes a runtime error.</li>
-   * <li>Fields with blank key names in the key name array are not stored. (Apply to unnecessary fields)</li>
+   * <li>Fields with blank keys in the key name array are not stored. (Apply to fields that do not require storage.)</li>
    * <li>If CSV field count exceeds key name array count, excess fields are not stored.</li>
    * </ul>
    *
@@ -220,7 +222,13 @@ public final class IoItems extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores double-quoted CSV.
+   * Stores double-quoted CSV.<br>
+   * <ul>
+   * <li>Storing with an already existing key causes a runtime error.</li>
+   * <li>Fields with blank keys in the key name array are not stored. (Apply to fields that do not require storage.)</li>
+   * <li>If CSV field count exceeds key name array count, excess fields are not stored.</li>
+   * <li>Two consecutive double quotes in values are converted to a single double quote and stored.</li>
+   * </ul>
    *
    * @see #putAllByCsv(String[], String)
    * @param keys the key name array
@@ -249,7 +257,7 @@ public final class IoItems extends AbstractIoTypeMap {
 
       // Store value
       count++;
-      put(key, value);
+      put(key, value.replace("\"\"", "\""));
     }
     return count;
   }

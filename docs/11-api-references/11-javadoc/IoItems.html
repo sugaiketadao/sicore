@@ -27,27 +27,28 @@
         <div>I/O field group map class.<br>
 
 <ul>
-<li>A map class with typed value retrieval and storage methods.</li>
+<li>A map class that provides value retrieval methods and value storage methods for each type.</li>
 <li>Internally stores values as strings.</li>
-<li>Preserves insertion order of values.</li>
-<li>Extends Map&lt;String, String&gt; for versatility.</li>
-<li>Can be made read-only via constructor parameter.</li>
+<li>Preserves the storage order of values.</li>
+<li>Provides versatility by extending Map&lt;String, String&gt;.</li>
+<li>Can be made read-only by specifying a constructor argument.</li>
 <li>Basic rules and restrictions:
 <ul>
-<li>Keys are limited to lowercase letters, digits, underscores, hyphens, and dots only.<br>
-(Only characters valid in JSON, and lowercase letters to eliminate DBMS differences)</li>
+<li>Characters that can be used as keys are limited to lowercase letters, numbers, underscores, hyphens, and dots only.<br>
+(Only characters that can be used in JSON, and letters are unified to lowercase to eliminate DBMS differences)</li>
 <li>In principle, value retrieval methods do not return <code>null</code>.</li>
-<li>To retrieve <code>null</code>, use an explicit method [e.g.] <code>#getStringNullable(String)</code>.</li>
-<li>In principle, retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>,
-or use an explicit method that specifies a default value [e.g.] <code>#getStringOrDefault(String, String)</code>.</li>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use an explicit method [e.g.] <code>#putForce(String, String)</code>.</li>
-<li>To explicitly store <code>null</code>, also use an explicit method [e.g.] <code>#putNull(String)</code>.</li>
-<li>Unlike regular maps, results of <code>#keySet()</code>, <code>#entrySet()</code>, and <code>#values()</code>
+<li>If you want to retrieve <code>null</code>, use an explicit method such as <code>#getStringNullable(String)</code>.</li>
+<li>In principle, value retrieval with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>,
+or retrieve using an explicit method such as <code>#getStringOrDefault(String, String)</code>
+that specifies a return value for non-existent keys.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, use an explicit method such as <code>#putForce(String, String)</code>.</li>
+<li>When explicitly storing <code>null</code>, use an explicit method such as <code>#putNull(String)</code>.</li>
+<li>Unlike normal maps, the results of <code>#keySet()</code>, <code>#entrySet()</code>, and <code>#values()</code>
 are read-only.<br>
-(Keys are managed separately internally, and removing from results would break consistency)</li>
-<li>Timestamps are stored with up to 6 fractional digits.</li>
+(Keys are managed separately internally, and removal from the results would break consistency)</li>
+<li>Timestamps are stored with up to 6 decimal places.</li>
 </ul>
 </ul>
 <br>
@@ -75,12 +76,12 @@ are read-only.<br>
           <code>public String getString(String key)</code>
         </div>
         <div class="method-description">
-          Retrieves string.<br>
+          Retrieves a string.<br>
 <ul>
-<li>Retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
-<li>Returns empty string if stored value is <code>null</code>. (<code>null</code> is not returned)</li>
-<li>To retrieve <code>null</code>, use <code>#getStringNullable(String)</code>.</li>
+<li>Retrieving a value with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>.</li>
+<li>If the stored value is <code>null</code>, returns an empty string. (Does not return <code>null</code>)</li>
+<li>If you want to retrieve <code>null</code>, retrieve using <code>#getStringNullable(String)</code>.</li>
 </ul>
 
         </div>
@@ -98,7 +99,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -114,11 +115,11 @@ are read-only.<br>
           <code>public String getStringOrDefault(String key, String notExistsValue)</code>
         </div>
         <div class="method-description">
-          Retrieves string.<br>
+          Retrieves a string.<br>
 <ul>
-<li>Returns the default value parameter if key does not exist.</li>
-<li>Returns empty string if stored value is <code>null</code>. (<code>null</code> is not returned)</li>
-<li>To retrieve <code>null</code>, use <code>#getStringNullableOrDefault(String, String)</code>.</li>
+<li>If the key does not exist, the non-existent return value from the argument is returned.</li>
+<li>If the stored value is <code>null</code>, returns an empty string. (Does not return <code>null</code>)</li>
+<li>If you want to retrieve <code>null</code>, retrieve using <code>#getStringNullableOrDefault(String, String)</code>.</li>
 </ul>
 
         </div>
@@ -136,12 +137,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>notExistsValue</code></td>
                 <td><code>String</code></td>
-                <td>value to return if key does not exist</td>
+                <td>the return value when the key does not exist</td>
               </tr>
             </tbody>
           </table>
@@ -157,10 +158,10 @@ are read-only.<br>
           <code>public String getStringNullable(String key)</code>
         </div>
         <div class="method-description">
-          Retrieves string (nullable).<br>
+          Retrieves a string (nullable).<br>
 <ul>
-<li>Retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+<li>Retrieving a value with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>.</li>
 </ul>
 
         </div>
@@ -178,7 +179,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -194,9 +195,9 @@ are read-only.<br>
           <code>public String getStringNullableOrDefault(String key, String notExistsValue)</code>
         </div>
         <div class="method-description">
-          Retrieves string (nullable).<br>
+          Retrieves a string (nullable).<br>
 <ul>
-<li>Returns the default value parameter if key does not exist.</li>
+<li>If the key does not exist, the non-existent return value from the argument is returned.</li>
 </ul>
 
         </div>
@@ -214,12 +215,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key</td>
+                <td>the key</td>
               </tr>
               <tr>
                 <td><code>notExistsValue</code></td>
                 <td><code>String</code></td>
-                <td>value to return if key does not exist</td>
+                <td>the return value when the key does not exist</td>
               </tr>
             </tbody>
           </table>
@@ -235,12 +236,12 @@ are read-only.<br>
           <code>public BigDecimal getBigDecimal(String key)</code>
         </div>
         <div class="method-description">
-          Retrieves numeric value.<br>
+          Retrieves a numeric value.<br>
 <ul>
-<li>Retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
-<li>Returns zero if stored value is <code>null</code>. (<code>null</code> is not returned)</li>
-<li>To retrieve <code>null</code>, use <code>#getBigDecimalNullable(String)</code>.</li>
+<li>Retrieving a value with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>.</li>
+<li>If the stored value is <code>null</code>, returns zero. (Does not return <code>null</code>)</li>
+<li>If you want to retrieve <code>null</code>, retrieve using <code>#getBigDecimalNullable(String)</code>.</li>
 </ul>
 
         </div>
@@ -258,7 +259,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -274,11 +275,11 @@ are read-only.<br>
           <code>public BigDecimal getBigDecimalOrDefault(String key, BigDecimal notExistsValue)</code>
         </div>
         <div class="method-description">
-          Retrieves numeric value.<br>
+          Retrieves a numeric value.<br>
 <ul>
-<li>Returns the default value parameter if key does not exist.</li>
-<li>Returns zero if stored value is <code>null</code>. (<code>null</code> is not returned)</li>
-<li>To retrieve <code>null</code>, use <code>#getBigDecimalNullableOrDefault(String)</code>.</li>
+<li>If the key does not exist, the non-existent return value from the argument is returned.</li>
+<li>If the stored value is <code>null</code>, returns zero. (Does not return <code>null</code>)</li>
+<li>If you want to retrieve <code>null</code>, retrieve using <code>#getBigDecimalNullableOrDefault(String)</code>.</li>
 </ul>
 
         </div>
@@ -296,12 +297,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>notExistsValue</code></td>
                 <td><code>BigDecimal</code></td>
-                <td>value to return if key does not exist</td>
+                <td>the return value when the key does not exist</td>
               </tr>
             </tbody>
           </table>
@@ -317,10 +318,10 @@ are read-only.<br>
           <code>public BigDecimal getBigDecimalNullable(String key)</code>
         </div>
         <div class="method-description">
-          Retrieves numeric value (nullable).<br>
+          Retrieves a numeric value (nullable).<br>
 <ul>
-<li>Retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
+<li>Retrieving a value with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>.</li>
 </ul>
 
         </div>
@@ -338,7 +339,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -354,9 +355,9 @@ are read-only.<br>
           <code>public BigDecimal getBigDecimalNullableOrDefault(String key, BigDecimal notExistsValue)</code>
         </div>
         <div class="method-description">
-          Retrieves numeric value (nullable).<br>
+          Retrieves a numeric value (nullable).<br>
 <ul>
-<li>Returns the default value parameter if key does not exist.</li>
+<li>If the key does not exist, the non-existent return value from the argument is returned.</li>
 </ul>
 
         </div>
@@ -374,12 +375,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key</td>
+                <td>the key</td>
               </tr>
               <tr>
                 <td><code>notExistsValue</code></td>
                 <td><code>BigDecimal</code></td>
-                <td>value to return if key does not exist</td>
+                <td>the return value when the key does not exist</td>
               </tr>
             </tbody>
           </table>
@@ -395,12 +396,12 @@ are read-only.<br>
           <code>public int getInt(String key)</code>
         </div>
         <div class="method-description">
-          Retrieves int value.<br>
+          Retrieves an int value.<br>
 <ul>
-<li>Retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
-<li>Returns zero if stored value is <code>null</code>.</li>
-<li>Throws exception if value is outside int range.</li>
+<li>Retrieving a value with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>.</li>
+<li>If the stored value is <code>null</code>, returns zero.</li>
+<li>If the value is outside the int range, throws an exception error.</li>
 </ul>
 
         </div>
@@ -418,7 +419,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -434,11 +435,11 @@ are read-only.<br>
           <code>public int getIntOrDefault(String key, int notExistsValue)</code>
         </div>
         <div class="method-description">
-          Retrieves int value.<br>
+          Retrieves an int value.<br>
 <ul>
-<li>Returns the default value parameter if key does not exist.</li>
-<li>Returns zero if stored value is <code>null</code>.</li>
-<li>Throws exception if value is outside int range.</li>
+<li>If the key does not exist, the non-existent return value from the argument is returned.</li>
+<li>If the stored value is <code>null</code>, returns zero.</li>
+<li>If the value is outside the int range, throws an exception error.</li>
 </ul>
 
         </div>
@@ -456,12 +457,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>notExistsValue</code></td>
                 <td><code>int</code></td>
-                <td>value to return if key does not exist</td>
+                <td>the return value when the key does not exist</td>
               </tr>
             </tbody>
           </table>
@@ -477,12 +478,12 @@ are read-only.<br>
           <code>public long getLong(String key)</code>
         </div>
         <div class="method-description">
-          Retrieves long value.<br>
+          Retrieves a long value.<br>
 <ul>
-<li>Retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
-<li>Returns zero if stored value is <code>null</code>.</li>
-<li>Throws exception if value is outside long range.</li>
+<li>Retrieving a value with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>.</li>
+<li>If the stored value is <code>null</code>, returns zero.</li>
+<li>If the value is outside the long range, throws an exception error.</li>
 </ul>
 
         </div>
@@ -500,7 +501,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -516,11 +517,11 @@ are read-only.<br>
           <code>public long getLongOrDefault(String key, long notExistsValue)</code>
         </div>
         <div class="method-description">
-          Retrieves long value.<br>
+          Retrieves a long value.<br>
 <ul>
-<li>Returns the default value parameter if key does not exist.</li>
-<li>Returns zero if stored value is <code>null</code>.</li>
-<li>Throws exception if value is outside long range.</li>
+<li>If the key does not exist, the non-existent return value from the argument is returned.</li>
+<li>If the stored value is <code>null</code>, returns zero.</li>
+<li>If the value is outside the long range, throws an exception error.</li>
 </ul>
 
         </div>
@@ -538,12 +539,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>notExistsValue</code></td>
                 <td><code>long</code></td>
-                <td>value to return if key does not exist</td>
+                <td>the return value when the key does not exist</td>
               </tr>
             </tbody>
           </table>
@@ -559,11 +560,11 @@ are read-only.<br>
           <code>public LocalDate getDateNullable(String key)</code>
         </div>
         <div class="method-description">
-          Retrieves date (nullable).<br>
+          Retrieves a date (nullable).<br>
 <ul>
-<li>Retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
-<li>Throws exception if date conversion fails.</li>
+<li>Retrieving a value with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>.</li>
+<li>If date conversion fails, throws an exception error.</li>
 </ul>
 
         </div>
@@ -581,7 +582,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -597,10 +598,10 @@ are read-only.<br>
           <code>public LocalDate getDateNullableOrDefault(String key, LocalDate notExistsValue)</code>
         </div>
         <div class="method-description">
-          Retrieves date (nullable).<br>
+          Retrieves a date (nullable).<br>
 <ul>
-<li>Returns the default value parameter if key does not exist.</li>
-<li>Throws exception if date conversion fails.</li>
+<li>If the key does not exist, the non-existent return value from the argument is returned.</li>
+<li>If date conversion fails, throws an exception error.</li>
 </ul>
 
         </div>
@@ -618,12 +619,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key</td>
+                <td>the key</td>
               </tr>
               <tr>
                 <td><code>notExistsValue</code></td>
                 <td><code>LocalDate</code></td>
-                <td>value to return if key does not exist</td>
+                <td>the return value when the key does not exist</td>
               </tr>
             </tbody>
           </table>
@@ -639,11 +640,11 @@ are read-only.<br>
           <code>public LocalDateTime getDateTimeNullable(String key)</code>
         </div>
         <div class="method-description">
-          Retrieves date-time (nullable).<br>
+          Retrieves a date-time (nullable).<br>
 <ul>
-<li>Retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
-<li>Throws exception if date-time conversion fails.</li>
+<li>Retrieving a value with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>.</li>
+<li>If date-time conversion fails, throws an exception error.</li>
 </ul>
 
         </div>
@@ -661,7 +662,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -677,10 +678,10 @@ are read-only.<br>
           <code>public LocalDateTime getDateTimeNullableOrDefault(String key, LocalDateTime notExistsValue)</code>
         </div>
         <div class="method-description">
-          Retrieves date-time (nullable).<br>
+          Retrieves a date-time (nullable).<br>
 <ul>
-<li>Returns the default value parameter if key does not exist.</li>
-<li>Throws exception if date-time conversion fails.</li>
+<li>If the key does not exist, the non-existent return value from the argument is returned.</li>
+<li>If date-time conversion fails, throws an exception error.</li>
 </ul>
 
         </div>
@@ -698,12 +699,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key</td>
+                <td>the key</td>
               </tr>
               <tr>
                 <td><code>notExistsValue</code></td>
                 <td><code>LocalDateTime</code></td>
-                <td>value to return if key does not exist</td>
+                <td>the return value when the key does not exist</td>
               </tr>
             </tbody>
           </table>
@@ -719,11 +720,11 @@ are read-only.<br>
           <code>public boolean getBoolean(String key)</code>
         </div>
         <div class="method-description">
-          Retrieves boolean value.<br>
+          Retrieves a boolean value.<br>
 <ul>
-<li>Retrieving a value with a non-existent key causes a runtime error.</li>
-<li>To retrieve a value with a potentially non-existent key, check existence beforehand with <code>#containsKey(Object)</code>.</li>
-<li>Boolean evaluation follows <code>ValUtil.isTrue(String)</code>.</li>
+<li>Retrieving a value with a non-existent key results in a runtime error.</li>
+<li>When retrieving a value with a key that may not exist, check existence in advance using <code>#containsKey(Object)</code>.</li>
+<li>Boolean value evaluation conforms to <code>ValUtil.isTrue(String)</code>.</li>
 </ul>
 
         </div>
@@ -741,7 +742,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -763,10 +764,10 @@ are read-only.<br>
           <code>public boolean getBooleanOrDefault(String key, boolean notExistsValue)</code>
         </div>
         <div class="method-description">
-          Retrieves boolean value.<br>
+          Retrieves a boolean value.<br>
 <ul>
-<li>Returns the default value parameter if key does not exist.</li>
-<li>Value evaluation follows <code>ValUtil.isTrue(String)</code>.</li>
+<li>If the key does not exist, the non-existent return value from the argument is returned.</li>
+<li>Value evaluation conforms to <code>ValUtil.isTrue(String)</code>.</li>
 </ul>
 
         </div>
@@ -784,12 +785,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key</td>
+                <td>the key</td>
               </tr>
               <tr>
                 <td><code>notExistsValue</code></td>
                 <td><code>boolean</code></td>
-                <td>value to return if key does not exist</td>
+                <td>the return value when the key does not exist</td>
               </tr>
             </tbody>
           </table>
@@ -822,7 +823,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -838,7 +839,7 @@ are read-only.<br>
           <code>public String putNullForce(String key)</code>
         </div>
         <div class="method-description">
-          Stores <code>null</code> (overwrite allowed).
+          Stores <code>null</code> (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -855,7 +856,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -871,10 +872,10 @@ are read-only.<br>
           <code>public String put(String key, String value)</code>
         </div>
         <div class="method-description">
-          Stores string.<br>
+          Stores a string.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use <code>#putForce(String, String)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, store using <code>#putForce(String, String)</code>.</li>
 </ul>
 
         </div>
@@ -892,12 +893,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>value</td>
+                <td>the value</td>
               </tr>
             </tbody>
           </table>
@@ -913,10 +914,10 @@ are read-only.<br>
           <code>public String put(String key, BigDecimal value)</code>
         </div>
         <div class="method-description">
-          Stores numeric value.<br>
+          Stores a numeric value.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use <code>#putForce(String, BigDecimal)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, store using <code>#putForce(String, BigDecimal)</code>.</li>
 </ul>
 
         </div>
@@ -934,12 +935,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>BigDecimal</code></td>
-                <td>numeric value</td>
+                <td>the numeric value</td>
               </tr>
             </tbody>
           </table>
@@ -955,10 +956,10 @@ are read-only.<br>
           <code>public String put(String key, int value)</code>
         </div>
         <div class="method-description">
-          Stores int value.<br>
+          Stores an int value.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use <code>#putForce(String, int)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, store using <code>#putForce(String, int)</code>.</li>
 </ul>
 
         </div>
@@ -976,12 +977,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>int</code></td>
-                <td>int value</td>
+                <td>the int value</td>
               </tr>
             </tbody>
           </table>
@@ -997,10 +998,10 @@ are read-only.<br>
           <code>public String put(String key, long value)</code>
         </div>
         <div class="method-description">
-          Stores long value.<br>
+          Stores a long value.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use <code>#putForce(String, long)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, store using <code>#putForce(String, long)</code>.</li>
 </ul>
 
         </div>
@@ -1018,12 +1019,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>long</code></td>
-                <td>long value</td>
+                <td>the long value</td>
               </tr>
             </tbody>
           </table>
@@ -1039,10 +1040,10 @@ are read-only.<br>
           <code>public String put(String key, LocalDate value)</code>
         </div>
         <div class="method-description">
-          Stores date.<br>
+          Stores a date.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use <code>#putForce(String, LocalDate)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, store using <code>#putForce(String, LocalDate)</code>.</li>
 </ul>
 
         </div>
@@ -1060,12 +1061,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>LocalDate</code></td>
-                <td>date</td>
+                <td>the date</td>
               </tr>
             </tbody>
           </table>
@@ -1081,10 +1082,10 @@ are read-only.<br>
           <code>public String put(String key, LocalDateTime value)</code>
         </div>
         <div class="method-description">
-          Stores date-time.<br>
+          Stores a date-time.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use <code>#putForce(String, LocalDateTime)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, store using <code>#putForce(String, LocalDateTime)</code>.</li>
 </ul>
 
         </div>
@@ -1102,12 +1103,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>LocalDateTime</code></td>
-                <td>date-time</td>
+                <td>the date-time</td>
               </tr>
             </tbody>
           </table>
@@ -1123,10 +1124,10 @@ are read-only.<br>
           <code>public String put(String key, java.util.Date value)</code>
         </div>
         <div class="method-description">
-          Stores UTIL date.<br>
+          Stores a UTIL date.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use <code>#putForce(String, java.util.Date)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, store using <code>#putForce(String, java.util.Date)</code>.</li>
 </ul>
 
         </div>
@@ -1144,12 +1145,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>java.util.Date</code></td>
-                <td>date (including <code>java.sql.Date</code>)</td>
+                <td>the date (including <code>java.sql.Date</code>)</td>
               </tr>
             </tbody>
           </table>
@@ -1165,10 +1166,10 @@ are read-only.<br>
           <code>public String put(String key, java.sql.Timestamp value)</code>
         </div>
         <div class="method-description">
-          Stores SQL timestamp.<br>
+          Stores an SQL timestamp.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use <code>#putForce(String, java.sql.Timestamp)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, store using <code>#putForce(String, java.sql.Timestamp)</code>.</li>
 </ul>
 
         </div>
@@ -1186,12 +1187,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>java.sql.Timestamp</code></td>
-                <td>timestamp</td>
+                <td>the timestamp</td>
               </tr>
             </tbody>
           </table>
@@ -1207,10 +1208,10 @@ are read-only.<br>
           <code>public String put(String key, boolean value)</code>
         </div>
         <div class="method-description">
-          Stores boolean value.<br>
+          Stores a boolean value.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>To store with a potentially existing key, use <code>#putForce(String, boolean)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>When storing a value with a key that may already exist, store using <code>#putForce(String, boolean)</code>.</li>
 </ul>
 
         </div>
@@ -1228,12 +1229,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>boolean</code></td>
-                <td>boolean value</td>
+                <td>the boolean value</td>
               </tr>
             </tbody>
           </table>
@@ -1249,7 +1250,7 @@ are read-only.<br>
           <code>public String putForce(String key, String value)</code>
         </div>
         <div class="method-description">
-          Stores string (overwrite allowed).
+          Stores a string (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1266,12 +1267,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>value</td>
+                <td>the value</td>
               </tr>
             </tbody>
           </table>
@@ -1287,7 +1288,7 @@ are read-only.<br>
           <code>public String putForce(String key, BigDecimal value)</code>
         </div>
         <div class="method-description">
-          Stores numeric value (overwrite allowed).
+          Stores a numeric value (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1304,12 +1305,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>BigDecimal</code></td>
-                <td>numeric value</td>
+                <td>the numeric value</td>
               </tr>
             </tbody>
           </table>
@@ -1325,7 +1326,7 @@ are read-only.<br>
           <code>public String putForce(String key, int value)</code>
         </div>
         <div class="method-description">
-          Stores int value (overwrite allowed).
+          Stores an int value (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1342,12 +1343,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>int</code></td>
-                <td>int value</td>
+                <td>the int value</td>
               </tr>
             </tbody>
           </table>
@@ -1363,7 +1364,7 @@ are read-only.<br>
           <code>public String putForce(String key, long value)</code>
         </div>
         <div class="method-description">
-          Stores long value (overwrite allowed).
+          Stores a long value (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1380,12 +1381,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>long</code></td>
-                <td>long value</td>
+                <td>the long value</td>
               </tr>
             </tbody>
           </table>
@@ -1401,7 +1402,7 @@ are read-only.<br>
           <code>public String putForce(String key, LocalDate value)</code>
         </div>
         <div class="method-description">
-          Stores date (overwrite allowed).
+          Stores a date (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1418,12 +1419,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>LocalDate</code></td>
-                <td>date</td>
+                <td>the date</td>
               </tr>
             </tbody>
           </table>
@@ -1439,7 +1440,7 @@ are read-only.<br>
           <code>public String putForce(String key, LocalDateTime value)</code>
         </div>
         <div class="method-description">
-          Stores date-time (overwrite allowed).
+          Stores a date-time (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1456,12 +1457,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>LocalDateTime</code></td>
-                <td>date-time</td>
+                <td>the date-time</td>
               </tr>
             </tbody>
           </table>
@@ -1477,7 +1478,7 @@ are read-only.<br>
           <code>public String putForce(String key, java.util.Date value)</code>
         </div>
         <div class="method-description">
-          Stores UTIL date (overwrite allowed).
+          Stores a UTIL date (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1494,12 +1495,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>java.util.Date</code></td>
-                <td>date (including <code>java.sql.Date</code>)</td>
+                <td>the date (including <code>java.sql.Date</code>)</td>
               </tr>
             </tbody>
           </table>
@@ -1515,7 +1516,7 @@ are read-only.<br>
           <code>public String putForce(String key, java.sql.Timestamp value)</code>
         </div>
         <div class="method-description">
-          Stores SQL timestamp (overwrite allowed).
+          Stores an SQL timestamp (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1532,12 +1533,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>java.sql.Timestamp</code></td>
-                <td>timestamp</td>
+                <td>the timestamp</td>
               </tr>
             </tbody>
           </table>
@@ -1553,7 +1554,7 @@ are read-only.<br>
           <code>public String putForce(String key, boolean value)</code>
         </div>
         <div class="method-description">
-          Stores boolean value (overwrite allowed).
+          Stores a boolean value (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1570,12 +1571,12 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
               <tr>
                 <td><code>value</code></td>
                 <td><code>boolean</code></td>
-                <td>boolean value</td>
+                <td>the boolean value</td>
               </tr>
             </tbody>
           </table>
@@ -1593,8 +1594,8 @@ are read-only.<br>
         <div class="method-description">
           Stores all values.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>If potentially existing keys are included, use <code>#putAllForce(Map)</code>.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>If keys that may already exist are included, use <code>#putAllForce(Map)</code>.</li>
 </ul>
 
         </div>
@@ -1612,7 +1613,7 @@ are read-only.<br>
               <tr>
                 <td><code>map</code></td>
                 <td><code>Map&lt;? extends String, ? extends String&gt;</code></td>
-                <td>map</td>
+                <td>the map</td>
               </tr>
             </tbody>
           </table>
@@ -1624,7 +1625,7 @@ are read-only.<br>
           <code>public void putAllForce(Map&lt;? extends String, ? extends String&gt; map)</code>
         </div>
         <div class="method-description">
-          Stores all values (overwrite allowed).
+          Stores all values (allows overwriting).
 
         </div>
         <div class="method-parameters">
@@ -1641,7 +1642,7 @@ are read-only.<br>
               <tr>
                 <td><code>map</code></td>
                 <td><code>Map&lt;? extends String, ? extends String&gt;</code></td>
-                <td>map</td>
+                <td>the map</td>
               </tr>
             </tbody>
           </table>
@@ -1653,7 +1654,7 @@ are read-only.<br>
           <code>public int size()</code>
         </div>
         <div class="method-description">
-          Gets map size.
+          Retrieves the map size.
 
         </div>
         <div class="method-returns">
@@ -1667,12 +1668,12 @@ are read-only.<br>
           <code>public boolean isEmpty()</code>
         </div>
         <div class="method-description">
-          Checks if map is empty.
+          Determines if the map is empty.
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if empty</p>
+          <p><code>boolean</code> - <code>true</code> if the map is empty</p>
         </div>
       </div>
       <div class="method" id="containsKey">
@@ -1681,7 +1682,7 @@ are read-only.<br>
           <code>public boolean containsKey(Object key)</code>
         </div>
         <div class="method-description">
-          Checks if key exists in map.
+          Checks if a map key exists.
 
         </div>
         <div class="method-parameters">
@@ -1698,14 +1699,14 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>Object</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if exists</p>
+          <p><code>boolean</code> - <code>true</code> if the key exists</p>
         </div>
       </div>
       <div class="method" id="containsValue">
@@ -1714,7 +1715,7 @@ are read-only.<br>
           <code>public boolean containsValue(Object value)</code>
         </div>
         <div class="method-description">
-          Checks if value exists in map.
+          Checks if the map contains a value.
 
         </div>
         <div class="method-parameters">
@@ -1731,14 +1732,14 @@ are read-only.<br>
               <tr>
                 <td><code>value</code></td>
                 <td><code>Object</code></td>
-                <td>value</td>
+                <td>the value</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if exists</p>
+          <p><code>boolean</code> - <code>true</code> if the value exists</p>
         </div>
       </div>
       <div class="method" id="remove">
@@ -1747,7 +1748,7 @@ are read-only.<br>
           <code>public String remove(Object key)</code>
         </div>
         <div class="method-description">
-          Removes value from map.
+          Removes a map value.
 
         </div>
         <div class="method-parameters">
@@ -1764,7 +1765,7 @@ are read-only.<br>
               <tr>
                 <td><code>key</code></td>
                 <td><code>Object</code></td>
-                <td>key (lowercase letters, digits, underscores, hyphens, dots only)</td>
+                <td>the key (lowercase letters, numbers, underscores, hyphens, and dots only)</td>
               </tr>
             </tbody>
           </table>
@@ -1780,7 +1781,11 @@ are read-only.<br>
           <code>public void clear()</code>
         </div>
         <div class="method-description">
-          Clears map.
+          Clears the map.<br>
+<ul>
+<li>The clear method is prohibited to prevent easy reuse of instances.</li>
+<li>Please create a new instance instead of clearing.</li>
+</ul>
   
         </div>
       </div>
@@ -1790,9 +1795,9 @@ are read-only.<br>
           <code>public Set&lt;String&gt; keySet()</code>
         </div>
         <div class="method-description">
-          Gets key set.<br>
+          Retrieves the key set.<br>
 <ul>
-<li>Read-only because removal would break internal consistency.</li>
+<li>Made read-only because removal would break internal consistency.</li>
 </ul>
 
         </div>
@@ -1807,9 +1812,9 @@ are read-only.<br>
           <code>public Collection&lt;String&gt; values()</code>
         </div>
         <div class="method-description">
-          Gets value collection.<br>
+          Retrieves the value collection.<br>
 <ul>
-<li>Read-only because removal would break internal consistency.</li>
+<li>Made read-only because removal would break internal consistency.</li>
 </ul>
 
         </div>
@@ -1824,15 +1829,65 @@ are read-only.<br>
           <code>public Set&lt;Entry&lt;String, String&gt;&gt; entrySet()</code>
         </div>
         <div class="method-description">
-          Gets entry set.<br>
+          Retrieves the entry set.<br>
 <ul>
-<li>Read-only because removal would break internal consistency.</li>
+<li>Made read-only because removal would break internal consistency.</li>
 </ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
           <p><code>Set&lt;Entry&lt;String, String&gt;&gt;</code> - the entry set</p>
+        </div>
+      </div>
+      <div class="method" id="equals">
+        <h3 class="method-name">equals <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public boolean equals(Object obj)</code>
+        </div>
+        <div class="method-description">
+          Compares for equality.<br>
+<ul>
+<li>Determines equality if the contents are identical.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>obj</code></td>
+                <td><code>Object</code></td>
+                <td>the object to compare</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if the contents are identical</p>
+        </div>
+      </div>
+      <div class="method" id="hashCode">
+        <h3 class="method-name">hashCode <span class="inherited-badge">(Inherited Method)</span></h3>
+        <div class="method-signature">
+          <code>public int hashCode()</code>
+        </div>
+        <div class="method-description">
+          Retrieves the hash code.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the hash code</p>
         </div>
       </div>
       <div class="method" id="createCsv">
@@ -1853,14 +1908,15 @@ are read-only.<br>
           <p><code>String</code> - the CSV string</p>
         </div>
       </div>
-      <div class="method" id="createCsAllDq">
-        <h3 class="method-name">createCsAllDq</h3>
+      <div class="method" id="createCsvAllDq">
+        <h3 class="method-name">createCsvAllDq</h3>
         <div class="method-signature">
-          <code>public String createCsAllDq()</code>
+          <code>public String createCsvAllDq()</code>
         </div>
         <div class="method-description">
           Creates CSV with double quotes.<br>
 <ul>
+<li>Creates a CSV string in the order values were added.</li>
 <li>Outputs all fields with double quotes.</li>
 <li>Double quotes in values are converted to two double quote characters.</li>
 <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
@@ -1880,6 +1936,7 @@ are read-only.<br>
         <div class="method-description">
           Creates CSV with CSV-specification-compliant double quotes.<br>
 <ul>
+<li>Creates a CSV string in the order values were added.</li>
 <li>Outputs with double quotes added to fields that require them per CSV specification.</li>
 <li>Double quotes in values are converted to two double quote characters.</li>
 <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
@@ -1928,7 +1985,7 @@ are read-only.<br>
           Stores CSV.<br>
 <ul>
 <li>Storing with an already existing key causes a runtime error.</li>
-<li>Fields with blank key names in the key name array are not stored. (Apply to unnecessary fields)</li>
+<li>Fields with blank keys in the key name array are not stored. (Apply to fields that do not require storage.)</li>
 <li>If CSV field count exceeds key name array count, excess fields are not stored.</li>
 </ul>
 
@@ -1968,7 +2025,13 @@ are read-only.<br>
           <code>public int putAllByCsvDq(String[] keys, String csv)</code>
         </div>
         <div class="method-description">
-          Stores double-quoted CSV.
+          Stores double-quoted CSV.<br>
+<ul>
+<li>Storing with an already existing key causes a runtime error.</li>
+<li>Fields with blank keys in the key name array are not stored. (Apply to fields that do not require storage.)</li>
+<li>If CSV field count exceeds key name array count, excess fields are not stored.</li>
+<li>Two consecutive double quotes in values are converted to a single double quote and stored.</li>
+</ul>
 
         </div>
         <div class="method-parameters">
