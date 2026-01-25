@@ -41,7 +41,7 @@ This document is a guide that standardizes the prompt methods for instructing AI
 
 | Item | Description | Example |
 |------|------|-----|
-| Function Name | Function name of the screen (Japanese) | User Management |
+| Function Name | Function name of the screen | User Management |
 | Module Name | Directory/package name (lowercase English letters) | usermst |
 | Table Definition | CREATE TABLE format | See below |
 | Screen Type | List + edit / List only / Edit only | List + edit |

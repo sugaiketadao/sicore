@@ -190,10 +190,10 @@ PageUtil.setValues(res);
 
 Defines HTML writing rules. Explains starting from basic structure.
 
-### Minimum Structure (Language: Japanese)
+### Minimum Structure
 ```HTML
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
