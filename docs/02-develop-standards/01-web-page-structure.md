@@ -3,6 +3,10 @@
 ## Overview
 - Defines standard rules for system development using browsers.
 - By adhering to this standard and this framework, aims to unify program code and improve development and maintenance efficiency.
+- In this document, terms are used with the following meanings:
+    - Web page (screen): a single screen unit displayed in a browser (including HTML, CSS, and JavaScript)
+    - HTML: the `.html` file itself, or the HTML language
+    - Web service: server-side processing (business logic and DB operations implemented in Java)
 - In this document, list pages (repeating rows) and detail data (repeating rows) are collectively called "lists", and sections explaining lists apply to both.
 - This document explains using the following samples:
     - HTML/JavaScript: `pages/app/exmodule/`
