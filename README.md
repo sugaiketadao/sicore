@@ -141,7 +141,7 @@ The development procedure using AI tools such as GitHub Copilot is as follows.
 ### 🧪 Try It Now
 
 You can experience actual AI coding using the sample requirements included in the repository.
-Enter the following prompt in Copilot chat.
+Open the project in VS Code (if you haven't already, refer to "How to Verify Sample Screens" above), and enter the following prompt in Copilot Chat.
 
 > Generate screen functionality with the requirements in `ai-test-prompts/order-prompt.md`.
 
