@@ -46,7 +46,7 @@ public final class DbUtil {
     /**
      * Constructor.
      *
-     * @param value Product name
+     * @param value product name
      */
     private DbmsName(final String value) {
       this.productName = value;
@@ -59,46 +59,46 @@ public final class DbUtil {
   }
 
 
-  /** Default database connection name (part before .dbcon.url). */
+  /** Default database connection name (the part before .dbcon.url). */
   private static final String DEFAULT_CONN_NAME = "default";
 
   /** Database connection - URL suffix. */
   private static final String PKEY_SUFFIX_URL = ".conn.url";
-  /** Database connection - User suffix. */
+  /** Database connection - user suffix. */
   private static final String PKEY_SUFFIX_USER = ".conn.user";
-  /** Database connection - Password suffix. */
+  /** Database connection - password suffix. */
   private static final String PKEY_SUFFIX_PASS = ".conn.pass";
-  /** Database connection - Max connections (pool size) suffix. */
+  /** Database connection - maximum connection count (pool size) suffix. */
   private static final String PKEY_SUFFIX_MAX = ".conn.max";
 
   /** Database configuration. */
   private static final IoItems PROP_MAP;
-  /** SQL execution elapsed time for warning output. */
+  /** Warning output SQL execution elapsed time. */
   static final long SQL_EXEC_WARN_TIME_MSEC;
 
   static {
-    // Get database configuration
+    // Retrieve database configuration
     PROP_MAP = PropertiesUtil.getFrameworkProps(FwPropertiesName.DB);
     SQL_EXEC_WARN_TIME_MSEC = PROP_MAP.getLongOrDefault("sqlexec.warn.time", -1);
   }
 
   /**
-   * Connection pool management map <database connection name, connection pool map <connection serial code, database connection>> (singleton).<br>
+   * Connection pool management map &lt;database connection name, connection pool map &lt;connection serial code, database connection&gt;&gt; (singleton).<br>
    * <ul>
-   * <li>Holds a map per database connection name to handle multiple connections simultaneously.</li>
-   * <li>Internal connection pool map uses thread-safe class.</li>
-   * <li>Connection serial code is generated in <code>DbConn</code> class when connection is established.</li>
+   * <li>Maintains a map for each database connection name to handle multiple connections simultaneously.</li>
+   * <li>Uses thread-safe classes for internal connection pool maps.</li>
+   * <li>Connection serial codes are generated within the <code>DbConn</code> class when connections are established.</li>
    * </ul>
    */
   private static final Map<String, ConcurrentMap<String, Connection>> connPoolMaps_ =
       new HashMap<>();
 
   /**
-   * Busy connection management map <database connection name, busy connection list <connection serial code>> (singleton).<br>
+   * Busy connection management map &lt;database connection name, busy connection list &lt;connection serial code&gt;&gt; (singleton).<br>
    * <ul>
-   * <li>Holds a list per database connection name to handle multiple connections simultaneously.</li>
-   * <li>Internal busy connection list uses thread-safe class.</li>
-   * <li>Connection serial code is generated in <code>DbConn</code> class when connection is established.</li>
+   * <li>Maintains a list for each database connection name to handle multiple connections simultaneously.</li>
+   * <li>Uses thread-safe classes for internal busy connection lists.</li>
+   * <li>Connection serial codes are generated within the <code>DbConn</code> class when connections are established.</li>
    * </ul>
    */
   private static final Map<String, ConcurrentLinkedQueue<String>> connBusyLists_ = new HashMap<>();
@@ -111,9 +111,9 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the default database connection.<br>
+   * Retrieves the default database connection.<br>
    * <ul>
-   * <li>Declare in try clause (try-with-resources statement).</li>
+   * <li>Declare in a try clause (try-with-resources statement).</li>
    * </ul>
    *
    * @return the database connection
@@ -123,12 +123,12 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the default database connection.<br>
+   * Retrieves the default database connection.<br>
    * <ul>
-   * <li>Declare in try clause (try-with-resources statement).</li>
+   * <li>Declare in a try clause (try-with-resources statement).</li>
    * </ul>
    * 
-   * @param traceCode Trace code
+   * @param traceCode trace code
    * @return the database connection
    */
   public static Connection getConn(final String traceCode) {
@@ -136,12 +136,12 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the database connection by configuration name.<br>
+   * Retrieves a database connection with the specified connection name.<br>
    * <ul>
-   * <li>Declare in try clause (try-with-resources statement).</li>
+   * <li>Declare in a try clause (try-with-resources statement).</li>
    * </ul>
    *
-   * @param connName Database connection name in configuration file (part before .dbcon.url)
+   * @param connName database connection name in the configuration file (the part before .dbcon.url)
    * @return the database connection
    */
   public static Connection getConnByConfigName(final String connName) {
@@ -149,19 +149,19 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the database connection by configuration name.<br>
+   * Retrieves a database connection with the specified connection name.<br>
    * <ul>
-   * <li>Declare in try clause (try-with-resources statement).</li>
+   * <li>Declare in a try clause (try-with-resources statement).</li>
    * </ul>
    *
-   * @param connName  Database connection name in configuration file (part before .dbcon.url)
-   * @param traceCode Trace code
+   * @param connName  database connection name in the configuration file (the part before .dbcon.url)
+   * @param traceCode trace code
    * @return the database connection
    */
   public static Connection getConnByConfigName(final String connName, final String traceCode) {
     // Generate connection serial code
     final String serialCode = createSerialCode(connName);
-    // New connection
+    // Create new connection
     final Connection conn = createConn(connName);
     // Wrap and return
     final DbConn dbConn = new DbConn(conn, serialCode, traceCode);
@@ -169,10 +169,10 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the default pooled database connection.<br>
+   * Retrieves the default pooled database connection.<br>
    * <ul>
-   * <li>Gets a pooled database connection.</li>
-   * <li>Declare in try clause (try-with-resources statement).</li>
+   * <li>Retrieves a pooled database connection.</li>
+   * <li>Declare in a try clause (try-with-resources statement).</li>
    * </ul>
    *
    * @return the database connection
@@ -182,13 +182,13 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the default pooled database connection.<br>
+   * Retrieves the default pooled database connection.<br>
    * <ul>
-   * <li>Gets a pooled database connection.</li>
-   * <li>Declare in try clause (try-with-resources statement).</li>
+   * <li>Retrieves a pooled database connection.</li>
+   * <li>Declare in a try clause (try-with-resources statement).</li>
    * </ul>
    *
-   * @param traceCode Trace code
+   * @param traceCode trace code
    * @return the database connection
    */
   public static Connection getConnPooled(final String traceCode) {
@@ -196,13 +196,13 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the pooled database connection by configuration name.<br>
+   * Retrieves a pooled database connection with the specified connection name.<br>
    * <ul>
-   * <li>Gets a pooled database connection.</li>
-   * <li>Declare in try clause (try-with-resources statement).</li>
+   * <li>Retrieves a pooled database connection.</li>
+   * <li>Declare in a try clause (try-with-resources statement).</li>
    * </ul>
    *
-   * @param connName  Database connection name in configuration file (part before .dbcon.url)
+   * @param connName  database connection name in the configuration file (the part before .dbcon.url)
    * @return the database connection
    */
   public static synchronized Connection getConnPooledByConfigName(final String connName) {
@@ -210,19 +210,19 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the pooled database connection by configuration name.<br>
+   * Retrieves a pooled database connection with the specified connection name.<br>
    * <ul>
-   * <li>Gets a pooled database connection.</li>
-   * <li>Declare in try clause (try-with-resources statement).</li>
+   * <li>Retrieves a pooled database connection.</li>
+   * <li>Declare in a try clause (try-with-resources statement).</li>
    * </ul>
    *
-   * @param connName  Database connection name in configuration file (part before .dbcon.url)
-   * @param traceCode Trace code
+   * @param connName  database connection name in the configuration file (the part before .dbcon.url)
+   * @param traceCode trace code
    * @return the database connection
    */
   public static synchronized Connection getConnPooledByConfigName(final String connName, final String traceCode) {
 
-    // Create management data for database connection name if not exists
+    // Create management data for database connection name if it does not exist
     if (!connPoolMaps_.containsKey(connName)) {
       connPoolMaps_.put(connName, new ConcurrentHashMap<String, Connection>());
       connBusyLists_.put(connName, new ConcurrentLinkedQueue<String>());
@@ -233,10 +233,10 @@ public final class DbUtil {
     // Busy connections (thread-safe)
     final ConcurrentLinkedQueue<String> connBusyList = connBusyLists_.get(connName);
 
-    // Find and return a connection that is not busy
-    // Use iterator as removal may occur
+    // Find and return a connection that is not in use
+    // Use iterator as it may be removed
     final Iterator<Map.Entry<String, Connection>> connIte = connPoolMap.entrySet().iterator();
-    // Connection pool loop
+    // Loop through connection pool
     while (connIte.hasNext()) {
       final Map.Entry<String, Connection> connEnt = connIte.next();
       // Connection serial code
@@ -245,21 +245,21 @@ public final class DbUtil {
         // Not in busy connection list
         final Connection conn = connEnt.getValue();
         if (isClosedQuietly(conn)) {
-          // If disconnected for some reason, remove from map and search next
+          // If the database is disconnected for any reason, remove from map and search for next
           connPoolMap.remove(serialCode);
           continue;
         }
-        // Add connection serial code to busy connection list (removal is done on disconnect)
-        // Add before instance creation to prevent same connection from being used by multiple threads
+        // Add connection serial code to busy connection list (removed when database is disconnected)
+        // Add before instance creation to prevent the same connection from being used by multiple threads
         connBusyList.add(serialCode);
         // Wrap and return
         final DbConnPooled dbConn = new DbConnPooled(conn, serialCode, connBusyList, traceCode);
         return dbConn;
       }
     }
-    // If no unused connection and max connections not reached, create new connection and return.
+    // If there are no unused connections and the maximum connection count has not been reached, create a new connection and return it.
 
-    // Max connections (pool size)
+    // Maximum connection count (pool size)
     final int maxSize = PROP_MAP.getInt(connName + PKEY_SUFFIX_MAX);
 
     if (connPoolMap.size() >= maxSize) {
@@ -272,7 +272,7 @@ public final class DbUtil {
     final Connection conn = createConn(connName);
     // Add to connection pool
     connPoolMap.put(newSerialCode, conn);
-    // Add connection serial code to busy connection list (removal is done on disconnect)
+    // Add connection serial code to busy connection list (removed when database is disconnected)
     connBusyList.add(newSerialCode);
     // Wrap and return
     final DbConnPooled dbConn = new DbConnPooled(conn, newSerialCode, connBusyList, traceCode);
@@ -282,17 +282,17 @@ public final class DbUtil {
   /**
    * Closes pooled database connections.<br>
    * <ul>
-   * <li>Closes all pooled database connections.</li>
-   * <li>Also closes connections in use.</li>
+   * <li>Disconnects all pooled database connections.</li>
+   * <li>Also disconnects busy connections.</li>
    * </ul>
    * 
-   * @return <code>true</code> if any connections were closed
+   * @return <code>true</code> if disconnected
    */
   public static synchronized boolean closePooledConn() {
     boolean ret = false;
-    // Use iterator as removal may occur
+    // Use iterator as it will be removed
     final Iterator<String> connNameIte = connPoolMaps_.keySet().iterator();
-    // Connection pool management map loop
+    // Loop through connection pool management map
     while (connNameIte.hasNext()) {
       final String connName = connNameIte.next();
       // Connection pool (thread-safe)
@@ -300,24 +300,24 @@ public final class DbUtil {
       // Busy connections (thread-safe)
       final ConcurrentLinkedQueue<String> connBusyList = connBusyLists_.get(connName);
 
-      // Connection pool loop
+      // Loop through connection pool
       for (final Map.Entry<String, Connection> connEnt : connPoolMap.entrySet()) {
         // Connection serial code
         final String serialCode = connEnt.getKey();
         if (connBusyList.contains(serialCode)) {
-          // Connection is in use
+          // If connection is busy
           LogUtil.stdout("Warninng! Database connection is currently busy during close pooled connections. "
               + LogUtil.joinKeyVal("serialCode", serialCode));
         }
         // Database connection
         final Connection conn = connEnt.getValue();
-        // Wrap before closing database connection (to unify log output)
+        // Wrap before disconnecting database (to unify log output)
         @SuppressWarnings("resource")
         final DbConn dbConn = new DbConn(conn, serialCode);
         dbConn.rollbackCloseForce();
         ret = true;
       }
-      // Remove from connection pool management map and busy connection management map after all database connections are closed
+      // Remove from connection pool management map and busy connection management map after disconnecting all databases
       connPoolMaps_.remove(connName);
       connBusyLists_.remove(connName);
     }
@@ -327,7 +327,7 @@ public final class DbUtil {
   /**
    * Establishes a database connection.
    *
-   * @param connName Database connection name in configuration file (part before .dbcon.url)
+   * @param connName database name in the configuration file (the part before .dbcon.url)
    * @return the database connection
    */
   private static Connection createConn(final String connName) {
@@ -360,13 +360,13 @@ public final class DbUtil {
   }
 
   /**
-   * Checks if database connection is closed ignoring errors.<br>
+   * Checks if the database is disconnected, ignoring errors.<br>
    * <ul>
-   * <li>Use this method instead of <code>#isClosed()</code> from components to avoid throwing errors.</li>
+   * <li>Components should use this method instead of <code>#isClosed()</code> as it does not throw errors.</li>
    * </ul>
    *
-   * @param conn Database connection
-   * @return <code>true</code> if the database connection is closed (also returns <code>true</code> on error)
+   * @param conn database connection
+   * @return <code>true</code> if the database is disconnected (also <code>true</code> in case of error)
    */
   private static boolean isClosedQuietly(final Connection conn) {
     try {
@@ -374,7 +374,7 @@ public final class DbUtil {
         return true;
       }
     } catch (SQLException ignore) {
-      // Treat as closed on exception error
+      // Determine as closed in case of exception error
       return true;
     }
     return false;
@@ -383,7 +383,7 @@ public final class DbUtil {
   /**
    * Generates a serial code.
    *
-   * @param connName Database connection name in configuration file (part before .dbcon.url)
+   * @param connName database connection name in the configuration file (the part before .dbcon.url)
    * @return the serial code
    */
   private static String createSerialCode(final String connName) {
@@ -392,9 +392,9 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the serial code from a database connection.
+   * Retrieves the serial code from the database connection.
    *
-   * @param conn Database connection
+   * @param conn database connection
    * @return the serial code
    */
   static String getSerialCode(final Connection conn) {
@@ -405,14 +405,14 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the DBMS name from a database connection.
+   * Retrieves the DBMS name from the database connection.
    *
-   * @param conn Database connection
+   * @param conn database connection
    * @return the DBMS name
    */
   static DbmsName getDbmsName(final Connection conn) {
     try {
-      // Product name from database connection
+      // Database connection product name
       final String productName =
           ValUtil.nvl(conn.getMetaData().getDatabaseProductName()).toLowerCase();
       for (final DbmsName dbmsName : DbmsName.values()) {
@@ -427,9 +427,9 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the DBMS name from a database statement.
+   * Retrieves the DBMS name from the database statement.
    *
-   * @param stmt Database statement
+   * @param stmt database statement
    * @return the DBMS name
    */
   static DbmsName getDbmsName(final Statement stmt) {
@@ -441,9 +441,9 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the DBMS name from a database result set.
+   * Retrieves the DBMS name from the database result set.
    *
-   * @param rset Database result set
+   * @param rset database result set
    * @return the DBMS name
    */
   static DbmsName getDbmsName(final ResultSet rset) {
@@ -455,8 +455,8 @@ public final class DbUtil {
   }
 
   /**
-   * Gets the database connection configuration names.
-   * @return the list of connection names where URL is configured (includes default connection name)
+   * Retrieves database connection configuration names.
+   * @return the list of connection names with URLs configured (includes the default connection name)
    */
   public static List<String> getConnNames() {
     final List<String> ret = new ArrayList<>();
@@ -470,9 +470,9 @@ public final class DbUtil {
   }
 
   /**
-   * Closes prepared statement ignoring errors.
+   * Closes the prepared statement, ignoring errors.
    *
-   * @param stmt the prepared statement
+   * @param stmt prepared statement
    */
   static void closeQuietly(final PreparedStatement stmt) {
     if (ValUtil.isNull(stmt)) {
@@ -489,9 +489,9 @@ public final class DbUtil {
   }
   
   /**
-   * Closes result set ignoring errors.
+   * Closes the result set, ignoring errors.
    *
-   * @param rset the result set
+   * @param rset result set
    */
   static void closeQuietly(final ResultSet rset) {
     if (ValUtil.isNull(rset)) {

@@ -43,8 +43,8 @@ public class DbConn implements Connection {
   /**
    * Constructor.
    *
-   * @param conn       Database connection
-   * @param serialCode Connection serial code
+   * @param conn       database connection
+   * @param serialCode connection serial code
    */
   DbConn(final Connection conn, final String serialCode) {
     this(conn, serialCode, null);
@@ -53,9 +53,9 @@ public class DbConn implements Connection {
   /**
    * Constructor.
    *
-   * @param conn       Database connection
-   * @param serialCode Connection serial code
-   * @param traceCode  Trace code
+   * @param conn       database connection
+   * @param serialCode connection serial code
+   * @param traceCode  trace code
    */
   DbConn(final Connection conn, final String serialCode, final String traceCode) {
     super();
@@ -70,15 +70,15 @@ public class DbConn implements Connection {
   /**
    * Initialization processing.<br>
    * <ul>
-   * <li>Setting <code>ResultSet.HOLD_CURSORS_OVER_COMMIT</code> to avoid PostgreSQL cursor invalid error
-   * causes fetch size to be ignored and fetches all rows, potentially causing OutOfMemory,
-   * so this setting logic is discontinued. (See <code>SqlUtil#select(Connection, SqlBuilder)</code>)<br>
+   * <li>To avoid PostgreSQL cursor invalidation errors, setting <code>ResultSet.HOLD_CURSORS_OVER_COMMIT</code>
+   * ignores the fetch size and fetches all records, which may cause OutOfMemory errors.
+   * Therefore, that configuration logic is discontinued. (See <code>SqlUtil#select(Connection, SqlBuilder)</code>)<br>
    * Do not implement this in the future.</li>
    * </ul>
    */
   private void init() {
     try {
-      // Auto commit OFF
+      // Turn off auto commit
       this.conn.setAutoCommit(false);
     } catch (SQLException e) {
       throw new RuntimeException("Exception error occurred during database initialization. ", e);
@@ -86,7 +86,7 @@ public class DbConn implements Connection {
   }
 
   /**
-   * Gets the serial code.
+   * Retrieves the serial code.
    *
    * @return the serial code
    */
@@ -95,7 +95,7 @@ public class DbConn implements Connection {
   }
 
   /**
-   * Force rollback and disconnect.<br>
+   * Forces rollback and disconnects the database.<br>
    * <ul>
    * <li>Components should use this method instead of <code>#close()</code> as it does not throw errors.</li>
    * </ul>
@@ -129,12 +129,12 @@ public class DbConn implements Connection {
     return "{" + LogUtil.joinKeyVal("serialCode", this.serialCode, "traceCode", this.traceCode) + "}";
   }
 
-  /* Below are database connection delegation methods */
+  /* Database connection delegation methods below */
 
   /**
-   * Disconnect from database.<br>
+   * Disconnects the database.<br>
    * <ul>
-   * <li>Rollback even on normal disconnect to unify behavior.</li>
+   * <li>Rolls back even in normal database disconnection to unify behavior.</li>
    * </ul>
    */
   @Override
@@ -143,13 +143,13 @@ public class DbConn implements Connection {
   }
 
   /**
-   * Unwrap.<br>
+   * Unwraps the wrapper.<br>
    * <ul>
    * <li>Returns an object that implements the specified interface.</li>
    * </ul>
    *
-   * @param <T> Return type
-   * @param iface Interface to unwrap
+   * @param <T> the return value type
+   * @param iface the interface to unwrap
    * @return the unwrapped object
    */
   @Override
@@ -158,12 +158,12 @@ public class DbConn implements Connection {
   }
 
   /**
-   * Wrapper check.<br>
+   * Determines if this is a wrapper.<br>
    * <ul>
    * <li>Determines whether this is a wrapper for the specified interface.</li>
    * </ul>
    *
-   * @param iface Interface to check
+   * @param iface the interface to check
    * @return <code>true</code> if this is a wrapper
    */
   @Override

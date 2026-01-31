@@ -1,8 +1,8 @@
 /**
- * Example module package.<br>
+ * Sample module package.<br>
  * <ul>
- * <li>Manages user basic information.</li>
- * <li>Manages user's pets.</li>
+ * <li>Manages basic user information.</li>
+ * <li>Manages pets owned by users.</li>
  * </ul>
  */
 package com.example.app.service.exmodule;

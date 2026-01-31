@@ -9,14 +9,14 @@ import java.sql.Connection;
 /**
  * Database access web service base class.<br>
  * <ul>
- * <li>A base class for web services that include database connection.</li>
- * <li>Automatically handles database connection acquisition and closing.</li>
+ * <li>This is the base class for web services that include database connections.</li>
+ * <li>Automatically handles obtaining and closing DB connections.</li>
  * </ul>
  */
 public abstract class AbstractDbAccessWebService extends AbstractWebService {
 
   /**
-   * Database connection.
+   * DB connection.
    */
   private Connection dbConn = null;
 
@@ -31,20 +31,20 @@ public abstract class AbstractDbAccessWebService extends AbstractWebService {
   }
 
   /**
-   * Invokes main processing.<br>
+   * Calls main processing.<br>
    * <ul>
-   * <li>Acquires a pooled database connection and executes the superclass processing.</li>
+   * <li>Obtains a pooled DB connection and executes the superclass processing.</li>
    * <li>Commits if processing completes normally.</li>
    * <li>Rolls back if an exception error occurs. (Rollback is performed in <code>DbConnPooled#close()</code>)</li>
-   * <li>Always closes the database connection after processing completes.</li>
+   * <li>Always closes the DB connection after processing ends.</li>
    * </ul>
    *
-   * @param io the argument and return value (request and response)
-   * @throws Exception exception error
+   * @param io Argument and return value (request and response)
+   * @throws Exception Exception error
    */
   @Override
   void execute(final Io io) throws Exception {
-    // Acquires pooled database connection
+    // Gets pooled DB connection
     try (final Connection conn = DbUtil.getConnPooled(super.traceCode)) {
       this.dbConn = conn;
       super.execute(io);
@@ -57,13 +57,13 @@ public abstract class AbstractDbAccessWebService extends AbstractWebService {
   }
 
   /**
-   * Gets database connection.<br>
+   * Gets DB connection.<br>
    * <ul>
-   * <li>Returns the current database connection.</li>
-   * <li>The connection is valid only within the <code>execute</code> method.</li>
+   * <li>Returns the current DB connection.</li>
+   * <li>This connection is valid only within the <code>execute</code> method.</li>
    * </ul>
    *
-   * @return the database connection
+   * @return DB connection
    */
   protected Connection getDbConn() {
     if (ValUtil.isNull(this.dbConn)) {

@@ -41,7 +41,7 @@ abstract class AbstractSeparateThread implements Runnable {
   }
 
   /**
-   * Executes thread.
+   * Executes the thread.
    */
   public synchronized void execute() {
     if (isRunning()) {
@@ -58,10 +58,10 @@ abstract class AbstractSeparateThread implements Runnable {
   }
 
   /**
-   * Gets running flag.
+   * Retrieves the running flag.
    * <ul>
-   * <li>Checks both running flag and thread alive status</li>
-   * <li>May return <code>false</code> immediately after thread start or just before termination</li>
+   * <li>Checks both the running flag and the thread's alive state</li>
+   * <li>May return <code>false</code> immediately after thread startup or just before termination</li>
    * </ul>
    *
    * @return <code>true</code> if running

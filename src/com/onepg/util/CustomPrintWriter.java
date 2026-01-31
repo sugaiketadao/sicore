@@ -8,9 +8,9 @@ import java.io.Writer;
 /**
  * Print writer wrapper class.<br>
  * <ul>
- * <li>Line separator can be specified instead of using OS-dependent default.</li>
- * <li>Auto-flush feature enables immediate output control on line breaks.</li>
- * <li>Provides <code>null</code> safety and validates invalid arguments in advance.</li>
+ * <li>Line separator can be specified instead of being OS-dependent.</li>
+ * <li>Auto flush functionality allows control of immediate output on line breaks.</li>
+ * <li>Provides <code>null</code> safety and validates arguments in advance.</li>
  * </ul>
  * @hidden
  */
@@ -18,15 +18,15 @@ public final class CustomPrintWriter extends PrintWriter {
 
   /** Line separator. */
   private final String lineSep;
-  /** Auto-flush flag (mainly on line breaks). */
+  /** Auto flush flag (mainly on line breaks). */
   private final boolean autoFlush;
 
   /**
    * Constructor.
    *
-   * @param out the writer
-   * @param autoFlush <code>true</code> to auto-flush (mainly on line breaks)
-   * @param lineSep the line separator
+   * @param out writer
+   * @param autoFlush <code>true</code> to auto flush (mainly on line breaks)
+   * @param lineSep line separator
    */
   public CustomPrintWriter(final Writer out, final boolean autoFlush, final LineSep lineSep) {
     super(out, false);
@@ -37,9 +37,9 @@ public final class CustomPrintWriter extends PrintWriter {
   /**
    * Constructor.
    *
-   * @param out the output stream
-   * @param autoFlush flush on line break
-   * @param lineSep the line separator
+   * @param out output stream
+   * @param autoFlush flush on line breaks
+   * @param lineSep line separator
    */
   public CustomPrintWriter(final OutputStream out, final boolean autoFlush, final LineSep lineSep) {
     super(out, false);
@@ -48,9 +48,9 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes the value and line separator.
+   * Writes a value with line separator.
    *
-   * @param value the value to output
+   * @param value value to output
    */
   private void writeValueAndLineSep(final String value) {
     super.write(value);
@@ -59,9 +59,9 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes.
+   * Writes data.
    *
-   * @param line the output data
+   * @param line output data
    */
   private void writeAndFlush(final String line) {
     super.write(line);
@@ -69,7 +69,7 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Flushes if needed.
+   * Executes flush.
    */
   private void flushIfNeeded() {
     if (this.autoFlush) {
@@ -86,8 +86,8 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes a line separator.
-   * @param x the output data
+   * Writes a value with line separator.
+   * @param x output data
    */
   @Override
   public void println(boolean x) {
@@ -95,8 +95,8 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes a line separator.
-   * @param x the output data
+   * Writes a value with line separator.
+   * @param x output data
    */
   @Override
   public void println(char x) {
@@ -104,8 +104,8 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes a line separator.
-   * @param x the output data
+   * Writes a value with line separator.
+   * @param x output data
    */
   @Override
   public void println(int x) {
@@ -113,8 +113,8 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes a line separator.
-   * @param x the output data
+   * Writes a value with line separator.
+   * @param x output data
    */
   @Override
   public void println(long x) {
@@ -122,8 +122,8 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes a line separator.
-   * @param x the output data
+   * Writes a value with line separator.
+   * @param x output data
    */
   @Override
   public void println(float x) {
@@ -131,8 +131,8 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes a line separator.
-   * @param x the output data
+   * Writes a value with line separator.
+   * @param x output data
    */
   @Override
   public void println(double x) {
@@ -140,8 +140,8 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes a line separator.
-   * @param x the output data
+   * Writes a value with line separator.
+   * @param x output data
    */
   @Override
   public void println(char[] x) {
@@ -149,8 +149,8 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes a line separator.
-   * @param x the output data
+   * Writes a value with line separator.
+   * @param x output data
    */
   @Override
   public void println(String x) {
@@ -158,8 +158,8 @@ public final class CustomPrintWriter extends PrintWriter {
   }
 
   /**
-   * Writes a line separator.
-   * @param x the output data
+   * Writes a value with line separator.
+   * @param x output data
    */
   @Override
   public void println(Object x) {

@@ -8,82 +8,86 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * I/O map class.<br>
+ * Input/output map class.<br>
  * <ul>
- * <li>Can hold string lists.</li>
- * <li>Can hold nested variable type maps.</li>
- * <li>Can hold multiple rows of variable type maps as lists.</li>
- * <li>Can hold string array (list) as lists.</li>
- * <li>The above data structures are deep copied during both storage and retrieval.</li>
- * <li>Can input/output JSON.</li>
- * <li>Can input/output URL parameters.</li>
- * <li>Basic rules and limitations conform to <code>AbstractIoTypeMap</code>.</li>
+ * <li>Can store string lists.</li>
+ * <li>Can store nested variable type maps.</li>
+ * <li>Can store multiple rows of variable type maps in a list.</li>
+ * <li>Can store string arrays (lists) in a list.</li>
+ * <li>The above data structures are deep copied at both storage and retrieval time.</li>
+ * <li>Can input and output JSON.</li>
+ * <li>Can input and output URL parameters.</li>
+ * <li>The basic rules and restrictions conform to <code>AbstractIoTypeMap</code>.</li>
  * 
  * <li>About string lists
  * <ul>
- * <li>Handle with <code>**List</code> methods such as <code>#getList(String)</code>, <code>#putList(String, List)</code>, <code>#containsKeyList(String)</code>,
+ * <li>Handled through <code>**List</code> methods such as <code>#getList(String)</code>, <code>#putList(String, List)</code>, <code>#containsKeyList(String)</code>,
  * <code>#removeList(String)</code>.</li>
- * <li>String lists are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
- * <code>#keySet()</code>.<br>
- * However, <code>#clear()</code> also clears the stored string lists.</li>
- * <li>Adding elements to a list retrieved by <code>#getList(String)</code> does not affect the list held by this class.</li>
- * <li>Adding elements to the original list stored by <code>#putList(String, List)</code>
+ * <li>String lists are not included in the results of <code>#size()</code>, <code>#containsKey(Object)</code>,
+ * <code>#keySet()</code>,
+ * etc., which the map class has.<br>
+ * However, <code>#clear()</code> also clears the storage of string lists.</li>
+ * <li>Adding elements to the list retrieved from <code>#getList(String)</code> does not affect the list held by this class.</li>
+ * <li>Adding elements to the original list stored with <code>#putList(String, List)</code>
  * does not affect the list held by this class.</li>
- * <li>String lists are not included in CSV output.</li>
- * <li>Be careful about string length when using URL parameters containing string lists.</li>
- * <li>Performance may degrade when repeatedly storing and retrieving lists or handling large lists, due to deep copying.</li>
+ * <li>String lists are not targets for CSV output.</li>
+ * <li>Be careful of string length for URL parameters that include string lists.</li>
+ * <li>Performance may degrade in processing that repeatedly stores and retrieves lists or handles large-sized lists because deep copying is performed.</li>
  * </ul>
  * </li>
  * 
  * <li>About nested maps
  * <ul>
- * <li>Handle with <code>**Nest</code> methods such as <code>#getNest(String)</code>, <code>#putNest(String, Map)</code>, <code>#containsKeyNest(String)</code>,
+ * <li>Handled through <code>**Nest</code> methods such as <code>#getNest(String)</code>, <code>#putNest(String, Map)</code>, <code>#containsKeyNest(String)</code>,
  * <code>#removeNest(String)</code>.</li>
- * <li>Nested maps are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
- * <code>#keySet()</code>.<br>
- * However, <code>#clear()</code> also clears the stored nested maps.</li>
- * <li>Adding elements to a map retrieved by <code>#getNest(String)</code> does not affect the map held by this class.</li>
- * <li>Adding elements to the original map stored by <code>#putNest(String, List)</code>
+ * <li>Nested maps are not included in the results of <code>#size()</code>, <code>#containsKey(Object)</code>,
+ * <code>#keySet()</code>,
+ * etc., which the map class has.<br>
+ * However, <code>#clear()</code> also clears the storage of nested maps.</li>
+ * <li>Adding elements to the map retrieved from <code>#getNest(String)</code> does not affect the map held by this class.</li>
+ * <li>Adding elements to the original map stored with <code>#putNest(String, List)</code>
  * does not affect the map held by this class.</li>
- * <li>Nested maps are not included in CSV output or URL parameter output.</li>
- * <li>Performance may degrade when repeatedly storing and retrieving lists or handling large lists, due to deep copying.</li>
+ * <li>Nested maps are not targets for CSV output or URL parameter output.</li>
+ * <li>Performance may degrade in processing that repeatedly stores and retrieves lists or handles large-sized lists because deep copying is performed.</li>
  * </ul>
  * </li>
  * 
  * <li>About multiple rows lists
  * <ul>
- * <li>Handle with <code>**Rows</code> methods such as <code>#getRows(String)</code>, <code>#putRows(String, Collection)</code>,
+ * <li>Handled through <code>**Rows</code> methods such as <code>#getRows(String)</code>, <code>#putRows(String, Collection)</code>,
  * <code>#containsKeyRows(String)</code>, <code>#removeRows(List)</code>.</li>
- * <li>Multiple rows lists are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
- * <code>#keySet()</code>.<br>
- * However, <code>#clear()</code> also clears the stored multiple rows lists.</li>
- * <li>Adding elements to a list retrieved by <code>#getRows(String)</code> does not affect the list held by this class.</li>
- * <li>Adding elements to the original list stored by <code>#putRows(String, Collection)</code>
+ * <li>Multiple rows lists are not included in the results of <code>#size()</code>, <code>#containsKey(Object)</code>,
+ * <code>#keySet()</code>,
+ * etc., which the map class has.<br>
+ * However, <code>#clear()</code> also clears the storage of multiple rows lists.</li>
+ * <li>Adding elements to the list retrieved from <code>#getRows(String)</code> does not affect the list held by this class.</li>
+ * <li>Adding elements to the original list stored with <code>#putRows(String, Collection)</code>
  * does not affect the list held by this class.</li>
- * <li>Multiple rows lists are not included in CSV output or URL parameter output.</li>
- * <li>Performance may degrade when repeatedly storing and retrieving lists or handling large lists, due to deep copying.</li>
+ * <li>Multiple rows lists are not targets for CSV output or URL parameter output.</li>
+ * <li>Performance may degrade in processing that repeatedly stores and retrieves lists or handles large-sized lists because deep copying is performed.</li>
  * </ul>
  * </li>
  * 
  * <li>About array lists
  * <ul>
- * <li>Handle with <code>**Arys</code> methods such as <code>#getArys(String)</code>, <code>#putArys(String, Collection)</code>,
+ * <li>Handled through <code>**Arys</code> methods such as <code>#getArys(String)</code>, <code>#putArys(String, Collection)</code>,
  * <code>#containsKeyArys(String)</code>, <code>#removeArys(List)</code>.</li>
- * <li>Array lists are not included in the results of map class methods like <code>#size()</code>, <code>#containsKey(Object)</code>,
- * <code>#keySet()</code>.<br>
- * However, <code>#clear()</code> also clears the stored array lists.</li>
- * <li>Adding elements to a list retrieved by <code>#getArys(String)</code> does not affect the list held by this class.</li>
- * <li>Adding elements to the original list stored by <code>#putArys(String, Collection)</code>
+ * <li>Array lists are not included in the results of <code>#size()</code>, <code>#containsKey(Object)</code>,
+ * <code>#keySet()</code>,
+ * etc., which the map class has.<br>
+ * However, <code>#clear()</code> also clears the storage of array lists.</li>
+ * <li>Adding elements to the list retrieved from <code>#getArys(String)</code> does not affect the list held by this class.</li>
+ * <li>Adding elements to the original list stored with <code>#putArys(String, Collection)</code>
  * does not affect the list held by this class.</li>
- * <li>Array lists are not included in CSV output or URL parameter output.</li>
- * <li>Performance may degrade when repeatedly storing and retrieving lists or handling large lists, due to deep copying.</li>
+ * <li>Array lists are not targets for CSV output or URL parameter output.</li>
+ * <li>Performance may degrade in processing that repeatedly stores and retrieves lists or handles large-sized lists because deep copying is performed.</li>
  * </ul>
  * </li>
  * 
- * <li>JSON does not support arrays of 4 or more levels (dimensions).
+ * <li>Arrays of 4 or more layers (dimensions) in JSON are not supported.
  * <ul>
- * <li>{ [ [ ] ] } is supported. → Array list</li>
- * <li>{ [ { } ] } is supported. → Multiple rows list</li>
+ * <li>{ [ [ ] ] } is supported. → array list</li>
+ * <li>{ [ { } ] } is supported. → multiple rows list</li>
  * <li>{ [ [ [ ] ] ] } is not supported.</li>
  * <li>{ [ [ { } ] ] } is not supported.</li>
  * </ul>
@@ -91,9 +95,9 @@ import java.util.Map;
  * 
  * <li>About messages
  * <ul>
- * <li>Can hold message ID and target field name, and messages are output together with JSON output.</li>
- * <li>By passing message text as an argument during JSON output, held message texts are also output together.</li>
- * <li><code>{0}, {1}, ...</code> in message text are replaced with strings passed as arguments when adding messages.</li>
+ * <li>Can store message IDs and target item names, etc., and messages are output together at JSON output time.</li>
+ * <li>By passing message text as an argument at JSON output time, the stored message text is also output together.</li>
+ * <li><code>{0}, {1}, ...</code> in the message text are replaced with strings passed as arguments when adding messages.</li>
  * </ul>
  * </li>
  * 
@@ -103,13 +107,13 @@ import java.util.Map;
  */
 public final class Io extends AbstractIoTypeMap {
 
-  /** String list storage map. */
+  /** Map for storing string lists. */
   private final Map<String, List<String>> listMap = new LinkedHashMap<>();
-  /** Nested map storage map. */
+  /** Map for storing nested maps. */
   private final Map<String, Io> nestMap = new LinkedHashMap<>();
-  /** Multiple rows list storage map. */
+  /** Map for storing multiple rows lists. */
   private final Map<String, IoRows> rowsMap = new LinkedHashMap<>();
-  /** Array list storage map. */
+  /** Map for storing array lists. */
   private final Map<String, IoArrays> arysMap = new LinkedHashMap<>();
 
   /** Storage type. */
@@ -134,10 +138,10 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Constructor.<br>
    * <ul>
-   * <li>Deep copies the contents, so the reference to the source map is disconnected.</li>
+   * <li>The reference to the source map is disconnected because the content is deep copied.</li>
    * </ul>
    *
-   * @param srcMap the source map
+   * @param srcMap source map
    */
   public Io(final Map<? extends String, ? extends String> srcMap) {
     super(srcMap);
@@ -146,11 +150,11 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Constructor.<br>
    * <ul>
-   * <li>Deep copies the contents, so the reference to the source map is disconnected.</li>
+   * <li>The reference to the source map is disconnected because the content is deep copied.</li>
    * <li>Messages are also copied.</li>
    * </ul>
    *
-   * @param srcMap the source map
+   * @param srcMap source map
    */
   public Io(final Io srcMap) {
     super();
@@ -159,20 +163,20 @@ public final class Io extends AbstractIoTypeMap {
       throw new RuntimeException("Source map is required. ");
     }
 
-    // Deep copies the contents, so the reference to the source map is disconnected.
+    // The reference to the source map is disconnected because deep copying is performed.
     putAllByIoMap(srcMap, false);
   }
 
   /**
-   * Validates key on retrieval (by storage type).
+   * Validates the key for retrieval (by storage type).
    *
-   * @param type the storage type
-   * @param key the key
+   * @param type storage type
+   * @param key key
    */
   private void validateKeyByTypeForGet(final StorageType type, final String key) {
 
     if (StorageType.LIST == type) {
-      // String list storage map key existence check
+      // Check string list storage map key existence
       if (!this.listMap.containsKey(key)) {
         throw new RuntimeException("Key does not exist in string list. "
                                 + LogUtil.joinKeyVal("key", key));
@@ -180,7 +184,7 @@ public final class Io extends AbstractIoTypeMap {
     }
 
     if (StorageType.NEST == type) {
-      // Nested map storage map key existence check
+      // Check nested map storage map key existence
       if (!this.nestMap.containsKey(key)) {
         throw new RuntimeException("Key does not exist in nested map. "
                                 + LogUtil.joinKeyVal("key", key));
@@ -188,7 +192,7 @@ public final class Io extends AbstractIoTypeMap {
     }
 
     if (StorageType.ROWS == type) {
-      // Multiple rows list storage map key existence check
+      // Check multiple rows list storage map key existence
       if (!this.rowsMap.containsKey(key)) {
         throw new RuntimeException("Key does not exist in multiple rows list. "
                                 + LogUtil.joinKeyVal("key", key));
@@ -196,7 +200,7 @@ public final class Io extends AbstractIoTypeMap {
     }
 
     if (StorageType.ARYS == type) {
-      // Array list storage map key existence check
+      // Check array list storage map key existence
       if (!this.arysMap.containsKey(key)) {
         throw new RuntimeException("Key does not exist in array list. "
                                 + LogUtil.joinKeyVal("key", key));
@@ -205,46 +209,46 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Validates key on storage (by storage type).
+   * Validates the key for storage (by storage type).
    *
-   * @param type the storage type
-   * @param key the key
-   * @param canOverwrite overwrite allowed
+   * @param type storage type
+   * @param key key
+   * @param canOverwrite overwrite permission
    */
   private void validateKeyByTypeForPut(final StorageType type, final String key,
       final boolean canOverwrite) {
 
-    // Key validity check
+    // Check key validity
     validateKey(key);
 
-    // Value storage map key non-existence check
+    // Check value storage map key non-existence
     if (super.getValMap().containsKey(key)) {
       throw new RuntimeException("Key is for value storage map. " + LogUtil.joinKeyVal("key", key));
     }
 
     if ((StorageType.LIST == type && !canOverwrite) || StorageType.LIST != type) {
-      // String list storage map key non-existence check
+      // Check string list storage map key non-existence
       if (this.listMap.containsKey(key)) {
         throw new RuntimeException("Already a string list key (cannot overwrite). " + LogUtil.joinKeyVal("key", key));
       }
     }
 
     if ((StorageType.NEST == type && !canOverwrite) || StorageType.NEST != type) {
-      // Nested map storage map key non-existence check
+      // Check nested map storage map key non-existence
       if (this.nestMap.containsKey(key)) {
         throw new RuntimeException("Already a nested map key (cannot overwrite). " + LogUtil.joinKeyVal("key", key));
       }
     }
 
     if ((StorageType.ROWS == type && !canOverwrite) || StorageType.ROWS != type) {
-      // Multiple rows list storage map key non-existence check
+      // Check multiple rows list storage map key non-existence
       if (this.rowsMap.containsKey(key)) {
         throw new RuntimeException("Already a multiple rows list key (cannot overwrite). " + LogUtil.joinKeyVal("key", key));
       }
     }
 
     if ((StorageType.ARYS == type && !canOverwrite) || StorageType.ARYS != type) {
-      // Array list storage map key non-existence check
+      // Check array list storage map key non-existence
       if (this.arysMap.containsKey(key)) {
         throw new RuntimeException("Already an array list key (cannot overwrite). " + LogUtil.joinKeyVal("key", key));
       }
@@ -252,15 +256,14 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Validates key and retrieves string list copy.<br>
+   * Validates the key and retrieves a copy of the string list.<br>
    * <ul>
-   * <li>The <code>ArrayList</code> constructor performs a shallow copy, but since the contents are
-   * immutable objects (<code>String</code>), it is effectively a deep copy and the reference to
-   * the stored list is severed.</li>
+   * <li>Although the <code>ArrayList</code> constructor is a shallow copy, since the content is an immutable object (<code>String</code>),
+   * it effectively becomes a deep copy and the reference to the stored list is disconnected.</li>
    * </ul>
    *
-   * @param key the key
-   * @return the string list (nullable)
+   * @param key key
+   * @return string list (allows <code>null</code>)
    */
   private List<String> getCopyList(final String key) {
     // Validate key
@@ -270,20 +273,19 @@ public final class Io extends AbstractIoTypeMap {
     if (ValUtil.isNull(list)) {
       return null;
     }
-    // Return copy
+    // Return a copy
     final List<String> copyList = new ArrayList<>(list);
     return copyList;
   }
 
   /**
-   * Validates key and retrieves nested map copy.<br>
+   * Validates the key and retrieves a copy of the nested map.<br>
    * <ul>
-   * <li>The <code>Io</code> constructor deep copies the contents, so the reference to the stored
-   * map is severed.</li>
+   * <li>The <code>Io</code> constructor deep copies the content, so the reference to the stored map is disconnected.</li>
    * </ul>
    *
-   * @param key the key
-   * @return the nested map (nullable)
+   * @param key key
+   * @return nested map (allows <code>null</code>)
    */
   private Io getCopyNest(final String key) {
     // Validate key
@@ -293,179 +295,173 @@ public final class Io extends AbstractIoTypeMap {
     if (ValUtil.isNull(nest)) {
       return null;
     }
-    // Return copy
+    // Return a copy
     final Io copyNest = new Io(nest);
     return copyNest;
   }
 
   /**
-   * Validates key and retrieves multiple rows list copy.<br>
+   * Validates the key and retrieves a copy of the multiple rows list.<br>
    * <ul>
-   * <li><code>IoRows</code> constructor deep copies the contents, so the reference to the stored list is disconnected.</li>
+   * <li>The <code>IoRows</code> constructor deep copies the content, so the reference to the stored list is disconnected.</li>
    * </ul>
    *
-   * @param key the key
-   * @return the multiple rows list (nullable)
+   * @param key key
+   * @return multiple rows list (allows <code>null</code>)
    */
   private IoRows getCopyRows(final String key) {
-    // Key validation
+    // Validate key
     validateKeyByTypeForGet(StorageType.ROWS, key);
 
     final IoRows rows = this.rowsMap.get(key);
     if (ValUtil.isNull(rows)) {
       return null;
     }
-    // Return copy
+    // Return a copy
     final IoRows copyRows = new IoRows(rows);
     return copyRows;
   }
 
   /**
-   * Validates key and retrieves array list copy.<br>
+   * Validates the key and retrieves a copy of the array list.<br>
    * <ul>
-   * <li><code>IoArrays</code> constructor deep copies the contents, so the reference to the stored list is disconnected.</li>
+   * <li>The <code>IoArrays</code> constructor deep copies the content, so the reference to the stored list is disconnected.</li>
    * </ul>
    *
-   * @param key the key
-   * @return the array list (nullable)
+   * @param key key
+   * @return array list (allows <code>null</code>)
    */
   private IoArrays getCopyArys(final String key) {
-    // Key validation
+    // Validate key
     validateKeyByTypeForGet(StorageType.ARYS, key);
 
     final IoArrays arys = this.arysMap.get(key);
     if (ValUtil.isNull(arys)) {
       return null;
     }
-    // Return copy
+    // Return a copy
     final IoArrays copyArys = new IoArrays(arys);
     return copyArys;
   }
 
   /**
-   * Validates key and stores string list copy.<br>
+   * Validates the key and stores a copy of the string list.<br>
    * <ul>
-   * <li>The <code>ArrayList</code> constructor performs a shallow copy, but since the contents are
-   * immutable objects (<code>String</code>), it is effectively a deep copy and the reference to
-   * the source list is severed.</li>
+   * <li>Although the <code>ArrayList</code> constructor is a shallow copy, since the content is an immutable object (<code>String</code>),
+   * it effectively becomes a deep copy and the reference to the source list is disconnected.</li>
    * </ul>
    *
-   * @param key the key
-   * @param srcList the source list
-   * @param canOverwrite overwrite allowed
+   * @param key key
+   * @param srcList source list
+   * @param canOverwrite overwrite permission
    * @return the previously stored string list
    */
   private List<String> putCopyList(final String key, final List<String> srcList,
       final boolean canOverwrite) {
     // Validate key
     validateKeyByTypeForPut(StorageType.LIST, key, canOverwrite);
-    // Store in all keys
+    // Store all keys
     super.allKeySet().add(key);
 
     if (ValUtil.isNull(srcList)) {
       return this.listMap.put(key, null);
     }
-    // Store copy
+    // Store a copy
     final List<String> copyList = new ArrayList<>(srcList);
     return this.listMap.put(key, copyList);
   }
 
   /**
-   * Validates key and stores nested map copy.<br>
+   * Validates the key and stores a copy of the nested map.<br>
    * <ul>
-   * <li>The <code>Io</code> constructor deep copies the contents, so the reference to the source
-   * map is severed.</li>
+   * <li>The <code>Io</code> constructor deep copies the content, so the reference to the source map is disconnected.</li>
    * </ul>
    *
-   * @param key the key
-   * @param srcMap the source map
-   * @param canOverwrite overwrite allowed
+   * @param key key
+   * @param srcMap source map
+   * @param canOverwrite overwrite permission
    * @return the previously stored nested map
    */
   private Io putCopyNest(final String key, final Io srcMap, final boolean canOverwrite) {
     // Validate key
     validateKeyByTypeForPut(StorageType.NEST, key, canOverwrite);
-    // Store in all keys
+    // Store all keys
     super.allKeySet().add(key);
 
     if (ValUtil.isNull(srcMap)) {
       return this.nestMap.put(key, null);
     }
-    // Store copy
+    // Store a copy
     final Io copyNest = new Io(srcMap);
     return this.nestMap.put(key, copyNest);
   }
 
   /**
-   * Validates key and stores multiple rows list copy.<br>
+   * Validates the key and stores a copy of the multiple rows list.<br>
    * <ul>
-   * <li><code>IoRows</code> constructor deep copies the contents, so the reference to the source list is disconnected.</li>
+   * <li>The <code>IoRows</code> constructor deep copies the content, so the reference to the source list is disconnected.</li>
    * </ul>
    *
-   * @param key the key
-   * @param srcList the source list
-   * @param canOverwrite overwrite allowed
-   * @return the previous stored multiple rows list
+   * @param key key
+   * @param srcList source list
+   * @param canOverwrite overwrite permission
+   * @return the previously stored multiple rows list
    */
   private IoRows putCopyRows(final String key,
       final Collection<? extends Map<? extends String, ? extends String>> srcList,
       final boolean canOverwrite) {
-    // Key validation
+    // Validate key
     validateKeyByTypeForPut(StorageType.ROWS, key, canOverwrite);
-    // Store in all keys
+    // Store all keys
     super.allKeySet().add(key);
 
     if (ValUtil.isNull(srcList)) {
       return this.rowsMap.put(key, null);
     }
-    // Store copy
+    // Store a copy
     final IoRows copyRows = new IoRows(srcList);
     return this.rowsMap.put(key, copyRows);
   }
 
   /**
-   * Validates key and stores array list copy.<br>
+   * Validates the key and stores a copy of the array list.<br>
    * <ul>
-   * <li><code>IoArrays</code> constructor deep copies the contents, so the reference to the source list is disconnected.</li>
+   * <li>The <code>IoArrays</code> constructor deep copies the content, so the reference to the source list is disconnected.</li>
    * </ul>
    *
-   * @param key the key
-   * @param srcList the source list
-   * @param canOverwrite overwrite allowed
-   * @return the previous stored array list
+   * @param key key
+   * @param srcList source list
+   * @param canOverwrite overwrite permission
+   * @return the previously stored array list
    */
   private IoArrays putCopyArys(final String key,
       final Collection<? extends Collection<? extends String>> srcList,
       final boolean canOverwrite) {
-    // Key validation
+    // Validate key
     validateKeyByTypeForPut(StorageType.ARYS, key, canOverwrite);
-    // Store in all keys
+    // Store all keys
     super.allKeySet().add(key);
 
     if (ValUtil.isNull(srcList)) {
       return this.arysMap.put(key, null);
     }
-    // Store copy
+    // Store a copy
     final IoArrays copyArys = new IoArrays(srcList);
     return this.arysMap.put(key, copyArys);
   }
 
   /**
-   * Retrieves string list.<br>
+   * Retrieves the string list.<br>
    * <ul>
-   * <li>Retrieving a value with a non-existent key causes a runtime error.</li>
-   * <li>If retrieving a value with a key that may not exist, confirm existence beforehand with
-   * <code>#containsKeyList(String)</code>.</li>
-   * <li>If the stored value is <code>null</code>, returns a zero-size list. (<code>null</code> is
-   * not returned)</li>
-   * <li>Adding elements to the retrieved list does not affect the list held by this class. (deep
-   * copied)</li>
-   * <li>Performance degrades when handling large lists or repeatedly storing and retrieving
-   * lists.</li>
+   * <li>Retrieving a value with a non-existent key results in a runtime error.</li>
+   * <li>If retrieving a value with a key that may not exist, check its existence in advance with <code>#containsKeyList(String)</code>.</li>
+   * <li>If the stored value is <code>null</code>, returns a size-zero list. (Does not return <code>null</code>)</li>
+   * <li>Adding elements to the retrieved list does not affect the list held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized lists or repeatedly storing and retrieving lists.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @return the string list
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @return string list
    */
   public List<String> getList(final String key) {
     final List<String> list = getCopyList(key);
@@ -476,19 +472,16 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores string list.<br>
+   * Stores the string list.<br>
    * <ul>
-   * <li>Storing with an already existing key causes a runtime error.</li>
-   * <li>If storing a value with a key that may already exist, store with
-   * <code>#putListForce(String, List)</code>.</li>
-   * <li>Adding elements to the original stored list does not affect the list held by this class.
-   * (deep copied)</li>
-   * <li>Performance degrades when handling large lists or repeatedly storing and retrieving
-   * lists.</li>
+   * <li>Storage with an already existing key results in a runtime error.</li>
+   * <li>If storing a value with a key that may already exist, use <code>#putListForce(String, List)</code> for storage.</li>
+   * <li>Adding elements to the original list after storage does not affect the list held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized lists or repeatedly storing and retrieving lists.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @param list the string list
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param list string list
    * @return the previously stored string list
    */
   public List<String> putList(final String key, final List<String> list) {
@@ -496,16 +489,14 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores string list (overwrite allowed).<br>
+   * Stores the string list (overwrite allowed).<br>
    * <ul>
-   * <li>Adding elements to the original stored list does not affect the list held by this class.
-   * (deep copied)</li>
-   * <li>Performance degrades when handling large lists or repeatedly storing and retrieving
-   * lists.</li>
+   * <li>Adding elements to the original list after storage does not affect the list held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized lists or repeatedly storing and retrieving lists.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @param list the string list
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param list string list
    * @return the previously stored string list
    */
   public List<String> putListForce(final String key, final List<String> list) {
@@ -513,21 +504,17 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Retrieves nested map.<br>
+   * Retrieves the nested map.<br>
    * <ul>
-   * <li>Retrieving a value with a non-existent key causes a runtime error.</li>
-   * <li>If retrieving a value with a key that may not exist, confirm existence beforehand with
-   * <code>#containsKeyNest(String)</code>.</li>
-   * <li>If the stored value is <code>null</code>, returns a zero-size map. (<code>null</code> is
-   * not returned)</li>
-   * <li>Adding elements to the retrieved map does not affect the map held by this class. (deep
-   * copied)</li>
-   * <li>Performance degrades when handling large maps or repeatedly storing and retrieving
-   * maps.</li>
+   * <li>Retrieving a value with a non-existent key results in a runtime error.</li>
+   * <li>If retrieving a value with a key that may not exist, check its existence in advance with <code>#containsKeyNest(String)</code>.</li>
+   * <li>If the stored value is <code>null</code>, returns a size-zero map. (Does not return <code>null</code>)</li>
+   * <li>Adding elements to the retrieved map does not affect the map held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized maps or repeatedly storing and retrieving maps.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @return the nested map
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @return nested map
    */
   public Io getNest(final String key) {
     final Io nest = getCopyNest(key);
@@ -538,19 +525,16 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores nested map.<br>
+   * Stores the nested map.<br>
    * <ul>
-   * <li>Storing with an already existing key causes a runtime error.</li>
-   * <li>If storing a value with a key that may already exist, store with
-   * <code>#putNestForce(String, Nest)</code>.</li>
-   * <li>Adding elements to the original stored map does not affect the map held by this class.
-   * (deep copied)</li>
-   * <li>Performance degrades when handling large maps or repeatedly storing and retrieving
-   * maps.</li>
+   * <li>Storage with an already existing key results in a runtime error.</li>
+   * <li>If storing a value with a key that may already exist, use <code>#putNestForce(String, Nest)</code> for storage.</li>
+   * <li>Adding elements to the original map after storage does not affect the map held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized maps or repeatedly storing and retrieving maps.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @param nest the nested map
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param nest nested map
    * @return the previously stored nested map
    */
   public Io putNest(final String key, final Io nest) {
@@ -558,17 +542,15 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores nested map (overwrite allowed).<br>
+   * Stores the nested map (overwrite allowed).<br>
    * <ul>
-   * <li>Adding elements to the original stored map does not affect the map held by this class.
-   * (deep copied)</li>
-   * <li>Performance degrades when handling large maps or repeatedly storing and retrieving
-   * maps.</li>
+   * <li>Adding elements to the original map after storage does not affect the map held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized maps or repeatedly storing and retrieving maps.</li>
    * </ul>
    *
    * @see #putNest(String, Nest)
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @param nest the nested map
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param nest nested map
    * @return the previously stored nested map
    */
   public Io putNestForce(final String key, final Io nest) {
@@ -576,21 +558,17 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Retrieves multiple rows list.<br>
+   * Retrieves the multiple rows list.<br>
    * <ul>
-   * <li>Retrieving a value with a non-existent key causes a runtime error.</li>
-   * <li>If retrieving a value with a key that may not exist, confirm existence beforehand with
-   * <code>#containsKeyRows(String)</code>.</li>
-   * <li>If the stored value is <code>null</code>, returns a zero-size list. (<code>null</code> is
-   * not returned)</li>
-   * <li>Adding elements to the retrieved list does not affect the list held by this class. (deep
-   * copied)</li>
-   * <li>Performance degrades when handling large lists or repeatedly storing and retrieving
-   * lists.</li>
+   * <li>Retrieving a value with a non-existent key results in a runtime error.</li>
+   * <li>If retrieving a value with a key that may not exist, check its existence in advance with <code>#containsKeyRows(String)</code>.</li>
+   * <li>If the stored value is <code>null</code>, returns a size-zero list. (Does not return <code>null</code>)</li>
+   * <li>Adding elements to the retrieved list does not affect the list held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized lists or repeatedly storing and retrieving lists.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @return the multiple rows list
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @return multiple rows list
    */
   public IoRows getRows(final String key) {
     final IoRows rows = getCopyRows(key);
@@ -601,19 +579,16 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores multiple rows list.<br>
+   * Stores the multiple rows list.<br>
    * <ul>
-   * <li>Storing with an already existing key causes a runtime error.</li>
-   * <li>If storing a value with a key that may already exist, store with
-   * <code>#putRowsForce(String, List)</code>.</li>
-   * <li>Adding elements to the original stored list does not affect the list held by this class.
-   * (deep copied)</li>
-   * <li>Performance degrades when handling large lists or repeatedly storing and retrieving
-   * lists.</li>
+   * <li>Storage with an already existing key results in a runtime error.</li>
+   * <li>If storing a value with a key that may already exist, use <code>#putRowsForce(String, List)</code> for storage.</li>
+   * <li>Adding elements to the original list after storage does not affect the list held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized lists or repeatedly storing and retrieving lists.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @param rows the multiple rows list
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param rows multiple rows list
    * @return the previously stored multiple rows list
    */
   public IoRows putRows(final String key,
@@ -622,16 +597,14 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores multiple rows list (overwrite allowed).<br>
+   * Stores the multiple rows list (overwrite allowed).<br>
    * <ul>
-   * <li>Adding elements to the original stored list does not affect the list held by this class.
-   * (deep copied)</li>
-   * <li>Performance degrades when handling large lists or repeatedly storing and retrieving
-   * lists.</li>
+   * <li>Adding elements to the original list after storage does not affect the list held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized lists or repeatedly storing and retrieving lists.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @param rows the multiple rows list
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param rows multiple rows list
    * @return the previously stored multiple rows list
    */
   public IoRows putRowsForce(final String key, final Collection<? extends IoItems> rows) {
@@ -639,21 +612,17 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Retrieves array list.<br>
+   * Retrieves the array list.<br>
    * <ul>
-   * <li>Retrieving a value with a non-existent key causes a runtime error.</li>
-   * <li>If retrieving a value with a key that may not exist, confirm existence beforehand with
-   * <code>#containsKeyArys(String)</code>.</li>
-   * <li>If the stored value is <code>null</code>, returns a zero-size list. (<code>null</code> is
-   * not returned)</li>
-   * <li>Adding elements to the retrieved list does not affect the list held by this class. (deep
-   * copied)</li>
-   * <li>Performance degrades when handling large lists or repeatedly storing and retrieving
-   * lists.</li>
+   * <li>Retrieving a value with a non-existent key results in a runtime error.</li>
+   * <li>If retrieving a value with a key that may not exist, check its existence in advance with <code>#containsKeyArys(String)</code>.</li>
+   * <li>If the stored value is <code>null</code>, returns a size-zero list. (Does not return <code>null</code>)</li>
+   * <li>Adding elements to the retrieved list does not affect the list held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized lists or repeatedly storing and retrieving lists.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @return the array list
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @return array list
    */
   public IoArrays getArys(final String key) {
     final IoArrays arys = getCopyArys(key);
@@ -664,19 +633,16 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores array list.<br>
+   * Stores the array list.<br>
    * <ul>
-   * <li>Storing with an already existing key causes a runtime error.</li>
-   * <li>If storing a value with a key that may already exist, store with
-   * <code>#putArysForce(String, List)</code>.</li>
-   * <li>Adding elements to the original stored list does not affect the list held by this class.
-   * (deep copied)</li>
-   * <li>Performance degrades when handling large lists or repeatedly storing and retrieving
-   * lists.</li>
+   * <li>Storage with an already existing key results in a runtime error.</li>
+   * <li>If storing a value with a key that may already exist, use <code>#putArysForce(String, List)</code> for storage.</li>
+   * <li>Adding elements to the original list after storage does not affect the list held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized lists or repeatedly storing and retrieving lists.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @param arys the array list
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param arys array list
    * @return the previously stored array list
    */
   public IoArrays putArys(final String key, final Collection<? extends List<String>> arys) {
@@ -684,16 +650,14 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores array list (overwrite allowed).<br>
+   * Stores the array list (overwrite allowed).<br>
    * <ul>
-   * <li>Adding elements to the original stored list does not affect the list held by this class.
-   * (deep copied)</li>
-   * <li>Performance degrades when handling large lists or repeatedly storing and retrieving
-   * lists.</li>
+   * <li>Adding elements to the original list after storage does not affect the list held by this class. (Deep copy occurs)</li>
+   * <li>Performance may degrade when handling large-sized lists or repeatedly storing and retrieving lists.</li>
    * </ul>
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
-   * @param arys the array list
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param arys array list
    * @return the previously stored array list
    */
   public IoArrays putArysForce(final String key, final Collection<? extends List<String>> arys) {
@@ -701,13 +665,13 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Creates URL parameters (the part after ? in URL).<br>
+   * Creates URL parameters (the part after ? in the URL).<br>
    * <ul>
    * <li>String lists become comma-separated parameters.</li>
    * <li>Nested maps, multiple rows lists, and array lists are not output.</li>
    * </ul>
    *
-   * @return the URL-encoded GET parameters
+   * @return URL-encoded GET parameters
    */
   public String createUrlParam() {
     final Map<String, String> valMap = super.getValMap();
@@ -730,9 +694,9 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Converts string list to URL parameter array string.
    *
-   * @param key the key
-   * @param list the string list
-   * @return the URL parameter array string
+   * @param key key
+   * @param list string list
+   * @return URL parameter array string.
    */
   private String listToUrlParamArray(final String key, final List<String> list) {
     final String pKey = key + "[]";
@@ -755,16 +719,16 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Creates JSON.
    *
-   * @return the JSON string
+   * @return JSON string
    */
   public String createJson() {
     return createJsonWithMsg(null);
   }
 
   /**
-   * Creates JSON with messages.
-   * @param msgTextMap the message text map &lt;message ID, message text&gt;
-   * @return the JSON string
+   * Creates JSON with message.
+   * @param msgTextMap message text map&lt;message ID, message text&gt;
+   * @return JSON string
    */
   public String createJsonWithMsg(final Map<String, String> msgTextMap) {
     final Map<String, String> valMap = super.getValMap();
@@ -806,7 +770,7 @@ public final class Io extends AbstractIoTypeMap {
       sb.append('"').append(escVal).append('"').append(',');
     }
 
-    // Add message (only if message exists)
+    // Add messages (only if messages exist)
     if (hasMsg()) {
       final String msg = createMsgJsoAry(msgTextMap);
       sb.append('"').append("_msg").append('"').append(':').append(msg).append(',');
@@ -823,8 +787,8 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Converts string list to JSON array string.
    *
-   * @param list the string list
-   * @return the JSON array string
+   * @param list string list
+   * @return JSON array string
    */
   private String listToJsonArray(final List<String> list) {
     if (ValUtil.isEmpty(list)) {
@@ -848,8 +812,8 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Converts multiple rows list to JSON array string.
    *
-   * @param rows the multiple rows list
-   * @return the JSON array string
+   * @param rows multiple rows list
+   * @return JSON array string
    */
   private String rowsToJsonArray(final IoRows rows) {
     if (ValUtil.isEmpty(rows)) {
@@ -873,8 +837,8 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Converts array list to JSON array string.
    *
-   * @param arys the array list
-   * @return the JSON array string
+   * @param arys array list
+   * @return JSON array string
    */
   private String arysToJsonArray(final IoArrays arys) {
     if (ValUtil.isEmpty(arys)) {
@@ -896,9 +860,9 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Creates log output string.
+   * Creates the log output string.
    *
-   * @return the log output string
+   * @return log output string
    */
   private final String createLogString() {
     final Map<String, String> valMap = super.getValMap();
@@ -948,8 +912,8 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Converts multiple rows list to log output string.
    *
-   * @param rows the multiple rows list
-   * @return the log output string
+   * @param rows multiple rows list
+   * @return log output string
    */
   private String rowsToLog(final IoRows rows) {
     if (ValUtil.isEmpty(rows)) {
@@ -973,8 +937,8 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Converts array list to log output string.
    *
-   * @param arys the array list
-   * @return the log output string
+   * @param arys array list
+   * @return log output string
    */
   private String arysToLog(final IoArrays arys) {
     if (ValUtil.isEmpty(arys)) {
@@ -999,12 +963,12 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Stores all values.<br>
    * <ul>
-   * <li>Storing with an already existing key causes a runtime error.</li>
-   * <li>If keys that may already exist are included, store with <code>#putAllForce(Map)</code>.</li>
+   * <li>Storage with already existing keys results in a runtime error.</li>
+   * <li>If keys that may already exist are included, use <code>#putAllForce(Map)</code> for storage.</li>
    * <li>Messages are also copied.</li>
    * </ul>
    *
-   * @param map the I/O map
+   * @param map input/output map
    */
   public void putAll(final Io map) {
     putAllByIoMap(map, false);
@@ -1013,21 +977,21 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Stores all values (overwrite allowed).
    * @see #putAll(Io)
-   * @param map the I/O map
+   * @param map input/output map
    */
   public void putAllForce(final Io map) {
     putAllByIoMap(map, true);
   }
 
   /**
-   * Stores I/O map.<br>
+   * Stores the input/output map.<br>
    * <ul>
-   * <li>Deep copies the contents, so the reference to the source map is severed.</li>
+   * <li>The reference to the source map is disconnected because the content is deep copied.</li>
    * <li>Messages are also copied.</li>
    * </ul>
    *
-   * @param srcMap       the source map
-   * @param canOverwrite overwrite allowed
+   * @param srcMap       source map
+   * @param canOverwrite overwrite permission
    */
   private void putAllByIoMap(final Io srcMap, final boolean canOverwrite) {
 
@@ -1060,17 +1024,17 @@ public final class Io extends AbstractIoTypeMap {
         putCopyArys(key, srcMap.arysMap.get(key), canOverwrite);
       }
     }
-    // Copy messages as well
+    // Also copy messages
     copyMsg(srcMap);
   }
 
   /**
-   * Stores URL parameters (the part after ? in URL).<br>
+   * Stores URL parameter (the part after ? in the URL) values.<br>
    * <ul>
-   * <li>Storing with an already existing key causes a runtime error.</li>
+   * <li>Storage with already existing keys results in a runtime error.</li>
    * </ul>
    *
-   * @param url the full URL or URL parameters
+   * @param url entire URL or URL parameters
    * @return the number of stored parameters
    */
   public int putAllByUrlParam(final String url) {
@@ -1125,7 +1089,7 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Stores JSON.
    *
-   * @param json the JSON string
+   * @param json JSON string
    * @return the number of stored items
    */
   public int putAllByJson(final String json) {
@@ -1155,8 +1119,8 @@ public final class Io extends AbstractIoTypeMap {
       if (JsonArraySeparateParser.JSON_ARRAY_PATTERN.matcher(val).find()) {
         // Add string list
         final List<String> list = jsonArrayToList(val);
-        // However, if there is an associative array in the value, add as multiple rows list
-        // If there is an array in the value, add as array list
+        // However, if the value contains an associative array, add a multiple rows list
+        // If the value contains an array, add an array list
         boolean isRows = false;
         boolean isArys = false;
         for (final String listVal : list) {
@@ -1179,7 +1143,7 @@ public final class Io extends AbstractIoTypeMap {
           continue;
         }
         if (isArys) {
-          // Add array list
+          // Add multiple rows list
           final IoArrays arys = jsonArrayToArys(val);
           putArys(key, arys);
           continue;
@@ -1200,8 +1164,8 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Converts JSON array string to string list.
    *
-   * @param json the JSON array string
-   * @return the string list
+   * @param json JSON array string
+   * @return string list
    */
   private List<String> jsonArrayToList(final String json) {
     final List<String> list = new ArrayList<>();
@@ -1219,8 +1183,8 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Converts JSON array string to multiple rows list.
    *
-   * @param jsonAry the JSON array string
-   * @return the multiple rows list
+   * @param jsonAry JSON array string
+   * @return multiple rows list
    */
   private IoRows jsonArrayToRows(final String jsonAry) {
     final IoRows rows = new IoRows();
@@ -1233,7 +1197,7 @@ public final class Io extends AbstractIoTypeMap {
       final IoItems row = new IoItems();
       row.putAllByJson(json);
 
-      // Check if there are 4 or more layers
+      // Check for 4 or more layers
       for (final String value : row.values()) {
         if (JsonMapSeparateParser.JSON_MAP_PATTERN.matcher(value).find()
             || JsonArraySeparateParser.JSON_ARRAY_PATTERN.matcher(value).find()) {
@@ -1249,8 +1213,8 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Converts JSON array string to array list.
    *
-   * @param jsonAry the JSON array string
-   * @return the array list
+   * @param jsonAry JSON array string
+   * @return array list
    */
   private IoArrays jsonArrayToArys(final String jsonAry) {
     final IoArrays arys = new IoArrays();
@@ -1269,7 +1233,7 @@ public final class Io extends AbstractIoTypeMap {
           continue;
         }
 
-        // Check if there are 4 or more layers
+        // Check for 4 or more layers
         if (JsonMapSeparateParser.JSON_MAP_PATTERN.matcher(aryVal).find()
             || JsonArraySeparateParser.JSON_ARRAY_PATTERN.matcher(aryVal).find()) {
           throw new RuntimeException("Arrays of 4 or more layers are not supported. " + LogUtil.joinKeyVal("json", jsonAry));
@@ -1285,16 +1249,16 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Returns string for logging.
+   * Returns the string for logging.
    */
   public final String toString() {
     return createLogString();
   }
 
   /**
-   * Checks if string list key exists.
+   * Checks if the string list key exists.
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
    * @return <code>true</code> if exists
    */
   public boolean containsKeyList(final String key) {
@@ -1302,9 +1266,9 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Removes string list.
+   * Removes the string list.
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
    * @return the removed list
    */
   public List<String> removeList(final String key) {
@@ -1313,9 +1277,9 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Checks if nested map key exists.
+   * Checks if the nested map key exists.
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
    * @return <code>true</code> if exists
    */
   public boolean containsKeyNest(final String key) {
@@ -1323,9 +1287,9 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Removes nested map.
+   * Removes the nested map.
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
    * @return the removed nested map
    */
   public Io removeNest(final String key) {
@@ -1334,9 +1298,9 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Checks if multiple rows list key exists.
+   * Checks if the multiple rows list key exists.
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
    * @return <code>true</code> if exists
    */
   public boolean containsKeyRows(final String key) {
@@ -1344,9 +1308,9 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Removes multiple rows list.
+   * Removes the multiple rows list.
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
    * @return the removed multiple rows list
    */
   public IoRows removeRows(final String key) {
@@ -1355,9 +1319,9 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Checks if array list key exists.
+   * Checks if the array list key exists.
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
    * @return <code>true</code> if exists
    */
   public boolean containsKeyArys(final String key) {
@@ -1365,9 +1329,9 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Removes array list.
+   * Removes the array list.
    *
-   * @param key the key (lowercase letters, numbers, underscores, hyphens, and dots only)
+   * @param key key (lowercase letters, numbers, underscores, hyphens, and dots only)
    * @return the removed array list
    */
   public IoArrays removeArys(final String key) {
@@ -1375,9 +1339,9 @@ public final class Io extends AbstractIoTypeMap {
     return this.arysMap.remove(key);
   }
 
-  /** Message holding map. */
+  /** Message storage map. */
   private final Map<String, MsgBean> msgMap = new LinkedHashMap<>();
-  /** Error message exists flag. */
+  /** Error message storage judgment. */
   private boolean errMsgExists = false;
 
   /** Message type. */
@@ -1390,14 +1354,14 @@ public final class Io extends AbstractIoTypeMap {
     INFO;
   }
 
-  /** Message holding class. */
+  /** Message storage class. */
   private class MsgBean {
 
     /** Message type. */
     private MsgType type;
     /** Message ID. */
     private String msgId;
-    /** Replacement strings in message. */
+    /** Replacement strings within message. */
     private String[] replaceVals;
     /** Target item ID. */
     private String itemId;
@@ -1409,13 +1373,12 @@ public final class Io extends AbstractIoTypeMap {
     /**
      * Constructor.
      * 
-     * @param type        the message type
-     * @param msgId       the message ID
-     * @param replaceVals the replacement strings in message to replace <code>{0}, {1}, ...</code>
-     *                    in the message text
-     * @param itemId      the target item ID
-     * @param rowListId   the row list ID
-     * @param rowIndex    the row index
+     * @param type        message type
+     * @param msgId       message ID
+     * @param replaceVals replacement strings within message Replaces <code>{0</code>, {1}, ...} in the message text.
+     * @param itemId      target item ID
+     * @param rowListId   row list ID
+     * @param rowIndex    row index
      */
     private MsgBean(final MsgType type, final String msgId, final String[] replaceVals, final String itemId,
         final String rowListId, final int rowIndex) {
@@ -1430,10 +1393,10 @@ public final class Io extends AbstractIoTypeMap {
     /**
      * Copy constructor.<br>
      * <ul>
-     * <li>Performs deep copy and severs reference to the original object.</li>
+     * <li>Performs a deep copy and disconnects the reference to the original object.</li>
      * </ul>
      * 
-     * @param srcMsg the source message Bean
+     * @param srcMsg source message bean to copy
      */
     private MsgBean(final MsgBean srcMsg) {
       this.type = srcMsg.type;
@@ -1451,22 +1414,22 @@ public final class Io extends AbstractIoTypeMap {
     }
 
     /**
-     * Returns message type.
+     * Retrieves the message type.
      * 
-     * @return the message type
+     * @return message type
      */
     private MsgType getType() {
       return type;
     }
 
     /**
-     * Creates key.<br>
+     * Generates the key.<br>
      * <ul>
      * <li>Used to prevent duplicate registration of messages with the same content.</li>
      * <li>Determines the display order of messages.</li>
      * </ul>
      *
-     * @return the key string
+     * @return key string
      */
     private String createKey() {
       final StringBuilder sb = new StringBuilder();
@@ -1488,8 +1451,8 @@ public final class Io extends AbstractIoTypeMap {
     /**
      * Creates JSON.
      * 
-     * @param msgTextMap the message text map &lt;message ID, message text&gt; (optional)
-     * @return the JSON string
+     * @param msgTextMap message text map&lt;message ID, message text&gt; (optional)
+     * @return JSON string
      */
     protected String createJson(final Map<String, String> msgTextMap) {
       final StringBuilder sb = new StringBuilder();
@@ -1503,7 +1466,7 @@ public final class Io extends AbstractIoTypeMap {
         text = replaceText(msgText, this.replaceVals);
       } else {
         if (!ValUtil.isEmpty(this.replaceVals)) {
-          text = "Error info: " + ValUtil.join(",", this.replaceVals);
+          text = "Error information: " + ValUtil.join(",", this.replaceVals);
         } else {
           text = ValUtil.BLANK;
         }
@@ -1531,9 +1494,9 @@ public final class Io extends AbstractIoTypeMap {
      * <li>Replaces <code>{0}, {1}, ...</code> in the message text.</li>
      * </ul>
      * 
-     * @param text the target text
-     * @param replaceVals the replacement value array
-     * @return the replaced text
+     * @param text target text
+     * @param replaceVals replacement value array
+     * @return replaced text
      */
     private String replaceText(final String text, final String[] replaceVals) {
       String ret = text;
@@ -1552,57 +1515,57 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Adds message.
+   * Adds a message.
    * 
-   * @param type the message type
-   * @param msgId the message ID
+   * @param type message type
+   * @param msgId message ID
    */
   public void putMsg(final MsgType type, final String msgId) {
     putMsg(type, msgId, null, null, null, -1);
   }
 
   /**
-   * Adds message.
+   * Adds a message.
    * 
-   * @param type the message type
-   * @param msgId the message ID
-   * @param replaceVals the replacement strings in message (optional)
+   * @param type message type
+   * @param msgId message ID
+   * @param replaceVals replacement strings within message (optional)
    */
   public void putMsg(final MsgType type, final String msgId, final String[] replaceVals) {
     putMsg(type, msgId, replaceVals, null, null, -1);
   }
 
   /**
-   * Adds message.
+   * Adds a message.
    * 
-   * @param type the message type
-   * @param msgId the message ID
-   * @param itemId the target item ID (optional)
+   * @param type message type
+   * @param msgId message ID
+   * @param itemId target item ID (optional)
    */
   public void putMsg(final MsgType type, final String msgId, final String itemId) {
     putMsg(type, msgId, null, itemId, null, -1);
   }
 
   /**
-   * Adds message.
+   * Adds a message.
    * 
-   * @param type the message type
-   * @param msgId the message ID
-   * @param replaceVals the replacement strings in message (optional)
-   * @param itemId the target item ID (optional)
+   * @param type message type
+   * @param msgId message ID
+   * @param replaceVals replacement strings within message (optional)
+   * @param itemId target item ID (optional)
    */
   public void putMsg(final MsgType type, final String msgId, final String[] replaceVals, final String itemId) {
     putMsg(type, msgId, replaceVals, itemId, null, -1);
   }
 
   /**
-   * Adds message.
+   * Adds a message.
    * 
-   * @param type the message type
-   * @param msgId the message ID
-   * @param itemId the target item ID (optional)
-   * @param rowListId the row list ID (optional)
-   * @param rowIndex the row index (optional)
+   * @param type message type
+   * @param msgId message ID
+   * @param itemId target item ID (optional)
+   * @param rowListId row list ID (optional)
+   * @param rowIndex row index (optional)
    */
   public void putMsg(final MsgType type, final String msgId, final String itemId, final String rowListId,
       final int rowIndex) {
@@ -1610,14 +1573,14 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Adds message.
+   * Adds a message.
    * 
-   * @param type the message type
-   * @param msgId the message ID
-   * @param replaceVals the replacement strings in message (optional)
-   * @param itemId the target item ID (optional)
-   * @param rowListId the row list ID (optional)
-   * @param rowIndex the row index (optional)
+   * @param type message type
+   * @param msgId message ID
+   * @param replaceVals replacement strings within message (optional)
+   * @param itemId target item ID (optional)
+   * @param rowListId row list ID (optional)
+   * @param rowIndex row index (optional)
    */
   public void putMsg(final MsgType type, final String msgId, final String[] replaceVals, final String itemId,
       final String rowListId, final int rowIndex) {
@@ -1647,18 +1610,18 @@ public final class Io extends AbstractIoTypeMap {
   }
 
   /**
-   * Checks if message is held.
+   * Checks if messages are stored.
    * 
-   * @return <code>true</code> if message is held
+   * @return <code>true</code> if messages are stored
    */
   public boolean hasMsg() {
     return !ValUtil.isEmpty(this.msgMap);
   }
 
   /**
-   * Checks if error message exists.
+   * Checks if error messages exist.
    * 
-   * @return <code>true</code> if error message exists
+   * @return <code>true</code> if error messages exist
    */
   public boolean hasErrorMsg() {
     return this.errMsgExists;
@@ -1675,10 +1638,10 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Copies messages.<br>
    * <ul>
-   * <li>Deep copies messages, so the reference to the original object is severed.</li>
+   * <li>Messages are deep copied, so the reference to the original object is disconnected.</li>
    * </ul>
    * 
-   * @param srcMap the source map
+   * @param srcMap source map to copy from
    */
   private void copyMsg(final Io srcMap) {
     if (ValUtil.isNull(srcMap)) {
@@ -1686,7 +1649,7 @@ public final class Io extends AbstractIoTypeMap {
     }
 
     for (final MsgBean bean : srcMap.msgMap.values()) {
-      // Store as deep copy
+      // Store with deep copy
       final MsgBean msg = new MsgBean(bean);
       final String key = msg.createKey();
       if (this.msgMap.containsKey(key)) {
@@ -1704,13 +1667,13 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Creates message JSON array.<br>
    * <ul>
-   * <li>If message text map is specified, sets the message text corresponding to the message
-   * ID.</li>
-   * <li>If message text map is not specified, the message text will be an empty string.</li>
+   * <li>If the message text map is specified,
+   * sets the message text corresponding to the message ID.</li>
+   * <li>If the message text map is not specified, the message text is an empty string.</li>
    * </ul>
    * 
-   * @param msgTextMap the message text map &lt;message ID, message text&gt;
-   * @return the JSON array "[ {...}, {...}, ... ]"
+   * @param msgTextMap message text map&lt;message ID, message text&gt;
+   * @return JSON array "[ {...}, {...}, ... ]"
    */
   private String createMsgJsoAry(final Map<String, String> msgTextMap) {
     final StringBuilder sb = new StringBuilder();

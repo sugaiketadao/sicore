@@ -68,7 +68,7 @@ public final class SqlConst extends SqlBean {
    * </ul>
    */
   private final List<String> bindItemNames;
-  /** Bind item definition map <item name, type>. */
+  /** Bind item definition map &lt;item name, type&gt;. */
   private final Map<String, BindType> bindItems;
   
   /**
@@ -76,7 +76,7 @@ public final class SqlConst extends SqlBean {
    * 
    * @param query the SQL string
    * @param bindItemNames the bind item name list
-   * @param bindItems the bind item definition map <item name, type>
+   * @param bindItems the bind item definition map &lt;item name, type&gt;
    */
   SqlConst(final String query, final List<String> bindItemNames, final Map<String, BindType> bindItems) {
     super(query);
@@ -158,7 +158,7 @@ public final class SqlConst extends SqlBean {
      * </ul>
      */
     private final List<String> bindItemNames = new ArrayList<>();
-    /** Bind item definition map <item name, type>. */
+    /** Bind item definition map &lt;item name, type&gt;. */
     private final Map<String, BindType> bindItems = new LinkedHashMap<>();
       
     /**

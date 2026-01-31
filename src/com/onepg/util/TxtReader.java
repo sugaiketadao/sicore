@@ -14,40 +14,40 @@ import com.onepg.util.ValUtil.CharSet;
 /**
  * Text reader class.<br>
  * <ul>
- * <li>A wrapper class for file reader <code>BufferedReader</code>.</li>
- * <li>Declares in a try clause (try-with-resources statement).</li>
+ * <li>Wrapper class for file reader <code>BufferedReader</code>.</li>
+ * <li>Declares in try clause (try-with-resources statement).</li>
  * </ul>
  * <pre>[Example]
  * <code>try (final TxtReader tr = new TxtReader(filePath, ValUtil.UTF8);) {
  *   // Skips header row
  *   tr.skip();
  *   for (final String line : tr) {
- *     : omitted
+ *     : Omitted
  *   }
  * }</code>
  * </pre>
  */
 public final class TxtReader implements Iterable<String>, AutoCloseable {
 
-  /** Buffered reader. */
+  /** Buffered reader */
   private final BufferedReader br;
   /** File path. */
   private final String filePath;
-  /** The line that was read. */
+  /** Read row */
   private String nextLine = null;
 
-  /** Number of rows already read. */
+  /** Read row count. */
   private int readedCount = 0;
-  /** Flag indicating whether the last row has been read. */
+  /** Last row read flag. */
   private boolean readedEndRowFlag = false;
-  /** <code>true</code> if closed. */
+  /** <code>true</code> if closed */
   private boolean isClosed = false;
 
   /**
    * Constructor.
    *
-   * @param filePath the file path
-   * @param charSet  the character set
+   * @param filePath File path
+   * @param charSet  Character set
    */
   public TxtReader(final String filePath, final CharSet charSet) {
     this.filePath = FileUtil.convAbsolutePath(filePath);
@@ -65,9 +65,9 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
   }
 
   /**
-   * Creates an iterator.
+   * Creates iterator.
    *
-   * @return the read line iterator
+   * @return Read row iterator
    */
   @Override
   public Iterator<String> iterator() {
@@ -75,7 +75,7 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
   }
 
   /**
-   * Closes the file.
+   * Closes file.
    */
   @Override
   public void close() {
@@ -91,21 +91,21 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
   }
 
   /**
-   * Gets the number of rows already read.<br>
+   * Gets read row count.<br>
    * <ul>
    * <li>Returns the count read by the iterator.</li>
    * </ul>
    *
-   * @return the number of rows already read
+   * @return Read row count
    */
   public int getReadedCount() {
     return this.readedCount;
   }
 
   /**
-   * Determines whether the last row has been read.
+   * Checks if last row has been read.
    *
-   * @return <code>true</code> if the last row has been read
+   * @return <code>true</code> if last row has been read
    */
   public boolean isReadedEndRow() {
     return this.readedEndRowFlag;
@@ -115,7 +115,7 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
    * Skips one row.
    * 
    * @see #skip(int)
-   * @return <code>false</code> if there were insufficient rows
+   * @return <code>false</code> if there are insufficient rows
    */
   public boolean skip() {
     return skip(1);
@@ -124,13 +124,13 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
   /**
    * Skips rows.<br>
    * <ul>
-   * <li>Skips header rows, etc.</li>
-   * <li>Even if the skip count exceeds the file rows, no error occurs and returns <code>false</code>.</li>
-   * <li>The read row count is not incremented.</li>
+   * <li>Skips rows such as header rows.</li>
+   * <li>Does not result in an error even if the skip row count is greater than the file rows, and the return value becomes <code>false</code>.</li>
+   * <li>Read row count is not counted up.</li>
    * </ul>
    *
-   * @param count the number of rows to skip
-   * @return <code>false</code> if there were insufficient rows
+   * @param count Skip row count
+   * @return <code>false</code> if there are insufficient rows
    */
   public boolean skip(final int count) {
     if (this.isClosed) {
@@ -142,12 +142,12 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
     
     try {
       for (int c = 1; c <= count; c++) {        
-        // Skips one row
+        // Skips reading one row
         final String line = this.br.readLine();
         if (ValUtil.isNull(line)) {
-          // Sets last row read flag ON
+          // Last row read ON
           readedEndRowFlag = true;
-          // Closes the file
+          // Closes file
           close();
           return false;
         }
@@ -157,18 +157,18 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
       throw new RuntimeException("An exception error occurred while skipping rows. " + LogUtil.joinKeyVal("path", this.filePath) + LogUtil.joinKeyVal("skipCount", String.valueOf(count)), e);
     }
   }
-
+  
   /**
-   * Gets the first line.<br>
+   * Gets first row.<br>
    * <ul>
-   * <li>Gets the first line of the file.</li>
-   * <li>The read row count is incremented after retrieval.</li>
-   * <li>Returns <code>null</code> in the following cases:
-   *   <ul><li>The file is already closed.</li>
-   *       <li>The file is empty (zero rows), or the last row has already been reached.</li></ul>
+   * <li>Gets the first row of the file.</li>
+   * <li>Read row count is counted up after retrieval.</li>
+   * <li>Returns <code>null</code> in the following cases
+   *   <ul><li>File is already closed.</li>
+   *       <li>File is empty (zero rows), or has already reached the last row.</li></ul>
    * </ul>
    *
-   * @return the first line string
+   * @return First row string
    */
   public String getFirstLine() {
     if (this.isClosed) {
@@ -177,13 +177,13 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
     try {
       final String line = this.br.readLine();
       if (ValUtil.isNull(line)) {
-        // Sets last row read flag ON
+        // Last row read ON
         readedEndRowFlag = true;
-        // Closes the file
+        // Closes file
         close();
         return null;
       }
-      // Increments the read row count
+      // Counts up read row count
       readedCount++;
       return line;
     } catch (IOException e) {
@@ -192,13 +192,13 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
   }
 
   /**
-   * Read line iterator class.
+   * Read row iterator class.
    */
   public final class TxtReadIterator implements Iterator<String> {
 
-    /** Flag indicating whether next row exists. */
+    /** Has next row flag. */
     private boolean hasNextRow = false;
-    /** Flag indicating whether next row has been checked. */
+    /** Next row checked flag. */
     private boolean hasNextChecked = false;
 
     /**
@@ -209,34 +209,34 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
     }
 
     /**
-     * Checks for next row.<br>
+     * Checks next row.<br>
      * <ul>
-     * <li>Closes the file reader if next row does not exist, in case try clause was not used.</li>
-     * <li>Does not re-check on consecutive hasNext() calls.</li>
+     * <li>Closes file reader if next row does not exist in case try clause was not used.</li>
+     * <li>Does not recheck on consecutive hasNext() calls.</li>
      * </ul>
      *
      * @return <code>true</code> if next row exists
      */
     @Override
     public boolean hasNext() {
-      // Does not re-check if already checked
+      // Does not recheck if already checked
       if (hasNextChecked) {
         return this.hasNextRow;
       }
 
-      // Checks for next row existence
+      // Checks next row existence
       try {
         nextLine = br.readLine();
         this.hasNextRow = !ValUtil.isNull(nextLine);
-        this.hasNextChecked = true; // Check completed flag
+        this.hasNextChecked = true; // Confirmation complete flag
       } catch (IOException e) {
         throw new RuntimeException("An exception error occurred while checking for next row. " + LogUtil.joinKeyVal("readedCount", String.valueOf(readedCount)), e);
       }
 
       if (!this.hasNextRow) {
-        // Sets last row read flag ON
+        // Last row read ON
         readedEndRowFlag = true;
-        // Closes the file
+        // Closes file
         close();
       }
 
@@ -244,9 +244,9 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
     }
 
     /**
-     * Gets the next row.
+     * Gets next row.
      *
-     * @return the row
+     * @return Row
      */
     @Override
     public String next() {
@@ -256,10 +256,10 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
 
       final String line = nextLine;
       nextLine = null;
-      // Increments the read row count
+      // Counts up read row count
       readedCount++;
 
-      // Needs to check again
+      // Recheck is necessary
       this.hasNextChecked = false;
       return line;
     }

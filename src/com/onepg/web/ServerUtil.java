@@ -42,9 +42,9 @@ final class ServerUtil {
 
   /** Optimal buffer size (bytes). */
   private static final int OPTIMAL_BUFFER_SIZE = calcBufferSize();
-  /** Text compression target file size lower limit (1KB). */
+  /** Minimum file size for text compression (1KB). */
   private static final long TXT_TO_COMPRESS_MIN_SIZE = 1024;
-  /** Text compression target file size upper limit (1MB). */
+  /** Maximum file size for text compression (1MB). */
   private static final long TXT_TO_COMPRESS_MAX_SIZE = 1024 * 1024;
   
   /** HTTP date format (RFC 1123). */
@@ -55,7 +55,7 @@ final class ServerUtil {
   /**
    * Constructor.<br>
    * <ul>
-   * <li>Prohibits instantiation as this is a utility class.</li>
+   * <li>Prohibits instantiation because this is a utility class.</li>
    * </ul>
    */
   private ServerUtil() {
@@ -64,7 +64,7 @@ final class ServerUtil {
 
   /**
    * Calculates optimal buffer size.
-   * @return buffer size (bytes)
+   * @return Buffer size (bytes)
    */
   private static int calcBufferSize() {
     // Available memory
@@ -79,7 +79,7 @@ final class ServerUtil {
       // 32KB
       return 32768;
     }
-    // Base size 8KB
+    // Basic size 8KB
     return 8192;
   }
 
@@ -89,8 +89,8 @@ final class ServerUtil {
    * <li>Returns with OK(200) status.</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
-   * @param txts display text (multiple allowed)
+   * @param exchange HTTP send/receive data
+   * @param txts Display text (multiple allowed)
    * @throws IOException I/O exception error
    */
   static void responseText(final HttpExchange exchange, final String... txts) throws IOException {
@@ -101,17 +101,17 @@ final class ServerUtil {
    * Displays error text response.<br>
    * <ul>
    * <li>Returns with Internal Server Error(500) status.</li>
-   * <li>Includes error details (stack trace) in response.</li>
+   * <li>Responds including error details (stack trace).</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
-   * @param e        error object
-   * @param txts     display text (multiple allowed)
+   * @param exchange HTTP send/receive data
+   * @param e        Error object
+   * @param txts     Display text (multiple allowed)
    * @throws IOException I/O exception error
    */
   static void responseText(final HttpExchange exchange, final Throwable e, final String... txts)
       throws IOException {
-    // Include stack trace in response
+    // Includes stack trace in response
     final String[] errTxts = new String[txts.length + 1];
     System.arraycopy(txts, 0, errTxts, 0, txts.length);
     errTxts[txts.length] = LogUtil.getStackTrace(LineSep.LF.toString(), e);
@@ -121,12 +121,12 @@ final class ServerUtil {
   /**
    * Displays text response.<br>
    * <ul>
-   * <li>Returns text response with specified HTTP status code.</li>
+   * <li>Returns a text response with the specified HTTP status code.</li>
    * </ul>
    *
-   * @param exchange   HTTP exchange data
+   * @param exchange   HTTP send/receive data
    * @param httpStatus HTTP status code (HttpURLConnection.HTTP_*)
-   * @param txts       display text (multiple allowed)
+   * @param txts       Display text (multiple allowed)
    * @throws IOException I/O exception error
    */
   static void responseText(final HttpExchange exchange, final int httpStatus, final String... txts)
@@ -146,7 +146,7 @@ final class ServerUtil {
    * <li>Returns with OK(200) status.</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
+   * @param exchange HTTP send/receive data
    * @param json     JSON string
    * @throws IOException I/O exception error
    */
@@ -165,41 +165,41 @@ final class ServerUtil {
   /**
    * Displays file.<br>
    * <ul>
-   * <li>Returns the content of specified file as response.</li>
-   * <li>Sets appropriate Content-Type according to file type.</li>
-   * <li>Checks file modification time and invalidates cache appropriately.</li>
+   * <li>Returns the content of the specified file as a response.</li>
+   * <li>Sets the appropriate Content-Type according to the file type.</li>
+   * <li>Checks the file modification date and time and discards the cache appropriately.</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
-   * @param resFile display file
-   * @param charSet character set
-   * @return <code>true</code> if cache was used, <code>false</code> otherwise including any errors
+   * @param exchange HTTP send/receive data
+   * @param resFile Display file
+   * @param charSet Character set
+   * @return <code>true</code> if cache is used, <code>false</code> otherwise including any errors
    * @throws IOException I/O exception error
    */
   static boolean responseFile(final HttpExchange exchange, final File resFile, final CharSet charSet)
       throws IOException {
-    // File existence check
+    // Checks file existence
     if (!resFile.exists() || !resFile.isFile()) {
       responseText(exchange, HttpURLConnection.HTTP_NOT_FOUND, "File not found. " +  LogUtil.joinKeyVal("filename", resFile.getName()));
       return false;
     }
 
-    // Path traversal attack protection
+    // Prevents path traversal attacks
     final String canonicalPath = resFile.getCanonicalPath();
     if (!canonicalPath.startsWith(PropertiesUtil.APPLICATION_DIR_PATH)) {
       responseText(exchange, HttpURLConnection.HTTP_FORBIDDEN, "Access denied. " +  LogUtil.joinKeyVal("filename", resFile.getName()));
       return false;
     }
 
-    // Server-side file modification time serial value (milliseconds)
+    // Server-side file modification date serial value (milliseconds)
     final long serverModMsec = resFile.lastModified();
-    // Server-side file modification time string
+    // Server-side file modification date string
     final String serverModVal = DTF_HTTP_DATE.format(Instant.ofEpochMilli(serverModMsec));
-    // Client-side file modification time string
+    // Client-side file modification date string
     final String clientModVal = exchange.getRequestHeaders().getFirst("If-Modified-Since");
 
     if (isUseCache(serverModMsec, serverModVal, clientModVal)) {
-      // If not modified, return 304 to prompt cache usage
+      // Returns 304 if not modified and encourages cache usage
       final Headers headers = exchange.getResponseHeaders();
       setSecurityHeaders(headers);
       headers.set("Last-Modified", serverModVal);
@@ -216,10 +216,10 @@ final class ServerUtil {
       logger.develop("Returning latest file. " + LogUtil.joinKeyVal("filename", resFile.getName(), "lastModified", serverModVal));
     }
 
-    // Check content type
+    // Checks content type
     final String checkCtype;
     
-    // Determine by extension first since Files#probeContentType() may be inaccurate on Windows OS
+    // Determines by extension first because Files#probeContentType() may be inaccurate on Windows OS
     final String fileName = resFile.getName().toLowerCase();
     if (fileName.endsWith(".css")) {
       checkCtype = "text/css";
@@ -236,25 +236,25 @@ final class ServerUtil {
     } else if (fileName.endsWith(".eot")) {
       checkCtype = "application/vnd.ms-fontobject";
     } else {
-      // Use Java standard MIME type for others
+      // Uses Java standard MIME type for others
       checkCtype = Files.probeContentType(resFile.toPath());
     }
     
-    // Text determination
+    // Determines if text
     final boolean isText = (checkCtype.startsWith("text/")
         || checkCtype.endsWith("/javascript")
         || checkCtype.endsWith("/json")
         || checkCtype.endsWith("/xml")
         || checkCtype.endsWith("+xml"));
     
-    // Header setting content type
+    // Content type for header setting
     final String headCtype;
     if (ValUtil.isBlank(checkCtype)) {
-      // Treat as binary if unknown
+      // Treats as binary when unknown
       headCtype = "application/octet-stream";
     } else {
       if (isText && !checkCtype.contains("charset=")) {
-        // Add charset specification
+        // Adds character set specification
         headCtype = checkCtype + "; charset=" + charSet.toString();
       } else {
         headCtype = checkCtype;
@@ -271,14 +271,14 @@ final class ServerUtil {
 
     final long fileSize = resFile.length();
     if (isText && TXT_TO_COMPRESS_MIN_SIZE < fileSize && fileSize <= TXT_TO_COMPRESS_MAX_SIZE) {
-      // Compress and respond if text file within compression target size
+      // Compresses and responds if text file is within target size for compression
       final String fileContent = Files.readString(resFile.toPath(),
           java.nio.charset.Charset.forName(charSet.toString()));
       responseCompressed(exchange, HttpURLConnection.HTTP_OK, fileContent);
       return false;
     }
 
-    // Respond as-is if not compression target
+    // Responds without compression if not target for compression
     responseCopyOrStream(exchange, resFile);
 
     return false;
@@ -287,32 +287,32 @@ final class ServerUtil {
   /**
    * Determines cache usage.<br>
    * <ul>
-   * <li>Compares server-side file modification time with client-side If-Modified-Since header.</li>
-   * <li>Determines cache is usable if client-side time is at or after server-side time.</li>
-   * <li>Comparison is performed considering 1 second tolerance.</li>
-   * <li>Falls back to string exact match if time parsing fails.</li>
+   * <li>Compares the server-side file modification date and time with the client-side If-Modified-Since header.</li>
+   * <li>Determines that cache is available if the client-side date and time is equal to or later than the server-side date and time.</li>
+   * <li>Compares dates and times considering a 1-second error margin.</li>
+   * <li>If date and time parsing fails, determines by exact string match.</li>
    * </ul>
    * 
-   * @param serverModMsec server-side file modification time serial value (milliseconds)
-   * @param serverModVal  server-side file modification time (RFC 1123 format string)
-   * @param clientModVal  client-side If-Modified-Since header (RFC 1123 format string, <code>null</code> allowed)
-   * @return <code>true</code> if cache is usable
+   * @param serverModMsec Server-side file modification date serial value (milliseconds)
+   * @param serverModVal  Server-side file modification date (RFC 1123 format string)
+   * @param clientModVal  Client-side If-Modified-Since header (RFC 1123 format string, <code>null</code> allowed)
+   * @return <code>true</code> if cache is available
    */
   private static boolean isUseCache(final long serverModMsec, final String serverModVal, final String clientModVal) {
     if (ValUtil.isNull(clientModVal)) {
       return false;
     }
     try {
-      // Client-side file modification time
+      // Client-side file modification date
       final ZonedDateTime clientModTime = ZonedDateTime.parse(clientModVal, DTF_HTTP_DATE);
       // Serial value (milliseconds)
       final long clientModMsec = clientModTime.toInstant().toEpochMilli();
-      // If file modification time is not after client-side time (compare with 1 second tolerance)
+      // If the file modification date is not equal to or later than the client-side date (compares considering a 1-second error margin)
       if (serverModMsec <= clientModMsec + 1000) {
         return true;
       }
     } catch (Exception e) {
-      // String comparison on parse error
+      // Compares strings on parse error
       if (serverModVal.equals(clientModVal)) {
         return true;
       }
@@ -323,12 +323,12 @@ final class ServerUtil {
   /**
    * Displays redirect.<br>
    * <ul>
-   * <li>Redirects to specified URL.</li>
+   * <li>Redirects to the specified URL.</li>
    * <li>Uses 301 Moved Permanently status.</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
-   * @param url redirect URL
+   * @param exchange HTTP send/receive data
+   * @param url Redirect URL
    * @throws IOException I/O exception error
    */
   static void responseRedirect(final HttpExchange exchange, final String url) throws IOException {
@@ -343,14 +343,14 @@ final class ServerUtil {
   /**
    * Gets request full URL.<br>
    * <ul>
-   * <li>Builds complete URL from current request.</li>
+   * <li>Builds a complete URL from the current request.</li>
    * <li>Optionally allows path addition or query removal.</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
-   * @param addPath additional path
+   * @param exchange HTTP send/receive data
+   * @param addPath Additional path
    * @param trimQuery <code>true</code> to remove query
-   * @return full URL
+   * @return Full URL
    */
   static String getRequestFullUrl(final HttpExchange exchange, final String addPath,
       final boolean trimQuery) {
@@ -372,14 +372,14 @@ final class ServerUtil {
   }
 
   /**
-   * Gets request body (POST data).<br>
+   * Gets request body (gets POST data).<br>
    * <ul>
-   * <li>Gets HTTP request body as string.</li>
-   * <li>Ensures proper resource closing.</li>
+   * <li>Gets the body part of the HTTP request as a string.</li>
+   * <li>Ensures proper resource closure.</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
-   * @return request string
+   * @param exchange HTTP send/receive data
+   * @return Request string
    * @throws IOException I/O exception error
    */
   static String getRequestBody(final HttpExchange exchange) throws IOException {
@@ -398,7 +398,7 @@ final class ServerUtil {
   /**
    * Sets security headers.
    * 
-   * @param headers HTTP exchange headers
+   * @param headers HTTP send/receive headers
    */
   private static void setSecurityHeaders(final Headers headers) {
     // XSS protection
@@ -417,8 +417,8 @@ final class ServerUtil {
   /**
    * File response copy or stream response (normal processing).
    * 
-   * @param exchange HTTP exchange data
-   * @param resFile  display file
+   * @param exchange HTTP send/receive data
+   * @param resFile  Display file
    */
   private static void responseCopyOrStream(final HttpExchange exchange, final File resFile)
       throws IOException, FileNotFoundException {
@@ -439,10 +439,10 @@ final class ServerUtil {
   }
 
   /**
-   * Compression-enabled response.
-   * @param exchange HTTP exchange data
+   * Compression-supported response.
+   * @param exchange HTTP send/receive data
    * @param httpStatus HTTP status code (HttpURLConnection.HTTP_*)
-   * @param resTxt response text
+   * @param resTxt Response text
    */
   private static void responseCompressed(final HttpExchange exchange, final int httpStatus, 
         final String resTxt) throws IOException {
@@ -467,8 +467,8 @@ final class ServerUtil {
 
   /**
    * GZIP compression processing.
-   * @param data data to compress
-   * @return compressed data
+   * @param data Compression target data
+   * @return Compressed data
    */
   private static byte[] compresseGzip(final byte[] data) throws IOException {
     try (final ByteArrayOutputStream baos = new ByteArrayOutputStream();

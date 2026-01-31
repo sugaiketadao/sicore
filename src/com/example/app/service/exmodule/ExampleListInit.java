@@ -15,7 +15,7 @@ public class ExampleListInit extends AbstractDbAccessWebService {
   @Override
   public void doExecute(final Io io) throws Exception {
     final String today = SqlUtil.getToday(getDbConn());
-    // Set initial values
+    // Sets the initial value
     io.put("birth_dt", today);
   }
 }

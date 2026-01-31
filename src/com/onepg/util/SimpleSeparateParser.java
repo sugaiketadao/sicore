@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Simple separation parser.<br>
+ * Simple separate parser.<br>
  * <ul>
- * <li>Separates a string by the specified delimiter.</li>
- * <li>Supports variable-length delimiters.</li>
- * <li>Consecutive delimiters are treated as empty strings.</li>
+ * <li>Separates strings by the specified delimiter</li>
+ * <li>Supports variable-length delimiters</li>
+ * <li>Consecutive delimiters are treated as empty strings</li>
  * </ul>
  * <pre>[Example]
  * <code>for (final String item : (new SimpleSeparateParser("a,b,c", ","))) {
@@ -24,8 +24,8 @@ public final class SimpleSeparateParser extends AbstractStringSeparateParser {
   /**
    * Constructor.
    *
-   * @param line the string
-   * @param sep the separator string
+   * @param line String
+   * @param sep Separator string
    */
   public SimpleSeparateParser(final String line, final String sep) {
     super(line);
@@ -33,10 +33,10 @@ public final class SimpleSeparateParser extends AbstractStringSeparateParser {
   }
 
   /**
-   * Finds begin-end positions for separation.
+   * Searches for separation start and end points.
    *
-   * @param value the target string
-   * @return the list of begin-end positions
+   * @param value Target string
+   * @return Start and end point list
    */
   @Override
   protected List<int[]> findBeginEnds(final String value) {
@@ -52,7 +52,7 @@ public final class SimpleSeparateParser extends AbstractStringSeparateParser {
       beginPos = endPos + sepLen;
     }
 
-    // Adds the last begin-end position
+    // Adds the last start and end point
     idxs.add(new int[] {beginPos, value.length()});
     return idxs;
   }

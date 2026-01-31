@@ -24,7 +24,7 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>I/O field group map class.<br>
+        <div>Input/output items map class.<br>
 
 <ul>
 <li>A map class that provides value retrieval methods and value storage methods for each type.</li>
@@ -54,10 +54,10 @@ are read-only.<br>
 <br>
 
 <ul>
-<li>Can input/output CSV.</li>
-<li>Can input/output JSON.</li>
-<li>Can input/output URL parameters.</li>
-<li>Basic rules and limitations conform to <code>AbstractIoTypeMap</code>.</li>
+<li>Can input and output CSV.</li>
+<li>Can input and output JSON.</li>
+<li>Can input and output URL parameters.</li>
+<li>The basic rules and restrictions conform to <code>AbstractIoTypeMap</code>.</li>
 </ul>
 </div>
       </div>
@@ -1898,14 +1898,14 @@ are read-only.<br>
         <div class="method-description">
           Creates CSV.<br>
 <ul>
-<li>Creates a CSV string in the order values were added.</li>
+<li>Creates the CSV string in the value addition order.</li>
 <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
 </ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the CSV string</p>
+          <p><code>String</code> - CSV string</p>
         </div>
       </div>
       <div class="method" id="createCsvAllDq">
@@ -1914,18 +1914,18 @@ are read-only.<br>
           <code>public String createCsvAllDq()</code>
         </div>
         <div class="method-description">
-          Creates CSV with double quotes.<br>
+          Creates CSV with double quotations.<br>
 <ul>
-<li>Creates a CSV string in the order values were added.</li>
-<li>Outputs all fields with double quotes.</li>
-<li>Double quotes in values are converted to two double quote characters.</li>
+<li>Creates the CSV string in the value addition order.</li>
+<li>Outputs all items with double quotations added.</li>
+<li>If the value contains double quotations, they are converted to two double quotation characters.</li>
 <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
 </ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the CSV string</p>
+          <p><code>String</code> - CSV string</p>
         </div>
       </div>
       <div class="method" id="createCsvDq">
@@ -1934,18 +1934,18 @@ are read-only.<br>
           <code>public String createCsvDq()</code>
         </div>
         <div class="method-description">
-          Creates CSV with CSV-specification-compliant double quotes.<br>
+          Creates CSV with CSV specification-compliant double quotations.<br>
 <ul>
-<li>Creates a CSV string in the order values were added.</li>
-<li>Outputs with double quotes added to fields that require them per CSV specification.</li>
-<li>Double quotes in values are converted to two double quote characters.</li>
+<li>Creates the CSV string in the value addition order.</li>
+<li>Outputs necessary items with double quotations added in compliance with CSV specification.</li>
+<li>If the value contains double quotations, they are converted to two double quotation characters.</li>
 <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
 </ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the CSV string</p>
+          <p><code>String</code> - CSV string</p>
         </div>
       </div>
       <div class="method" id="createUrlParam">
@@ -1954,12 +1954,12 @@ are read-only.<br>
           <code>public String createUrlParam()</code>
         </div>
         <div class="method-description">
-          Creates URL parameters (the part after ? in a URL).
+          Creates URL parameters (the part after ? in the URL).
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the URL-encoded GET parameters</p>
+          <p><code>String</code> - URL-encoded GET parameters</p>
         </div>
       </div>
       <div class="method" id="createJson">
@@ -1973,7 +1973,7 @@ are read-only.<br>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the JSON string</p>
+          <p><code>String</code> - JSON string</p>
         </div>
       </div>
       <div class="method" id="putAllByCsv">
@@ -1984,9 +1984,9 @@ are read-only.<br>
         <div class="method-description">
           Stores CSV.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>Fields with blank keys in the key name array are not stored. (Apply to fields that do not require storage.)</li>
-<li>If CSV field count exceeds key name array count, excess fields are not stored.</li>
+<li>Storage with already existing keys results in a runtime error.</li>
+<li>Items with blank keys in the argument key name array are not stored. (Apply to items that do not need storage)</li>
+<li>If the number of CSV items is greater than the number of key name array elements, the surplus items are not stored.</li>
 </ul>
 
         </div>
@@ -2004,19 +2004,19 @@ are read-only.<br>
               <tr>
                 <td><code>keys</code></td>
                 <td><code>String[]</code></td>
-                <td>the key name array</td>
+                <td>key name array</td>
               </tr>
               <tr>
                 <td><code>csv</code></td>
                 <td><code>String</code></td>
-                <td>the CSV string</td>
+                <td>CSV string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the stored field count</p>
+          <p><code>int</code> - the number of stored items</p>
         </div>
       </div>
       <div class="method" id="putAllByCsvDq">
@@ -2025,12 +2025,12 @@ are read-only.<br>
           <code>public int putAllByCsvDq(String[] keys, String csv)</code>
         </div>
         <div class="method-description">
-          Stores double-quoted CSV.<br>
+          Stores CSV with double quotations.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
-<li>Fields with blank keys in the key name array are not stored. (Apply to fields that do not require storage.)</li>
-<li>If CSV field count exceeds key name array count, excess fields are not stored.</li>
-<li>Two consecutive double quotes in values are converted to a single double quote and stored.</li>
+<li>Storage with already existing keys results in a runtime error.</li>
+<li>Items with blank keys in the argument key name array are not stored. (Apply to items that do not need storage)</li>
+<li>If the number of CSV items is greater than the number of key name array elements, the surplus items are not stored.</li>
+<li>Two consecutive double quotations within the value are converted to one double quotation and stored.</li>
 </ul>
 
         </div>
@@ -2048,19 +2048,19 @@ are read-only.<br>
               <tr>
                 <td><code>keys</code></td>
                 <td><code>String[]</code></td>
-                <td>the key name array</td>
+                <td>key name array</td>
               </tr>
               <tr>
                 <td><code>csv</code></td>
                 <td><code>String</code></td>
-                <td>the CSV string</td>
+                <td>CSV string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the stored field count</p>
+          <p><code>int</code> - the number of stored items</p>
         </div>
         <div class="see-also">
           <h4>See Also</h4>
@@ -2075,9 +2075,9 @@ are read-only.<br>
           <code>public int putAllByUrlParam(String url)</code>
         </div>
         <div class="method-description">
-          Stores URL parameter (the part after ? in a URL) values.<br>
+          Stores URL parameter (the part after ? in the URL) values.<br>
 <ul>
-<li>Storing with an already existing key causes a runtime error.</li>
+<li>Storage with already existing keys results in a runtime error.</li>
 </ul>
 
         </div>
@@ -2095,14 +2095,14 @@ are read-only.<br>
               <tr>
                 <td><code>url</code></td>
                 <td><code>String</code></td>
-                <td>the full URL or URL parameters</td>
+                <td>entire URL or URL parameters</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the stored parameter count</p>
+          <p><code>int</code> - the number of stored parameters</p>
         </div>
       </div>
       <div class="method" id="putAllByJson">
@@ -2128,14 +2128,14 @@ are read-only.<br>
               <tr>
                 <td><code>json</code></td>
                 <td><code>String</code></td>
-                <td>the JSON string</td>
+                <td>JSON string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the stored field count</p>
+          <p><code>int</code> - the number of stored items</p>
         </div>
       </div>
     </div>

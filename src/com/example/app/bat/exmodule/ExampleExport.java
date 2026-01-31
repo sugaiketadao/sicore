@@ -17,7 +17,7 @@ import com.onepg.util.ValUtil;
  */
 public class ExampleExport extends AbstractDbAccessBatch {
 
-    /** SQL definition: User retrieval. */
+    /** SQL definition: user retrieval. */
     private static final SqlConst SQL_SEL_USER = SqlConst.begin()
       .addQuery("SELECT ")
       .addQuery("  u.user_id ")
@@ -35,7 +35,7 @@ public class ExampleExport extends AbstractDbAccessBatch {
 
   /**
    * Main processing.
-   * @param args the arguments
+   * @param args arguments
    */
   public static void main(String[] args) {
     final ExampleExport batch = new ExampleExport();
@@ -47,29 +47,29 @@ public class ExampleExport extends AbstractDbAccessBatch {
    */
   @Override
   public int doExecute(final IoItems io) throws Exception {
-    // Get output file path
+    // Retrieves the output file path
     final String outputPath = io.getString("output");
 
     if (ValUtil.isBlank(outputPath)) {
-      // Check 'output' parameter is required
+      // Checks if the 'output' parameter is required
       throw new RuntimeException("'output' is required.");
     }
     if (FileUtil.exists(outputPath)) {
-      // Check output file does not exist
+      // Checks if the output file does not exist
       throw new RuntimeException("Output path already exists. " + LogUtil.joinKeyVal("output", outputPath));
     }
     if (!FileUtil.existsParent(outputPath)) {
-      // Check output directory exists
+      // Checks if the output parent directory exists
       throw new RuntimeException("Output parent directory not exists. " + LogUtil.joinKeyVal("output", outputPath));
     }
 
-    // Retrieve from database and output to file
+    // Retrieves data from the database and outputs to a file
     try (final SqlResultSet rSet = SqlUtil.select(getDbConn(), SQL_SEL_USER);
         final TxtWriter tw = new TxtWriter(outputPath, LineSep.LF, CharSet.UTF8)) {
       final String[] itemNames = rSet.getItemNames();
       tw.println(ValUtil.joinCsvAllDq(itemNames));
       for (final IoItems row : rSet) {
-        tw.println(row.createCsvAllDq());
+        tw.println(row.createCsvDq());
       }
       if (rSet.getReadedCount() == 0) {
         super.logger.info("No data found to export. " + LogUtil.joinKeyVal("output", outputPath));

@@ -35,9 +35,9 @@
           <code>public Connection getConn()</code>
         </div>
         <div class="method-description">
-          Gets the default database connection.<br>
+          Retrieves the default database connection.<br>
 <ul>
-<li>Declare in try clause (try-with-resources statement).</li>
+<li>Declare in a try clause (try-with-resources statement).</li>
 </ul>
 
         </div>
@@ -52,9 +52,9 @@
           <code>public Connection getConn(String traceCode)</code>
         </div>
         <div class="method-description">
-          Gets the default database connection.<br>
+          Retrieves the default database connection.<br>
 <ul>
-<li>Declare in try clause (try-with-resources statement).</li>
+<li>Declare in a try clause (try-with-resources statement).</li>
 </ul>
 
         </div>
@@ -72,7 +72,7 @@
               <tr>
                 <td><code>traceCode</code></td>
                 <td><code>String</code></td>
-                <td>Trace code</td>
+                <td>trace code</td>
               </tr>
             </tbody>
           </table>
@@ -88,9 +88,9 @@
           <code>public Connection getConnByConfigName(String connName)</code>
         </div>
         <div class="method-description">
-          Gets the database connection by configuration name.<br>
+          Retrieves a database connection with the specified connection name.<br>
 <ul>
-<li>Declare in try clause (try-with-resources statement).</li>
+<li>Declare in a try clause (try-with-resources statement).</li>
 </ul>
 
         </div>
@@ -108,7 +108,7 @@
               <tr>
                 <td><code>connName</code></td>
                 <td><code>String</code></td>
-                <td>Database connection name in configuration file (part before .dbcon.url)</td>
+                <td>database connection name in the configuration file (the part before .dbcon.url)</td>
               </tr>
             </tbody>
           </table>
@@ -124,9 +124,9 @@
           <code>public Connection getConnByConfigName(String connName, String traceCode)</code>
         </div>
         <div class="method-description">
-          Gets the database connection by configuration name.<br>
+          Retrieves a database connection with the specified connection name.<br>
 <ul>
-<li>Declare in try clause (try-with-resources statement).</li>
+<li>Declare in a try clause (try-with-resources statement).</li>
 </ul>
 
         </div>
@@ -144,12 +144,12 @@
               <tr>
                 <td><code>connName</code></td>
                 <td><code>String</code></td>
-                <td>Database connection name in configuration file (part before .dbcon.url)</td>
+                <td>database connection name in the configuration file (the part before .dbcon.url)</td>
               </tr>
               <tr>
                 <td><code>traceCode</code></td>
                 <td><code>String</code></td>
-                <td>Trace code</td>
+                <td>trace code</td>
               </tr>
             </tbody>
           </table>
@@ -165,10 +165,10 @@
           <code>public Connection getConnPooled()</code>
         </div>
         <div class="method-description">
-          Gets the default pooled database connection.<br>
+          Retrieves the default pooled database connection.<br>
 <ul>
-<li>Gets a pooled database connection.</li>
-<li>Declare in try clause (try-with-resources statement).</li>
+<li>Retrieves a pooled database connection.</li>
+<li>Declare in a try clause (try-with-resources statement).</li>
 </ul>
 
         </div>
@@ -183,10 +183,10 @@
           <code>public Connection getConnPooled(String traceCode)</code>
         </div>
         <div class="method-description">
-          Gets the default pooled database connection.<br>
+          Retrieves the default pooled database connection.<br>
 <ul>
-<li>Gets a pooled database connection.</li>
-<li>Declare in try clause (try-with-resources statement).</li>
+<li>Retrieves a pooled database connection.</li>
+<li>Declare in a try clause (try-with-resources statement).</li>
 </ul>
 
         </div>
@@ -204,7 +204,7 @@
               <tr>
                 <td><code>traceCode</code></td>
                 <td><code>String</code></td>
-                <td>Trace code</td>
+                <td>trace code</td>
               </tr>
             </tbody>
           </table>
@@ -220,10 +220,10 @@
           <code>public Connection getConnPooledByConfigName(String connName)</code>
         </div>
         <div class="method-description">
-          Gets the pooled database connection by configuration name.<br>
+          Retrieves a pooled database connection with the specified connection name.<br>
 <ul>
-<li>Gets a pooled database connection.</li>
-<li>Declare in try clause (try-with-resources statement).</li>
+<li>Retrieves a pooled database connection.</li>
+<li>Declare in a try clause (try-with-resources statement).</li>
 </ul>
 
         </div>
@@ -241,7 +241,7 @@
               <tr>
                 <td><code>connName</code></td>
                 <td><code>String</code></td>
-                <td>Database connection name in configuration file (part before .dbcon.url)</td>
+                <td>database connection name in the configuration file (the part before .dbcon.url)</td>
               </tr>
             </tbody>
           </table>
@@ -257,10 +257,10 @@
           <code>public Connection getConnPooledByConfigName(String connName, String traceCode)</code>
         </div>
         <div class="method-description">
-          Gets the pooled database connection by configuration name.<br>
+          Retrieves a pooled database connection with the specified connection name.<br>
 <ul>
-<li>Gets a pooled database connection.</li>
-<li>Declare in try clause (try-with-resources statement).</li>
+<li>Retrieves a pooled database connection.</li>
+<li>Declare in a try clause (try-with-resources statement).</li>
 </ul>
 
         </div>
@@ -278,12 +278,12 @@
               <tr>
                 <td><code>connName</code></td>
                 <td><code>String</code></td>
-                <td>Database connection name in configuration file (part before .dbcon.url)</td>
+                <td>database connection name in the configuration file (the part before .dbcon.url)</td>
               </tr>
               <tr>
                 <td><code>traceCode</code></td>
                 <td><code>String</code></td>
-                <td>Trace code</td>
+                <td>trace code</td>
               </tr>
             </tbody>
           </table>
@@ -301,14 +301,14 @@
         <div class="method-description">
           Closes pooled database connections.<br>
 <ul>
-<li>Closes all pooled database connections.</li>
-<li>Also closes connections in use.</li>
+<li>Disconnects all pooled database connections.</li>
+<li>Also disconnects busy connections.</li>
 </ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if any connections were closed</p>
+          <p><code>boolean</code> - <code>true</code> if disconnected</p>
         </div>
       </div>
       <div class="method" id="getConnNames">
@@ -317,11 +317,11 @@
           <code>public List&lt;String&gt; getConnNames()</code>
         </div>
         <div class="method-description">
-          Gets the database connection configuration names.
+          Retrieves database connection configuration names.
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>List&lt;String&gt;</code> - the list of connection names where URL is configured (includes default connection name)</p>
+          <p><code>List&lt;String&gt;</code> - the list of connection names with URLs configured (includes the default connection name)</p>
         </div>
       </div>
     </div>

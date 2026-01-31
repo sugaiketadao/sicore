@@ -8,9 +8,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Text writer serialization wrapper class.<br>
  * <ul>
- * <li>Serializes output even when called from parallel threads.</li>
+ * <li>Serializes output even when output from parallel threads.</li>
  * <li>Also caches output data internally.</li>
- * <li>Always call <code>#close()</code> because output content may remain in cache if the last write is concurrent. (<code>#close()</code> internally calls <code>#flush()</code>)</li>
+ * <li>If the last write is simultaneous, output contents may remain in cache, so <code>#close()</code> must be called. (<code>#flush()</code> is called within <code>#close()</code>)</li>
  * </ul>
  * @hidden
  */
@@ -24,11 +24,11 @@ final class TxtSerializeWriter extends TxtWriter {
   /**
    * Constructor.
    *
-   * @param filePath the file path
-   * @param lineSep the line separator
-   * @param charSet the character set
+   * @param filePath File path
+   * @param lineSep Line separator
+   * @param charSet Character set
    * @param withBom <code>true</code> if with BOM
-   * @param canAppend <code>true</code> if appending is allowed
+   * @param canAppend <code>true</code> if append is allowed
    * @param lineFlush <code>true</code> if flushing on line break
    */
   TxtSerializeWriter(final String filePath, final LineSep lineSep, final CharSet charSet, final boolean withBom,
@@ -37,9 +37,9 @@ final class TxtSerializeWriter extends TxtWriter {
   }
 
   /**
-   * Prints cache (serialized).
+   * Cache output (serialized).
    *
-   * @param fullFlush <code>true</code> to output all cached data (intended for use at program termination)
+   * @param fullFlush <code>true</code> if outputting all cached data (assumed to be used at program termination)
    */
   private synchronized void cachePrint(final boolean fullFlush) {
     if (fullFlush) {
@@ -50,8 +50,8 @@ final class TxtSerializeWriter extends TxtWriter {
       return;
     }
 
-    // Outputs only the cached data at this point in time.
-    // Finishes even if added during processing to avoid long processing.
+    // Outputs only what is cached at the current time.
+    // Ends even if added during processing to avoid long processing time.
     final int cacheSize = lineCache.size();
     for (int i = 0; i < cacheSize; i++) {
       final String cache = this.lineCache.poll();
@@ -64,14 +64,15 @@ final class TxtSerializeWriter extends TxtWriter {
 
   @Override
   public void println(final String line) {
-    // Replaces null here as well because putting null in cache is not desirable, even though TxtWriter#println also replaces null
+    // Stores in cache first, then outputs
+    // TxtWriter#println also replaces null, but replacing here too as putting null in cache is not desirable
     this.lineCache.offer(ValUtil.nvl(line));
     if (this.isPrinting.compareAndSet(false, true)) {
       try {
-        // If not currently printing, switches to printing and outputs cache
+        // If flag is not printing, switches to printing and outputs cache
         cachePrint(false);
       }finally {
-        // Resets flag even on exception
+        // Restores flag even if exception occurs
         this.isPrinting.set(false);
       }
     }

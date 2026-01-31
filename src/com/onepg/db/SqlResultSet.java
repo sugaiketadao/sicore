@@ -13,10 +13,10 @@ import java.util.Map;
  * SQL result set wrapper class.
  *
  * <ul>
- * <li>A wrapper class for <code>ResultSet</code> that provides an iterator and handles closing of statement and result set.</li>
- * <li>Through this class, data can only be retrieved via the iterator.</li>
- * <li>Declare in try clause (try-with-resources statement).</li>
- * <li>The column physical names in the row map obtained from this class's iterator are lowercase letters. (Keys of <code>IoItems</code>)</li>
+ * <li>A wrapper class for the result set <code>ResultSet</code> that provides an iterator and handles closing of the statement and result set.</li>
+ * <li>By using this class, data can only be retrieved through the iterator.</li>
+ * <li>Declare in a try clause (try-with-resources statement).</li>
+ * <li>The physical field names in the row map retrieved from the iterator of this class are in lowercase English letters. (<code>IoItems</code> keys)</li>
  * </ul>
  * 
  * @see SqlUtil#select(java.sql.Connection, SqlBuilder)
@@ -27,23 +27,23 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   private final PreparedStatement stmt;
   /** Result set. */
   private final ResultSet rset;
-  /** Database column name to class type map. */
+  /** Database column name and class type map. */
   private final Map<String, ItemClsType> nameClsMap;
   /** Connection serial code. */
   private final String serialCode;
 
   /** Number of rows read. */
   private int readedCount = 0;
-  /** Flag indicating whether the last row has been read. */
+  /** Last row read flag. */
   private boolean readedEndRowFlag = false;
 
   /**
    * Constructor.
    *
-   * @param stmt Statement
-   * @param rset Result set
-   * @param nameClsMap Database column name to class type map
-   * @param serialCode Connection serial code
+   * @param stmt statement
+   * @param rset result set
+   * @param nameClsMap database column name and class type map
+   * @param serialCode connection serial code
    */
   SqlResultSet(final PreparedStatement stmt, final ResultSet rset,
       final Map<String, ItemClsType> nameClsMap, final String serialCode) throws SQLException {
@@ -65,7 +65,7 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   }
 
   /**
-   * Closes resources.<br>
+   * Closes the result set and statement.<br>
    * <ul>
    * <li>Closes the result set and statement.</li>
    * </ul>
@@ -116,9 +116,9 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   }
 
   /**
-   * Checks if data exists (matches found for database extraction criteria).<br>
+   * Checks if data exists (matches database retrieval conditions).<br>
    * <ul>
-   * <li>On DB2, <code>#isBeforeFirst</code> (with TYPE_FORWARD_ONLY) causes an error.</li>
+   * <li>In DB2, #isBeforeFirst (with TYPE_FORWARD_ONLY) causes an error.</li>
    * </ul>
    *
    * @return <code>true</code> if data was retrieved
@@ -133,9 +133,9 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   }
 
   /**
-   * Gets the number of rows read (not the number of rows matching database extraction criteria).<br>
+   * Retrieves the number of rows read (not the count matching database retrieval conditions).<br>
    * <ul>
-   * <li>Returns the number of rows read via the iterator.</li>
+   * <li>Returns the count read by the iterator.</li>
    * </ul>
    *
    * @return the number of rows read
@@ -145,7 +145,7 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   }
 
   /**
-   * Checks if the last row has been read.
+   * Determines if the last row has been read.
    *
    * @return <code>true</code> if the last row has been read
    */
@@ -154,7 +154,7 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   }
 
   /**
-   * Gets the database column names.
+   * Retrieves database column names.
    *
    * @return the database column name string array
    */
@@ -170,14 +170,14 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   /**
    * Result row iterator class.
    * <ul>
-   * <li>An iterator class for <code>ResultSet</code>.</li>
+   * <li>Iterator class for the result set <code>ResultSet</code>.</li>
    * </ul>
    */
   public final class SqlResultRowIterator implements Iterator<IoItems> {
 
-    /** Flag indicating if next row exists. */
+    /** Next row exists flag. */
     private boolean hasNextRow = false;
-    /** Flag indicating if next row check has been performed. */
+    /** Next row checked flag. */
     private boolean hasNextChecked = false;
 
     /**
@@ -188,13 +188,13 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
     }
 
     /**
-     * Checks for next row.<br>
+     * Checks if the next row exists.<br>
      * <ul>
-     * <li>Closes the result set and statement if no next row exists, in case try clause was not used.</li>
+     * <li>Closes the result set and statement if the next row does not exist, in case the try clause was not used.</li>
      * <li>Does not recheck on consecutive hasNext() calls.</li>
      * </ul>
      *
-     * @return <code>true</code> if next row exists
+     * @return <code>true</code> if the next row exists
      */
     @Override
     public boolean hasNext() {
@@ -203,18 +203,18 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
           return this.hasNextRow;
       }
 
-      // Check for next row existence
+      // Check if next row exists
       try {
           // <code>ResultSet#isLast()</code> cannot be used with TYPE_FORWARD_ONLY.
           this.hasNextRow = rset.next();
-          this.hasNextChecked = true; // Check completed flag
+          this.hasNextChecked = true; // Confirmation completed flag
       } catch (SQLException e) {
           throw new RuntimeException("Exception error occurred while checking next record in result set. " + LogUtil.joinKeyVal("serialCode",
               serialCode, "readedCount", String.valueOf(readedCount)), e);
       }
 
       if (!this.hasNextRow) {
-          // Set last row read flag to ON
+          // Turn on last row read flag
           readedEndRowFlag = true;
           // Close the result set and statement
           close();
@@ -224,7 +224,7 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
     }
 
     /**
-     * Gets the next row.
+     * Retrieves the next row.
      *
      * @return the row map
      */
@@ -235,11 +235,11 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
               serialCode, "readedCount", String.valueOf(readedCount)));
       }
 
-      // Get the result set row map
+      // Retrieve result set row map
       final IoItems retMap = SqlUtil.createIoItemsFromResultSet(rset, nameClsMap);
       readedCount++;
 
-      // Recheck required
+      // Recheck is necessary
       this.hasNextChecked = false;
 
       return retMap;

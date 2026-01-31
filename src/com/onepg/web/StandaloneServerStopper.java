@@ -22,17 +22,17 @@ public final class StandaloneServerStopper {
 
   /**
    * Main processing.
-   * @param args command line arguments
+   * @param args Command line arguments
    */
   public static void main(final String[] args) {
     try {
-      // Web server configuration
+      // Web server settings
       final IoItems propMap = PropertiesUtil.getFrameworkProps(FwPropertiesName.WEB);
       final int portNo = propMap.getInt("port.no");
       final String serverStopContext = propMap.getString("server.stop.context");
-      // Send stop request
+      // Sends stop request
       stopHttpServer(portNo, serverStopContext);
-      // Confirm stop
+      // Confirms stop
       confirmServerStop(portNo);
 
       LogUtil.stdout("Web server stop processing completed.");
@@ -47,8 +47,8 @@ public final class StandaloneServerStopper {
   /**
    * Sends web server stop request.<br>
    *
-   * @param port target port
-   * @param stopContext stop context
+   * @param port Target port
+   * @param stopContext Stop context
    * @throws IOException HTTP communication error
    */
   private static void stopHttpServer(final int port, final String stopContext) throws IOException {
@@ -68,7 +68,7 @@ public final class StandaloneServerStopper {
       LogUtil.stdout("Stop request response received. " + LogUtil.joinKeyVal("responseCode", responseCode));
 
       if (responseCode == HttpURLConnection.HTTP_OK) {
-        // Read response content
+        // Reads response content
         try (Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())) {
           final String response = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
           LogUtil.stdout("Stop request response content: " + response);
@@ -88,16 +88,16 @@ public final class StandaloneServerStopper {
   /**
    * Confirms server stop.<br>
    *
-   * @param port target port
+   * @param port Target port
    */
   private static void confirmServerStop(final int port) {
     final String checkUrl = "http://localhost:" + String.valueOf(port) + "/";
     LogUtil.stdout("Starting server stop confirmation.");
 
-    // Check up to 10 times at 1 second intervals
+    // Checks up to 10 times at 1-second intervals
     for (int i = 0; i < 10; i++) {
       try {
-        Thread.sleep(1000); // Wait 1 second
+        Thread.sleep(1000); // Waits 1 second
 
         final URI uri = new URI(checkUrl);
         final URL url = uri.toURL();

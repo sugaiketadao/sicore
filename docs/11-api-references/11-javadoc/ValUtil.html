@@ -101,7 +101,7 @@
             <code>public String JSON_NULL</code>
           </div>
           <div class="field-description">
-            JSON <code>null</code> string. 
+            JSON <code>null</code> character. 
           </div>
         </div>
       </div>
@@ -114,7 +114,7 @@
           <code>public boolean isNull(Object obj)</code>
         </div>
         <div class="method-description">
-          Checks for <code>null</code>.<br>
+          Checks <code>null</code>.<br>
 <ul>
 <li>Checks whether <code>Object</code> is <code>null</code>.</li>
 </ul>
@@ -134,7 +134,7 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
@@ -150,9 +150,9 @@
           <code>public boolean isBlank(String value)</code>
         </div>
         <div class="method-description">
-          Checks for blank.<br>
+          Checks blank.<br>
 <ul>
-<li>Determines as blank if composed of only half-width spaces, zero-byte string, or <code>null</code>.</li>
+<li>Determines as blank in any of the following cases: consisting only of half-width spaces / zero-byte string / <code>null</code>.</li>
 </ul>
 
         </div>
@@ -170,7 +170,7 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
@@ -186,7 +186,7 @@
           <code>public boolean isEmpty(Object[] values)</code>
         </div>
         <div class="method-description">
-          Checks for empty.<br>
+          Checks empty.<br>
 <ul>
 <li>Checks whether array has zero length or is <code>null</code>.</li>
 </ul>
@@ -206,7 +206,7 @@
               <tr>
                 <td><code>values</code></td>
                 <td><code>Object[]</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
@@ -222,7 +222,7 @@
           <code>public boolean isEmpty(List&lt;?&gt; list)</code>
         </div>
         <div class="method-description">
-          Checks for empty.<br>
+          Checks empty.<br>
 <ul>
 <li>Checks whether list has zero length or is <code>null</code>.</li>
 </ul>
@@ -242,7 +242,7 @@
               <tr>
                 <td><code>list</code></td>
                 <td><code>List&lt;?&gt;</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
@@ -258,7 +258,7 @@
           <code>public boolean isEmpty(Map&lt;?, ?&gt; map)</code>
         </div>
         <div class="method-description">
-          Checks for empty.<br>
+          Checks empty.<br>
 <ul>
 <li>Checks whether map has zero length or is <code>null</code>.</li>
 </ul>
@@ -278,7 +278,7 @@
               <tr>
                 <td><code>map</code></td>
                 <td><code>Map&lt;?, ?&gt;</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
@@ -294,11 +294,11 @@
           <code>public boolean isValidIoKey(String key)</code>
         </div>
         <div class="method-description">
-          Checks input-output map key format.<br>
+          Checks input/output map key format.<br>
 <ul>
-<li>Checks whether the key contains only valid characters for input-output map keys.</li>
-<li>Allowed characters are as follows:
-<ul><li>Lowercase letters</li><li>Digits</li><li>Underscores</li><li>Hyphens</li><li>Dots</li></ul>
+<li>Checks whether characters can be used as keys in input/output maps.</li>
+<li>Allowed characters are as follows.
+<ul><li>Lowercase letters</li><li>Digits</li><li>Underscore</li><li>Hyphen</li><li>Dot</li></ul>
 </li>
 </ul>
 
@@ -317,7 +317,7 @@
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>the key to check</td>
+                <td>Check target key</td>
               </tr>
             </tbody>
           </table>
@@ -333,11 +333,11 @@
           <code>public void validateIoKey(String key)</code>
         </div>
         <div class="method-description">
-          Checks input-output map key format.<br>
+          Checks input/output map key format.<br>
 <ul>
-<li>Checks whether the key contains only valid characters for input-output map keys.</li>
-<li>Allowed characters are as follows:
-<ul><li>Lowercase letters</li><li>Digits</li><li>Underscores</li><li>Hyphens</li><li>Dots</li></ul>
+<li>Checks whether characters can be used as keys in input/output maps.</li>
+<li>Allowed characters are as follows.
+<ul><li>Lowercase letters</li><li>Digits</li><li>Underscore</li><li>Hyphen</li><li>Dot</li></ul>
 </li>
 <li>Throws <code>RuntimeException</code> if contains invalid characters.</li>
 </ul>
@@ -357,7 +357,7 @@
               <tr>
                 <td><code>key</code></td>
                 <td><code>String</code></td>
-                <td>the key to check</td>
+                <td>Check target key</td>
               </tr>
             </tbody>
           </table>
@@ -389,14 +389,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - blank if <code>null</code></p>
+          <p><code>String</code> - Blank if <code>null</code></p>
         </div>
       </div>
       <div class="method" id="nvl">
@@ -407,7 +407,7 @@
         <div class="method-description">
           Replaces <code>null</code>.<br>
 <ul>
-<li>Returns replacement string if string is <code>null</code>.</li>
+<li>Returns replacement character if string is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -425,19 +425,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
               <tr>
                 <td><code>nullDefault</code></td>
                 <td><code>String</code></td>
-                <td>the replacement string</td>
+                <td>Replacement character</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the replacement string if <code>null</code></p>
+          <p><code>String</code> - Replacement character if <code>null</code></p>
         </div>
       </div>
       <div class="method" id="nvl">
@@ -448,7 +448,7 @@
         <div class="method-description">
           Replaces <code>null</code> with zero.<br>
 <ul>
-<li>Returns zero if number is <code>null</code>.</li>
+<li>Returns zero if numeric value is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -466,14 +466,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>BigDecimal</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>BigDecimal</code> - zero if <code>null</code></p>
+          <p><code>BigDecimal</code> - Zero if <code>null</code></p>
         </div>
       </div>
       <div class="method" id="bvl">
@@ -484,7 +484,7 @@
         <div class="method-description">
           Replaces blank.<br>
 <ul>
-<li>Returns replacement string if string is blank.</li>
+<li>Returns replacement character if string is blank.</li>
 <li>Uses <code>#isBlank(String)</code> for blank determination.</li>
 </ul>
 
@@ -503,19 +503,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
               <tr>
                 <td><code>blankDefault</code></td>
                 <td><code>String</code></td>
-                <td>the replacement string</td>
+                <td>Replacement character</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the replacement string if blank</p>
+          <p><code>String</code> - Replacement character if blank</p>
         </div>
       </div>
       <div class="method" id="join">
@@ -545,19 +545,19 @@
               <tr>
                 <td><code>joint</code></td>
                 <td><code>String</code></td>
-                <td>the joint character</td>
+                <td>Joint character</td>
               </tr>
               <tr>
                 <td><code>values</code></td>
                 <td><code>String...</code></td>
-                <td>the target to join</td>
+                <td>Join target</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the joined string</p>
+          <p><code>String</code> - Joined string</p>
         </div>
       </div>
       <div class="method" id="join">
@@ -587,19 +587,19 @@
               <tr>
                 <td><code>joint</code></td>
                 <td><code>String</code></td>
-                <td>the joint character</td>
+                <td>Joint character</td>
               </tr>
               <tr>
                 <td><code>list</code></td>
                 <td><code>List&lt;String&gt;</code></td>
-                <td>the target to join</td>
+                <td>Join target</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the joined string</p>
+          <p><code>String</code> - Joined string</p>
         </div>
       </div>
       <div class="method" id="join">
@@ -629,19 +629,19 @@
               <tr>
                 <td><code>joint</code></td>
                 <td><code>String</code></td>
-                <td>the joint character</td>
+                <td>Joint character</td>
               </tr>
               <tr>
                 <td><code>list</code></td>
                 <td><code>Set&lt;String&gt;</code></td>
-                <td>the target to join</td>
+                <td>Join target</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the joined string</p>
+          <p><code>String</code> - Joined string</p>
         </div>
       </div>
       <div class="method" id="joinCsv">
@@ -650,9 +650,9 @@
           <code>public String joinCsv(String[] values)</code>
         </div>
         <div class="method-description">
-          Joins array as CSV.<br>
+          Joins array to CSV.<br>
 <ul>
-<li>Returns blank if the array is empty.</li>
+<li>Returns blank if array is empty.</li>
 <li><code>null</code> is joined as blank.</li>
 </ul>
 
@@ -671,14 +671,14 @@
               <tr>
                 <td><code>values</code></td>
                 <td><code>String[]</code></td>
-                <td>the array to join</td>
+                <td>Join target</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the joined CSV string</p>
+          <p><code>String</code> - Joined CSV string</p>
         </div>
       </div>
       <div class="method" id="joinCsvAllDq">
@@ -687,12 +687,12 @@
           <code>public String joinCsvAllDq(String[] values)</code>
         </div>
         <div class="method-description">
-          Joins array as CSV with double quotes.<br>
+          Joins array to CSV with double quotation.<br>
 <ul>
-<li>Returns blank if the array is empty.</li>
+<li>Returns blank if array is empty.</li>
 <li><code>null</code> is joined as blank.</li>
-<li>Outputs all array elements with double quotes.</li>
-<li>Double quotes in values are converted to two consecutive double quotes.</li>
+<li>Outputs with double quotation added to all array elements.</li>
+<li>If value contains double quotation, it is converted to two consecutive double quotations.</li>
 </ul>
 
         </div>
@@ -710,14 +710,14 @@
               <tr>
                 <td><code>values</code></td>
                 <td><code>String[]</code></td>
-                <td>the array to join</td>
+                <td>Join target</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the joined CSV string</p>
+          <p><code>String</code> - Joined CSV string</p>
         </div>
       </div>
       <div class="method" id="joinCsvDq">
@@ -726,12 +726,12 @@
           <code>public String joinCsvDq(String[] values)</code>
         </div>
         <div class="method-description">
-          Joins array as CSV with CSV-specification-compliant double quotes.<br>
+          Joins array to CSV with CSV specification compliant double quotation.<br>
 <ul>
-<li>Returns blank if the array is empty.</li>
+<li>Returns blank if array is empty.</li>
 <li><code>null</code> is joined as blank.</li>
-<li>Outputs with double quotes added to elements that require them per CSV specification.</li>
-<li>Double quotes in values are converted to two consecutive double quotes.</li>
+<li>Outputs with double quotation added to necessary elements according to CSV specification.</li>
+<li>If value contains double quotation, it is converted to two consecutive double quotations.</li>
 </ul>
 
         </div>
@@ -749,14 +749,14 @@
               <tr>
                 <td><code>values</code></td>
                 <td><code>String[]</code></td>
-                <td>the array to join</td>
+                <td>Join target</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the joined CSV string</p>
+          <p><code>String</code> - Joined CSV string</p>
         </div>
       </div>
       <div class="method" id="split">
@@ -765,9 +765,9 @@
           <code>public String[] split(String value, String sep)</code>
         </div>
         <div class="method-description">
-          Splits into array.<br>
+          Splits array.<br>
 <ul>
-<li>Returns zero-length array if string is <code>null</code>.</li>
+<li>Returns zero-length array if character is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -785,19 +785,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the string to split</td>
+                <td>Split target character</td>
               </tr>
               <tr>
                 <td><code>sep</code></td>
                 <td><code>String</code></td>
-                <td>the separator string</td>
+                <td>Split character</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String[]</code> - the split string array</p>
+          <p><code>String[]</code> - Split string array</p>
         </div>
       </div>
       <div class="method" id="splitReg">
@@ -806,9 +806,9 @@
           <code>public String[] splitReg(String value, String sep)</code>
         </div>
         <div class="method-description">
-          Splits into array using regular expression.<br>
+          Splits array by regular expression.<br>
 <ul>
-<li>Returns zero-length array if string is <code>null</code>.</li>
+<li>Returns zero-length array if character is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -826,19 +826,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the string to split</td>
+                <td>Split target character</td>
               </tr>
               <tr>
                 <td><code>sep</code></td>
                 <td><code>String</code></td>
-                <td>the separator string (regular expression)</td>
+                <td>Split character (regular expression)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String[]</code> - the split string array</p>
+          <p><code>String[]</code> - Split string array</p>
         </div>
       </div>
       <div class="method" id="splitReg">
@@ -847,9 +847,9 @@
           <code>public String[] splitReg(String value, String sep, int limitLength)</code>
         </div>
         <div class="method-description">
-          Splits into array using regular expression.<br>
+          Splits array by regular expression.<br>
 <ul>
-<li>Returns zero-length array if string is <code>null</code>.</li>
+<li>Returns zero-length array if character is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -867,24 +867,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the string to split</td>
+                <td>Split target character</td>
               </tr>
               <tr>
                 <td><code>sep</code></td>
                 <td><code>String</code></td>
-                <td>the separator string (regular expression)</td>
+                <td>Split character (regular expression)</td>
               </tr>
               <tr>
                 <td><code>limitLength</code></td>
                 <td><code>int</code></td>
-                <td>the maximum length</td>
+                <td>Maximum length</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String[]</code> - the split string array</p>
+          <p><code>String[]</code> - Split string array</p>
         </div>
       </div>
       <div class="method" id="splitCsv">
@@ -895,8 +895,8 @@
         <div class="method-description">
           Splits CSV.<br>
 <ul>
-<li>Splits a CSV string into a string array.</li>
-<li>Returns a zero-length array if the CSV string is <code>null</code>.</li>
+<li>Splits CSV string into string array.</li>
+<li>Returns zero-length array if CSV string is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -914,14 +914,14 @@
               <tr>
                 <td><code>csv</code></td>
                 <td><code>String</code></td>
-                <td>the CSV string</td>
+                <td>CSV string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String[]</code> - the split string array</p>
+          <p><code>String[]</code> - Split string array</p>
         </div>
       </div>
       <div class="method" id="splitCsvDq">
@@ -930,11 +930,11 @@
           <code>public String[] splitCsvDq(String csv)</code>
         </div>
         <div class="method-description">
-          Splits double-quoted CSV.<br>
+          Splits CSV with double quotation.<br>
 <ul>
-<li>Splits a CSV string into a string array.</li>
-<li>Returns a zero-length array if the CSV string is <code>null</code>.</li>
-<li>Two consecutive double quotes in values are converted to a single double quote and stored.</li>
+<li>Splits CSV string into string array.</li>
+<li>Returns zero-length array if CSV string is <code>null</code>.</li>
+<li>Two consecutive double quotations within value are converted to one double quotation and stored.</li>
 </ul>
 
         </div>
@@ -952,14 +952,14 @@
               <tr>
                 <td><code>csv</code></td>
                 <td><code>String</code></td>
-                <td>the CSV string</td>
+                <td>CSV string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String[]</code> - the split string array</p>
+          <p><code>String[]</code> - Split string array</p>
         </div>
       </div>
       <div class="method" id="equals">
@@ -970,7 +970,7 @@
         <div class="method-description">
           Compares strings.<br>
 <ul>
-<li>Compares <code>null</code> as zero-byte blank string.</li>
+<li>Compares <code>null</code> as zero-byte blank character.</li>
 </ul>
 
         </div>
@@ -988,12 +988,12 @@
               <tr>
                 <td><code>str1</code></td>
                 <td><code>String</code></td>
-                <td>the first comparison target</td>
+                <td>Comparison target 1</td>
               </tr>
               <tr>
                 <td><code>str2</code></td>
                 <td><code>String</code></td>
-                <td>the second comparison target</td>
+                <td>Comparison target 2</td>
               </tr>
             </tbody>
           </table>
@@ -1009,7 +1009,7 @@
           <code>public boolean equals(BigDecimal dec1, BigDecimal dec2)</code>
         </div>
         <div class="method-description">
-          Compares numbers.<br>
+          Compares numeric values.<br>
 <ul>
 <li>Compares <code>null</code> as zero.</li>
 </ul>
@@ -1029,12 +1029,12 @@
               <tr>
                 <td><code>dec1</code></td>
                 <td><code>BigDecimal</code></td>
-                <td>the first comparison target</td>
+                <td>Comparison target 1</td>
               </tr>
               <tr>
                 <td><code>dec2</code></td>
                 <td><code>BigDecimal</code></td>
-                <td>the second comparison target</td>
+                <td>Comparison target 2</td>
               </tr>
             </tbody>
           </table>
@@ -1050,9 +1050,9 @@
           <code>public String substring(String value, Integer beginIndex)</code>
         </div>
         <div class="method-description">
-          Safely extracts substring (specifying only start index).<br>
+          Safe substring (start index only specified).<br>
 <ul>
-<li>Extracts from start index to the end of the string.</li>
+<li>Cuts from start index to end of string.</li>
 </ul>
 
         </div>
@@ -1070,19 +1070,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target string</td>
+                <td>Target string</td>
               </tr>
               <tr>
                 <td><code>beginIndex</code></td>
                 <td><code>Integer</code></td>
-                <td>the start index</td>
+                <td>Start index</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the extracted string</p>
+          <p><code>String</code> - Substring</p>
         </div>
       </div>
       <div class="method" id="substring">
@@ -1091,10 +1091,10 @@
           <code>public String substring(String value, Integer beginIndex, Integer endIndex)</code>
         </div>
         <div class="method-description">
-          Safely extracts substring.<br>
+          Safe substring.<br>
 <ul>
-<li>Safely extracts the specified range from the string.</li>
-<li>Appropriately handles out-of-range or invalid values.</li>
+<li>Safely cuts specified range of string.</li>
+<li>Properly handles out-of-range specifications and invalid values.</li>
 </ul>
 
         </div>
@@ -1112,24 +1112,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target string</td>
+                <td>Target string</td>
               </tr>
               <tr>
                 <td><code>beginIndex</code></td>
                 <td><code>Integer</code></td>
-                <td>the start index (optional); 0 if <code>null</code> is passed (omitted)</td>
+                <td>Start index (optional) 0 if <code>null</code> is passed (omitted)</td>
               </tr>
               <tr>
                 <td><code>endIndex</code></td>
                 <td><code>Integer</code></td>
-                <td>the end index (optional); string length if <code>null</code> is passed (omitted)</td>
+                <td>End index (optional) string length if <code>null</code> is passed (omitted)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the extracted string</p>
+          <p><code>String</code> - Substring</p>
         </div>
       </div>
       <div class="method" id="isAlphabetNumber">
@@ -1138,7 +1138,7 @@
           <code>public boolean isAlphabetNumber(String value)</code>
         </div>
         <div class="method-description">
-          Checks for alphanumeric.<br>
+          Checks alphanumeric.<br>
 <ul>
 <li>Checks whether string is valid as alphanumeric.</li>
 </ul>
@@ -1158,7 +1158,7 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
@@ -1174,9 +1174,9 @@
           <code>public boolean isNumber(String value)</code>
         </div>
         <div class="method-description">
-          Checks for number.<br>
+          Checks numeric.<br>
 <ul>
-<li>Checks whether string is valid as a number.</li>
+<li>Checks whether string is valid as numeric.</li>
 </ul>
 
         </div>
@@ -1194,7 +1194,7 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
@@ -1210,9 +1210,9 @@
           <code>public boolean isNumber(String value, boolean minusNg, boolean decNg)</code>
         </div>
         <div class="method-description">
-          Checks for number.<br>
+          Checks numeric.<br>
 <ul>
-<li>Checks whether string is valid as a number.</li>
+<li>Checks whether string is valid as numeric.</li>
 </ul>
 
         </div>
@@ -1230,17 +1230,17 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
               <tr>
                 <td><code>minusNg</code></td>
                 <td><code>boolean</code></td>
-                <td><code>true</code> to treat negative values as invalid</td>
+                <td><code>true</code> if minus value is invalid</td>
               </tr>
               <tr>
                 <td><code>decNg</code></td>
                 <td><code>boolean</code></td>
-                <td><code>true</code> to treat decimals as invalid</td>
+                <td><code>true</code> if decimal is invalid</td>
               </tr>
             </tbody>
           </table>
@@ -1256,9 +1256,9 @@
           <code>public boolean checkLength(String value, int len)</code>
         </div>
         <div class="method-description">
-          Checks length.<br>
+          Checks digit count.<br>
 <ul>
-<li>Assumes <code>#isBlank(String)</code> is <code>true</code>, and returns <code>false</code> if target is blank.</li>
+<li>Assumes <code>#isBlank(String)</code> is <code>true</code>, and returns <code>false</code> if check target is blank.</li>
 </ul>
 
         </div>
@@ -1276,12 +1276,12 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
               <tr>
                 <td><code>len</code></td>
                 <td><code>int</code></td>
-                <td>the valid length</td>
+                <td>Valid digit count</td>
               </tr>
             </tbody>
           </table>
@@ -1297,12 +1297,12 @@
           <code>public boolean checkLengthNumber(String value, int intPartLen, int decPartLen)</code>
         </div>
         <div class="method-description">
-          Checks numeric length (precision).<br>
+          Checks numeric digit count (precision).<br>
 <ul>
-<li>Confirms that integer part and decimal part lengths are within specified ranges.</li>
-<li>Arguments follow DB field definition: total of integer and decimal parts, and decimal part only.</li>
+<li>Confirms that digit count of integer part and after decimal point are within specified range.</li>
+<li>Arguments are specified with digit count of integer part plus decimal part and digit count of decimal part only, same as DB item definition.</li>
 <li>Assumes <code>#isNumber(String)</code> is <code>true</code>, and returns
-<code>false</code> if target is blank.</li>
+<code>false</code> if check target is blank.</li>
 </ul>
 
         </div>
@@ -1320,17 +1320,17 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
               <tr>
                 <td><code>intPartLen</code></td>
                 <td><code>int</code></td>
-                <td>the valid length of integer and decimal parts combined</td>
+                <td>Valid digit count of integer part plus decimal part</td>
               </tr>
               <tr>
                 <td><code>decPartLen</code></td>
                 <td><code>int</code></td>
-                <td>the valid length of decimal part</td>
+                <td>Valid digit count of decimal part</td>
               </tr>
             </tbody>
           </table>
@@ -1346,9 +1346,9 @@
           <code>public boolean isDate(String value)</code>
         </div>
         <div class="method-description">
-          Checks for valid date.<br>
+          Checks actual date.<br>
 <ul>
-<li>Checks whether string is valid as a date.</li>
+<li>Checks whether string is valid as date.</li>
 </ul>
 
         </div>
@@ -1366,7 +1366,7 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target to check (YYYYMMDD)</td>
+                <td>Check target (YYYYMMDD)</td>
               </tr>
             </tbody>
           </table>
@@ -1382,15 +1382,15 @@
           <code>public boolean isTrue(String val)</code>
         </div>
         <div class="method-description">
-          Checks for boolean true.<br>
+          Checks boolean value.<br>
 <ul>
-<li>Checks whether string is considered as boolean "true".</li>
-<li>Performs the following evaluation:
+<li>Checks whether string is considered as boolean "true" value.</li>
+<li>Performs the following evaluation.
 <ol>
 <li>"1", "true", "yes", "on" (all half-width) are <code>true</code>.</li>
-<li><code>null</code> or blank, and anything other than above are <code>false</code>.</li>
-<li>Case-insensitive.</li>
-<li>Leading and trailing half-width spaces are ignored.</li>
+<li><code>null</code> or blank is <code>false</code>, and other than above are <code>false</code>.</li>
+<li>Case insensitive.</li>
+<li>Ignores left and right half-width blanks.</li>
 </ol>
 </li>
 </ul>
@@ -1410,7 +1410,7 @@
               <tr>
                 <td><code>val</code></td>
                 <td><code>String</code></td>
-                <td>the target to check</td>
+                <td>Check target</td>
               </tr>
             </tbody>
           </table>
@@ -1443,14 +1443,14 @@
               <tr>
                 <td><code>date</code></td>
                 <td><code>java.util.Date</code></td>
-                <td>the Date type (including java.sql.Date)</td>
+                <td>Date type (including java.sql.Date)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>LocalDate</code> - the LocalDate type</p>
+          <p><code>LocalDate</code> - LocalDate type</p>
         </div>
       </div>
       <div class="method" id="trimDq">
@@ -1459,9 +1459,9 @@
           <code>public String trimDq(String value)</code>
         </div>
         <div class="method-description">
-          Removes double quotes.<br>
+          Removes double quotation.<br>
 <ul>
-<li>Removes double quotes from the start and end of the string.</li>
+<li>Removes double quotation at start and end of string.</li>
 </ul>
 
         </div>
@@ -1479,14 +1479,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target string</td>
+                <td>Target string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the string after removal</p>
+          <p><code>String</code> - Removed string</p>
         </div>
         <div class="see-also">
           <h4>See Also</h4>
@@ -1503,7 +1503,7 @@
         <div class="method-description">
           Trims both ends of string.<br>
 <ul>
-<li>Trims and removes only if both end characters are found.</li>
+<li>Trims only if both end characters are found after trim.</li>
 </ul>
 
         </div>
@@ -1521,24 +1521,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target string</td>
+                <td>Target string</td>
               </tr>
               <tr>
                 <td><code>prefix</code></td>
                 <td><code>char</code></td>
-                <td>the leading end character</td>
+                <td>Character at front end</td>
               </tr>
               <tr>
                 <td><code>suffix</code></td>
                 <td><code>char</code></td>
-                <td>the trailing end character</td>
+                <td>Character at back end</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the string with both ends trimmed</p>
+          <p><code>String</code> - String with both ends trimmed</p>
         </div>
       </div>
       <div class="method" id="trimBothEnds">
@@ -1549,7 +1549,7 @@
         <div class="method-description">
           Trims both ends of string.<br>
 <ul>
-<li>Trims and removes only if both end characters are found.</li>
+<li>Trims only if both end characters are found after trim.</li>
 </ul>
 
         </div>
@@ -1567,24 +1567,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target string</td>
+                <td>Target string</td>
               </tr>
               <tr>
                 <td><code>prefix</code></td>
                 <td><code>String</code></td>
-                <td>the leading end string</td>
+                <td>Character at front end</td>
               </tr>
               <tr>
                 <td><code>suffix</code></td>
                 <td><code>String</code></td>
-                <td>the trailing end string</td>
+                <td>Character at back end</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the string with both ends trimmed</p>
+          <p><code>String</code> - String with both ends trimmed</p>
         </div>
       </div>
       <div class="method" id="trimZenkakuSpace">
@@ -1593,9 +1593,9 @@
           <code>public String trimZenkakuSpace(String value)</code>
         </div>
         <div class="method-description">
-          Trims full-width spaces from both ends of string.<br>
+          Trims full-width spaces at both ends of string.<br>
 <ul>
-<li>Removes full-width spaces from the start and end of the string.</li>
+<li>Removes full-width spaces at start and end of string.</li>
 </ul>
 
         </div>
@@ -1613,14 +1613,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the target string</td>
+                <td>Target string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the string after removal</p>
+          <p><code>String</code> - Removed string</p>
         </div>
       </div>
       <div class="method" id="trimLeftZero">
@@ -1629,9 +1629,9 @@
           <code>public String trimLeftZero(String value)</code>
         </div>
         <div class="method-description">
-          Removes leading zeros.<br>
+          Removes left zeros.<br>
 <ul>
-<li>Removes <code>"0"</code> from the left of the string.</li>
+<li>Removes <code>"0"</code> on the left of string.</li>
 </ul>
 
         </div>
@@ -1649,14 +1649,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the string</td>
+                <td>String</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the processed string</p>
+          <p><code>String</code> - Processed character</p>
         </div>
       </div>
       <div class="method" id="paddingLeftZero">
@@ -1665,9 +1665,9 @@
           <code>public String paddingLeftZero(String value, int digit)</code>
         </div>
         <div class="method-description">
-          Pads with leading zeros.<br>
+          Pads left zeros.<br>
 <ul>
-<li>Pads <code>"0"</code> to the left of the string.</li>
+<li>Pads <code>"0"</code> on the left of string.</li>
 </ul>
 
         </div>
@@ -1685,19 +1685,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the string</td>
+                <td>String</td>
               </tr>
               <tr>
                 <td><code>digit</code></td>
                 <td><code>int</code></td>
-                <td>the number of digits after padding</td>
+                <td>Character digit count after padding</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the processed string</p>
+          <p><code>String</code> - Processed character</p>
         </div>
       </div>
       <div class="method" id="paddingLeftZero">
@@ -1706,9 +1706,9 @@
           <code>public String paddingLeftZero(int value, int digit)</code>
         </div>
         <div class="method-description">
-          Pads with leading zeros.<br>
+          Pads left zeros.<br>
 <ul>
-<li>Converts number to string and pads <code>"0"</code> to the left.</li>
+<li>Converts numeric value to string and pads <code>"0"</code> on the left.</li>
 </ul>
 
         </div>
@@ -1726,19 +1726,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>int</code></td>
-                <td>the number</td>
+                <td>Numeric value</td>
               </tr>
               <tr>
                 <td><code>digit</code></td>
                 <td><code>int</code></td>
-                <td>the number of digits after padding</td>
+                <td>Character digit count after padding</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the processed string</p>
+          <p><code>String</code> - Processed character</p>
         </div>
       </div>
       <div class="method" id="deleteLastChar">
@@ -1747,7 +1747,7 @@
           <code>public void deleteLastChar(StringBuilder sb)</code>
         </div>
         <div class="method-description">
-          Deletes the last character.
+          Deletes last one character.
 
         </div>
         <div class="method-parameters">
@@ -1764,7 +1764,7 @@
               <tr>
                 <td><code>sb</code></td>
                 <td><code>StringBuilder</code></td>
-                <td>the StringBuilder</td>
+                <td>StringBuilder</td>
               </tr>
             </tbody>
           </table>
@@ -1776,7 +1776,7 @@
           <code>public void deleteLastChar(StringBuilder sb, int length)</code>
         </div>
         <div class="method-description">
-          Deletes the last characters.
+          Deletes last characters.
 
         </div>
         <div class="method-parameters">
@@ -1793,12 +1793,12 @@
               <tr>
                 <td><code>sb</code></td>
                 <td><code>StringBuilder</code></td>
-                <td>the StringBuilder</td>
+                <td>StringBuilder</td>
               </tr>
               <tr>
                 <td><code>length</code></td>
                 <td><code>int</code></td>
-                <td>the length of last characters</td>
+                <td>Last character length</td>
               </tr>
             </tbody>
           </table>
@@ -1810,9 +1810,9 @@
           <code>public String urlEncode(String url)</code>
         </div>
         <div class="method-description">
-          URL encodes.<br>
+          Converts URL encoding.<br>
 <ul>
-<li>Replaces one-byte blank from "+" to "%20" to match JavaScript's encodeURIComponent.</li>
+<li>Converts 1-byte blank from "+" to "%20" to match JavaScript's encodeURIComponent.</li>
 <li>Converts wildcard "*" to "%2A".</li>
 </ul>
 
@@ -1831,14 +1831,14 @@
               <tr>
                 <td><code>url</code></td>
                 <td><code>String</code></td>
-                <td>the string to convert</td>
+                <td>Conversion string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the converted string</p>
+          <p><code>String</code> - Converted string</p>
         </div>
       </div>
       <div class="method" id="urlDecode">
@@ -1847,7 +1847,7 @@
           <code>public String urlDecode(String url)</code>
         </div>
         <div class="method-description">
-          URL decodes.
+          Converts URL decoding.
 
         </div>
         <div class="method-parameters">
@@ -1864,14 +1864,14 @@
               <tr>
                 <td><code>url</code></td>
                 <td><code>String</code></td>
-                <td>the string to convert</td>
+                <td>Conversion string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the converted string</p>
+          <p><code>String</code> - Converted string</p>
         </div>
       </div>
       <div class="method" id="jsonEscape">
@@ -1880,10 +1880,10 @@
           <code>public String jsonEscape(String value)</code>
         </div>
         <div class="method-description">
-          JSON escapes.<br>
+          Converts JSON escape.<br>
 <ul>
-<li>Escapes characters that require escaping in JSON.</li>
-<li>Also escapes <code>null</code> as a control character.</li>
+<li>Escapes characters that need to be escaped in JSON.</li>
+<li>Also escapes <code>null</code> as control character.</li>
 </ul>
 
         </div>
@@ -1901,14 +1901,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the string</td>
+                <td>String</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the converted string</p>
+          <p><code>String</code> - Converted string</p>
         </div>
       </div>
       <div class="method" id="jsonUnEscape">
@@ -1917,9 +1917,9 @@
           <code>public String jsonUnEscape(String value)</code>
         </div>
         <div class="method-description">
-          Removes JSON escape.<br>
+          Removes JSON escape conversion.<br>
 <ul>
-<li>Removes escaping of characters that require escaping in JSON.</li>
+<li>Removes escape for characters that need to be escaped in JSON.</li>
 </ul>
 
         </div>
@@ -1937,14 +1937,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the string</td>
+                <td>String</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the string after removal</p>
+          <p><code>String</code> - Removed string</p>
         </div>
       </div>
       <div class="method" id="getSequenceCode">
@@ -1953,17 +1953,17 @@
           <code>public String getSequenceCode()</code>
         </div>
         <div class="method-description">
-          Gets sequence code value.<br>
+          Gets a sequence code value.<br>
 <ul>
-<li>Returns a timestamp including nanoseconds converted to base-36.</li>
-<li>Sleeps for 1 nanosecond before returning to always return a unique value within the system.</li>
-<li>When used across multiple systems, consideration such as appending host name or system name is required to ensure unique values.</li>
+<li>Returns a base-36 encoded timestamp value including nanoseconds.</li>
+<li>Sleeps for 1 nanosecond before returning to ensure the value is always unique within the system.</li>
+<li>When using across multiple systems, additional measures such as appending a hostname or system name are needed to ensure unique values.</li>
 </ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the sequence code value</p>
+          <p><code>String</code> - Sequence code value</p>
         </div>
       </div>
     </div>

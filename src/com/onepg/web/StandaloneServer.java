@@ -23,9 +23,9 @@ public final class StandaloneServer {
 
   /** Singleton instance. */
   private static StandaloneServer instance = null;
-  /** HTTP server (Web server). */
+  /** HTTP server (web server). */
   private HttpServer server = null;
-  /** Termination processing executed flag. */
+  /** Stop processing executed flag. */
   private boolean terminated = false;
 
   /**
@@ -52,17 +52,17 @@ public final class StandaloneServer {
    * <li>Starts the web server.</li>
    * </ul>
    *
-   * @param args arguments
+   * @param args Arguments
    * @throws IOException I/O exception error
    */
   public static void main(final String[] args) {
     LogUtil.javaInfoStdout();
     LogUtil.stdout("Starting web server main processing. arguments=" + LogUtil.join(args));
 
-    // Get singleton instance
+    // Gets singleton instance
     final StandaloneServer myObj = getInstance();
 
-    // Add shutdown hook
+    // Adds shutdown hook
     Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override
       public void run() {
@@ -70,11 +70,11 @@ public final class StandaloneServer {
       }
     });
 
-    // Execute own instance
+    // Executes self instance
     try {
       myObj.start(args);
     } catch (Exception e) {
-      // Log first here
+      // Outputs logs first here
       LogUtil.stdout(e, "An exception error occurred in web server startup. ");
       System.exit(1);
       return;
@@ -85,16 +85,16 @@ public final class StandaloneServer {
   /**
    * Starts web server.
    *
-   * @param args arguments
+   * @param args Arguments
    * @throws IOException I/O exception error
    */
   private void start(final String[] args) throws IOException {
     LogUtil.stdout("Starting web server startup processing. ");
 
-    // Web server configuration
+    // Web server settings
     final IoItems propMap = PropertiesUtil.getFrameworkProps(FwPropertiesName.WEB);
 
-    // Create web server
+    // Generates web server
     final int portNo = propMap.getInt("port.no");
     final int waitingProcessesCount = propMap.getInt("waiting.processes.count");
     final int parallelProcessesCount = propMap.getInt("parallel.processes.count");
@@ -123,7 +123,7 @@ public final class StandaloneServer {
     this.server.createContext("/" + jsonServiceContext,
         new JsonServiceHandler(jsonServiceContext, jsonServicePackage));
 
-    // Start
+    // Starts
     this.server.start();
     LogUtil.stdout("Web server started. " + LogUtil.joinKeyVal("port", String.valueOf(portNo), "parallel",
             String.valueOf(parallelProcessesCount), "stopUrl", String.valueOf(serverStopContext)));
@@ -146,29 +146,29 @@ public final class StandaloneServer {
     @Override
     public void handle(final HttpExchange exchange) throws IOException {
       try {
-        // Send response first
+        // Sends response first
         ServerUtil.responseText(exchange, "HTTP server shutdown...", "Reload to confirm shutdown.");
-        // Call terminate method to perform complete cleanup
+        // Calls terminate method to perform complete cleanup
         StandaloneServer.this.terminate();
         
-        // Wait 100ms for response transmission completion
+        // Waits 100ms for response transmission completion
         TimeUnit.MILLISECONDS.sleep(100);
-        // Ensure JVM process termination
+        // Ensures JVM process termination
         System.exit(0);
         
       } catch (final Exception | Error e) {
         LogUtil.stdout(e, "An exception error occurred in web server stop handler. ");
-        // Terminate process even if error occurs
+        // Terminates process even if error occurs
         System.exit(1);
       }
     }
   }
 
   /**
-   * Termination processing.
+   * Stop processing.
    */
   synchronized void terminate() {
-    // Do nothing if termination processing already executed (prevent duplicate execution)
+    // Does nothing if stop processing has already been executed (prevents duplicate execution)
     if (this.terminated) {
       return;
     }
@@ -176,7 +176,7 @@ public final class StandaloneServer {
     
     LogUtil.stdout("Starting web server stop processing. ");
     try {
-      // Stop web server
+      // Stops web server
       if (!ValUtil.isNull(this.server)) {
         this.server.stop(0);
         this.server = null;
@@ -186,7 +186,7 @@ public final class StandaloneServer {
       LogUtil.stdout(e, "An exception error occurred in web server stop.");
     }
     try {
-      // Disconnect pooled DB connections
+      // Disconnects pooled DB
       if (DbUtil.closePooledConn()) {
         LogUtil.stdout("Disconnected pooled DB connections.");
       }
@@ -194,15 +194,15 @@ public final class StandaloneServer {
       LogUtil.stdout(e, "An exception error occurred in disconnecting pooled DB connections. ");
     }
     try {
-      // Close log text file
+      // Closes log text file
       if (LogTxtHandler.closeAll()) {
         LogUtil.stdout("Closed log text file.");
       }
     } catch (final Exception | Error e) {
       LogUtil.stdout(e, "An exception error occurred in log text file close.");
     }
-    // Note: Do not call System.exit()
+    // Note: Does not call System.exit()
     // - When via shutdown hook: JVM is already in termination process
-    // - When via HTTP: StopHandler executes System.exit()
+    // - When via HTTP: StopHandler side executes System.exit()
   }
 }

@@ -3,12 +3,12 @@ package com.onepg.util;
 import java.util.Map;
 
 /**
- * I/O field group map class.<br>
+ * Input/output items map class.<br>
  * <ul>
- * <li>Can input/output CSV.</li>
- * <li>Can input/output JSON.</li>
- * <li>Can input/output URL parameters.</li>
- * <li>Basic rules and limitations conform to <code>AbstractIoTypeMap</code>.</li>
+ * <li>Can input and output CSV.</li>
+ * <li>Can input and output JSON.</li>
+ * <li>Can input and output URL parameters.</li>
+ * <li>The basic rules and restrictions conform to <code>AbstractIoTypeMap</code>.</li>
  * </ul>
  *
  * @see AbstractIoTypeMap
@@ -25,10 +25,10 @@ public final class IoItems extends AbstractIoTypeMap {
   /**
    * Constructor.<br>
    * <ul>
-   * <li>Since the contents are immutable objects (<code>String</code>), it is effectively a deep copy.</li>
+   * <li>Since the content is an immutable object (<code>String</code>), it effectively becomes a deep copy.</li>
    * </ul>
    *
-   * @param srcMap the source map
+   * @param srcMap source map
    */
   public IoItems(final Map<? extends String, ? extends String> srcMap) {
     super(srcMap);
@@ -37,10 +37,10 @@ public final class IoItems extends AbstractIoTypeMap {
   /**
    * Constructor.<br>
    * <ul>
-   * <li>Since the contents are immutable objects (<code>String</code>), it is effectively a deep copy.</li>
+   * <li>Since the content is an immutable object (<code>String</code>), it effectively becomes a deep copy.</li>
    * </ul>
    *
-   * @param srcMap the source map
+   * @param srcMap source map
    * @param readOnly <code>true</code> to create a read-only map
    */
   public IoItems(final Map<? extends String, ? extends String> srcMap, final boolean readOnly) {
@@ -50,11 +50,11 @@ public final class IoItems extends AbstractIoTypeMap {
   /**
    * Creates CSV.<br>
    * <ul>
-   * <li>Creates a CSV string in the order values were added.</li>
+   * <li>Creates the CSV string in the value addition order.</li>
    * <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
    * </ul>
    *
-   * @return the CSV string
+   * @return CSV string
    */
   public String createCsv() {
     final StringBuilder sb = new StringBuilder();
@@ -68,15 +68,15 @@ public final class IoItems extends AbstractIoTypeMap {
   }
 
   /**
-   * Creates CSV with double quotes.<br>
+   * Creates CSV with double quotations.<br>
    * <ul>
-   * <li>Creates a CSV string in the order values were added.</li>
-   * <li>Outputs all fields with double quotes.</li>
-   * <li>Double quotes in values are converted to two double quote characters.</li>
+   * <li>Creates the CSV string in the value addition order.</li>
+   * <li>Outputs all items with double quotations added.</li>
+   * <li>If the value contains double quotations, they are converted to two double quotation characters.</li>
    * <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
    * </ul>
    *
-   * @return the CSV string
+   * @return CSV string
    */
   public String createCsvAllDq() {
     final StringBuilder sb = new StringBuilder();
@@ -90,21 +90,21 @@ public final class IoItems extends AbstractIoTypeMap {
   }
 
   /**
-   * Creates CSV with CSV-specification-compliant double quotes.<br>
+   * Creates CSV with CSV specification-compliant double quotations.<br>
    * <ul>
-   * <li>Creates a CSV string in the order values were added.</li>
-   * <li>Outputs with double quotes added to fields that require them per CSV specification.</li>
-   * <li>Double quotes in values are converted to two double quote characters.</li>
+   * <li>Creates the CSV string in the value addition order.</li>
+   * <li>Outputs necessary items with double quotations added in compliance with CSV specification.</li>
+   * <li>If the value contains double quotations, they are converted to two double quotation characters.</li>
    * <li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
    * </ul>
    *
-   * @return the CSV string
+   * @return CSV string
    */
   public String createCsvDq() {
     final StringBuilder sb = new StringBuilder();
     for (final Entry<String, String> ent : super.getValMap().entrySet()) {
       final String val = ValUtil.nvl(ent.getValue());
-      // Quote only if comma, newline, or double quote is contained
+      // Quote only if contains comma, line break, or double quote
       if (val.contains(",") || val.contains("\"") || val.contains("\n") || val.contains("\r")) {
         sb.append('"').append(val.replace("\"", "\"\"")).append('"');
       } else {
@@ -117,9 +117,9 @@ public final class IoItems extends AbstractIoTypeMap {
   }
 
   /**
-   * Creates URL parameters (the part after ? in a URL).
+   * Creates URL parameters (the part after ? in the URL).
    *
-   * @return the URL-encoded GET parameters
+   * @return URL-encoded GET parameters
    */
   public String createUrlParam() {
     final Map<String, String> valMap = super.getValMap();
@@ -136,7 +136,7 @@ public final class IoItems extends AbstractIoTypeMap {
   /**
    * Creates JSON.
    *
-   * @return the JSON string
+   * @return JSON string
    */
   public String createJson() {
     final Map<String, String> valMap = super.getValMap();
@@ -158,9 +158,9 @@ public final class IoItems extends AbstractIoTypeMap {
   }
 
   /**
-   * Creates log output string.
+   * Creates the log output string.
    *
-   * @return the log output string
+   * @return log output string
    */
   final String createLogString() {
     final StringBuilder sb = new StringBuilder();
@@ -184,14 +184,14 @@ public final class IoItems extends AbstractIoTypeMap {
   /**
    * Stores CSV.<br>
    * <ul>
-   * <li>Storing with an already existing key causes a runtime error.</li>
-   * <li>Fields with blank keys in the key name array are not stored. (Apply to fields that do not require storage.)</li>
-   * <li>If CSV field count exceeds key name array count, excess fields are not stored.</li>
+   * <li>Storage with already existing keys results in a runtime error.</li>
+   * <li>Items with blank keys in the argument key name array are not stored. (Apply to items that do not need storage)</li>
+   * <li>If the number of CSV items is greater than the number of key name array elements, the surplus items are not stored.</li>
    * </ul>
    *
-   * @param keys the key name array
-   * @param csv the CSV string
-   * @return the stored field count
+   * @param keys key name array
+   * @param csv CSV string
+   * @return the number of stored items
    */
   public int putAllByCsv(final String[] keys, final String csv) {
     // Maximum index
@@ -203,14 +203,14 @@ public final class IoItems extends AbstractIoTypeMap {
     for (final String value : new SimpleSeparateParser(csv, ",")) {
       keyIdx++;
       if (keyMaxIdx < keyIdx) {
-        // Exit if CSV columns exceed key columns
+        // Terminate if CSV columns are more than key columns
         break;
       }
 
       // Key name
       final String key = keys[keyIdx];
       if (ValUtil.isBlank(key)) {
-        // Skip as unnecessary field if key name is blank
+        // If the key name is blank, skip it as an unnecessary item
         continue;
       }
 
@@ -222,21 +222,21 @@ public final class IoItems extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores double-quoted CSV.<br>
+   * Stores CSV with double quotations.<br>
    * <ul>
-   * <li>Storing with an already existing key causes a runtime error.</li>
-   * <li>Fields with blank keys in the key name array are not stored. (Apply to fields that do not require storage.)</li>
-   * <li>If CSV field count exceeds key name array count, excess fields are not stored.</li>
-   * <li>Two consecutive double quotes in values are converted to a single double quote and stored.</li>
+   * <li>Storage with already existing keys results in a runtime error.</li>
+   * <li>Items with blank keys in the argument key name array are not stored. (Apply to items that do not need storage)</li>
+   * <li>If the number of CSV items is greater than the number of key name array elements, the surplus items are not stored.</li>
+   * <li>Two consecutive double quotations within the value are converted to one double quotation and stored.</li>
    * </ul>
    *
    * @see #putAllByCsv(String[], String)
-   * @param keys the key name array
-   * @param csv the CSV string
-   * @return the stored field count
+   * @param keys key name array
+   * @param csv CSV string
+   * @return the number of stored items
    */
   public int putAllByCsvDq(final String[] keys, final String csv) {
-    // Maximum key index
+    // Key maximum index
     final int keyMaxIdx = keys.length - 1;
 
     int keyIdx = -1;
@@ -245,13 +245,13 @@ public final class IoItems extends AbstractIoTypeMap {
     for (final String value : new CsvDqParser(csv)) {
       keyIdx++;
       if (keyMaxIdx < keyIdx) {
-        // Exit if CSV columns exceed key columns
+        // Terminate if CSV columns are more than key columns
         break;
       }
       // Key name
       final String key = keys[keyIdx];
       if (ValUtil.isBlank(key)) {
-        // Skip as unnecessary field if key name is blank
+        // If the key name is blank, skip it as an unnecessary item
         continue;
       }
 
@@ -263,13 +263,13 @@ public final class IoItems extends AbstractIoTypeMap {
   }
 
   /**
-   * Stores URL parameter (the part after ? in a URL) values.<br>
+   * Stores URL parameter (the part after ? in the URL) values.<br>
    * <ul>
-   * <li>Storing with an already existing key causes a runtime error.</li>
+   * <li>Storage with already existing keys results in a runtime error.</li>
    * </ul>
    *
-   * @param url the full URL or URL parameters
-   * @return the stored parameter count
+   * @param url entire URL or URL parameters
+   * @return the number of stored parameters
    */
   public int putAllByUrlParam(final String url) {
     if (ValUtil.isBlank(url)) {
@@ -295,7 +295,7 @@ public final class IoItems extends AbstractIoTypeMap {
       }
 
       if (key.endsWith("[]")) {
-        // Array key is an error
+        // Array keys are errors
         throw new RuntimeException("Keys representing arrays cannot be used. " + LogUtil.joinKeyVal("key", key));
       }
 
@@ -310,8 +310,8 @@ public final class IoItems extends AbstractIoTypeMap {
   /**
    * Stores JSON.
    *
-   * @param json the JSON string
-   * @return the stored field count
+   * @param json JSON string
+   * @return the number of stored items
    */
   public int putAllByJson(final String json) {
     if (ValUtil.isBlank(json)) {
@@ -346,7 +346,7 @@ public final class IoItems extends AbstractIoTypeMap {
   }
 
   /**
-   * Returns string for logging.
+   * Returns the string for logging.
    */
   public final String toString() {
     return createLogString();

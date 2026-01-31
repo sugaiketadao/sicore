@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Log text handler class.
+ * Log text handler class.<br>
  * <ul>
- * <li>Pools its own instances internally and returns the pooled instance for the same file path.</li>
- * <li>Holds a text writer instance internally and returns it to the log writer <code>LogWriter</code>.</li>
+ * <li>Pools its own instances internally and returns instances from the pool for the same file path.</li>
+ * <li>Holds text writer instances internally and returns them to the log writer <code>LogWriter</code>.</li>
  * <li>Handles opening and closing of log text.</li>
  * <li>Rolls the file when the date changes.</li>
  * <li>The text writer class serializes output even when called from parallel threads.</li>
@@ -23,12 +23,12 @@ import java.util.Map;
  */
 public final class LogTxtHandler implements AutoCloseable {
 
-  /** Info log file property key suffix. */
+  /** Information log file configuration key suffix. */
   private static final String INF_FILE_PROP_KEY_SUFFIX = ".inf.file";
-  /** Error log file property key suffix. */
+  /** Error log file configuration key suffix. */
   private static final String ERR_FILE_PROP_KEY_SUFFIX = ".err.file";
 
-  /** Log text handler pool map <file path, log text handler> (singleton). */
+  /** Log text handler pool map &lt;file path, log text handler&gt; (singleton). */
   private static final Map<String, LogTxtHandler> logTxtPoolMaps_ = new HashMap<>();
 
   /** Base file path (without extension). */
@@ -48,15 +48,15 @@ public final class LogTxtHandler implements AutoCloseable {
       DateTimeFormatter.ofPattern("uuuuMMdd").withResolverStyle(ResolverStyle.STRICT);
 
   /**
-   * Returns the log text handler.
+   * Gets the log text handler.<br>
    * <ul>
-   * <li>Returns the pooled instance if the same file path exists in the pool.</li>
-   * <li>Creates and returns a new instance if not in the pool.</li>
+   * <li>If the same file path exists in the pool, returns the instance from the pool.</li>
+   * <li>If it does not exist in the pool, creates and returns an instance.</li>
    * </ul>
    *
-   * @param keyPrefix the property key prefix
+   * @param keyPrefix configuration key prefix
    * @param isErr <code>true</code> for error log
-   * @return the log text handler
+   * @return log text handler
    */
   static LogTxtHandler getInstance(final String keyPrefix, final boolean isErr) {
     final String key;
@@ -65,22 +65,22 @@ public final class LogTxtHandler implements AutoCloseable {
     } else {
       key = keyPrefix + INF_FILE_PROP_KEY_SUFFIX;
     }
-    // Gets property
+    // Gets configuration
     if (!LogUtil.PROP_MAP.containsKey(key)) {
       throw new RuntimeException("Property does not exist. "
           + LogUtil.joinKeyVal("file", FwPropertiesName.LOG.toString(), "key", key));
     }
-    // Log file path (converted to absolute path)
+    // Log file path (already converted to absolute path)
     final String logPath = LogUtil.PROP_MAP.getString(key);
 
-    // Returns pooled handler if already created
+    // If already generated, returns the pooled handler
     if (logTxtPoolMaps_.containsKey(logPath)) {
       return logTxtPoolMaps_.get(logPath);
     }
 
-    // Creates log text handler
+    // Generates log text handler
     synchronized (logTxtPoolMaps_) {
-      // Checks again; returns if already created (checks above too to avoid performance degradation)
+      // Checks again, and if already generated, returns it (checks above as well to avoid performance degradation)
       if (logTxtPoolMaps_.containsKey(logPath)) {
         return logTxtPoolMaps_.get(logPath);
       }
@@ -88,23 +88,21 @@ public final class LogTxtHandler implements AutoCloseable {
       LogUtil.stdout("Creates a log text handler. " + LogUtil.joinKeyVal("path", logPath));
       // Log text handler
       final LogTxtHandler lfh = new LogTxtHandler(logPath);
-      // Stores log text handler in map
+      // Stores the log text handler in the map
       logTxtPoolMaps_.put(logPath, lfh);
       return lfh;
     }
   }
 
   /**
-   * Closes the log text handler.
+   * Closes the log text handler.<br>
    * <ul>
    * <li>Closes all pooled log text handlers.</li>
    * </ul>
-   *
-   * @return <code>true</code> if any handler was closed
    */
   public static synchronized boolean closeAll() {
     boolean ret = false;
-    // Creates a copy of keys to iterate since LogTxtHandler close removes from pool
+    // Creates a copy of keys and iterates because the close processing of LogTxtHandler deletes from the pool
     for (final String key : new ArrayList<>(logTxtPoolMaps_.keySet())) {
       final LogTxtHandler handler = logTxtPoolMaps_.get(key);
       if (ValUtil.isNull(handler)) {
@@ -115,7 +113,7 @@ public final class LogTxtHandler implements AutoCloseable {
         handler.close();
         ret = true;
       } catch (final Exception e) {
-        // Swallows errors during log close (errors may occur during log output)
+        // Suppresses errors during log close (because errors may occur during log output)
         LogUtil.stdout(e, "An exception occurred while closing the log text handler. " + LogUtil.joinKeyVal("path", key));
       }
     }
@@ -127,7 +125,7 @@ public final class LogTxtHandler implements AutoCloseable {
   /**
    * Constructor.
    *
-   * @param baseFilePath the base file path
+   * @param baseFilePath base file path
    */
   private LogTxtHandler(final String baseFilePath) {
 
@@ -136,7 +134,7 @@ public final class LogTxtHandler implements AutoCloseable {
     this.fileTypeMark = "." + tmp[1];
     this.filePath = this.baseFilePath + this.fileTypeMark;
 
-    // If file remains from previous startup, uses file modified date as previous output date
+    // If the file from the previous startup remains, uses the file modified date as the previous output date
     if (FileUtil.exists(this.filePath)) {
       final String modDt = FileUtil.getFileModifiedDateTime(this.filePath);
       this.beforePrintDate = modDt.substring(0, 8);
@@ -168,23 +166,21 @@ public final class LogTxtHandler implements AutoCloseable {
       try {
         this.tw.close();
       } catch (final Exception e) {
-        // Swallows errors during log close but outputs for debugging
+        // Suppresses errors during log close, but outputs for debugging
         LogUtil.stdout(e, "An exception occurred while closing the text writer. " + LogUtil.joinKeyVal("path", this.tw.getFilePath()));
       } finally {
         this.tw = null;
-        // Removes this instance from pool
+        // Removes this instance from the pool
         logTxtPoolMaps_.remove(this.filePath);
       }
     }
   }
 
   /**
-   * Returns the text writer.
+   * Gets the text writer.<br>
    * <ul>
-   * <li>Executes file rolling if the date has changed from the previous one.</li>
+   * <li>If the date has changed from the previous time, executes file rolling.</li>
    * </ul>
-   *
-   * @return the text writer
    */
   TxtSerializeWriter getWriter() {
     final String nowDate = LocalDateTime.now().format(DTF_DATE);
@@ -195,23 +191,23 @@ public final class LogTxtHandler implements AutoCloseable {
   }
 
   /**
-   * Executes file rolling.
+   * Executes file rolling.<br>
    * <ul>
    * <li>Closes the file, renames it, and opens a new file.</li>
    * </ul>
    *
-   * @param newDate the date after rolling
+   * @param newDate date after rolling
    */
   private synchronized void rolling(final String newDate) {
-    // Checks again if processed by another thread
+    // Rechecks if being processed from another thread
     if (newDate.equals(this.beforePrintDate)) {
       return;
     }
 
     final String destPath = this.baseFilePath + "_" + this.beforePrintDate + this.fileTypeMark;
     if (FileUtil.exists(destPath)) {
-      // Does not rename if dated file already exists (normally should not happen)
-      // Outputs error log and continues since rolling failure should continue processing
+      // Basically impossible, but if a dated file already exists, does not rename
+      // To continue even on rolling failure, outputs error log and continues processing
       LogUtil.stdout("Dated file already exists. " + LogUtil.joinKeyVal("path", this.filePath));
       this.beforePrintDate = newDate;
       return;
@@ -225,9 +221,9 @@ public final class LogTxtHandler implements AutoCloseable {
       open();
       this.beforePrintDate = newDate;
     } catch (final Exception e) {
-      // Outputs error log and continues since rolling failure should continue processing
+      // To continue even on rolling failure, outputs error log and continues processing
       LogUtil.stdout(e, "An exception occurred during file rolling. " + LogUtil.joinKeyVal("path", this.filePath));
-      // Re-opens file and continues processing
+      // Reopens the file and continues processing
       if (ValUtil.isNull(this.tw)) {
         open();
       }

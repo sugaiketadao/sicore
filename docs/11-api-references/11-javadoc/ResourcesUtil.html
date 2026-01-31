@@ -23,15 +23,16 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>Resource file utility class.
+        <div>Resource file utility class.<br>
 <ul>
 <li>Reads resource files.</li>
-<li>Resource file storage directory (hereinafter, resource directory) is the resources directory directly under the application deployment directory, fixed relative to the application deployment directory.
-<br>[Example] For application/lib/program.jar, it is under application/resources/.
-<br>For details of the application deployment directory, see <code>PropertiesUtil#APPLICATION_DIR_PATH</code>.</li>
-<li>Resource file character set is assumed to be UTF-8.</li>
-<li>Resource file names are free, but the following file names are reserved for framework components and cannot be used:
-<br>msg.json</li>
+<li>The resource file storage directory (hereinafter referred to as resource directory) is the resources
+directory directly under the application deployment directory and is fixed relative to the application deployment directory. <br>
+[Example] For application/lib/program.jar, it is under application/resources/. <br>
+For details on the application deployment directory, refer to <code>PropertiesUtil#APPLICATION_DIR_PATH</code>.</li>
+<li>Assumes that the character set of resource files is UTF-8.</li>
+<li>Resource file names are flexible, but the following file names are reserved for framework components and cannot be used. <br>
+msg.json</li>
 </ul>
 </div>
       </div>
@@ -64,9 +65,9 @@
           <code>public IoItems getJson(FwResourceName resourceName)</code>
         </div>
         <div class="method-description">
-          Returns framework-reserved resource JSON.
+          Gets framework-reserved resource JSON.<br>
 <ul>
-<li>Reads a JSON file under the resource directory and returns it as a map.</li>
+<li>Reads the JSON file under the resource directory and returns it as a map.</li>
 <li>The returned map is read-only.</li>
 </ul>
 
@@ -85,14 +86,14 @@
               <tr>
                 <td><code>resourceName</code></td>
                 <td><code>FwResourceName</code></td>
-                <td>the framework-reserved resource name</td>
+                <td>Framework-reserved resource name</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>IoItems</code> - the map</p>
+          <p><code>IoItems</code> - Map</p>
         </div>
       </div>
       <div class="method" id="getJson">
@@ -101,9 +102,9 @@
           <code>public IoItems getJson(String fileName)</code>
         </div>
         <div class="method-description">
-          Returns resource JSON.
+          Gets resource JSON.<br>
 <ul>
-<li>Reads a JSON file under the resource directory and returns it as a map.</li>
+<li>Reads the JSON file under the resource directory and returns it as a map.</li>
 <li>The returned map is read-only.</li>
 </ul>
 
@@ -122,14 +123,14 @@
               <tr>
                 <td><code>fileName</code></td>
                 <td><code>String</code></td>
-                <td>the JSON file name</td>
+                <td>JSON file name</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>IoItems</code> - the map</p>
+          <p><code>IoItems</code> - Map</p>
         </div>
       </div>
     </div>

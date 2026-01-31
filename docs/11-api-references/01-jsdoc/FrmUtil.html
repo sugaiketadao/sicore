@@ -22,10 +22,10 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>Value formatting class.<br>
+        <div>Value format class.<br>
 <ul>
-  <li>Handles value formatting when displaying on pages.</li>
-  <li>Mainly called from PageUtil using bracket notation; rarely called directly from feature-specific processing.</li>
+  <li>Handles value formatting for page display.</li>
+  <li>Mainly executed from PageUtil using bracket notation, and rarely executed directly from module-specific processing.</li>
   <li>Requires corresponding unformat processing.</li>
 </ul></div>
       </div>
@@ -54,14 +54,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Target</td>
+                <td>the target value to process</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - String after uppercase conversion</p>
+          <p><code>string</code> - the uppercased string</p>
         </div>
       </div>
       <div class="method">
@@ -71,7 +71,7 @@
         </div>
         <div class="method-description">
           Number (comma formatting).<br>
-Returns unformatted if not a number.
+Returns non-numeric values without formatting.
         </div>
         <div class="method-parameters">
           <h4>Parameters</h4>
@@ -87,14 +87,14 @@ Returns unformatted if not a number.
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Target</td>
+                <td>the target value to process</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - String after comma formatting</p>
+          <p><code>string</code> - the comma-formatted string</p>
         </div>
       </div>
       <div class="method">
@@ -104,7 +104,7 @@ Returns unformatted if not a number.
         </div>
         <div class="method-description">
           Date (YYYY/MM/DD format).<br>
-Returns unformatted if not a valid date.
+Returns invalid dates without formatting.
         </div>
         <div class="method-parameters">
           <h4>Parameters</h4>
@@ -120,14 +120,14 @@ Returns unformatted if not a valid date.
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Target</td>
+                <td>the target value to process</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - Date string in YYYY/MM/DD format</p>
+          <p><code>string</code> - the date string in YYYY/MM/DD format</p>
         </div>
       </div>
       <div class="method">
@@ -137,7 +137,7 @@ Returns unformatted if not a valid date.
         </div>
         <div class="method-description">
           Time (HH:MI:SS format).<br>
-Return without formatting if not 6-digit number.
+Returns values other than 6-digit numbers without formatting.
         </div>
         <div class="method-parameters">
           <h4>Parameters</h4>
@@ -153,14 +153,14 @@ Return without formatting if not 6-digit number.
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Processing target</td>
+                <td>the target value to process</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - Time string in HH:MI:SS format</p>
+          <p><code>string</code> - the time string in HH:MI:SS format</p>
         </div>
       </div>
     </div>

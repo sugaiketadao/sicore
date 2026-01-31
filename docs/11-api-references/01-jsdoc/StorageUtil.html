@@ -24,13 +24,13 @@
         <h3>Description</h3>
         <div>Session storage utility class.<br>
 <ul>
-  <li>Store and retrieve associative arrays in browser session storage by the following scope + key:</li>
+  <li>Stores and retrieves associative arrays in browser's session storage with the following units + keys.</li>
   <ul>
-    <li>Page scope (per URL HTML file, data persists within one page)</li>
-    <li>Module scope (per URL module directory, data shared across pages)</li>
-    <li>System scope (data shared across entire system)</li>
+    <li>Page unit (HTML file unit of URL, data retention within one page)</li>
+    <li>Module unit (module directory unit of URL, data sharing between pages)</li>
+    <li>System unit (data sharing across entire system)</li>
   </ul>
-  <li>Assumes non-critical processing, so generally does not throw exception errors.</li>
+  <li>Assumes non-critical processing and does not throw exceptions in principle.</li>
 </ul></div>
       </div>
     </div>
@@ -42,9 +42,9 @@
           <code>getPageObj(key, notExistsValue)</code>
         </div>
         <div class="method-description">
-          Get page scope (per URL HTML file) data. <br>
+          Gets page unit data (HTML file unit of URL). <br>
 <ul>
-  <li>Retrieve associative array from browser session storage by page scope + key.</li>
+  <li>Retrieves an associative array from browser's session storage by page unit + key.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -66,7 +66,7 @@
               <tr>
                 <td><code>[notExistsValue]</code></td>
                 <td><code>Object</code></td>
-                <td>Value to return when not exists (optional)</td>
+                <td>Return value when not exists (optional)</td>
               </tr>
             </tbody>
           </table>
@@ -82,9 +82,9 @@
           <code>getModuleObj(key, notExistsValue)</code>
         </div>
         <div class="method-description">
-          Get module scope (per URL module directory) data. <br>
+          Gets module unit data (module directory unit of URL). <br>
 <ul>
-  <li>Retrieve associative array from browser session storage by module scope + key.</li>
+  <li>Retrieves an associative array from browser's session storage by module unit + key.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -106,7 +106,7 @@
               <tr>
                 <td><code>[notExistsValue]</code></td>
                 <td><code>Object</code></td>
-                <td>Value to return when not exists (optional)</td>
+                <td>Return value when not exists (optional)</td>
               </tr>
             </tbody>
           </table>
@@ -122,9 +122,9 @@
           <code>getSystemObj(key, notExistsValue)</code>
         </div>
         <div class="method-description">
-          Get system scope data.<br>
+          Gets system unit data.<br>
 <ul>
-  <li>Retrieve associative array from browser session storage by key.</li>
+  <li>Retrieves an associative array from browser's session storage by key.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -146,7 +146,7 @@
               <tr>
                 <td><code>[notExistsValue]</code></td>
                 <td><code>Object</code></td>
-                <td>Value to return when not exists (optional)</td>
+                <td>Return value when not exists (optional)</td>
               </tr>
             </tbody>
           </table>
@@ -162,9 +162,9 @@
           <code>setPageObj(key, obj)</code>
         </div>
         <div class="method-description">
-          Store page scope data (per URL HTML file).<br>
+          Stores page unit data (HTML file unit of URL).<br>
 <ul>
-  <li>Store associative array in browser session storage by page scope + key.</li>
+  <li>Stores an associative array in browser's session storage by page unit + key.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -186,7 +186,7 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object</code></td>
-                <td>Data to store</td>
+                <td>Storage data</td>
               </tr>
             </tbody>
           </table>
@@ -202,9 +202,9 @@
           <code>setModuleObj(key, obj)</code>
         </div>
         <div class="method-description">
-          Store module scope data (per URL module directory).<br>
+          Stores module unit data (module directory unit of URL).<br>
 <ul>
-  <li>Store associative array in browser session storage by module scope + key.</li>
+  <li>Stores an associative array in browser's session storage by module unit + key.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -226,7 +226,7 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object</code></td>
-                <td>Data to store</td>
+                <td>Storage data</td>
               </tr>
             </tbody>
           </table>
@@ -242,9 +242,9 @@
           <code>setSystemObj(key, obj)</code>
         </div>
         <div class="method-description">
-          Store system scope data.<br>
+          Stores system unit data.<br>
 <ul>
-  <li>Store associative array in browser session storage by key.</li>
+  <li>Stores an associative array in browser's session storage by key.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -266,7 +266,7 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object</code></td>
-                <td>Data to store</td>
+                <td>Storage data</td>
               </tr>
             </tbody>
           </table>
@@ -282,7 +282,7 @@
           <code>removePage(key)</code>
         </div>
         <div class="method-description">
-          Remove page scope data.
+          Removes page unit data.
         </div>
         <div class="method-parameters">
           <h4>Parameters</h4>
@@ -305,7 +305,7 @@
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> on successful deletion</p>
+          <p><code>boolean</code> - <code>true</code> on successful removal</p>
         </div>
       </div>
       <div class="method">
@@ -314,7 +314,7 @@
           <code>removeModule(key)</code>
         </div>
         <div class="method-description">
-          Remove module scope data.
+          Removes module unit data.
         </div>
         <div class="method-parameters">
           <h4>Parameters</h4>
@@ -337,7 +337,7 @@
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> on successful deletion</p>
+          <p><code>boolean</code> - <code>true</code> on successful removal</p>
         </div>
       </div>
       <div class="method">
@@ -346,7 +346,7 @@
           <code>removeSystem(key)</code>
         </div>
         <div class="method-description">
-          Remove system scope data.
+          Removes system unit data.
         </div>
         <div class="method-parameters">
           <h4>Parameters</h4>
@@ -362,14 +362,14 @@
               <tr>
                 <td><code>key</code></td>
                 <td><code>string</code></td>
-                <td>Deletion key</td>
+                <td>Removal key</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> on successful deletion</p>
+          <p><code>boolean</code> - <code>true</code> on successful removal</p>
         </div>
       </div>
       <div class="method">
@@ -378,9 +378,9 @@
           <code>clearAllData()</code>
         </div>
         <div class="method-description">
-          Clear all data.<br>
+          Clears all data.<br>
 <ul>
-  <li>Remove all data stored by this utility.</li>
+  <li>Removes all data stored by this utility.</li>
   <li>Use for emergency or debugging purposes.</li>
 </ul>
         </div>
@@ -395,9 +395,9 @@
           <code>clearPage()</code>
         </div>
         <div class="method-description">
-          Clear all page scope data.<br>
+          Clears all page unit data.<br>
 <ul>
-  <li>Remove all data stored for current page.</li>
+  <li>Removes all data stored in the current page.</li>
 </ul>
         </div>
         <div class="method-returns">
@@ -411,9 +411,9 @@
           <code>clearModule()</code>
         </div>
         <div class="method-description">
-          Clear all module scope data.<br>
+          Clears all module unit data.<br>
 <ul>
-  <li>Remove all data stored for current module.</li>
+  <li>Removes all data stored in the current module.</li>
 </ul>
         </div>
         <div class="method-returns">
@@ -427,9 +427,9 @@
           <code>clearSystem()</code>
         </div>
         <div class="method-description">
-          Clear system scope data.<br>
+          Clears system unit data.<br>
 <ul>
-  <li>Remove all data stored for system sharing.</li>
+  <li>Removes all data stored as system-wide shared data.</li>
 </ul>
         </div>
         <div class="method-returns">

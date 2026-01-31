@@ -18,32 +18,35 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Properties file utility class.
+ * Properties file utility class.<br>
  * <ul>
- * <li>Properties file extension shall be .properties. (Others are ignored.)</li>
- * <li>Properties file storage directory (hereinafter, configuration directory) is the config directory directly under the application deployment directory, fixed relative to the application deployment directory.
- * <br>[Example] For application/lib/program.jar, it is under application/config/.
- * <br>For details of the application deployment directory, see <code>#APPLICATION_DIR_PATH</code>.</li>
- * <li>Normally, the configuration directory path is as above, but to change the path, specify the path with the property key CONFIG_DIR in config/config.properties.</li>
- * <li>Properties file character set is assumed to be UTF-8.</li>
- * <li>Properties file content lists property keys and values as follows:
- * <br>KEY1=VAL1
- * <br>KEY2=VAL2
- * <br>KEY3=VAL3</li>
- * <li>Properties file names are free, but the following file names are reserved for framework components and cannot be used:
- * <br>web.properties
- * <br>bat.properties
- * <br>db.properties
- * <br>config.properties</li>
- * <li>The number of properties files is free, but property keys must be unique across properties files. (Duplication with framework component properties files is acceptable.)</li>
- * <li>If a value is enclosed in ${ and }, it is replaced with the value of the enclosed environment variable. (Partial replacement is also possible.)
- * <br>However, if it does not exist in environment variables, a system error occurs.</li>
- * <li>$ApplicationDirPath within a value is replaced with the application deployment directory path. (Partial replacement is also possible.)
- * <br>For details of the application deployment directory, see <code>#APPLICATION_DIR_PATH</code>.</li>
- * <li>$TemporaryDirPath within a value is replaced with the OS temporary directory path. (Partial replacement is also possible.)
- * <br>Specifically, it is replaced with the path of Java's java.io.tmpdir system property.</li>
- * <li>Values starting with &lt;ConvertAbsolutePath&gt; are converted to absolute paths.</li>
- * <li>Lines starting with # in properties files are ignored as comments. (Specification of <code>Properties#load(java.io.InputStream)</code>.)</li>
+ * <li>The properties file extension is .properties. (Others are ignored)</li>
+ * <li>The properties file storage directory (hereinafter, configuration directory) is the config
+ * directory directly under the application deployment directory, and is fixed relative to the application deployment directory. <br>
+ * [Example] For application/lib/program.jar, it is under application/config/. <br>
+ * For details on the application deployment directory, refer to <code>#APPLICATION_DIR_PATH</code>.</li>
+ * <li>Normally, the configuration directory path is as described above, but if you want to change the path, specify the path with the configuration key
+ * CONFIG_DIR in config/config.properties.</li>
+ * <li>The character set of the properties file is assumed to be UTF-8.</li>
+ * <li>The content of the properties file lists configuration keys and values as shown in the example below. <br>
+ * KEY1=VAL1 <br>
+ * KEY2=VAL2 <br>
+ * KEY3=VAL3</li>
+ * <li>The properties file name is flexible, but the following file names are reserved for framework components and cannot be used. <br>
+ * web.properties <br>
+ * bat.properties <br>
+ * db.properties <br>
+ * config.properties</li>
+ * <li>The number of properties files is flexible, but configuration keys must be unique across properties files. (Duplication with framework component properties files is acceptable)</li>
+ * <li>If the configuration value is enclosed in ${ and }, it is replaced with the value of the enclosed environment variable. (Partial replacement is also possible) <br>
+ * However, if the environment variable does not exist, a system error occurs.</li>
+ * <li>$ApplicationDirPath in the configuration value is replaced with the application deployment directory path. (Partial replacement is also possible)<br>
+ * For details on the application deployment directory, refer to <code>#APPLICATION_DIR_PATH</code>.</li>
+ * <li>$TemporaryDirPath in the configuration value is replaced with the OS temporary directory path. (Partial replacement is also possible)<br>
+ * Specifically, it replaces the path of Java's java.io.tmpdir system property.</li>
+ * <li>Configuration values starting with &lt;ConvertAbsolutePath&gt; are converted to absolute paths.</li>
+ * <li>Lines starting with # in the properties file
+ * are ignored as comments. (Specification of <code>Properties#load(java.io.InputStream)</code>)</li>
  * <li>This class does not handle writing to properties files.</li>
  * </ul>
  */
@@ -53,7 +56,7 @@ public final class PropertiesUtil {
   private static final String PROP_FILE_CHAR_SET = CharSet.UTF8.toString();
   /** Default configuration directory name. */
   private static final String DEFAULT_PROP_DIRNAME = "config";
-  /** Property key - configuration directory specification. */
+  /** Configuration key - configuration directory specification. */
   private static final String PROPDIR_PKEY = "config.dir";
   /** Properties file extension. */
   private static final String PROPERTIES_TYPEMARK = "properties";
@@ -62,20 +65,20 @@ public final class PropertiesUtil {
   private static final String REPLACE_APPLICATION_DIR_PATH = "$ApplicationDirPath";
   /** Temporary directory path replacement character. */
   private static final String REPLACE_TEMPORARY_DIR_PATH = "$TemporaryDirPath";
-  /** Absolute path conversion directive. */
+  /** Absolute path conversion instruction. */
   private static final String CONVERT_ABSOLUTE_PATH = "<ConvertAbsolutePath>";
   /** Environment variable replacement pattern. */
   private static final Pattern ENV_VAR_PATTERN = Pattern.compile("\\$\\{(\\w+)\\}");
 
-  /** Framework-reserved properties file names. */
+  /** Framework-reserved properties file name. */
   public enum FwPropertiesName {
-    /** Properties file name - framework-reserved web server configuration file name. */
+    /** Properties file name - framework-reserved web server properties file name. */
     WEB("web.properties"),
-    /** Properties file name - framework-reserved batch processing configuration file name. */
+    /** Properties file name - framework-reserved batch processing properties file name. */
     BAT("bat.properties"),
-    /** Properties file name - framework-reserved DB configuration file name. */
+    /** Properties file name - framework-reserved database properties file name. */
     DB("db.properties"),
-    /** Properties file name - framework-reserved log configuration file name. */
+    /** Properties file name - framework-reserved log properties file name. */
     LOG("log.properties"),
     /** Properties file name - framework-reserved configuration directory specification file. */
     PROPDIR("config.properties");
@@ -86,7 +89,7 @@ public final class PropertiesUtil {
     /**
      * Constructor.
      *
-     * @param value the file name
+     * @param value file name
      */
     private FwPropertiesName(final String value) {
       this.name = value;
@@ -100,8 +103,8 @@ public final class PropertiesUtil {
     /**
      * Checks existence.
      *
-     * @param name the file name
-     * @return <code>true</code> if exists
+     * @param name file name
+     * @return <code>true</code> if it exists
      */
     private static boolean exists(final String name) {
       for (final FwPropertiesName fwName : values()) {
@@ -117,14 +120,14 @@ public final class PropertiesUtil {
   public static final String LOCALHOST_NAME = getLocalHostName();
 
   /**
-   * Application deployment directory path.
+   * Application deployment directory path.<br>
    * <ul>
-   * <li>Application deployment directory refers to one of the following directories:
+   * <li>The application deployment directory refers to one of the following directories.
    * <ul>
-   * <li>Two levels up from the Java class file deployment root directory (com, jp, etc.)
-   * <br>[Example] For appdeploy/classes/com/onepg/Program.class, it is appdeploy</li>
-   * <li>Two levels up from the Jar file deployment directory
-   * <br>[Example] For appdeploy/lib/program.jar, it is appdeploy</li>
+   * <li>Two directories above the Java class file deployment root directory (such as com or jp) <br>
+   * [Example] For appdeploy/classes/com/onepg/Program.class, it is appdeploy</li>
+   * <li>Two directories above the Jar file deployment directory <br>
+   * [Example] For appdeploy/lib/program.jar, it is appdeploy</li>
    * </ul>
    * </ul>
    */
@@ -136,18 +139,18 @@ public final class PropertiesUtil {
   private static final String PROP_STORAGE_DIR_PATH;
 
   /**
-   * Module properties.
+   * Module configuration.<br>
    * <ul>
-   * <li>Returns property values from properties files under the configuration directory as a map.</li>
+   * <li>Returns configuration values from properties files under the configuration directory as a map.</li>
    * <li>Excludes framework-reserved properties files.</li>
-   * <li>The number of properties files is free, but property keys must be unique across properties files.</li>
+   * <li>The number of properties files is flexible, but configuration keys must be unique across properties files.</li>
    * </ul>
    * <pre>[Example] <code>final String value = PropertiesUtil.MODULE_PROP_MAP.getString("module.unique.key");</code></pre>
    */
   public static final IoItems MODULE_PROP_MAP;
 
   static {
-    // Initializes in the static block to make the processing order explicit.
+    // Initializes in the static block to make the processing order explicit
     APPLICATION_DIR_PATH = getJavaClassParentPath();
     TEMPORARY_DIR_PATH = FileUtil.getOsTemporaryPath();
     PROP_STORAGE_DIR_PATH = getPropDir();
@@ -156,8 +159,6 @@ public final class PropertiesUtil {
 
   /**
    * Gets the configuration directory.
-   *
-   * @return the configuration directory path
    */
   private static String getPropDir() {
     // Default configuration directory path
@@ -175,15 +176,13 @@ public final class PropertiesUtil {
       }
       return path;
     } else {
-      // If configuration directory specification file does not exist, uses default configuration directory as configuration directory path.
+      // If the configuration directory specification file does not exist, uses the default configuration directory as the configuration directory path.
       return defaultDirPath;
     }
   }
 
   /**
-   * Gets module properties.
-   *
-   * @return the module properties map
+   * Gets module configuration.
    */
   private static IoItems getModulePorps() {
     final IoItems allPropMap = new IoItems();
@@ -209,9 +208,9 @@ public final class PropertiesUtil {
   }
 
   /**
-   * Returns the local host name.
+   * Gets the local host name.
    *
-   * @return the host name
+   * @return host name
    */
   private static String getLocalHostName() {
     try {
@@ -223,10 +222,10 @@ public final class PropertiesUtil {
   }
 
   /**
-   * Returns framework properties.
+   * Gets framework configuration.
    *
-   * @param propFileName the properties file name
-   * @return the property value map
+   * @param propFileName properties file name
+   * @return configuration value map
    */
   public static IoItems getFrameworkProps(final FwPropertiesName propFileName) {
     if (!FwPropertiesName.exists(propFileName.toString())) {
@@ -241,13 +240,13 @@ public final class PropertiesUtil {
   }
 
   /**
-   * Returns the property value map.
+   * Gets the configuration value map.<br>
    * <ul>
    * <li>The returned map is read-only.</li>
    * </ul>
    *
-   * @param propFilePath the properties file path
-   * @return the property value map (read-only)
+   * @param propFilePath properties file path
+   * @return configuration value map (read-only)
    */
   private static IoItems getPropertiesMap(final String propFilePath) {
     // Properties instance
@@ -258,7 +257,7 @@ public final class PropertiesUtil {
       final String val = (String) ent.getValue();
       if (retMap.containsKey(key)) {
         final String val2 = retMap.getString(key);
-        // Throws error if property key is duplicated
+        // Error if property key is duplicated
         throw new RuntimeException("Property key is duplicated. "
             + LogUtil.joinKeyVal("file", propFilePath, "key", key, "value1", val, "value2", val2));
       }
@@ -269,10 +268,10 @@ public final class PropertiesUtil {
   }
 
   /**
-   * Returns the Properties instance.
+   * Gets the Properties instance.
    *
-   * @param propFilePath the properties file path
-   * @return the Properties instance
+   * @param propFilePath properties file path
+   * @return Properties instance
    */
   private static Properties getPropertiesObj(final String propFilePath) {
     final File propFile = new File(propFilePath);
@@ -290,16 +289,16 @@ public final class PropertiesUtil {
   }
 
   /**
-   * Replaces environment variables in property values.
+   * Replaces configuration value environment variables.<br>
    * <ul>
-   * <li>If a value is enclosed in ${ and }, it is replaced with the value of the enclosed environment variable. (Partial replacement is also possible.)
-   * <br>However, if it does not exist in environment variables, a system error occurs.</li>
+   * <li>If the configuration value is enclosed in ${ and }, it is replaced with the value of the enclosed environment variable. (Partial replacement is also possible) <br>
+   * However, if the environment variable does not exist, a system error occurs.</li>
    * </ul>
    *
-   * @param value the property value
-   * @param filePath the properties file path (for error log)
-   * @param key the property key (for error log)
-   * @return the property value
+   * @param value configuration value
+   * @param filePath properties file path (for error log)
+   * @param key configuration key (for error log)
+   * @return configuration value
    */
   private static String convEnv(final String value, final String filePath, final String key) {
     if (!value.contains("${") || !value.contains("}")) {
@@ -311,13 +310,13 @@ public final class PropertiesUtil {
     final StringBuilder sb = new StringBuilder();
     int end = 0;
     while (mt.find()) {
-      // Specifies group 1 to get only the environment variable name inside ${}
+      // Gets only the environment variable name inside ${} brackets by specifying group 1
       final String envKey = mt.group(1);  
       String envVal = System.getenv(envKey);
       if (ValUtil.isNull(envVal)) {
         throw new RuntimeException("Environment variable does not exist. " + LogUtil.joinKeyVal("file", filePath, "key", key, "envKey", envKey));
       }
-      // Windows cannot declare environment variables with zero-byte blank, so declares with ""; removes trailing double quotes
+      // Removes trailing double quotations because Windows cannot declare environment variables with zero-byte blanks and declares them with ""
       envVal = ValUtil.trimDq(envVal);
       final int start = mt.start();
       sb.append(value.substring(end, start));
@@ -329,17 +328,17 @@ public final class PropertiesUtil {
   }
 
   /**
-   * Replaces directory paths in property values.
+   * Replaces configuration value directory paths.<br>
    * <ul>
-   * <li>$ApplicationDirPath within a value is replaced with the application deployment directory path. (Partial replacement is also possible.)
-   * <br>For details of the application deployment directory, see <code>#APPLICATION_DIR_PATH</code>.</li>
-   * <li>$TemporaryDirPath within a value is replaced with the OS temporary directory path. (Partial replacement is also possible.)
-   * <br>Specifically, it is replaced with the path of Java's java.io.tmpdir system property.</li>
-   * <li>Values starting with &lt;ConvertAbsolutePath&gt; are converted to absolute paths.</li>
+   * <li>$ApplicationDirPath in the configuration value is replaced with the application deployment directory path. (Partial replacement is also possible)<br>
+   * For details on the application deployment directory, refer to <code>#APPLICATION_DIR_PATH</code>.</li>
+   * <li>$TemporaryDirPath in the configuration value is replaced with the OS temporary directory path. (Partial replacement is also possible)<br>
+   * Specifically, it replaces the path of Java's java.io.tmpdir system property.</li>
+   * <li>Configuration values starting with &lt;ConvertAbsolutePath&gt; are converted to absolute paths.</li>
    * </ul>
    *
-   * @param value the property value
-   * @return the replaced property value
+   * @param value configuration value
+   * @return replaced configuration value
    */
   private static String convDirPath(final String value) {
     String retVal = value;
@@ -353,14 +352,14 @@ public final class PropertiesUtil {
   }
   
   /**
-   * Returns the Java class file parent directory path.
+   * Gets the Java class file parent directory path.<br>
    * <ul>
-   * <li>Returns the path one level up from the Java class file deployment directory.
-   * <br>Or returns the path one level up from the Jar file deployment directory.</li>
+   * <li>Returns the directory path one level above the Java class file deployment directory.<br>
+   * Or returns the directory path one level above the Jar file deployment directory.</li>
    * </ul>
    *
-   * @return the binary file parent directory path
-   * @throws IllegalStateException if failed to get the class file path
+   * @return binary file parent directory path
+   * @throws IllegalStateException if getting the class file path fails
    */
   private static String getJavaClassParentPath() {
     final ProtectionDomain pd = FileUtil.class.getProtectionDomain();
@@ -376,17 +375,17 @@ public final class PropertiesUtil {
 
     final String rootPath;
     if (file.isDirectory()) {
-      // For class file
+      // For class files
       rootPath = file.getParent();
     } else {
-      // For jar file
+      // For jar files
       rootPath = file.getParentFile().getParent();
     }
     return rootPath;
   }
 
   /**
-   * Determines if the OS is MS-Windows.
+   * Checks MS-Windows OS.
    *
    * @return <code>true</code> if Windows OS
    */

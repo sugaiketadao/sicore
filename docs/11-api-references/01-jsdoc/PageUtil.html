@@ -22,11 +22,11 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>Page operation utility class.<br>
+        <div>Page manipulation utility class.<br>
 <ul>
-  <li>Performs operations targeting the entire page or specific areas of the page.</li>
-  <li>Performs operations such as message display, error existence check, form clear, form enable/disable, and form show/hide.</li>
-  <li>"List" refers to both grids (repeating rows) and details (repeating rows). Explanations about lists apply to both.</li>
+  <li>Performs operations on the entire page or specified areas of the page.</li>
+  <li>Performs operations such as displaying messages, checking for errors, clearing forms, enabling/disabling forms, and showing/hiding forms.</li>
+  <li>Both lists (repeating rows) and details (repeating rows) are collectively called "lists". Sections explaining lists apply to both.</li>
 </ul></div>
       </div>
     </div>
@@ -38,14 +38,14 @@
           <code>setMsg(res)</code>
         </div>
         <div class="method-description">
-          Display message.<br>
+          Displays messages.<br>
 <ul>
-  <li>Display message from response data.</li>
-  <li>The key for response data is <code>'_msg'</code>.</li>
-  <li>Element with <code>id</code> attribute <code>'_msg'</code> is treated as message display area element.</li>
-  <li>If multiple message display area elements exist, set to the first element.</li>
-  <li>To control visibility, execute <code>PageUtil#clearMsg()</code> in page initialization to hide.</li>
-  <li>If no message exists in response data, clear the text of message display area element (<code>PageUtil#clearMsg()</code> is executed).</li>
+  <li>Displays messages from response data.</li>
+  <li>The key in response data is <code>'_msg'</code>.</li>
+  <li>Elements with <code>id</code> attribute <code>'_msg'</code> become message display area elements.</li>
+  <li>If multiple message display area elements exist, sets to the first element.</li>
+  <li>To control display, execute <code>PageUtil#clearMsg()</code> in page initialization processing to hide.</li>
+  <li>If no messages exist in response data, clears the text of the message display area element. (<code>PageUtil#clearMsg()</code> is executed)</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -62,7 +62,7 @@
               <tr>
                 <td><code>res</code></td>
                 <td><code>Object</code></td>
-                <td>Response data</td>
+                <td>the response data</td>
               </tr>
             </tbody>
           </table>
@@ -74,10 +74,10 @@
           <code>hasError(res)</code>
         </div>
         <div class="method-description">
-          Check error existence.<br>
+          Checks for error existence.<br>
 <ul>
-  <li>Check for error existence from response data.</li>
-  <li>The key for response data is <code>'_has_err'</code>.</li>
+  <li>Checks for error existence from response data.</li>
+  <li>The key in response data is <code>'_has_err'</code>.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -94,14 +94,14 @@
               <tr>
                 <td><code>res</code></td>
                 <td><code>Object</code></td>
-                <td>Response data</td>
+                <td>the response data</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if error exists</p>
+          <p><code>boolean</code> - <code>true</code> if errors exist</p>
         </div>
       </div>
       <div class="method">
@@ -110,9 +110,9 @@
           <code>clearMsg()</code>
         </div>
         <div class="method-description">
-          Clear message.<br>
+          Clears messages.<br>
 <ul>
-  <li>Clear the text of message display area element.</li>
+  <li>Clears the text of the message display area element.</li>
 </ul>
   
         </div>
@@ -123,21 +123,21 @@
           <code>getValues(outerElm)</code>
         </div>
         <div class="method-description">
-          Get page data.<br>
+          Gets page data.<br>
 <ul>
-  <li>Get values of data-sending HTML elements (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>) on the page as an associative array.</li>
-  <li>Target HTML elements are those with <code>name</code> attribute set, and <code>name</code> attribute becomes the key of the associative array.</li>
-  <li>If scope element argument is omitted, <code>&lt;main&gt;</code> is used as scope; if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is used as scope.</li>
-  <li>Mainly used to get request data for Web services.</li>
-  <li>The following differ from normal <code>&lt;form&gt;</code> POST submission:
+  <li>Gets values of data-sending HTML elements (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>) on the page as an associative array.</li>
+  <li>HTML elements to be retrieved have the <code>name</code> attribute set, and the <code>name</code> attribute becomes the key of the associative array.</li>
+  <li>If the argument retrieval range element is omitted, <code>&lt;main&gt;</code> is the retrieval range, and if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is the retrieval range.</li>
+  <li>Mainly retrieves as request data to web services.</li>
+  <li>The following differs from normal <code>&lt;form&gt;</code> POST submission.
   <ul>
-    <li>Disabled items are included.</li>
-    <li>Style-hidden items (<code>display:none</code> or <code>visibility:hidden</code>) are not included.</li>
+    <li>Includes disabled items.</li>
+    <li>Does not include style-hidden items (<code>display:none</code> or <code>visibility:hidden</code>).</li>
   </ul></li>
-  <li>If <code>data-value-format-type</code> attribute defining value format type is set, get unformatted value using corresponding <code>UnFrmUtil</code> method.</li>
-  <li>For text boxes and text areas, get value with tab characters and trailing blank line breaks removed.</li>
-  <li>For checkboxes, return <code>value</code> attribute value when checked, and get <code>data-check-off-value</code> attribute value when not checked.</li>
-  <li>List section (repeating section) data becomes an array and is stored in associative array with one key.</li>
+  <li>If the <code>data-value-format-type</code> attribute defining the value format type is set, gets the unformatted value with the corresponding <code>UnFrmUtil</code> method.</li>
+  <li>For text boxes and text areas, gets values with tab characters, trailing blanks, and line breaks removed.</li>
+  <li>For checkboxes, returns the value of the <code>value</code> attribute when checked, and gets the value of the <code>data-check-off-value</code> attribute when unchecked.</li>
+  <li>List part (repeated part) data becomes an array and is stored in the associative array with one key.</li>
   <li><pre>[Example] <code>&lt;input name="user_id" value="U001"&gt;
      &lt;input name="birth_dt" value="2025/02/10"&gt;
      &lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
@@ -147,36 +147,36 @@
             &lt;td&gt;&lt;input name="detail.weight_kg" value="12.1"&gt;&lt;/td&gt;&lt;/tr&gt;
       &lt;/tbody&gt;&lt;/table&gt;</code> is
       retrieved as <code>{ user_id:'U001', birth_dt:'20250210', detail:[{pet_no:'1', weight_kg:'8.9'}, {pet_no:'2', weight_kg:'12.1'}] }</code>.</pre></li>
-  <li>List section elements should follow the rules below:
+  <li>Elements of list parts must follow the rules below.
   <ul> 
-    <li>Elements within a row (hereinafter called row-inner elements) have <code>name</code> attribute in <code>tableId.itemName</code> format with <code>"."</code> separator. Note that <code>name</code> attribute with <code>"."</code> separator should only be used for row-inner elements.</li>
-    <li>Row-inner elements must have a parent/grandparent element (hereinafter called table element) with <code>id</code> attribute equal to the part before <code>"."</code> separator (<code>tableId</code>).<br>
-        In most cases, table element is <code>&lt;tbody&gt;</code> or <code>&lt;table&gt;</code>.</li>
-    <li>Direct children of table element become the topmost element of repeating section (hereinafter called row element).<br>
-        In most cases, row element is <code>&lt;tr&gt;</code>.</li>
-    <li><pre>[NG Example 1] Table element does not exist. (Neither <code>&lt;table&gt;</code> nor <code>&lt;tbody&gt;</code> has <code>id</code> attribute)
+    <li>Elements within a row (hereinafter called row-internal elements) have the <code>name</code> attribute separated by <code>"."</code> and set in the format <code>tableId.itemName</code>. Note that <code>name</code> attributes separated by <code>"."</code> should only be used for row-internal elements.</li>
+    <li>An element (hereinafter called table element) with the <code>id</code> attribute set to <code>tableId</code>, the part before the <code>"."</code> separator, must exist as the parent or grandparent element of row-internal elements.<br>
+        In most cases, the table element is <code>&lt;tbody&gt;</code> or <code>&lt;table&gt;</code>.</li>
+    <li>The child element directly under the table element must be the top-level element of the repeated part (hereinafter called row element).<br>
+        In most cases, the row element is <code>&lt;tr&gt;</code>.</li>
+    <li><pre>[NG Example 1] Table element does not exist. (Neither <code>&lt;table&gt;</code> nor <code>&lt;tbody&gt;</code> has the <code>id</code> attribute)
       <code>&lt;table&gt;...omitted...&lt;tbody&gt;
         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
       &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
-    <li><pre>[NG Example 2] Row element does not exist directly under table element. (<code>&lt;table&gt;</code> has <code>id</code> attribute but <code>&lt;tbody&gt;</code> is in between)
+    <li><pre>[NG Example 2] Row element does not exist directly under table element. (The <code>id</code> attribute is assigned to <code>&lt;table&gt;</code>, but <code>&lt;tbody&gt;</code> is in between)
       <code>&lt;table id="detail"&gt;...omitted...&lt;tbody&gt;
         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
       &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
-    <li><pre>[OK Example 1] If <code>&lt;tbody&gt;</code> has <code>id</code> attribute, <code>&lt;tbody&gt;</code> becomes table element.
+    <li><pre>[OK Example 1] When the <code>id</code> attribute is assigned to <code>&lt;tbody&gt;</code>, <code>&lt;tbody&gt;</code> becomes the table element.
       <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
       &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
-    <li><pre>[OK Example 2] If <code>&lt;table&gt;</code> has <code>id</code> attribute, <code>&lt;table&gt;</code> becomes table element. (Example using multiple <code>&lt;tbody&gt;</code>)
+    <li><pre>[OK Example 2] When the <code>id</code> attribute is assigned to <code>&lt;table&gt;</code>, <code>&lt;table&gt;</code> becomes the table element. (Example using multiple <code>&lt;tbody&gt;</code>)
       <code>&lt;table id="detail"&gt;...omitted...
         &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
         &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
       &lt;/table&gt;</code></pre></li>
   </ul></li>
-  <li>Row-inner elements store row index value in <code>data-obj-row-idx</code> attribute, and are converted to array based on that index.</li>
-  <li>Radio buttons within rows have [row index] removed from end of <code>name</code> attribute for return value key. (See <code>PageUtil#setValue</code>)</li>
+  <li>Row index values are stored in row-internal elements as the <code>data-obj-row-idx</code> attribute, and they are converted to arrays based on that index.</li>
+  <li>For radio buttons within rows, removes the [row index] at the end of the <code>name</code> attribute to use as the return value key. (See <code>PageUtil#setValue</code>)</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -193,7 +193,7 @@
               <tr>
                 <td><code>[outerElm]</code></td>
                 <td><code>Object</code></td>
-                <td>Scope element (optional)</td>
+                <td>Retrieval range element (optional)</td>
               </tr>
             </tbody>
           </table>
@@ -209,19 +209,19 @@
           <code>getRowValues(rowElm)</code>
         </div>
         <div class="method-description">
-          Get row data.<br>
+          Gets row data.<br>
 <ul>
-  <li>Get one row of page data within list as associative array.</li>
-  <li>Data retrieval rules are same as <code>PageUtil#getValues</code>.</li>
-  <li>Part before <code>"."</code> in <code>name</code> attribute (= table element's <code>id</code> attribute) is removed to create associative array key.</li>
-  <li><pre>[Example] For <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
+  <li>Gets page data of one row in a list as an associative array.</li>
+  <li>Data retrieval rules are the same as <code>PageUtil#getValues</code>.</li>
+  <li>The part before <code>"."</code> in the <code>name</code> attribute (= the <code>id</code> attribute of the table element) is removed to become the key of the associative array.</li>
+  <li><pre>[Example] When the second row of <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_no" value="1"&gt;&lt;/td&gt;
             &lt;td&gt;&lt;input name="detail.weight_kg" value="8.9"&gt;&lt;/td&gt;&lt;/tr&gt;
         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_no" value="2"&gt;&lt;/td&gt;
             &lt;td&gt;&lt;input name="detail.weight_kg" value="12.1"&gt;&lt;/td&gt;&lt;/tr&gt;
-      &lt;/tbody&gt;&lt;/table&gt;</code> when specifying 2nd row as argument,
+      &lt;/tbody&gt;&lt;/table&gt;</code> is specified as an argument,
       <code>{ pet_no:'2', weight_kg:'12.1' }</code> is retrieved.</pre></li>
-  <li>For radio buttons within row, [row index] at end of <code>name</code> attribute is removed to create return value key. (See <code>PageUtil#setValues</code>)</li>
+  <li>For radio buttons within rows, removes the [row index] at the end of the <code>name</code> attribute to use as the return value key. (See <code>PageUtil#setValues</code>)</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -254,10 +254,10 @@
           <code>getRowValuesByInnerElm(baseElm, rowTag)</code>
         </div>
         <div class="method-description">
-          Get row data.<br>
+          Gets row data.<br>
 <ul>
-  <li>Traverse parent elements from base element argument to get row element (mostly <code>&lt;tr&gt;</code>), and get page data of that row element as an associative array.</li>
-  <li>Data retrieval rules are same as <code>PageUtil#getRowValues</code>.</li>
+  <li>Traverses parent elements from the argument base element to get the row element (typically <code>&lt;tr&gt;</code>), and gets the page data of that row element as an associative array.</li>
+  <li>Data retrieval rules are the same as <code>PageUtil#getRowValues</code>.</li>
 </ul> 
         </div>
         <div class="method-parameters">
@@ -279,7 +279,7 @@
               <tr>
                 <td><code>[rowTag]</code></td>
                 <td><code>string</code></td>
-                <td>Row element tag name (optional) defaults to 'tr' if omitted</td>
+                <td>Tag name of row element (optional) Defaults to 'tr' if omitted</td>
               </tr>
             </tbody>
           </table>
@@ -295,17 +295,17 @@
           <code>setValues(obj, outerElm)</code>
         </div>
         <div class="method-description">
-          Set page data.<br>
+          Sets page data.<br>
 <ul>
-  <li>Set associative array values to HTML elements on the page.</li>
-  <li>Target HTML elements are those with <code>name</code> attribute or <code>data-name</code> attribute set, and associative array key becomes the <code>name</code> attribute or <code>data-name</code> attribute of target element.</li>
-  <li>To set values to non-input form elements (that do not originally have <code>name</code> attribute) like <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, set <code>data-name</code> attribute.</li>
-  <li>For HTML elements without <code>value</code> attribute like <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, set to <code>textContent</code>.</li>
-  <li>If scope element argument is omitted, <code>&lt;main&gt;</code> is used as scope; if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is used as scope.</li>
-  <li>Mainly used to set response data from Web services.</li>
-  <li>Values with keys starting with underscore are used by this framework and cannot be used outside this class, so they are ignored by this method.</li>
-  <li>If <code>data-value-format-type</code> attribute defining value format type is set, set formatted value using corresponding <code>FrmUtil</code> method.</li>
-  <li>List section data is assumed to be stored as an array in one key of the associative array.</li>
+  <li>Sets values from an associative array to HTML elements on the page.</li>
+  <li>HTML elements to be set must have the <code>name</code> attribute or <code>data-name</code> attribute, and the key of the associative array becomes the value destination <code>name</code> attribute or <code>data-name</code> attribute.</li>
+  <li>For elements other than input form elements (which originally do not have the <code>name</code> attribute) such as <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, sets the <code>data-name</code> attribute.</li>
+  <li>For HTML elements that do not have the <code>value</code> attribute such as <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, sets to <code>textContent</code>.</li>
+  <li>If the argument set range element is omitted, <code>&lt;main&gt;</code> is the set range, and if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is the set range.</li>
+  <li>Mainly sets response data from web services.</li>
+  <li>Keys of the associative array starting with underscore are values used by this framework and cannot be used from outside this class, so they are ignored in this method.</li>
+  <li>If the <code>data-value-format-type</code> attribute defining the value format type is set, sets the value formatted with the corresponding <code>FrmUtil</code> method.</li>
+  <li>List part data is assumed to be stored as an array in one key within the associative array.</li>
   <li><pre>[Example] <code>{ user_id:'U001', birth_dt:'20250210', list:[{pet_no:'1', weight_kg:'8.9'}, {pet_no:'2', weight_kg:'12.1'}] }</code> is
     set as <code>&lt;input name="user_id" value="U001"&gt;
     &lt;input name="birth_dt" value="2025/02/10"&gt;
@@ -315,16 +315,16 @@
       &lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;2&lt;/td&gt;
           &lt;td&gt;&lt;input name="detail.weight_kg" value="12.1"&gt;&lt;/td&gt;&lt;/tr&gt;
     &lt;/tbody&gt;&lt;/table&gt;</code>.</pre></li>
-  <li>Rules for table element, row element, and row-inner elements in list are same as <code>PageUtil#getValues</code>.</li>
-  <li>To synchronize number of arrays in associative array with number of list rows for display, dynamically generate elements from template row element (hereinafter called template row element) and set values.</li>
-  <li>Template row element is placed as child element (first) of table element wrapped in <code>&lt;script&gt;</code>.</li>
-  <li><pre>[Example] For above example, place template row element as follows:
+  <li>Rules for table elements, row elements, and row-internal elements within lists are the same as <code>PageUtil#getValues</code>.</li>
+  <li>To link and display the number of arrays in the associative array with the number of rows in the list, dynamically generates elements from the template row element (hereinafter called template row element) and sets values.</li>
+  <li>The template row element is placed at the child element (top) of the table element, enclosed in <code>&lt;script&gt;</code>.</li>
+  <li><pre>[Example] In the case of the above example, place the template row element as follows.
     <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
       &lt;script type="text/html"&gt;&lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;&lt;/td&gt;
                                    &lt;td&gt;&lt;input name="detail.weight_kg"&gt;&lt;/td&gt;&lt;/tr&gt;
       &lt;/script&gt;
     &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
-  <li>Radio buttons within template row element have [row index] appended to end of <code>name</code> attribute to group by row.</li>
+  <li>Radio buttons within template row elements have [row index] appended to the end of the <code>name</code> attribute to group them per row.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -346,7 +346,7 @@
               <tr>
                 <td><code>[outerElm]</code></td>
                 <td><code>Element</code></td>
-                <td>Scope element (optional, defaults to <code>document.body</code> if omitted)</td>
+                <td>Set range element (optional) If omitted, <code>document.body</code> is the target</td>
               </tr>
             </tbody>
           </table>
@@ -358,22 +358,22 @@
           <code>addRow(listId, obj)</code>
         </div>
         <div class="method-description">
-          Add list row.<br>
+          Adds list row.<br>
 <ul>
-  <li>Generate and add row element using template row element of table element and set default values.</li>
-  <li>See <code>PageUtil#setValues</code> for template row.</li>
-  <li><pre>[Example] For following template row:
+  <li>Generates and adds a row element with the template row element of the table element and sets default values.</li>
+  <li>For template rows, see <code>PageUtil#setValues</code>.</li>
+  <li><pre>[Example] In the case of the template row below.
     <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
       &lt;script type="text/html"&gt;&lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;&lt;/td&gt;
                                    &lt;td&gt;&lt;input name="detail.weight_kg"&gt;&lt;/td&gt;&lt;/tr&gt;
       &lt;/script&gt;
     &lt;/tbody&gt;&lt;/table&gt;</code>
-    Default value key excludes table element <code>id</code> attribute (detail.) as follows:
+    Keys of default values are as follows, excluding the table element <code>id</code> attribute (detail.).
    <code>{ pet_no:'1', weight_kg:'8.9' }</code>
-   Multiple rows are added when passing array of associative arrays:
+   If an array of associative arrays is passed, multiple rows are added.
    <code>[ { pet_no:'1', weight_kg:'8.9' }, { pet_no:'2', weight_kg:'12.1' } ]</code></pre>
   </li>
-  <li>If default value is omitted, add one empty row element.</li>
+  <li>If default values are omitted, adds one empty row element.</li>
   <li>To add multiple empty rows, pass <code>new Array(n)</code>.</li>
 </ul>
         </div>
@@ -396,7 +396,7 @@
               <tr>
                 <td><code>[obj]</code></td>
                 <td><code>Object|Array&lt;Object&gt;</code></td>
-                <td>Default value associative array for row addition (optional)</td>
+                <td>Default value associative array when adding row (optional)</td>
               </tr>
             </tbody>
           </table>
@@ -408,9 +408,9 @@
           <code>removeRow(searchElmName, searchElmVal, rowTag)</code>
         </div>
         <div class="method-description">
-          Remove list row.<br>
+          Removes list row.<br>
 <ul>
-  <li>Remove row element (mostly <code>&lt;tr&gt;</code>) containing element with specified <code>name</code> attribute and <code>value</code> attribute.</li>
+  <li>Removes the row element (typically <code>&lt;tr&gt;</code>) that contains an element with the specified <code>name</code> attribute and <code>value</code> attribute.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -427,7 +427,7 @@
               <tr>
                 <td><code>searchElmName</code></td>
                 <td><code>string</code></td>
-                <td><code>name</code> attribute of search target element ([Example] <code>'detail.chk'</code> for checkbox) <code>data-name</code> attribute not allowed</td>
+                <td><code>name</code> attribute of search target element ([Example] For checkboxes <code>'detail.chk'</code>) <code>data-name</code> attribute is not allowed</td>
               </tr>
               <tr>
                 <td><code>searchElmVal</code></td>
@@ -437,14 +437,14 @@
               <tr>
                 <td><code>[rowTag]</code></td>
                 <td><code>string</code></td>
-                <td>Row element tag name (optional) defaults to <code>'tr'</code> if omitted</td>
+                <td>Tag name of row element (optional) Defaults to <code>'tr'</code> if omitted</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> on successful deletion</p>
+          <p><code>boolean</code> - <code>true</code> on successful removal</p>
         </div>
       </div>
       <div class="method">
@@ -453,9 +453,9 @@
           <code>clearRows(listId)</code>
         </div>
         <div class="method-description">
-          Clear all rows.<br>
+          Deletes all rows.<br>
 <ul>
-  <li>Remove all row elements except template row.</li>
+  <li>Removes all row elements except the template row.</li>
 </ul>
         </div>
         <div class="method-parameters">

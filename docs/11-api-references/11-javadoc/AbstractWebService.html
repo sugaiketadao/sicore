@@ -25,8 +25,8 @@
         <h3>Description</h3>
         <div>Web service base class.<br>
 <ul>
-<li>Provides common processing (logging, exception handling, etc.) for each web service.</li>
-<li>Defines concrete web service processing by implementing <code>doExecute</code> method in subclasses.</li>
+<li>Provides common processing (log output, exception handling, etc.) for each web service.</li>
+<li>Defines specific web service processing by implementing the <code>doExecute</code> method in subclasses.</li>
 </ul>
 </div>
       </div>
@@ -64,7 +64,7 @@
         <div class="method-description">
           Main processing.<br>
 <ul>
-<li>Implements concrete web service processing in subclasses.</li>
+<li>Implements specific web service processing in subclasses.</li>
 </ul>
 
         </div>
@@ -82,7 +82,7 @@
               <tr>
                 <td><code>io</code></td>
                 <td><code>Io</code></td>
-                <td>the argument and return value (request and response)</td>
+                <td>Argument and return value (request and response)</td>
               </tr>
             </tbody>
           </table>

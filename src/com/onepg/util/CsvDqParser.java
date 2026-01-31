@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CSV (with double quotes) parser.
+ * CSV (with double quotations) parser.
  * @hidden
  */
 public final class CsvDqParser extends AbstractStringSeparateParser {
@@ -12,23 +12,23 @@ public final class CsvDqParser extends AbstractStringSeparateParser {
   /**
    * Constructor.
    *
-   * @param csv the CSV string
+   * @param csv CSV string
    */
   public CsvDqParser(final String csv) {
     super(csv);
   }
 
   /**
-   * Searches for begin-end positions for separation.<br>
+   * Searches for separation begin and end positions.<br>
    * <ul>
-   * <li>Separates at comma positions not enclosed in (unescaped) double quotes.</li>
-   * <li>Commas inside double quotes are not treated as delimiters.</li>
-   * <li>Escaped double quotes (backslash-double quote) are treated as characters.</li>
-   * <li>Two consecutive double quotes ("") are treated as a character.</li>
-   * <li>Leading and trailing whitespace are removed.</li>
+   * <li>Separates at comma positions not enclosed by double quotations (without escape).</li>
+   * <li>Commas inside double quotations are not treated as delimiters.</li>
+   * <li>Escaped double quotations (\") are treated as characters.</li>
+   * <li>Two consecutive double quotations ("") are treated as characters.</li>
+   * <li>Leading and trailing whitespace characters are removed.</li>
    * </ul>
    *
-   * @param value the target string
+   * @param value target string
    * @return the begin-end position list
    */
   @Override
@@ -61,25 +61,26 @@ public final class CsvDqParser extends AbstractStringSeparateParser {
         if (isPreEsc(value, i)) {
           continue;
         }
-        // If the next character after a double quote is also a double quote, treat it as an escape sequence ("" → ")
+        // If the next character after double quotation is also a double quotation, treat as escape sequence ("" → ")
         if (i + 1 < value.length() && value.charAt(i + 1) == '"') {
           if (inDq) {
-            // Valid only inside double quotes
-            // Skip the next double quote as well
+            // Valid only inside double quotations
+            // Skip the next double quotation as well
             i++; 
             continue;
           }
         }
-        // Toggle inside double quotes only when not escaped
+        // Only if not escaped
+        // Toggle inside double quotations
         inDq = !inDq;
         continue;
       }
       if (inDq) {
-        // Ignore inside double quotes
+        // Ignore inside double quotations
         continue;
       }
       if (c == ',') {
-        // Add begin-end position at comma
+        // If comma, add begin and end positions
         trimDqPosAdd(idxs, beginPos, endPos, value);
         // Next begin position
         beginPos = i + 1;
@@ -88,7 +89,7 @@ public final class CsvDqParser extends AbstractStringSeparateParser {
       }
     }
 
-    // Add the last begin-end position
+    // Add the last begin and end positions
     trimDqPosAdd(idxs, beginPos, endPos, value);
     return idxs;
   }

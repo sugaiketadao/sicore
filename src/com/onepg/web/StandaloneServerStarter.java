@@ -7,7 +7,7 @@ package com.onepg.web;
 public final class StandaloneServerStarter {
   /**
    * Main processing.
-   * @param args command line arguments
+   * @param args Command line arguments
    */
   public static void main(final String[] args) {
      new Thread(() -> StandaloneServer.main(args)).start();

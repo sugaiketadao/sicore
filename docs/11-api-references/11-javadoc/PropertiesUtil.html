@@ -23,32 +23,35 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>Properties file utility class.
+        <div>Properties file utility class.<br>
 <ul>
-<li>Properties file extension shall be .properties. (Others are ignored.)</li>
-<li>Properties file storage directory (hereinafter, configuration directory) is the config directory directly under the application deployment directory, fixed relative to the application deployment directory.
-<br>[Example] For application/lib/program.jar, it is under application/config/.
-<br>For details of the application deployment directory, see <code>#APPLICATION_DIR_PATH</code>.</li>
-<li>Normally, the configuration directory path is as above, but to change the path, specify the path with the property key CONFIG_DIR in config/config.properties.</li>
-<li>Properties file character set is assumed to be UTF-8.</li>
-<li>Properties file content lists property keys and values as follows:
-<br>KEY1=VAL1
-<br>KEY2=VAL2
-<br>KEY3=VAL3</li>
-<li>Properties file names are free, but the following file names are reserved for framework components and cannot be used:
-<br>web.properties
-<br>bat.properties
-<br>db.properties
-<br>config.properties</li>
-<li>The number of properties files is free, but property keys must be unique across properties files. (Duplication with framework component properties files is acceptable.)</li>
-<li>If a value is enclosed in ${ and }, it is replaced with the value of the enclosed environment variable. (Partial replacement is also possible.)
-<br>However, if it does not exist in environment variables, a system error occurs.</li>
-<li>$ApplicationDirPath within a value is replaced with the application deployment directory path. (Partial replacement is also possible.)
-<br>For details of the application deployment directory, see <code>#APPLICATION_DIR_PATH</code>.</li>
-<li>$TemporaryDirPath within a value is replaced with the OS temporary directory path. (Partial replacement is also possible.)
-<br>Specifically, it is replaced with the path of Java's java.io.tmpdir system property.</li>
-<li>Values starting with &lt;ConvertAbsolutePath&gt; are converted to absolute paths.</li>
-<li>Lines starting with # in properties files are ignored as comments. (Specification of <code>Properties#load(java.io.InputStream)</code>.)</li>
+<li>The properties file extension is .properties. (Others are ignored)</li>
+<li>The properties file storage directory (hereinafter, configuration directory) is the config
+directory directly under the application deployment directory, and is fixed relative to the application deployment directory. <br>
+[Example] For application/lib/program.jar, it is under application/config/. <br>
+For details on the application deployment directory, refer to <code>#APPLICATION_DIR_PATH</code>.</li>
+<li>Normally, the configuration directory path is as described above, but if you want to change the path, specify the path with the configuration key
+CONFIG_DIR in config/config.properties.</li>
+<li>The character set of the properties file is assumed to be UTF-8.</li>
+<li>The content of the properties file lists configuration keys and values as shown in the example below. <br>
+KEY1=VAL1 <br>
+KEY2=VAL2 <br>
+KEY3=VAL3</li>
+<li>The properties file name is flexible, but the following file names are reserved for framework components and cannot be used. <br>
+web.properties <br>
+bat.properties <br>
+db.properties <br>
+config.properties</li>
+<li>The number of properties files is flexible, but configuration keys must be unique across properties files. (Duplication with framework component properties files is acceptable)</li>
+<li>If the configuration value is enclosed in ${ and }, it is replaced with the value of the enclosed environment variable. (Partial replacement is also possible) <br>
+However, if the environment variable does not exist, a system error occurs.</li>
+<li>$ApplicationDirPath in the configuration value is replaced with the application deployment directory path. (Partial replacement is also possible)<br>
+For details on the application deployment directory, refer to <code>#APPLICATION_DIR_PATH</code>.</li>
+<li>$TemporaryDirPath in the configuration value is replaced with the OS temporary directory path. (Partial replacement is also possible)<br>
+Specifically, it replaces the path of Java's java.io.tmpdir system property.</li>
+<li>Configuration values starting with &lt;ConvertAbsolutePath&gt; are converted to absolute paths.</li>
+<li>Lines starting with # in the properties file
+are ignored as comments. (Specification of <code>Properties#load(java.io.InputStream)</code>)</li>
 <li>This class does not handle writing to properties files.</li>
 </ul>
 </div>
@@ -63,7 +66,7 @@
             <code>public enum FwPropertiesName</code>
           </div>
           <div class="enum-description">
-            Framework-reserved properties file names. 
+            Framework-reserved properties file name. 
           </div>
           <div class="enum-constants">
             <h4>Constants</h4>
@@ -96,14 +99,14 @@
             <code>public String APPLICATION_DIR_PATH</code>
           </div>
           <div class="field-description">
-            Application deployment directory path.
+            Application deployment directory path.<br>
 <ul>
-<li>Application deployment directory refers to one of the following directories:
+<li>The application deployment directory refers to one of the following directories.
 <ul>
-<li>Two levels up from the Java class file deployment root directory (com, jp, etc.)
-<br>[Example] For appdeploy/classes/com/onepg/Program.class, it is appdeploy</li>
-<li>Two levels up from the Jar file deployment directory
-<br>[Example] For appdeploy/lib/program.jar, it is appdeploy</li>
+<li>Two directories above the Java class file deployment root directory (such as com or jp) <br>
+[Example] For appdeploy/classes/com/onepg/Program.class, it is appdeploy</li>
+<li>Two directories above the Jar file deployment directory <br>
+[Example] For appdeploy/lib/program.jar, it is appdeploy</li>
 </ul>
 </ul>
   
@@ -115,11 +118,11 @@
             <code>public IoItems MODULE_PROP_MAP</code>
           </div>
           <div class="field-description">
-            Module properties.
+            Module configuration.<br>
 <ul>
-<li>Returns property values from properties files under the configuration directory as a map.</li>
+<li>Returns configuration values from properties files under the configuration directory as a map.</li>
 <li>Excludes framework-reserved properties files.</li>
-<li>The number of properties files is free, but property keys must be unique across properties files.</li>
+<li>The number of properties files is flexible, but configuration keys must be unique across properties files.</li>
 </ul>
 <pre>[Example] <code>final String value = PropertiesUtil.MODULE_PROP_MAP.getString("module.unique.key");</code></pre>
   
@@ -135,7 +138,7 @@
           <code>public IoItems getFrameworkProps(FwPropertiesName propFileName)</code>
         </div>
         <div class="method-description">
-          Returns framework properties.
+          Gets framework configuration.
 
         </div>
         <div class="method-parameters">
@@ -152,14 +155,14 @@
               <tr>
                 <td><code>propFileName</code></td>
                 <td><code>FwPropertiesName</code></td>
-                <td>the properties file name</td>
+                <td>properties file name</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>IoItems</code> - the property value map</p>
+          <p><code>IoItems</code> - configuration value map</p>
         </div>
       </div>
       <div class="method" id="isWindowsOs">
@@ -168,7 +171,7 @@
           <code>public boolean isWindowsOs()</code>
         </div>
         <div class="method-description">
-          Determines if the OS is MS-Windows.
+          Checks MS-Windows OS.
 
         </div>
         <div class="method-returns">

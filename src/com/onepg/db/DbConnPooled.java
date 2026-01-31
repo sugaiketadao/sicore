@@ -14,9 +14,9 @@ import com.onepg.util.LogUtil;
 public final class DbConnPooled extends DbConn {
 
   /**
-   * Busy connection list <connection serial code> (thread-safe).<br>
+   * Busy connection list &lt;connection serial code&gt; (thread-safe).<br>
    * <ul>
-   * <li>Copy of list managed by <code>DbUtil</code></li>
+   * <li>Copy of the list managed by <code>DbUtil</code></li>
    * </ul>
    */
   private final ConcurrentLinkedQueue<String> connBusyList;
@@ -24,9 +24,9 @@ public final class DbConnPooled extends DbConn {
   /**
    * Constructor.
    *
-   * @param conn Database connection
-   * @param serialCode Connection serial code
-   * @param connBusyList Busy connection list
+   * @param conn database connection
+   * @param serialCode connection serial code
+   * @param connBusyList busy connection list
    */
   DbConnPooled(final Connection conn, final String serialCode, final ConcurrentLinkedQueue<String> connBusyList) {
     this(conn, serialCode, connBusyList, null);
@@ -35,10 +35,10 @@ public final class DbConnPooled extends DbConn {
   /**
    * Constructor.
    *
-   * @param conn Database connection
-   * @param serialCode Connection serial code
-   * @param connBusyList Busy connection list
-   * @param traceCode Trace code
+   * @param conn database connection
+   * @param serialCode connection serial code
+   * @param connBusyList busy connection list
+   * @param traceCode trace code
    */
   DbConnPooled(final Connection conn, final String serialCode, final ConcurrentLinkedQueue<String> connBusyList, final String traceCode) {
     super(conn, serialCode, traceCode);
@@ -49,15 +49,15 @@ public final class DbConnPooled extends DbConn {
   }
 
   /**
-   * Disconnect from database.<br>
+   * Closes the database connection.<br>
    * <ul>
-   * <li>Does not actually disconnect, only removes from busy connection list. (Returns to pool)</li>
-   * <li>Use <code>#rollbackCloseForce()</code> to actually disconnect.</li>
-   * <li>Rollback to reset transaction.</li>
-   * <li>If connection is closed for some reason, only removes from busy connection list.</li>
-   * <li>Closed connections are checked and discarded in <code>DbUtil#getConnPooled()</code>.</li>
-   * <li>If error occurs in this method, actually disconnects, and if disconnect also errors, throws exception.<br>
-   * (To detect abnormal connections early)</li>
+   * <li>Actually does not disconnect the database, only removes from the busy connection list. (Image of returning to the pool)</li>
+   * <li>To actually disconnect the database, use <code>#rollbackCloseForce()</code>.</li>
+   * <li>Rolls back to reset the transaction.</li>
+   * <li>If the connection is closed for any reason, only removes from the busy connection list.</li>
+   * <li>Disconnected connections are checked and discarded in <code>DbUtil#getConnPooled()</code>.</li>
+   * <li>If an error occurs within this method, actually disconnects the database, but if the disconnection process also errors, throws an exception.<br>
+   * (To detect the occurrence of abnormal connections early)</li>
    * </ul>
    */
   @Override
@@ -68,7 +68,7 @@ public final class DbConnPooled extends DbConn {
       }
     } catch (SQLException re) {
       super.logger.error(re, "Exception error occurred during database rollback. ");
-      // Force disconnect if rollback error occurs
+      // Force database disconnection if rollback error occurs
       try {
         super.close();
       } catch (SQLException ce) {

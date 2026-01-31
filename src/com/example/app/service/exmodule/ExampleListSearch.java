@@ -18,19 +18,19 @@ public class ExampleListSearch extends AbstractDbAccessWebService {
    */
   @Override
   public void doExecute(final Io io) throws Exception {
-    // Validate search conditions
+    // Validates the database retrieval conditions
     validate(io);
     if (io.hasErrorMsg()) {
-      // Exit processing on validation error
+      // Exits the process if a validation error occurs
       return;
     }
     
-    // Retrieve data from database
+    // Retrieves data from the database
     getList(io);
   }
 
   /**
-   * Retrieves data from database.
+   * Retrieves data from the database.
    * 
    * @param io argument and return value (request and response)
    */
@@ -55,42 +55,42 @@ public class ExampleListSearch extends AbstractDbAccessWebService {
     sb.addQnotB("   AND u.income_am >= ? ", io.getBigDecimalNullable("income_am"));
     sb.addQnotB("   AND u.birth_dt = ? ", io.getDateNullable("birth_dt"));
     sb.addQuery(" ORDER BY u.user_id ");
-    // Bulk retrieval from database
+    // Retrieves data in bulk from the database
     final IoRows rows = SqlUtil.selectBulk(getDbConn(), sb, 5);
-    // Set retrieval result
+    // Sets the retrieval result
     io.putRows("list", rows);
-    // Set retrieval count
+    // Sets the retrieval count
     io.put("list_size", rows.size());
     if (rows.size() <= 0) {
-      // Set message when retrieval count is zero
+      // Sets the message when the retrieval count is zero
       io.putMsg(MsgType.INFO, "i0004", new String[] { String.valueOf(rows.size()) });
     }
   }
 
   
   /**
-   * Validates search conditions.
+   * Validates the database retrieval conditions.
    * 
    * @param io argument and return value (request and response)
    * @throws Exception validation error
    */
   private void validate(final Io io) throws Exception {
 
-    // Income check
+    // Checks the income
     final String incomeAm = io.getString("income_am");
     if (!ValUtil.isBlank(incomeAm) ) {
       if (!ValUtil.isNumber(incomeAm)) {
-        // Set invalid number message
+        // Sets the numeric invalid message
         io.putMsg(MsgType.ERROR, "ev012", new String[] { "Income" }, "income_am");
       }
     }
 
-    // Birth date check
+    // Checks the birth date
     final String birthDt = io.getString("birth_dt");
     if (!ValUtil.isBlank(birthDt)) {
       if (!ValUtil.isDate(birthDt)) {
-        // Set invalid date message
-        io.putMsg(MsgType.ERROR, "ev013", new String[] { "Birth Date" }, "birth_dt");
+        // Sets the date invalid message
+        io.putMsg(MsgType.ERROR, "ev013", new String[] { "Birth date" }, "birth_dt");
       }
     }
   }

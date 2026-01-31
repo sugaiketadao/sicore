@@ -10,7 +10,7 @@ import java.io.IOException;
  * HTTP handler base class.<br>
  * <ul>
  * <li>Provides common error handling.</li>
- * <li>Defines concrete HTTP request processing by implementing <code>doExecute</code> method in subclasses.</li>
+ * <li>Defines specific HTTP request processing by implementing the <code>doExecute</code> method in subclasses.</li>
  * <li>If class variables are used in subclasses, those variables are shared across multiple requests.</li>
  * </ul>
  * @hidden
@@ -23,11 +23,11 @@ abstract class AbstractHttpHandler implements HttpHandler {
   /**
    * Main processing.<br>
    * <ul>
-   * <li>Implements concrete HTTP request processing in subclasses.</li>
+   * <li>Implements specific HTTP request processing in subclasses.</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
-   * @throws Exception exception error
+   * @param exchange HTTP send/receive data
+   * @throws Exception Exception error
    */
   protected abstract void doExecute(final HttpExchange exchange) throws Exception;
 
@@ -40,12 +40,12 @@ abstract class AbstractHttpHandler implements HttpHandler {
   }
 
   /**
-   * Invokes main processing.<br>
+   * Calls main processing.<br>
    * <ul>
-   * <li>On exception occurrence, logs at appropriate error level and returns error response.</li>
+   * <li>Outputs logs at the appropriate error level and returns an error response when an exception occurs.</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
+   * @param exchange HTTP send/receive data
    * @throws IOException I/O exception error
    */
   @Override
@@ -65,7 +65,7 @@ abstract class AbstractHttpHandler implements HttpHandler {
         }
       }
     }
-    // Flushes log in develop mode
+    // Flushes logs in development mode
     if (this.logger.isDevelopMode()) {
       this.logger.flush();
     }

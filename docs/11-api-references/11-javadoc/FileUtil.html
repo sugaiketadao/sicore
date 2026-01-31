@@ -23,7 +23,7 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>File operation utility class.
+        <div>File operations utility class.
 </div>
       </div>
     </div>
@@ -54,8 +54,8 @@
         <div class="method-description">
           Joins file paths.<br>
 <ul>
-<li>If blank is passed as the last argument, returns a path ending with / or backslash.</li>
-<li>The separator will be the OS-appropriate character.</li>
+<li>Passing blank at the end of arguments returns a path ending with / or \.</li>
+<li>The separator is the OS-appropriate character.</li>
 </ul>
 
         </div>
@@ -73,7 +73,7 @@
               <tr>
                 <td><code>paths</code></td>
                 <td><code>String...</code></td>
-                <td>the file paths (multiple)</td>
+                <td>file paths (multiple specification)</td>
               </tr>
             </tbody>
           </table>
@@ -91,7 +91,7 @@
         <div class="method-description">
           Converts to OS path.<br>
 <ul>
-<li>Replaces separators with OS-appropriate characters.</li>
+<li>The separator is replaced with the OS-appropriate character.</li>
 </ul>
 
         </div>
@@ -109,7 +109,7 @@
               <tr>
                 <td><code>path</code></td>
                 <td><code>String</code></td>
-                <td>the file path</td>
+                <td>file path</td>
               </tr>
             </tbody>
           </table>
@@ -127,8 +127,8 @@
         <div class="method-description">
           Converts to absolute path.<br>
 <ul>
-<li>Converts relative paths to absolute paths.</li>
-<li>Replaces separators with OS-appropriate characters.</li>
+<li>Relative paths are converted to absolute paths.</li>
+<li>The separator is replaced with the OS-appropriate character.</li>
 </ul>
 
         </div>
@@ -146,7 +146,7 @@
               <tr>
                 <td><code>path</code></td>
                 <td><code>String</code></td>
-                <td>the relative path</td>
+                <td>relative path</td>
               </tr>
             </tbody>
           </table>
@@ -162,7 +162,7 @@
           <code>public boolean exists(String checkPath)</code>
         </div>
         <div class="method-description">
-          Checks if file exists (directories also accepted).
+          Checks if a file exists (directories are also acceptable).
 
         </div>
         <div class="method-parameters">
@@ -179,7 +179,7 @@
               <tr>
                 <td><code>checkPath</code></td>
                 <td><code>String</code></td>
-                <td>the path to check</td>
+                <td>path to check</td>
               </tr>
             </tbody>
           </table>
@@ -195,7 +195,7 @@
           <code>public boolean existsParent(String checkPath)</code>
         </div>
         <div class="method-description">
-          Checks if parent directory exists (directories also accepted).
+          Checks if the parent directory exists (directories are also acceptable).
 
         </div>
         <div class="method-parameters">
@@ -212,7 +212,7 @@
               <tr>
                 <td><code>checkPath</code></td>
                 <td><code>String</code></td>
-                <td>the path to check</td>
+                <td>path to check</td>
               </tr>
             </tbody>
           </table>
@@ -228,7 +228,7 @@
           <code>public String getFileName(String fullPath)</code>
         </div>
         <div class="method-description">
-          Retrieves file name from full path (directories also accepted).
+          Retrieves the file name from the full path (directories are also acceptable).
 
         </div>
         <div class="method-parameters">
@@ -245,7 +245,7 @@
               <tr>
                 <td><code>fullPath</code></td>
                 <td><code>String</code></td>
-                <td>the full path</td>
+                <td>full path</td>
               </tr>
             </tbody>
           </table>
@@ -261,7 +261,7 @@
           <code>public String getParentPath(String fullPath)</code>
         </div>
         <div class="method-description">
-          Retrieves parent directory path from full path (directories also accepted).
+          Retrieves the parent directory path from the full path (directories are also acceptable).
 
         </div>
         <div class="method-parameters">
@@ -278,7 +278,7 @@
               <tr>
                 <td><code>fullPath</code></td>
                 <td><code>String</code></td>
-                <td>the full path</td>
+                <td>full path</td>
               </tr>
             </tbody>
           </table>
@@ -294,7 +294,7 @@
           <code>public String getFileModifiedDateTime(String fullPath)</code>
         </div>
         <div class="method-description">
-          Retrieves file modified date-time.
+          Retrieves the file modified date-time.
 
         </div>
         <div class="method-parameters">
@@ -311,7 +311,7 @@
               <tr>
                 <td><code>fullPath</code></td>
                 <td><code>String</code></td>
-                <td>the full path</td>
+                <td>full path</td>
               </tr>
             </tbody>
           </table>
@@ -344,7 +344,7 @@
               <tr>
                 <td><code>fileName</code></td>
                 <td><code>String</code></td>
-                <td>the file name or full path</td>
+                <td>file name or full path</td>
               </tr>
             </tbody>
           </table>
@@ -360,7 +360,7 @@
           <code>public List&lt;String&gt; getFileList(String dirPath, String typeMark, String prefixMatch, String middleMatch, String suffixMatch)</code>
         </div>
         <div class="method-description">
-          Retrieves file path (absolute path) list.<br>
+          Retrieves the file path (absolute path) list.<br>
 <ul>
 <li>File name and extension search strings are case-insensitive.</li>
 </ul>
@@ -380,27 +380,27 @@
               <tr>
                 <td><code>dirPath</code></td>
                 <td><code>String</code></td>
-                <td>the target directory path</td>
+                <td>target directory path</td>
               </tr>
               <tr>
                 <td><code>typeMark</code></td>
                 <td><code>String</code></td>
-                <td>the search extension (optional) <code>null</code> if omitted, dot character not required</td>
+                <td>search extension (optional) <code>null</code> if omitted ※ dot character not required</td>
               </tr>
               <tr>
                 <td><code>prefixMatch</code></td>
                 <td><code>String</code></td>
-                <td>the search file name prefix match (optional) <code>null</code> if omitted</td>
+                <td>search file name prefix match (optional) <code>null</code> if omitted</td>
               </tr>
               <tr>
                 <td><code>middleMatch</code></td>
                 <td><code>String</code></td>
-                <td>the search file name middle match (optional) <code>null</code> if omitted</td>
+                <td>search file name middle match (optional) <code>null</code> if omitted</td>
               </tr>
               <tr>
                 <td><code>suffixMatch</code></td>
                 <td><code>String</code></td>
-                <td>the search file name suffix match (optional) <code>null</code> if omitted</td>
+                <td>search file name suffix match (optional) <code>null</code> if omitted</td>
               </tr>
             </tbody>
           </table>
@@ -433,12 +433,12 @@
               <tr>
                 <td><code>srcFilePath</code></td>
                 <td><code>String</code></td>
-                <td>the source file path</td>
+                <td>source file path</td>
               </tr>
               <tr>
                 <td><code>destFilePath</code></td>
                 <td><code>String</code></td>
-                <td>the destination file path (directory can be specified)</td>
+                <td>destination file path (directory specification allowed)</td>
               </tr>
             </tbody>
           </table>
@@ -462,7 +462,7 @@
         <div class="method-description">
           Moves a file.<br>
 <ul>
-<li>If the destination is a directory, the file name will be the same as the source.</li>
+<li>If the destination is a directory specification, the file name will be the same as the source.</li>
 </ul>
 
         </div>
@@ -480,12 +480,12 @@
               <tr>
                 <td><code>srcFile</code></td>
                 <td><code>File</code></td>
-                <td>the source file</td>
+                <td>source file</td>
               </tr>
               <tr>
                 <td><code>destFile</code></td>
                 <td><code>File</code></td>
-                <td>the destination file (directory can be specified)</td>
+                <td>destination file (directory specification allowed)</td>
               </tr>
             </tbody>
           </table>
@@ -518,12 +518,12 @@
               <tr>
                 <td><code>srcFilePath</code></td>
                 <td><code>String</code></td>
-                <td>the source file path</td>
+                <td>source file path</td>
               </tr>
               <tr>
                 <td><code>destFilePath</code></td>
                 <td><code>String</code></td>
-                <td>the destination file path (directory can be specified)</td>
+                <td>destination file path (directory specification allowed)</td>
               </tr>
             </tbody>
           </table>
@@ -547,7 +547,7 @@
         <div class="method-description">
           Copies a file.<br>
 <ul>
-<li>If the destination is a directory, the file name will be the same as the source.</li>
+<li>If the destination is a directory specification, the file name will be the same as the source.</li>
 </ul>
 
         </div>
@@ -565,12 +565,12 @@
               <tr>
                 <td><code>srcFile</code></td>
                 <td><code>File</code></td>
-                <td>the source file</td>
+                <td>source file</td>
               </tr>
               <tr>
                 <td><code>destFile</code></td>
                 <td><code>File</code></td>
-                <td>the destination file (directory can be specified)</td>
+                <td>destination file (directory specification allowed)</td>
               </tr>
             </tbody>
           </table>
@@ -588,7 +588,7 @@
         <div class="method-description">
           Deletes a file.<br>
 <ul>
-<li>Returns <code>false</code> if file does not exist.</li>
+<li>Returns <code>false</code> if the file does not exist.</li>
 </ul>
 
         </div>
@@ -606,14 +606,14 @@
               <tr>
                 <td><code>deleteFilePath</code></td>
                 <td><code>String</code></td>
-                <td>the delete file path</td>
+                <td>file path to delete</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>false</code> if file does not exist</p>
+          <p><code>boolean</code> - <code>false</code> if the file does not exist</p>
         </div>
       </div>
       <div class="method" id="delete">
@@ -639,14 +639,14 @@
               <tr>
                 <td><code>deleteFile</code></td>
                 <td><code>File</code></td>
-                <td>the delete file</td>
+                <td>file to delete</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>false</code> if file does not exist</p>
+          <p><code>boolean</code> - <code>false</code> if the file does not exist</p>
         </div>
         <div class="see-also">
           <h4>See Also</h4>
@@ -678,14 +678,14 @@
               <tr>
                 <td><code>dirPath</code></td>
                 <td><code>String</code></td>
-                <td>the directory path</td>
+                <td>directory path</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>false</code> if already exists</p>
+          <p><code>boolean</code> - <code>false</code> if it already exists</p>
         </div>
       </div>
     </div>

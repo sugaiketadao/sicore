@@ -9,8 +9,8 @@ import com.onepg.util.ValUtil;
 /**
  * Web service base class.<br>
  * <ul>
- * <li>Provides common processing (logging, exception handling, etc.) for each web service.</li>
- * <li>Defines concrete web service processing by implementing <code>doExecute</code> method in subclasses.</li>
+ * <li>Provides common processing (log output, exception handling, etc.) for each web service.</li>
+ * <li>Defines specific web service processing by implementing the <code>doExecute</code> method in subclasses.</li>
  * </ul>
  */
 public abstract class AbstractWebService {
@@ -23,11 +23,11 @@ public abstract class AbstractWebService {
   /**
    * Main processing.<br>
    * <ul>
-   * <li>Implements concrete web service processing in subclasses.</li>
+   * <li>Implements specific web service processing in subclasses.</li>
    * </ul>
    *
-   * @param io the argument and return value (request and response)
-   * @throws Exception exception error
+   * @param io Argument and return value (request and response)
+   * @throws Exception Exception error
    */
   public abstract void doExecute(final Io io) throws Exception;
 
@@ -40,14 +40,14 @@ public abstract class AbstractWebService {
   }
 
   /**
-   * Invokes main processing.<br>
+   * Calls main processing.<br>
    * <ul>
-   * <li>Executes log begin processing, calls the <code>doExecute</code> method, and finally executes log end processing.</li>
-   * <li>Package-private to prevent direct external calls.</li>
+   * <li>Executes log start processing, calls the <code>doExecute</code> method, and finally executes log end processing.</li>
+   * <li>This is package-private to prevent direct calls from outside.</li>
    * </ul>
    *
-   * @param io the argument and return value (request and response)
-   * @throws Exception exception error
+   * @param io Argument and return value (request and response)
+   * @throws Exception Exception error
    */
   void execute(final Io io) throws Exception {
     try {

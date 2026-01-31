@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
  * JSON service handler class.<br>
  * <ul>
  * <li>Receives HTTP requests and delegates processing to the corresponding web service class.</li>
- * <li>Dynamically resolves service class name from URL path and executes via reflection.</li>
+ * <li>Dynamically resolves the service class name from the URL path and executes it using reflection.</li>
  * </ul>
  * @hidden
  */
@@ -30,11 +30,11 @@ final class JsonServiceHandler extends AbstractHttpHandler {
   /**
    * Constructor.<br>
    * <ul>
-   * <li>Sets context path and service class package.</li>
+   * <li>Sets the context path and service class package.</li>
    * </ul>
    *
-   * @param contextPath context path
-   * @param svcClsPackage service class package
+   * @param contextPath Context path
+   * @param svcClsPackage Service class package
    */
   JsonServiceHandler(final String contextPath, final String svcClsPackage) {
     super();
@@ -46,25 +46,25 @@ final class JsonServiceHandler extends AbstractHttpHandler {
   /**
    * {@inheritDoc}
    * <ul>
-   * <li>Dynamically resolves and executes service class from request URL.</li>
-   * <li>Processes parameters according to <code>GET/POST</code> method.</li>
+   * <li>Dynamically resolves and executes the service class from the request URL.</li>
+   * <li>Processes parameters according to the <code>GET/POST</code> method.</li>
    * </ul>
    */
   @Override
   protected void doExecute(final HttpExchange exchange) throws Exception {
     // Request path
     final String reqPath = exchange.getRequestURI().getPath();
-    // Build class name
+    // Builds class name
     final String clsName = buildClsNameByReq(reqPath);
     
     try {
-      // Create and validate service class
+      // Creates and validates service class
       final AbstractWebService serviceObj = createWebServiceClsInstance(clsName);
       
-      // Process request parameters
+      // Processes request parameters
       final Io io = reqToIoParams(exchange, clsName);
       
-      // Execute service processing
+      // Executes service processing
       serviceObj.execute(io);
       
       // Response
@@ -83,11 +83,11 @@ final class JsonServiceHandler extends AbstractHttpHandler {
   /**
    * Builds class name.<br>
    * <ul>
-   * <li>Generates service class name from request path.</li>
+   * <li>Generates the service class name from the request path.</li>
    * </ul>
    *
-   * @param reqPath request path
-   * @return class name
+   * @param reqPath Request path
+   * @return Class name
    */
   private String buildClsNameByReq(final String reqPath) {
     return this.svcClsPackage + "."
@@ -97,12 +97,12 @@ final class JsonServiceHandler extends AbstractHttpHandler {
   /**
    * Creates service instance.<br>
    * <ul>
-   * <li>Creates service instance from class name and performs type checking.</li>
+   * <li>Generates a service instance from the class name and performs type checking.</li>
    * </ul>
    *
-   * @param clsName class name
-   * @return service instance
-   * @throws Exception instance creation error
+   * @param clsName Class name
+   * @return Service instance
+   * @throws Exception Instance creation error
    */
   private AbstractWebService createWebServiceClsInstance(final String clsName) throws Exception {
     final Class<?> cls = getCls(clsName);
@@ -118,12 +118,12 @@ final class JsonServiceHandler extends AbstractHttpHandler {
   /**
    * Gets class.<br>
    * <ul>
-   * <li>Gets Class object from class name.</li>
+   * <li>Obtains a Class object from the class name.</li>
    * </ul>
    *
-   * @param clsName class name
+   * @param clsName Class name
    * @return Class object
-   * @throws ClassNotFoundException when class is not found
+   * @throws ClassNotFoundException If the class is not found
    */
   private Class<?> getCls(final String clsName) {
     try {
@@ -136,13 +136,13 @@ final class JsonServiceHandler extends AbstractHttpHandler {
   /**
    * Converts request parameters to I/O parameters.<br>
    * <ul>
-   * <li>Parses parameters according to HTTP method and sets to <code>Io</code> object.</li>
+   * <li>Parses parameters according to the HTTP method and sets them in the <code>Io</code> object.</li>
    * </ul>
    *
-   * @param exchange HTTP exchange data
-   * @param clsName class name (for logging)
+   * @param exchange HTTP send/receive data
+   * @param clsName Class name (for logging)
    * @return Io object containing parameters
-   * @throws Exception parameter processing error
+   * @throws Exception Parameter processing error
    */
   private Io reqToIoParams(final HttpExchange exchange, final String clsName) throws Exception {
     final String reqMethod = exchange.getRequestMethod();

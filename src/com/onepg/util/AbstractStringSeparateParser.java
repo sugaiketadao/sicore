@@ -17,10 +17,10 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
 
 
   /**
-   * Finds separation begin-end positions.<br>
+   * Searches for separation begin and end positions.<br>
    * <ul>
-   * <li>Returns the begin position at index 0 and end position at index 1 of the array for each separated item.</li>
-   * <li>Returns as a list assuming multiple items exist.</li>
+   * <li>Returns the begin position of one separated item at index 0 of the array and the end position at index 1.</li>
+   * <li>Returns as a list assuming multiple items.</li>
    * </ul>
    *
    * @param value target string
@@ -34,7 +34,7 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
    * @param value target string
    */
   AbstractStringSeparateParser(final String value) {
-    this.value = value; // null is allowed by design, so keep as-is
+    this.value = value; // nullも許可する設計なのでそのまま
   }
 
   @Override
@@ -51,12 +51,12 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
   }
 
   /**
-   * Determines if character is escaped.<br>
+   * Determines if a character is escaped.<br>
    * <ul>
-   * <li>Determines if the character at the specified position is escaped (escaped if preceded by an odd number of backslashes)</li>
+   * <li>Determines if the character at the specified position is escaped (escaped if preceded by an odd number of backslashes).</li>
    * </ul>
    *
-   * @param target target string
+   * @param target target to check
    * @param targetPos target position
    * @return <code>true</code> if escaped
    */
@@ -76,12 +76,12 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
   }
 
   /**
-   * Determines if character is escaped (char[] version).<br>
+   * Determines if a character is escaped (char[] version).<br>
    * <ul>
-   * <li>Determines if the character at the specified position is escaped (escaped if preceded by an odd number of backslashes)</li>
+   * <li>Determines if the character at the specified position is escaped (escaped if preceded by an odd number of backslashes).</li>
    * </ul>
    *
-   * @param target target char array
+   * @param target target char array to check
    * @param targetPos target position
    * @return <code>true</code> if escaped
    */
@@ -99,7 +99,7 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
   }
 
   /**
-   * Stores inner positions to list if both ends are double quotes.
+   * Stores the inner part in the list if both ends are double quotations.
    *
    * @param retList  result list
    * @param beginPos begin position
@@ -134,9 +134,9 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
     }
 
     /**
-     * Checks if next string exists.
+     * Checks if the next string exists.
      *
-     * @return <code>true</code> if next string exists
+     * @return <code>true</code> if the next string exists
      */
     @Override
     public boolean hasNext() {
@@ -144,7 +144,7 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
     }
 
     /**
-     * Gets next string.
+     * Retrieves the next string.
      *
      * @return the next string
      */

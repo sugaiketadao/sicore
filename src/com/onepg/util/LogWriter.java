@@ -8,23 +8,23 @@ import java.time.format.ResolverStyle;
 
 
 /**
- * Log writer class.
+ * Log writer class.<br>
  * <ul>
  * <li>Accepts log output from individual processes.</li>
- * <li>Handles formatting of log text.</li>
- * <li>Gets text writer instance from log text handler <code>LogTxtHandler</code> and outputs logs.</li>
- * <li>Holds two log text handlers: one for info and one for errors.</li>
- * <li>Outputs logs to console as well in develop mode.</li>
- * <li>Log text opening and closing is handled by log text handler; this class does not open or close.</li>
+ * <li>Handles log text formatting.</li>
+ * <li>Gets text writer instances from log text handler <code>LogTxtHandler</code> to output logs.</li>
+ * <li>Holds two log text handlers for information and error.</li>
+ * <li>Outputs logs to console in development mode.</li>
+ * <li>Opening and closing of log text is handled by the log text handler, not by this class.</li>
  * </ul>
  */
 public final class LogWriter {
 
-  /** Created class name. */
+  /** Generation class name. */
   private final String clsName;
   /** Thread name. */
   private final String threadName;
-  /** Info log text handler. */
+  /** Information log text handler. */
   private final LogTxtHandler infHdr;
   /** Error log text handler. */
   private final LogTxtHandler errHdr;
@@ -33,32 +33,32 @@ public final class LogWriter {
 
   /** Trace code. */
   private final String traceCode;
-  /** Info log prefix. */
+  /** Information log prefix. */
   private final String infPrefix;
   /** Error log prefix. */
   private final String errPrefix;
-  /** Develop log prefix. */
+  /** Development log prefix. */
   private final String devPrefix;
-  /** Begin-end log suffix. */
+  /** Begin/end log suffix. */
   private final String beginEndSuffix;
-  /** Develop mode flag. */
+  /** Development mode flag. */
   private final boolean isDevelopMode;
   /** Elapsed time measurement start time. */
   private long watchStartTime = 0;
 
-  /** Date-time formatter: timestamp ISO 8601 compliant. */
+  /** Date-time formatter: timestamp fully compliant with ISO 8601. */
   private static final DateTimeFormatter DTF_LOG_TIMESTAMP = DateTimeFormatter
       .ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSSSSS").withResolverStyle(ResolverStyle.STRICT);
 
   /**
    * Constructor.
    *
-   * @param cls               the target class for logging
-   * @param traceCode         the trace code (optional)
-   * @param isDevelopMode     the develop mode
-   * @param infLogTxtHandler  the info log text handler
-   * @param errLogTxtHandler  the error log text handler
-   * @param consoleWriter     the console writer
+   * @param cls               log target class
+   * @param traceCode         trace code (optional)
+   * @param isDevelopMode     development mode
+   * @param infLogFileHandler information log text handler
+   * @param errLogFileHandler error log text handler
+   * @param consoleWriter     console writer
    */
   LogWriter(final Class<?> cls, final String traceCode, final boolean isDevelopMode,
       final LogTxtHandler infLogTxtHandler, final LogTxtHandler errLogTxtHandler,
@@ -84,30 +84,30 @@ public final class LogWriter {
   }
 
   /**
-   * Flushes the log writers.
+   * Flushes.
    */
   public void flush() {
     try {
         this.infHdr.getWriter().flush();
     } catch (Exception e) {
-        // Swallows errors during log processing
+        // Suppresses errors during log processing
         LogUtil.stdout(e, "An exception occurred while flushing the info log. ");
     }
     
     try {
         this.errHdr.getWriter().flush();
     } catch (Exception e) {
-        // Swallows errors during log processing
+        // Suppresses errors during log processing
         LogUtil.stdout(e, "An exception occurred while flushing the error log. ");
     }
   }
 
   /**
-   * Creates a log message.
+   * Creates log message.
    *
-   * @param prefix the prefix
-   * @param msg the log message
-   * @return the log message
+   * @param prefix prefix
+   * @param msg log message
+   * @return log message
    */
   private String createMsg(final String prefix, final String msg) {
     final String tm = LocalDateTime.now().format(DTF_LOG_TIMESTAMP);
@@ -117,20 +117,15 @@ public final class LogWriter {
 
   /**
    * Common log output processing.
-   *
-   * @param prefix the prefix
-   * @param msg the message
-   * @param toErrorLog <code>true</code> to output to error log as well
-   * @param stackTrace the stack trace
    */
   private void writeLog(final String prefix, final String msg, final boolean toErrorLog, 
                      final String stackTrace) {
     final String log = createMsg(prefix, msg);
     
-    // Outputs to info log
+    // Outputs to information log
     this.infHdr.getWriter().println(log);
     
-    // Also outputs to error log if specified
+    // When also outputting to error log
     if (toErrorLog) {
         this.errHdr.getWriter().println(log);
         if (stackTrace != null) {
@@ -138,7 +133,7 @@ public final class LogWriter {
         }
     }
     
-    // Console output in develop mode
+    // Console output in development mode
     if (this.isDevelopMode) {
         this.console.println(log);
         if (stackTrace != null) {
@@ -148,10 +143,10 @@ public final class LogWriter {
   }
 
   /**
-   * Outputs an error.
+   * Outputs error.
    *
-   * @param e   the error instance
-   * @param msg the log message
+   * @param e   error instance
+   * @param msg log output message
    */
   public void error(final Throwable e, final String msg) {
     final String etrace;
@@ -164,34 +159,35 @@ public final class LogWriter {
   }
 
   /**
-   * Outputs an error.
+   * Outputs error.
    *
-   * @param e   the error instance
+   * @param e   error instance
    */
   public void error(final Throwable e) {
     error(e, ValUtil.BLANK);
   }
 
   /**
-   * Outputs an error.
+   * Outputs error.
    *
-   * @param msg the log message
+   * @param msg log output message
    */
   public void error(final String msg) {
     error(null, msg);
   }
 
   /**
-   * Outputs info.
+   * Outputs information.
    *
-   * @param msg the log message
+   * @param msg log output message
    */
   public void info(final String msg) {
     writeLog(this.infPrefix, msg, false, null);
   }
 
   /**
-   * Outputs begin info.
+   * Outputs start information.
+   *
    */
   public void begin() {
     final String log = createMsg(this.infPrefix, "<begin> " + this.beginEndSuffix);
@@ -203,7 +199,8 @@ public final class LogWriter {
   }
 
   /**
-   * Outputs end info.
+   * Outputs end information.
+   *
    */
   public void end() {
     final String log = createMsg(this.infPrefix, "< end > " + this.beginEndSuffix);
@@ -215,9 +212,8 @@ public final class LogWriter {
   }
 
   /**
-   * Outputs end info.
-   * 
-   * @param exitStatus the exit status
+   * Outputs end information.
+   * @param exitStatus exit status
    */
   public void end(final int exitStatus) {
     final String log = createMsg(this.infPrefix, "< end > " + this.beginEndSuffix + " " + LogUtil.joinKeyVal("status", exitStatus));
@@ -231,7 +227,7 @@ public final class LogWriter {
   /**
    * Outputs for development.
    *
-   * @param msg the log message
+   * @param msg log output message
    */
   public void develop(final String msg) {
     if (!this.isDevelopMode) {
@@ -244,9 +240,9 @@ public final class LogWriter {
   }
 
   /**
-   * Returns whether develop mode is enabled.
+   * Checks development mode.
    *
-   * @return <code>true</code> if develop log is enabled
+   * @return <code>true</code> if development log is enabled
    */
   public boolean isDevelopMode() {
     return this.isDevelopMode;
@@ -273,20 +269,17 @@ public final class LogWriter {
     final String formattedTime = milliSecToHmsSss(elapsedMillis);
     this.info("<stopwatch> stop time=" + formattedTime);
     
-    // Resets stopwatch
+    // Resets the stopwatch
     this.watchStartTime = 0;
   }
 
-  // Constants
+  // Adds constants
   private static final long MILLIS_PER_SECOND = 1000L;
   private static final long MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60;
   private static final long MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
 
   /**
    * Formats elapsed time.
-   *
-   * @param millis the milliseconds
-   * @return the formatted time
    */
   private String milliSecToHmsSss(final long millis) {
     final long hours = millis / MILLIS_PER_HOUR;

@@ -11,13 +11,12 @@ import com.onepg.util.LogUtil;
 import com.onepg.util.TxtReader;
 import com.onepg.util.ValUtil;
 
-
 /**
  * Data import batch class.
  */
 public class ExampleImport extends AbstractDbAccessBatch {
 
-    /** SQL definition: User insert. */
+    /** SQL definition: user registration. */
     private static final SqlConst SQL_INS_USER = SqlConst.begin()
       .addQuery("INSERT INTO t_user ( ")
       .addQuery("  user_id ")
@@ -42,7 +41,7 @@ public class ExampleImport extends AbstractDbAccessBatch {
       .addQuery(" ) ")
       .end();
 
-    /** SQL definition: User update. */
+    /** SQL definition: user update. */
     private static final SqlConst SQL_UPD_USER = SqlConst.begin()
       .addQuery("UPDATE t_user SET ")
       .addQuery("  user_nm = ? ", "user_nm", BindType.STRING)
@@ -58,7 +57,7 @@ public class ExampleImport extends AbstractDbAccessBatch {
 
   /**
    * Main processing.
-   * @param args the arguments
+   * @param args arguments
    */
   public static void main(String[] args) {
     final ExampleImport batch = new ExampleImport();
@@ -70,23 +69,23 @@ public class ExampleImport extends AbstractDbAccessBatch {
    */
   @Override
   public int doExecute(final IoItems io) throws Exception {
-    // Get input file path
+    // Retrieves the input file path
     final String inputPath = io.getString("input");
 
     if (ValUtil.isBlank(inputPath)) {
-      // Check 'input' parameter is required
+      // Checks if the 'input' parameter is required
       throw new RuntimeException("'input' is required.");
     }
     if (!FileUtil.exists(inputPath)) {
-      // Check input file exists
+      // Checks if the input file exists
       throw new RuntimeException("Input path not exists. " + LogUtil.joinKeyVal("input", inputPath));
     }
 
-    // Retrieve from database and output to file
+    // Reads the file and updates the database
     try (final TxtReader tr = new TxtReader(inputPath, CharSet.UTF8)) {
       final String headerLine = tr.getFirstLine();
       if (ValUtil.isBlank(headerLine)) {
-        // Check input file is not empty
+        // Checks if the input file is empty
         throw new RuntimeException("Input file is empty. " + LogUtil.joinKeyVal("input", inputPath));
       }
       final String[] itemNames = ValUtil.splitCsvDq(headerLine);
@@ -95,12 +94,12 @@ public class ExampleImport extends AbstractDbAccessBatch {
         row.putAllByCsvDq(itemNames, line);
 
         if (!SqlUtil.executeOne(getDbConn(), SQL_UPD_USER.bind(row))) {
-          // Execute insert when update count is zero
+          // Executes insert if the update count is 0
           SqlUtil.executeOne(getDbConn(), SQL_INS_USER.bind(row));
         }
       }
       if (tr.getReadedCount() == 1) {
-        // When there is only header row
+        // Only the header row exists
         super.logger.info("No data found to export. " + LogUtil.joinKeyVal("input", inputPath));
       }
     }

@@ -19,12 +19,12 @@ public final class LogUtil {
   /** <code>null</code> replacement character for log output. */
   private static final String NULL_REP = "<nul>";
 
-  /** Default log property key prefix (the part before property keys <code>.inf.file</code> and <code>.err.file</code>). */
+  /** Default log configuration key prefix (part before configuration keys <code>.inf.file</code> and <code>.err.file</code>). */
   private static final String DEFAULT_LOG_KEYPREFIX = "default";
 
-  /** Log properties (file paths converted to absolute paths). */
+  /** Log configuration (file paths already converted to absolute paths). */
   static final IoItems PROP_MAP;
-  /** Develop mode. */
+  /** Development mode. */
   private static final boolean DEVELOP_MODE;
   /** Console writer. */
   private static final PrintWriter CONSOLE_WRITER;
@@ -59,8 +59,8 @@ public final class LogUtil {
   /**
    * Creates a log writer instance.
    *
-   * @param cls the target class for logging
-   * @return the log writer instance
+   * @param cls       log target class
+   * @return log writer instance
    */
   public static LogWriter newLogWriter(final Class<?> cls) {
     return newLogWriter(cls, null);
@@ -69,9 +69,9 @@ public final class LogUtil {
   /**
    * Creates a log writer instance.
    *
-   * @param cls the target class for logging
-   * @param traceCode the trace code
-   * @return the log writer instance
+   * @param cls log target class
+   * @param traceCode trace code
+   * @return log writer instance
    */
   public static LogWriter newLogWriter(final Class<?> cls, final String traceCode) {
     final LogTxtHandler infHdr = LogTxtHandler.getInstance(DEFAULT_LOG_KEYPREFIX, false);
@@ -86,7 +86,7 @@ public final class LogUtil {
   /**
    * Outputs to standard output.
    *
-   * @param msgs the messages
+   * @param msgs messages
    */
   public static void stdout(final String... msgs) {
     stdout(null, msgs);
@@ -95,8 +95,8 @@ public final class LogUtil {
   /**
    * Outputs to standard output.
    *
-   * @param e the error object
-   * @param msgs the messages
+   * @param e error object
+   * @param msgs messages
    */
   public static void stdout(final Throwable e, final String... msgs) {
     final String msg = ValUtil.join(System.lineSeparator(), msgs);
@@ -125,23 +125,22 @@ public final class LogUtil {
   }
 
   /**
-   * Returns whether develop mode is enabled.
-   *
-   * @return <code>true</code> if develop mode is enabled
+   * Checks development mode.
+   * @return <code>true</code> if in development mode
    */
   public static boolean isDevelopMode() {
     return DEVELOP_MODE;
   } 
 
   /**
-   * Returns the stack trace of the error object.
+   * Gets the stack trace of an error object.<br>
    * <ul>
-   * <li>Stops retrieving stack trace if <code>BreakException</code> is encountered.</li>
+   * <li>Stops getting stack trace if it is <code>BreakException</code>.</li>
    * </ul>
    *
-   * @param lineSep the line separator
-   * @param e the error object
-   * @return the stack trace
+   * @param lineSep line separator
+   * @param e error object
+   * @return stack trace
    */
   public static String getStackTrace(final String lineSep, final Throwable e) {
     final StringBuilder sb = new StringBuilder();
@@ -171,14 +170,14 @@ public final class LogUtil {
   }
 
   /**
-   * Concatenates key-value strings.
+   * Joins key-value strings.<br>
    * <ul>
-   * <li>Creates a log string by concatenating in the format "key=value, key=value, key=value,...".</li>
-   * <li>If the value is an array, list, or map, calls the respective concatenation method.</li>
+   * <li>Joins in the format "key=value, key=value, key=value,..." to create a log string.</li>
+   * <li>If the value is an array, list, or map, calls the respective join method to join them.</li>
    * </ul>
    *
-   * @param keyVal the key-values (key, value, key, value, key, value,...)
-   * @return the concatenated string in "key=value, key=value, key=value" format
+   * @param keyVal key-value pairs (key, value, key, value, key, value,...)
+   * @return joined string in the format "key=value, key=value, key=value"
    */
   public static String joinKeyVal(final Object... keyVal) {
     if (ValUtil.isNull(keyVal)) {
@@ -194,7 +193,7 @@ public final class LogUtil {
           if (ValUtil.isNull(keyVal[i])) {
             sb.append(NULL_REP);
           } else {
-            // Assumes key is a string
+            // Assumes the key is a string
             sb.append(keyVal[i].toString());
           }
           sb.append('=');
@@ -212,13 +211,13 @@ public final class LogUtil {
   }
 
   /**
-   * Concatenates values.
+   * Joins values.<br>
    * <ul>
-   * <li>Creates a log string by concatenating in the format "value, value,...".</li>
+   * <li>Joins in the format "value, value,... " to create a log string.</li>
    * </ul>
    *
-   * @param values the values to concatenate
-   * @return the string in "value, value, value, value" format
+   * @param values values to join
+   * @return string in the format "value, value, value, value"
    */
   public static String joinValues(final String... values) {
     if (ValUtil.isNull(values)) {
@@ -239,13 +238,13 @@ public final class LogUtil {
   }
 
   /**
-   * Concatenates array values.
+   * Joins array values.<br>
    * <ul>
-   * <li>Creates a log string by concatenating in the format "[value, value,...]".</li>
+   * <li>Joins in the format " [value, value,...] " to create a log string.</li>
    * </ul>
    *
-   * @param values the values to concatenate
-   * @return the string in "[value, value, value, value]" format
+   * @param values values to join
+   * @return string in the format "[value, value, value, value]"
    */
   public static String join(final String[] values) {
     if (ValUtil.isNull(values)) {
@@ -268,13 +267,13 @@ public final class LogUtil {
   }
 
   /**
-   * Concatenates list values.
+   * Joins list values.<br>
    * <ul>
-   * <li>Creates a log string by concatenating values in the list in the format "[value, value,...]".</li>
+   * <li>Joins values in the list in the format " [value, value,...] " to create a log string.</li>
    * </ul>
    *
-   * @param values the list to concatenate
-   * @return the string in "[value, value, value, value]" format
+   * @param values list to join
+   * @return string in the format "[value, value, value, value]"
    */
   public static String join(final List<?> values) {
     if (ValUtil.isNull(values)) {
@@ -297,14 +296,13 @@ public final class LogUtil {
   }
 
   /**
-   * Concatenates map key-values.
+   * Joins map key-value pairs.<br>
    * <ul>
-   * <li>Creates a log string by concatenating keys and values in the map in the format "{key=value, key=value, key=value,...}".</li>
+   * <li>Joins keys and values in the map in the format " {key=value, key=value, key=value,...} " to create a log string.</li>
    * </ul>
    *
-   * @param <T> the type of values in the map
-   * @param map the map to concatenate
-   * @return the string in "{key=value, key=value, key=value}" format
+   * @param map map to join
+   * @return string in the format "{key=value, key=value, key=value}"
    */
   public static <T> String join(final Map<String, T> map) {
     if (ValUtil.isNull(map)) {
@@ -329,15 +327,15 @@ public final class LogUtil {
   }
 
   /**
-   * Converts to a log string.
+   * Converts to log string.<br>
    * <ul>
-   * <li>Returns a replacement character for log if the value is <code>null</code>.</li>
-   * <li>Encloses in double quotes and escapes double quotes within the string.</li>
-   * <li>This method is provided to avoid the method with Object argument.</li>
+   * <li>If the value is <code>null</code>, returns the replacement character for logging.</li>
+   * <li>Encloses in double quotations and escapes double quotations within the string.</li>
+   * <li>Method to avoid the Object parameter method.</li>
    * </ul>
    *
-   * @param val the string
-   * @return the log string
+   * @param val string
+   * @return log string
    */
   static String convOutput(final String val) {
     if (ValUtil.isNull(val)) {
@@ -347,17 +345,16 @@ public final class LogUtil {
   }
 
   /**
-   * Converts to a log string.
+   * Converts to log string.<br>
    * <ul>
-   * <li>Returns a replacement character for log if the value is <code>null</code>.</li>
-   * <li>If the value is a string, encloses in double quotes and escapes double quotes within the string.</li>
-   * <li>If the value is a date or datetime, converts to string using the standard format.</li>
-   * <li>If the value is an array, list, or map, calls the respective concatenation method.</li>
-   * <li>Returns the result of <code>toString()</code> method for other objects.</li>
+   * <li>If the value is <code>null</code>, returns the replacement character for logging.</li>
+   * <li>If the value is a string, encloses it in double quotations and escapes double quotations within the string.</li>
+   * <li>If the value is a date or date-time, converts it to a string using the standard format.</li>
+   * <li>If the value is an array, list, or map, calls the respective join method to join them.</li>
+   * <li>For other objects, returns the result of the <code>toString()</code> method.</li>
    * </ul>
-   *
-   * @param obj the object
-   * @return the log string
+   * @param obj object
+   * @return log string
    */
   static String convOutput(final Object obj) {
     try {
@@ -366,10 +363,10 @@ public final class LogUtil {
       } else if (obj instanceof String) {
         return '"' + ((String) obj).replace("\"", "\\\"") + '"';
       } else if (obj instanceof Io) {
-        // Io is a subclass of Map, so checks before Map
+        // Checks before Map because Io is a subclass of Map
         return ((Io) obj).toString();
       } else if (obj instanceof IoItems) {
-        // IoItems is a subclass of Map, so checks before Map
+        // Checks before Map because IoItems is a subclass of Map
         return ((IoItems) obj).toString();
       } else if (obj instanceof SqlBuilder) {
         return ((SqlBuilder) obj).toString();
@@ -392,10 +389,10 @@ public final class LogUtil {
       } else if (obj instanceof LocalDateTime) {
         return ((LocalDateTime) obj).format(AbstractIoTypeMap.DTF_IO_TIMESTAMP);
       } else if (obj instanceof java.sql.Timestamp) {
-        // java.sql.Timestamp is a subclass of java.util.Date, so checks before java.util.Date
+        // Checks before java.util.Date because java.sql.Timestamp is a subclass of java.util.Date
         return ((java.sql.Timestamp) obj).toLocalDateTime().format(AbstractIoTypeMap.DTF_IO_TIMESTAMP);
       } else if (obj instanceof java.sql.Date) {
-        // java.sql.Date is a subclass of java.util.Date, so checks before java.util.Date
+        // Checks before java.util.Date because java.sql.Date is a subclass of java.util.Date
         return ValUtil.dateToLocalDate((java.sql.Date) obj).format(AbstractIoTypeMap.DTF_IO_DATE);
       } else if (obj instanceof java.util.Date) {
         return ValUtil.dateToLocalDate((java.util.Date) obj).format(AbstractIoTypeMap.DTF_IO_DATE);
@@ -407,34 +404,32 @@ public final class LogUtil {
   }
 
   /**
-   * Replaces <code>null</code>.
-   * <p>
-   * Returns a replacement character for log if the value is <code>null</code>.
-   * </p>
+   * Replaces <code>null</code>.<br>
+   * If the value is <code>null</code>, returns the replacement character for logging.
    *
-   * @param value the value; replacement character if <code>null</code>
-   * @return the value as is if not <code>null</code>; replacement character if <code>null</code>
+   * @param value replacement character if <code>null</code>
+   * @return the value as is if not <code>null</code>, replacement character if <code>null</code>
    */
   public static String replaceNullValue(final String value) {
     return ValUtil.nvl(value, NULL_REP);
   }
 
   /**
-   * Formats date and time.
+   * Formats date-time.<br>
    * <ul>
-   * <li>Converts milliseconds to a human-readable format (days, hours, minutes, seconds, milliseconds).</li>
-   * <li>Example: "11T03:15:30.123", "0T00:00:00.000"</li>
+   * <li>Converts milliseconds to readable format (days, hours, minutes, seconds, milliseconds).</li>
+   * <li>Example: "11T03:15:30.123", "0T01:00:00.000"</li>
    * </ul>
    *
-   * @param msec the milliseconds
-   * @return the formatted uptime
+   * @param msec milliseconds
+   * @return formatted uptime
    */
   public static String formatDaysTime(final long msec) {
     try {
       if (msec <= 0) {
         return "0T00:00:00.000";
       }
-      // Overflow protection
+      // Overflow prevention
       if (Long.MAX_VALUE < (msec / 1000)) {
         return ValUtil.BLANK;
       }
@@ -444,15 +439,15 @@ public final class LogUtil {
       final long hur = min / 60;
       long day = hur / 24;
       
-      // Check for unrealistic values
-      if (day > 999999) { // More than approximately 2700 years
+      // Checks for unrealistic values
+      if (day > 999999) { // About 2700 years or more
         day = -1;
       }
 
-      final long sepHur = hur % 24;     // Range 0-23
-      final long sepMin = min % 60;     // Range 0-59
-      final long sepSec = sec % 60;     // Range 0-59
-      final long sepMsec = msec % 1000; // Range 0-999 (milliseconds)
+      final long sepHur = hur % 24;     // Range of 0-23
+      final long sepMin = min % 60;     // Range of 0-59
+      final long sepSec = sec % 60;     // Range of 0-59
+      final long sepMsec = msec % 1000; // Range of 0-999 (milliseconds)
       
       final StringBuilder sb = new StringBuilder();
       sb.append(day).append("T");
@@ -469,12 +464,12 @@ public final class LogUtil {
   }
 
   /**
-   * Retrieves caller information.
+   * Gets caller information.
    * <ul>
-   * <li>Retrieves the class package + class name + line number of the caller from the stack trace.</li>
+   * <li>Gets the class package + class name + line number of the caller from the stack trace.</li>
    * </ul>
-   * @param callerClass the caller class
-   * @return the class package + class name + line number
+   * @param callerClass caller class
+   * @return class package + class name + line number
    */
   public static String getClassNameAndLineNo(final Class<?> callerClass) {
     final String callerClassName = callerClass.getName();

@@ -19,17 +19,17 @@ public class ExampleLoad extends AbstractDbAccessWebService {
    */
   @Override
   public void doExecute(final Io io) throws Exception {
-    // Retrieve header
+    // Retrieves the header
     getHead(io);
     if (io.hasErrorMsg()) {
       return;
     }
-    // Retrieve detail
+    // Retrieves the detail
     getDetail(io);
   }
 
   /**
-   * Retrieves header.
+   * Retrieves the header.
    * 
    * @param io argument and return value (request and response)
    */
@@ -48,19 +48,19 @@ public class ExampleLoad extends AbstractDbAccessWebService {
     sb.addQuery(" WHERE u.user_id = ? ", io.getString("user_id"));
     sb.addQuery("   AND u.upd_ts = ? ", io.getSqlTimestampNullable("upd_ts"));
 
-    // Retrieve one record from database
+    // Retrieves one row from the database
     final IoItems head = SqlUtil.selectOne(getDbConn(), sb);
     if (ValUtil.isNull(head)) {
-      // Set optimistic locking error message when data not found
+      // Sets the optimistic locking error message if data is not found
       io.putMsg(MsgType.ERROR, "e0002", new String[]{io.getString("user_id")});
       return;
     }
-    // Set database retrieval result
+    // Sets the database retrieval result
     io.putAll(head);
   }
 
   /**
-   * Retrieves detail.
+   * Retrieves the detail.
    * 
    * @param io argument and return value (request and response)
    */
@@ -78,9 +78,9 @@ public class ExampleLoad extends AbstractDbAccessWebService {
     sb.addQuery(" FROM t_user_pet d ");
     sb.addQuery(" WHERE d.user_id = ? ", io.getString("user_id"));
     sb.addQuery(" ORDER BY d.pet_no");
-    // Bulk retrieval from database
+    // Retrieves all rows in bulk from the database
     final IoRows detail = SqlUtil.selectBulkAll(getDbConn(), sb);
-    // Set database retrieval result
+    // Sets the database retrieval result
     io.putRows("detail", detail);
   }
 

@@ -17,7 +17,7 @@ final class StaticFileHandler extends AbstractHttpHandler {
   /** Static file encoding. */
   private static final CharSet STATIC_FILE_CHARSET = CharSet.UTF8;
 
-  /** Server deploy directory path. */
+  /** Server deployment directory path. */
   private final String serverDeployPath;
   
   /**
@@ -38,14 +38,14 @@ final class StaticFileHandler extends AbstractHttpHandler {
     final String reqFilePath;
 
     if (reqPath.endsWith("/")) {
-      // If ends with slash, display index.html
+      // Displays index.html if ending with slash
       reqFilePath = FileUtil.joinPath(this.serverDeployPath, reqPath, "index.html");
     } else {
       reqFilePath = FileUtil.joinPath(this.serverDeployPath, reqPath);
     }
     final File reqFile = new File(reqFilePath);
 
-    // Add path traversal check before file access in doExecute
+    // Adds path traversal check before file access in doExecute
     final String canonicalPath = reqFile.getCanonicalPath();
     if (!canonicalPath.startsWith(this.serverDeployPath)) {
       super.logger.error("Path traversal attack detected. " + LogUtil.joinKeyVal("request", reqPath));
@@ -54,7 +54,7 @@ final class StaticFileHandler extends AbstractHttpHandler {
       return;
     }
 
-    // Access file validity check
+    // Checks access file validity
     if (!checkAccessFile(reqFilePath)) {
       super.logger.error("File is not accessible. " + LogUtil.joinKeyVal("request", reqPath));
       ServerUtil.responseText(exchange, HttpURLConnection.HTTP_FORBIDDEN,
@@ -63,14 +63,14 @@ final class StaticFileHandler extends AbstractHttpHandler {
     }
 
     if (!reqFile.exists()) {
-      // Error if file not found
+      // Returns error if file is not found
       ServerUtil.responseText(exchange, HttpURLConnection.HTTP_NOT_FOUND,
           "File does not exist. " + LogUtil.joinKeyVal("requestPath", reqPath));
       return;
     }
 
     if (reqFile.isDirectory()) {
-      // If directory, redirect with slash appended to original URL
+      // Redirects with slash added to the original URL if directory
       final String reqlUrl = ServerUtil.getRequestFullUrl(exchange, "/", false);
       if (super.logger.isDevelopMode()) {
         super.logger.develop("Directory specified, redirecting. "
@@ -83,20 +83,20 @@ final class StaticFileHandler extends AbstractHttpHandler {
     if (super.logger.isDevelopMode()) {
       super.logger.develop("Static file accessed. " + LogUtil.joinKeyVal("path", reqPath));
     }
-    // Return file as-is (statically)
+    // Returns file as is (statically)
     ServerUtil.responseFile(exchange, reqFile, STATIC_FILE_CHARSET);
   }
 
   /**
-   * Access file validity check.
+   * Checks access file validity.
    * 
-   * @param filePath file path
+   * @param filePath File path
    */
   private boolean checkAccessFile(final String filePath) {
     final String fileName = new File(filePath).getName().toLowerCase();
-    // Prohibit access to hidden files and configuration files
-    // Prohibit access to executable files
-    // Prohibit access to backup files
+    // Prohibits access to hidden files and configuration files
+    // Prohibits access to executable files
+    // Prohibits access to backup files
     if (fileName.startsWith(".")
         || fileName.endsWith(".xml")
         || fileName.endsWith(".conf")

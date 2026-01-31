@@ -12,7 +12,7 @@ import java.util.List;
  */
 public final class IoArrays extends ArrayList<List<String>> {
 
- /** Array field names. */
+ /** Array item names. */
   // private List<String> names = new ArrayList<String>();
 
   /**
@@ -25,11 +25,11 @@ public final class IoArrays extends ArrayList<List<String>> {
   /**
    * Constructor.<br>
    * <ul>
-   * <li>Deep copies the contents, so the reference to the source list is disconnected.</li>
+   * <li>The reference to the source list is disconnected because the content is deep copied.</li>
    * <li></li>
    * </ul>
    *
-   * @param srcList the source list
+   * @param srcList source list
    */
   public IoArrays(final Collection<? extends Collection<? extends String>> srcList) {
     if (ValUtil.isNull(srcList)) {
@@ -40,7 +40,7 @@ public final class IoArrays extends ArrayList<List<String>> {
         add(null);
         continue;
       }
-      // <code>ArrayList</code> constructor performs shallow copy, but since the contents are immutable objects (<code>String</code>), it is effectively a deep copy.
+      // Although the <code>ArrayList</code> constructor is a shallow copy, since the content is an immutable object (<code>String</code>), it effectively becomes a deep copy.
       add(new ArrayList<String>(row));
     }
   }

@@ -1,42 +1,42 @@
 @charset "UTF-8";
 
 /**
- * Framework Base CSS Stylesheet - Table of Contents.<br>
+ * Framework base CSS stylesheet table of contents.<br>
  * <ul>
- * <li>CSS Class List</li>
- * <li>Page Layout (Fixed Header/Footer)</li>
- * <li>Grid Layout (12-Column)</li>
- * <li>Form Input Element Styles</li>
- * <li>Table Styles</li>
- * <li>Utility Styles</li>
- * <li>Message Display / Item Highlight Styles</li>
+ * <li>CSS class list</li>
+ * <li>Page overall layout (fixed header/footer)</li>
+ * <li>Grid layout (12-column division)</li>
+ * <li>Form input element styles</li>
+ * <li>Table styles</li>
+ * <li>Utility styles</li>
+ * <li>Message display/item highlight styles</li>
  * </ul>
  */
 
 /**
- * CSS Class List.<br>
+ * CSS class list.<br>
  * <ul>
  * <li><code>div.grid-row</code>: Grid row element</li>
- * <li><code>div.grid-col-1</code>: Grid column element, width 1/12</li>
- * <li><code>div.grid-col-2</code>: Grid column element, width 2/12</li>
- * <li><code>div.grid-col-3</code>: Grid column element, width 3/12</li>
- * <li><code>div.grid-col-4</code>: Grid column element, width 4/12</li>
- * <li><code>div.grid-col-5</code>: Grid column element, width 5/12</li>
- * <li><code>div.grid-col-6</code>: Grid column element, width 6/12</li>
- * <li><code>div.grid-col-7</code>: Grid column element, width 7/12</li>
- * <li><code>div.grid-col-8</code>: Grid column element, width 8/12</li>
- * <li><code>div.grid-col-9</code>: Grid column element, width 9/12</li>
- * <li><code>div.grid-col-10</code>: Grid column element, width 10/12</li>
- * <li><code>div.grid-col-11</code>: Grid column element, width 11/12</li>
- * <li><code>div.grid-col-12</code>: Grid column element, width 12/12</li>
- * <li><code>div.item-head</code>: Item header element within a grid cell</li>
- * <li><code>div.item-body</code>: Item body element within a grid cell</li>
- * <li><code>div.table</code>: Element wrapping a table</li>
- * <li><code>.align-left</code>: Left-align text</li>
- * <li><code>.align-center</code>: Center-align text</li>
- * <li><code>.align-right</code>: Right-align text</li>
- * <li><code>.danger</code>: Display in warning color (for delete buttons, etc.)</li>
- * <li><code>a.button</code>: Display link (&lt;a&gt;) as a button</li>
+ * <li><code>div.grid-col-1</code>: Grid column element width 1/12</li>
+ * <li><code>div.grid-col-2</code>: Grid column element width 2/12</li>
+ * <li><code>div.grid-col-3</code>: Grid column element width 3/12</li>
+ * <li><code>div.grid-col-4</code>: Grid column element width 4/12</li>
+ * <li><code>div.grid-col-5</code>: Grid column element width 5/12</li>
+ * <li><code>div.grid-col-6</code>: Grid column element width 6/12</li>
+ * <li><code>div.grid-col-7</code>: Grid column element width 7/12</li>
+ * <li><code>div.grid-col-8</code>: Grid column element width 8/12</li>
+ * <li><code>div.grid-col-9</code>: Grid column element width 9/12</li>
+ * <li><code>div.grid-col-10</code>: Grid column element width 10/12</li>
+ * <li><code>div.grid-col-11</code>: Grid column element width 11/12</li>
+ * <li><code>div.grid-col-12</code>: Grid column element width 12/12</li>
+ * <li><code>div.item-head</code>: Item header element within grid cell</li>
+ * <li><code>div.item-body</code>: Item body element within grid cell</li>
+ * <li><code>div.table</code>: Element that wraps table</li>
+ * <li><code>.align-left</code>: Text left align</li>
+ * <li><code>.align-center</code>: Text center align</li>
+ * <li><code>.align-right</code>: Text right align</li>
+ * <li><code>.danger</code>: Displays in warning color (for delete buttons, etc.)</li>
+ * <li><code>a.button</code>: Displays link (&lt;a&gt;) as button style</li>
  * </ul>
  */
 
@@ -56,19 +56,19 @@
   --onepg-base--border-width--inputitem: 1px;
   /* Calculated input item line height */
   --onepg-base--line-height--inputitem-calc: calc(var(--onepg-base--height--inputitem) - var(--onepg-base--border-width--inputitem) * 2);
-  /* Input item left/right padding */
+  /* Input item frame left/right padding */
   --onepg-base--spacing--inputitem-lr: 0.25rem;
-  /* Input item border radius */
+  /* Input item frame border radius */
   --onepg-base--radius--inputitem: 4px;
-  /* Button border radius */
+  /* Button frame border radius */
   --onepg-base--radius--button: calc(var(--onepg-base--height--inputitem) / 2);
-  /* Button left/right padding */
+  /* Button frame left/right padding */
   --onepg-base--spacing--button-lr: var(--onepg-base--radius--button);
   /* Item left/right margin */
   --onepg-base--spacing--item-lr: 0.25rem;
-  /* Grid row gap */
+  /* Grid row spacing */
   --onepg-base--spacing--grid-rows: 0.75rem;
-  /* Grid column gap */
+  /* Grid column spacing */
   --onepg-base--spacing--grid-cols: 0.25rem;
   --onepg-base--spacing--grid-cols-negative: calc(var(--onepg-base--spacing--grid-cols) * -1);
   /* Background color */
@@ -81,9 +81,9 @@
   --onepg-base--color--text: #2e2930;
   /* Disabled text color */
   --onepg-base--color--text-disabled: #9ea1a3;
-  /* Warning text color */
+  /* Danger text color */
   --onepg-base--color--text-danger: #e83929;
-  /* Input background color */
+  /* Input item background color */
   --onepg-base--color--input-bg: #f8fbf8;
   /* Border color */
   --onepg-base--color--border: #c8c2c6;
@@ -95,9 +95,9 @@
   --onepg-base--color--button-bg-danger: #d3381c;
   /* Button border color */
   --onepg-base--color--button-border: var(--onepg-base--color--border);
-  /* Disabled button background color */
+  /* Button disabled background color */
   --onepg-base--color--button-bg-disabled: var(--onepg-base--color--button-border);
-  /* Disabled button border color */
+  /* Button disabled border color */
   --onepg-base--color--button-border-disabled: #dcd6d9;
   /* Button text color */
   --onepg-base--color--button-text: #fffffc;
@@ -106,7 +106,7 @@
   /* Focus border color */
   --onepg-base--color--focus: #2ca9e1;
   
-  /* Message area left/right padding */
+  /* Message display area left/right padding */
   --onepg-base--spacing--msg-lr: 0.5rem;
   /* Info message background color */
   --onepg-base--color--info-msg-bg: #bce2e8;
@@ -144,22 +144,22 @@ select {
 }
 
 /**
- * Page Layout.<br>
+ * Page overall layout.<br>
  * <ul>
  * <li><code>&lt;header&gt;</code> and <code>&lt;footer&gt;</code> are fixed at the top and bottom.</li>
  * <li><code>&lt;main&gt;</code> uses all remaining height except <code>&lt;header&gt;</code> and <code>&lt;footer&gt;</code>.</li>
- * <li><code>&lt;section&gt;</code> provides page left/right margins and section top/bottom margins. Do not use <code>&lt;section&gt;</code> to remove top/bottom margins.</li>
+ * <li><code>&lt;section&gt;</code> provides page left/right margin and section top/bottom spacing. Do not use <code>&lt;section&gt;</code> if you want to remove top/bottom spacing.</li>
  * </ul>
  * <pre>[Example]<code>
  * &lt;body&gt;
  *   &lt;header&gt;
- *     &lt;section&gt;Fixed Header&lt;/section&gt;
+ *     &lt;section&gt;Fixed header&lt;/section&gt;
  *   &lt;/header&gt;
  *   &lt;main&gt;
- *     &lt;section&gt;Main Content&lt;/section&gt;
+ *     &lt;section&gt;Main content&lt;/section&gt;
  *   &lt;/main&gt;
  *   &lt;footer&gt;
- *     &lt;section&gt;Fixed Footer&lt;/section&gt;
+ *     &lt;section&gt;Fixed footer&lt;/section&gt;
  *   &lt;/footer&gt;
  * &lt;/body&gt;
  * </code></pre>
@@ -191,7 +191,7 @@ body {
   flex-direction: column;
 }
 header {
-  flex: 0 0 auto; /* Height based on content */
+  flex: 0 0 auto; /* Height according to content */
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -200,11 +200,11 @@ header {
   box-shadow: var(--onepg-base--shadow--header-footer);
 }
 main {
-  flex: 1 1 auto; /* Use all remaining height */
+  flex: 1 1 auto; /* Uses all remaining height */
   overflow-y: visible;
 }
 footer {
-  flex: 0 0 auto; /* Height based on content */
+  flex: 0 0 auto; /* Height according to content */
   position: sticky;
   bottom: 0;
   z-index: 1000;
@@ -221,28 +221,28 @@ main > section {
   margin-bottom: var(--onepg-base--spacing--section-tb);
 }
 main > section:first-child {
-  /* First section aligns with header margin */
+  /* First section matches header margin */
   margin-top: var(--onepg-base--spacing--section-tb-header-footer);
 }
 main > section:last-child {
-  /* Last section aligns with footer margin */
+  /* Last section matches footer margin */
   margin-bottom: var(--onepg-base--spacing--section-tb-header-footer);
 }
 header > section,
 footer > section {
-  /* Section top/bottom margin */
+  /* Section top/bottom spacing */
   margin: var(--onepg-base--spacing--section-tb-header-footer) var(--onepg-base--spacing--section-lr);
 }
 
 /**
- * Grid Layout (12-Column).<br>
+ * Grid layout (12-column division).<br>
  * <ul>
- * <li>Uses a layout method that divides the page width into 12 equal parts for flexible element placement.</li>
- * <li>Row elements are specified with <code>div.grid-row</code>, with column widths specified per row.</li>
- * <li>Column elements are specified with <code>div.grid-col-1</code> to <code>div.grid-col-12</code>, where the trailing number represents the column width.</li>
- * <li>Column width uses values from <code>1</code> to <code>12</code>, with the total equaling 12.</li>
- * <li>Column width is normally 1/12 of the page, but on smartphone sizes it becomes full width and columns stack vertically.</li>
- * <li>Content within columns is normally arranged horizontally, but on tablet sizes it changes to vertical arrangement.</li>
+ * <li>Uses a layout technique that divides page width into 12 equal parts for flexible element placement.</li>
+ * <li>Row elements are specified with <code>div.grid-row</code>, and column widths are specified per row.</li>
+ * <li>Column elements are specified with <code>div.grid-col-1</code> ~ <code>div.grid-col-12</code>, where the trailing number represents the column width.</li>
+ * <li>Column widths use values from <code>1</code> to <code>12</code>, and should be specified so that the total equals 12.</li>
+ * <li>Column width is normally 1/12 of the total, but on smartphone size, it changes to full width and columns become vertically stacked (rows).</li>
+ * <li>Within columns, items are normally arranged horizontally, but on tablet size, they change to vertical arrangement.</li>
  * </ul>
  * <pre>[Example 1]<code>
  * &lt;div class="grid-row"&gt;
@@ -262,23 +262,23 @@ footer > section {
 div.grid-row {
   display: flex;
   flex-wrap: wrap;
-  /* Negative margin to offset column inner padding and align to container edge */
+  /* Offsets column inner padding with negative margin, aligns to container edge */
   margin-left: var(--onepg-base--spacing--grid-cols-negative);
   margin-right: var(--onepg-base--spacing--grid-cols-negative);
 }
 div.grid-row + div.grid-row {
-  /* Row gap top/bottom margin */
+  /* Row top/bottom spacing */
   margin-top: var(--onepg-base--spacing--grid-rows);
 }
 div.grid-row > div[class*="grid-col-"] {
   flex: none;
   /* Column inner padding */
   padding: 0 var(--onepg-base--spacing--grid-cols);
-  /* Horizontal arrangement */
+  /* Horizontal layout */
   display: flex;
   align-items: flex-start;
 }
-/* Grid column width - sum of -N values should equal 12 for approximately 100% */
+/* Grid column width - totaling 12 equals approximately 100% */
 div.grid-col-1 { width: 8.33333%; }
 div.grid-col-2 { width: 16.66667%; }
 div.grid-col-3 { width: 25%; }
@@ -293,17 +293,17 @@ div.grid-col-11 { width: 91.66667%; }
 div.grid-col-12 { width: 100%; }
 
 /* ***** Grid Cell Layout ***** */
-/* Item header style (width has no default value, specify per page) */
+/* Item header style (width has no default value and is specified per page) */
 div.grid-row > div[class*="grid-col-"] > div.item-head {
-  /* Auto-adjust based on content */
+  /* Auto-adjusts according to content */
   flex: 0 0 auto;
-  /* Right-align with right margin */
+  /* Right align, right margin */
   text-align: right;
   margin-right: var(--onepg-base--spacing--item-lr);
 }
 /* Item body style */
 div.grid-row > div[class*="grid-col-"] > div.item-body {
-  /* Use remaining width after item header */
+  /* Uses remaining width after item header */
   flex: 1;
 }
 
@@ -311,13 +311,13 @@ div.grid-row > div[class*="grid-col-"] > div.item-body {
 /* Tablet and below */
 @media screen and (max-width: 1024px) {
   div.grid-row > div[class*="grid-col-"] {
-    /* Change grid cell content to vertical arrangement */
+    /* Changes grid cell interior to vertical layout */
     flex-direction: column;
     align-items: stretch;
   }
   
   div.grid-row > div[class*="grid-col-"] > div.item-head {
-    /* Left-align, remove right margin */
+    /* Left align, removes right margin */
     text-align: left;
     margin-right: 0;
   }
@@ -325,7 +325,7 @@ div.grid-row > div[class*="grid-col-"] > div.item-body {
 
 /* Smartphone */
 @media screen and (max-width: 768px) {
-  /* Grid columns become full width */
+  /* Makes grid columns full width */
   div.grid-col-1,
   div.grid-col-2,
   div.grid-col-3,
@@ -341,36 +341,36 @@ div.grid-row > div[class*="grid-col-"] > div.item-body {
     width: 100%;
   }
   
-  /* Add top/bottom margin per item when items stack vertically */
+  /* Opens top/bottom spacing per item since items become vertically stacked */
   div.grid-row > div[class*="grid-col-"] + div[class*="grid-col-"] {
-    /* Row gap top/bottom margin */
+    /* Row top/bottom spacing */
     margin-top: var(--onepg-base--spacing--grid-rows);
   }
 }
 
 
 /**
- * Form Input Element Styles.<br>
+ * Form input element styles.<br>
  * <ul>
  * <li>Unifies styles for form input elements such as text boxes, select boxes, and text areas.</li>
- * <li>Unifies styles for normal, focus, and disabled states.</li>
+ * <li>Unifies styles for normal, focused, and disabled states.</li>
  * <li>Unifies styles for labels paired with form input elements.</li>
- * <li>Wrap label elements with <code>div.item-head</code> and form input elements with <code>div.item-body</code> to apply height adjustment and responsive direction switching styles.
+ * <li>Wrapping label elements in <code>div.item-head</code> and form input elements in <code>div.item-body</code> applies height adjustment and layout direction switching styles according to page size.
  *   <pre>[Example]
- * <code>&lt;div class="item-head"&gt;&lt;label&gt;Item Name&lt;/label&gt;&lt;/div&gt;
+ * <code>&lt;div class="item-head"&gt;&lt;label&gt;Item name&lt;/label&gt;&lt;/div&gt;
  *  &lt;div class="item-body"&gt;&lt;input type="text"&gt;&lt;/div&gt;</code></pre></li>
- * <li>Wrap checkboxes and radio buttons with their value labels in <code>&lt;label&gt;</code>.
- *   <pre>[Example]<code>&lt;div class="item-body"&gt;&lt;label&gt;&lt;input type="checkbox"&gt;Value Name&lt;/label&gt;&lt;/div&gt;</code></pre></li>
+ * <li>For checkboxes and radio buttons, wrap the element and value name in <code>&lt;label&gt;</code>.
+ *   <pre>[Example]<code>&lt;div class="item-body"&gt;&lt;label&gt;&lt;input type="checkbox"&gt;Value name&lt;/label&gt;&lt;/div&gt;</code></pre></li>
  * </ul>
  */
 div.item-head label {
   font-weight: bold;
-  /* Prevent line break */
+  /* Adds line break */
   white-space: nowrap;
-  /* Align text position with text box element */
+  /* Aligns text position with text box element */
   display: inline-block;
   margin-top: 0.25rem;
-  /* Do not specify line height for vertical arrangement with input items on tablet/smartphone */
+  /* Does not specify line height in case items become vertically stacked on tablet/smartphone  */
 }
 /* Tablet and below */
 @media screen and (max-width: 1024px) {
@@ -381,9 +381,9 @@ div.item-head label {
 /* Assumes label wrapping checkbox or radio button */
 div.item-body label,
 div.table table > tbody label {
-  /* Prevent line break */
+  /* Adds line break */
   white-space: nowrap;
-  /* Align text position and height with text box */
+  /* Aligns text position and height with text box */
   display: inline-block;
   line-height: var(--onepg-base--line-height--inputitem-calc);
   vertical-align: middle;
@@ -391,7 +391,7 @@ div.table table > tbody label {
   border-top: var(--onepg-base--border-width--inputitem) solid transparent;
   border-bottom: var(--onepg-base--border-width--inputitem) solid transparent;
 
-  /* Margin between labels */
+  /* Spacing between labels */
   margin-right: var(--onepg-base--spacing--item-lr);
 }
 input[type="text"],
@@ -410,9 +410,9 @@ input[type="text"].align-right {
   padding-left: 0;
   padding-right: var(--onepg-base--spacing--inputitem-lr);
 }
-/* Disable autofill background color */
+/* Disables history selection background color */
 input:-webkit-autofill {
-  /* Override background color with box-shadow */
+  /* Overwrites background color with box-shadow */
   box-shadow: 0 0 0 1000px var(--onepg-base--color--input-bg) inset !important;
    /* Text color */
   -webkit-text-fill-color: var(--onepg-base--color--text) !important;
@@ -427,23 +427,23 @@ textarea {
   border: var(--onepg-base--border-width--inputitem) solid var(--onepg-base--color--border);
   border-radius: var(--onepg-base--radius--inputitem);
 }
-/* Checkbox and radio button */
+/* Checkbox/radio button */
 input[type="checkbox"],
 input[type="radio"] {
   vertical-align: -0.08rem;
   cursor: pointer;
-  /* Remove margin between text */
+  /* Closes space with text */
   margin-right: 0;
-  /* Margin between controls is set on the label side */
+  /* Spacing between controls is set on label side */
   margin-left: 0;
 }
-/* Label wrapping checkbox or radio button */
+/* Label wrapping checkbox/radio button */
 label:has(>input[type="checkbox"]:not(:disabled)),
 label:has(>input[type="radio"]:not(:disabled)) {
   cursor: pointer;
 }
 button {
-  /* Match height with text boxes */
+  /* Aligns height with text box */
   height: var(--onepg-base--height--inputitem);
   border: var(--onepg-base--border-width--inputitem) solid var(--onepg-base--color--button-border);
 
@@ -453,27 +453,27 @@ button {
   color: var(--onepg-base--color--button-text);
   cursor: pointer;
 }
-/* Remove left/right padding for buttons inside input areas */
+/* Removes left/right padding of button element within input area */
 div.item-body button,
 div.table table > tbody button {
-  /* Makes border circular when single character */
+  /* Frame becomes round when made one character */
   padding-left: 0.5em;
   padding-right: 0.5em;
 }
 
-/* Disabled state */
+/* Disabled */
 input[type="text"]:disabled,
 select:disabled,
 textarea:disabled {
   background-color: var(--onepg-base--color--input-bg-disabled);
   cursor: not-allowed;
 }
-/* Disabled checkbox and radio button */
+/* Disabled checkbox/radio button */
 input[type="checkbox"]:disabled,
 input[type="radio"]:disabled {
   cursor: not-allowed;
 }
-/* Label wrapping disabled checkbox or radio button */
+/* Label wrapping disabled checkbox/radio button */
 label:has(>input[type="checkbox"]:disabled),
 label:has(>input[type="radio"]:disabled) {
   cursor: not-allowed;
@@ -497,21 +497,21 @@ button:focus  {
 }
 
 /**
- * Table Styles.<br>
+ * Table styles.<br>
  * <ul>
- * <li>Unify the style of <code>&lt;table&gt;</code>.</li>
- * <li>Tables display with alternating row stripes.</li>
- * <li>Wrap <code>&lt;table&gt;</code> with <code>div.table</code> to apply styles.
+ * <li>Unifies <code>&lt;table&gt;</code> styles.</li>
+ * <li>Tables display stripes per row.</li>
+ * <li>Styles are applied by wrapping <code>&lt;table&gt;</code> in <code>div.table</code>.
  *   <pre>[Example]
  * <code>&lt;div class="table"&gt;&lt;table&gt;...omitted...&lt;/table&gt;&lt;/div&gt;</code></pre></li>
- * <li>Wrap <code>&lt;th&gt;</code> with <code>&lt;thead&gt;</code> and <code>&lt;tr&gt;</code> with <code>&lt;tbody&gt;</code> to apply styles.</li>
- * <li><code>&lt;tbody&gt;</code> can be single or multiple.
- *   <pre>[Single Example] <code>&lt;table&gt;...omitted...&lt;tbody&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</code>
- * [Multiple Example] <code>&lt;table&gt;...omitted...&lt;tbody&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;tbody&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
+ * <li>Styles are applied by wrapping <code>&lt;th&gt;</code> in <code>&lt;thead&gt;</code> and <code>&lt;tr&gt;</code> in <code>&lt;tbody&gt;</code>.</li>
+ * <li><code>&lt;tbody&gt;</code> can be one or multiple.
+ *   <pre>[One example]<code>&lt;table&gt;...omitted...&lt;tbody&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</code>
+ * [Multiple example]<code>&lt;table&gt;...omitted...&lt;tbody&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;tbody&gt;&lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
  * </ul>
  */
 div.table {
-  /* When table exceeds page width, scroll the entire page */
+  /* Scrolls entire page if table exceeds page width */
   overflow: visible;
 }
 div.table table {
@@ -537,32 +537,32 @@ div.table table > tbody td {
 }
 
 /*
- * Table stripe for 1<table>:1<tbody> (1 record: 1<tr>)
- * Assumes structure: <table><tbody><tr></tr><tr></tr><tr></tr></tbody></table>
+ * Table stripe 1<table>:1<tbody> (1 record:1<tr>)
+ * Assumes structure <table><tbody><tr></tr><tr></tr><tr></tr></tbody></table>
  */
 div.table table > tbody > tr + tr:nth-child(odd) {
   background-color: var(--onepg-base--color--bg-stripe);
 }
 /*
- * Table stripe for 1<table>:N<tbody> (1 record: 1<tbody>: N<tr>)
- * Assumes structure: <table><tbody><tr></tr><tr></tr></tbody><tbody><tr></tr><tr></tr></tbody></table>
+ * Table stripe 1<table>:N<tbody> (1 record:1<tbody>:N<tr>)
+ * Assumes structure <table><tbody><tr></tr><tr></tr></tbody><tbody><tr></tr><tr></tr></tbody></table>
  */
 div.table table > tbody + tbody:nth-child(even) > tr {
   background-color: var(--onepg-base--color--bg-stripe);
 }
 
 /**
- * Utility Styles.<br>
+ * Utility styles.<br>
  * <ul>
- * <li>This section provides commonly used general-purpose styles.</li>
- * <li>Use the following classes for text alignment:
+ * <li>This section provides frequently used general-purpose styles.</li>
+ * <li>Sets the following classes for text alignment.
  *   <ul>
  *     <li>Left align: <code>.align-left</code></li>
  *     <li>Center align: <code>.align-center</code></li>
  *     <li>Right align: <code>.align-right</code></li>
  *   </ul></li>
- * <li>Set <code>.danger</code> on elements requiring caution to display in warning color (used for delete buttons, etc.).</li>
- * <li>Set <code>.button</code> on <code>&lt;a&gt;</code> to display it with button-like appearance.</li>
+ * <li>Setting <code>.danger</code> on elements requiring caution displays them in warning color (used for delete buttons, etc.).</li>
+ * <li>Setting <code>.button</code> on <code>&lt;a&gt;</code> displays it as button style.</li>
  * </ul>
  */
 /* Text alignment */
@@ -599,14 +599,14 @@ button.danger:not(:disabled) {
 }
 /* Link button */
 a.button {
-  /* Style to make it look like a button */
+  /* Style to make button shape */
   display: inline-block;
   line-height: var(--onepg-base--line-height--inputitem-calc);
   vertical-align: middle;
   text-decoration: none;
   text-align: center;
   
-  /* Same style as regular button below */
+  /* Below, same style as regular button */
   height: var(--onepg-base--height--inputitem);
   border: var(--onepg-base--border-width--inputitem) solid var(--onepg-base--color--button-border);
   padding: 0 var(--onepg-base--spacing--button-lr);
@@ -620,17 +620,17 @@ a.button.danger {
 }
 
 /**
- * Message Display / Item Highlight Styles.<br>
+ * Message display/item highlight styles.<br>
  * <ul>
- * <li>The HTML for the message display area uses the following fixed format:<br>
+ * <li>Message display area HTML is fixed in the following format.<br>
  *   <pre><code>&lt;section id="_msg"&gt;&lt;/section&gt;</code></pre></li>
- * <li>Calling JavaScript framework component <code>PageUtil#setMsg()</code> sets the following classes on target item elements, highlighting those items:
+ * <li>Calling JavaScript framework component <code>PageUtil#setMsg()</code> sets the following classes on target item elements, and those items are highlighted.
  *   <ul>
  *     <li>Info (blue background): <code>.info-item</code></li>
  *     <li>Warning (yellow background): <code>.warn-item</code></li>
  *     <li>Error (red background): <code>.err-item</code></li>
  * </ul></li>
- * <li>Items to highlight are specified along with message text in the argument of Java framework component <code>Io#putMsg()</code>.</li>
+ * <li>Items to be highlighted are specified with message text in the arguments of Java framework component <code>Io#putMsg()</code>.</li>
  * </ul>
  */
 /*
@@ -673,7 +673,7 @@ a.button.danger {
 input[type="text"].info-item,
 select.info-item,
 textarea.info-item,
-/* Label wrapping checkbox or radio button */
+/* Label wrapping checkbox/radio button */
 label:has(>input[type="checkbox"].info-item),
 label:has(>input[type="radio"].info-item)  {
   background-color: var(--onepg-base--color--info-item-bg) !important;
@@ -681,7 +681,7 @@ label:has(>input[type="radio"].info-item)  {
 input[type="text"].warn-item,
 select.warn-item,
 textarea.warn-item,
-/* Label wrapping checkbox or radio button */
+/* Label wrapping checkbox/radio button */
 label:has(>input[type="checkbox"].warn-item),
 label:has(>input[type="radio"].warn-item)  {
   background-color: var(--onepg-base--color--warn-item-bg) !important;
@@ -689,7 +689,7 @@ label:has(>input[type="radio"].warn-item)  {
 input[type="text"].err-item,
 select.err-item,
 textarea.err-item,
-/* Label wrapping checkbox or radio button */
+/* Label wrapping checkbox/radio button */
 label:has(>input[type="checkbox"].err-item),
 label:has(>input[type="radio"].err-item)  {
   background-color: var(--onepg-base--color--err-item-bg) !important;

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * JSON map separation parser.
+ * JSON map separate parser.
  * @hidden
  */
 final class JsonMapSeparateParser extends AbstractStringSeparateParser {
@@ -18,26 +18,26 @@ final class JsonMapSeparateParser extends AbstractStringSeparateParser {
   /**
    * Constructor.
    *
-   * @param json the JSON string
+   * @param json JSON string
    */
   JsonMapSeparateParser(final String json) {
     super(json);
   }
 
   /**
-   * Finds begin-end positions for separation.
+   * Searches for separation start and end positions.<br>
    * <ul>
-   * <li>Separates at comma positions that are not enclosed in double quotes (unescaped), square brackets, or curly braces.</li>
+   * <li>Separates at comma locations not enclosed in double quotations (without escape), square brackets, or curly braces.</li>
    * </ul>
    *
-   * @param value the target string
-   * @return the list of begin-end positions
+   * @param value target string
+   * @return list of start and end positions
    */
   @Override
   protected List<int[]> findBeginEnds(final String value) {
     final List<int[]> idxs = new ArrayList<>();
     if (ValUtil.isBlank(value) || BLANK_JSON_MAP_PATTERN.matcher(value).find()) {
-      // Empty case
+      // If blank
       return idxs;
     }
 
@@ -45,11 +45,11 @@ final class JsonMapSeparateParser extends AbstractStringSeparateParser {
       throw new RuntimeException("Must be enclosed in curly braces. " + LogUtil.joinKeyVal("json", value));
     }
 
-    // Gets positions of outer curly braces
+    // Gets the position of the outermost curly braces
     final int outerBegin = value.indexOf("{") + 1;
     final int outerEnd = value.lastIndexOf("}") - 1;
 
-    // First begin position
+    // First start position
     int beginPos = outerBegin;
     int endPos = beginPos;
 
@@ -60,7 +60,7 @@ final class JsonMapSeparateParser extends AbstractStringSeparateParser {
 
     int i = outerBegin;
 
-    // Performance optimization (optimized with 1000 characters as boundary)
+    // Performance optimization (using 1000 characters as threshold)
     final char[] valChars;
     final boolean useCharAry = (value.length() > 1000);
     if (useCharAry) {
@@ -80,7 +80,7 @@ final class JsonMapSeparateParser extends AbstractStringSeparateParser {
       }
       
       if (c != ' ' && c != ',') {
-        // Determines begin-end positions excluding zero-byte blanks
+        // Determines start and end positions excluding zero-byte blanks
         if (!notBlank) {
           notBlank = true;
           beginPos = i;
@@ -98,13 +98,13 @@ final class JsonMapSeparateParser extends AbstractStringSeparateParser {
             continue;
           }
         }
-        // Only when not escaped
-        // Toggle within double quotes
+        // Only if not escaped
+        // Toggles inside double quotations
         inDq = !inDq;
         continue;
       }
       if (inDq) {
-        // Ignores within double quotes
+        // Ignores inside double quotations
         continue;
       }
 
@@ -129,14 +129,14 @@ final class JsonMapSeparateParser extends AbstractStringSeparateParser {
         continue;
       }
       if (nestAryLvl > 0 || nestMapLvl > 0) {
-        // Ignores within square brackets or curly braces (until brackets are closed)
+        // Ignores inside square brackets or curly braces (until the brackets are closed)
         continue;
       }
 
       if (c == ',') {
-        // Adds begin-end positions at comma
+        // If comma, adds the start and end positions
         idxs.add(new int[] {beginPos, endPos});
-        // Next begin position
+        // Next start position
         beginPos = i + 1;
         endPos = beginPos;
         notBlank = false;
@@ -144,7 +144,7 @@ final class JsonMapSeparateParser extends AbstractStringSeparateParser {
     }
 
     if (notBlank) {
-      // Adds the last begin-end positions
+      // Adds the last start and end positions
       idxs.add(new int[] {beginPos, endPos});
     }
     return idxs;

@@ -1,15 +1,15 @@
 /**
- * Value operation utility class.
+ * Value manipulation utility class.
  * @class
  */
 const ValUtil = /** @lends ValUtil */ {
   /**
    * <code>null</code> check.<br>
    * <ul>
-   * <li>Checks if the Object is <code>null</code>.</li>
+   * <li>Checks whether the Object is <code>null</code>.</li>
    * </ul>
    *
-   * @param {Object} obj Target to check
+   * @param {Object} obj the target object to check
    * @returns {boolean} <code>true</code> if <code>null</code>
    */
   isNull : function(obj) {
@@ -27,10 +27,10 @@ const ValUtil = /** @lends ValUtil */ {
   /**
    * Blank check.<br>
    * <ul>
-   * <li>Checks if the string is spaces only, zero length, or <code>null</code>.</li>
+   * <li>Checks whether the string is spaces only, zero length, or <code>null</code>.</li>
    * </ul>
    *
-   * @param {string} str Target to check
+   * @param {string} str the target string to check
    * @returns {boolean} <code>true</code> if blank
    */
   isBlank : function(str) {
@@ -41,14 +41,14 @@ const ValUtil = /** @lends ValUtil */ {
   },
 
   /**
-   * <code>null</code> blank replacement.<br>
+   * <code>null</code> to blank replacement.<br>
    * <ul>
-   * <li>Returns blank or replacement string if the string is <code>null</code>.</li>
+   * <li>Returns blank or replacement string if the value is <code>null</code>.</li>
    * </ul>
    *
-   * @param {string} value Target to check
-   * @param {string} [rep] Replacement string (optional). Returns blank if omitted.
-   * @returns {string} Blank or replacement string if <code>null</code>
+   * @param {string} value the target value to check
+   * @param {string} [rep] the replacement string (optional). Returns blank if omitted.
+   * @returns {string} the blank or replacement string if <code>null</code>
    */
   nvl : function(value, rep) {
     if (ValUtil.isNull(rep)) {
@@ -63,12 +63,12 @@ const ValUtil = /** @lends ValUtil */ {
   /**
    * Blank replacement.<br>
    * <ul>
-   * <li>Returns replacement string if the string is blank.</li>
+   * <li>Returns the replacement string if the value is blank.</li>
    * </ul>
    *
-   * @param {string} value Target to check
-   * @param {string} rep Replacement string
-   * @returns {string} Replacement string if blank
+   * @param {string} value the target value to check
+   * @param {string} rep the replacement string
+   * @returns {string} the replacement string if blank
    */
   bvl : function(value, rep) {
     if (ValUtil.isBlank(value)) {
@@ -78,25 +78,25 @@ const ValUtil = /** @lends ValUtil */ {
   },
 
   /**
-   * Safe string extraction.
+   * Safe string substring.
    *
-   * @param {string} value Target string
-   * @param {number} [beginIndex] Start index (optional). Default is 0.
-   * @param {number} [endIndex] End index (optional). Default is string length.
-   * @returns {string} Extracted string
+   * @param {string} value the target string
+   * @param {number} [beginIndex] the start index (optional). Default is 0
+   * @param {number} [endIndex] the end index (optional). Default is the string length
+   * @returns {string} the extracted substring
    */
   substring: function(value, beginIndex, endIndex) {
     if (ValUtil.isNull(value)) {
       return '';
     }
-    // Complement default values
+    // Fill in default values
     beginIndex = beginIndex || 0;
     endIndex = endIndex || value.length;
-    // Out of range correction
+    // Correct out-of-range values
     if (endIndex > value.length) {
       endIndex = value.length;
     }
-    // Return empty string if start position is at or after end position, or if start position is at or after string length
+    // Return empty string if start position is after end position or beyond string length
     if (beginIndex < 0 || beginIndex >= endIndex || beginIndex >= value.length) {
       return '';
     }
@@ -106,11 +106,11 @@ const ValUtil = /** @lends ValUtil */ {
   /**
    * String comparison.<br>
    * <ul>
-   * <li>Compares <code>null</code> as empty string.</li>
+   * <li>Treats <code>null</code> as an empty string for comparison.</li>
    * </ul>
    *
-   * @param {string} val1 Comparison target 1
-   * @param {string} val2 Comparison target 2
+   * @param {string} val1 the first value to compare
+   * @param {string} val2 the second value to compare
    * @returns {boolean} <code>true</code> if equal
    */
   equals : function(val1, val2) {
@@ -118,15 +118,15 @@ const ValUtil = /** @lends ValUtil */ {
   },
 
   /**
-   * Associative array comparison.<br>
+   * Object comparison.<br>
    * <ul>
-   *   <li>Compares values of keys that exist in both targets. Keys that exist in only one are excluded from comparison.</li>
-   *   <li>Determines "not equal" if either target is not an associative array.</li>
+   *   <li>Compares values of keys that exist in both objects, and excludes keys that exist in only one.</li>
+   *   <li>Returns "not equal" if either target is not an object.</li>
    * </ul>
    *
-   * @param {Object} obj1 Comparison target 1
-   * @param {Object} obj2 Comparison target 2
-   * @param {string} ignoreKeys Keys to exclude from comparison (multiple allowed)
+   * @param {Object} obj1 the first object to compare
+   * @param {Object} obj2 the second object to compare
+   * @param {string} ignoreKeys the keys to ignore (multiple keys can be specified)
    * @returns {boolean} <code>true</code> if contents are equal
    */
   equalsObj : function(obj1, obj2, ignoreKeys) {
@@ -138,12 +138,12 @@ const ValUtil = /** @lends ValUtil */ {
     }
     const ignoreKeyAry = Array.prototype.slice.call(arguments, 2);
     for (const key in obj1){
-      // Ignore if excluded from comparison
+      // Ignore if it's an excluded key
       if (ignoreKeyAry.indexOf(key) >= 0) {
         continue;
       }
-      // Ignore if key does not exist in comparison target 2
-      // Explicitly writing comparison value (<code>false</code>) to avoid confusion with loop
+      // Ignore if the key doesn't exist in obj2
+      // Writing comparison value (<code>false</code>) to avoid confusion with loops
       if (key in obj2 === false) {
         continue;
       }
@@ -160,7 +160,7 @@ const ValUtil = /** @lends ValUtil */ {
       }
 
       if (t === 'array') {
-        // For arrays, assumes each element is an associative array.
+        // For arrays, process assuming each element is an object.
         if (val1.length !== val2.length) {
           return false;
         }
@@ -183,13 +183,13 @@ const ValUtil = /** @lends ValUtil */ {
    * Empty check.<br>
    * <ul>
    *   <li>Returns <code>true</code> if <code>null</code> is passed.</li>
-   *   <li>Returns same result as isBlank() if a string is passed.</li>
-   *   <li>Checks if length is zero when an array is passed.</li>
-   *   <li>Checks if length is zero when HTML element collection result is passed.</li>
-   *   <li>Checks if key array length is zero when an associative array is passed.</li>
+   *   <li>Returns the same result as isBlank() if a string is passed.</li>
+   *   <li>Checks for zero length if an array is passed.</li>
+   *   <li>Checks for zero length if an HTML element collection is passed.</li>
+   *   <li>Checks for zero length of key array if an object is passed.</li>
    * </ul>
    *
-   * @param {Object} obj Target to check
+   * @param {Object} obj the target object to check
    * @returns {boolean} <code>true</code> if empty
    */
   isEmpty : function(obj) {
@@ -206,27 +206,27 @@ const ValUtil = /** @lends ValUtil */ {
     if (t === 'object') {
       return (Object.keys(obj).length === 0);
     }
-    // 'number' 'boolean' are not empty if identified
+    // 'number' and 'boolean' are not empty if determined
     return false;
   },
   
-  /** @private Unsigned integer check regex */
+  /** @private Regular expression for positive integer check */
   _IS_NUM_UNSIGNED_INT: /^([1-9]\d*|0)$/,
-  /** @private Unsigned decimal check regex */
+  /** @private Regular expression for positive decimal check */
   _IS_NUM_UNSIGNED_FLOAT: /^([1-9]\d*|0)(\.\d+)?$/,
-  /** @private Integer check regex */
+  /** @private Regular expression for integer check */
   _IS_NUM_INT: /^[-]?([1-9]\d*|0)$/,
-  /** @private Decimal check regex */
+  /** @private Regular expression for decimal check */
   _IS_NUM_FLOAT: /^[-]?([1-9]\d*|0)(\.\d+)?$/,
   /**
    * Numeric check.<br>
    * <ul>
-   * <li>Checks if the string is valid as a number.</li>
+   * <li>Checks whether the string is a valid number.</li>
    * </ul>
    *
-   * @param {string} value Target to check
-   * @param {boolean} [minusNg] <code>true</code> to disallow negative values (optional)
-   * @param {boolean} [decNg] <code>true</code> to disallow decimals (optional)
+   * @param {string} value the target value to check
+   * @param {boolean} [minusNg] <code>true</code> to reject negative values (optional)
+   * @param {boolean} [decNg] <code>true</code> to reject decimal values (optional)
    * @returns {boolean} <code>true</code> if valid
    */
   isNum : function(value, minusNg, decNg) {
@@ -256,10 +256,10 @@ const ValUtil = /** @lends ValUtil */ {
   /**
    * Valid date check.<br>
    * <ul>
-   * <li>Checks if the string is valid as a date.</li>
+   * <li>Checks whether the string is a valid date.</li>
    * </ul>
    *
-   * @param {string} yyyymmdd Target to check (YYYYMMDD)
+   * @param {string} yyyymmdd the target value to check (YYYYMMDD)
    * @returns {boolean} <code>true</code> if valid
    */
   isDate : function(yyyymmdd) {
@@ -292,19 +292,19 @@ const ValUtil = /** @lends ValUtil */ {
   /**
    * Boolean check.<br>
    * <ul>
-   * <li>Checks if the string is a value considered as boolean "true".</li>
+   * <li>Checks whether the string is considered as boolean "true".</li>
    * <li>Performs the following evaluation:
    *   <ol>
-   *     <li>"1", "true", "yes", "on" (all half-width) are <code>true</code>.</li>
-   *     <li><code>null</code> or blank is <code>false</code>; anything else not listed above is <code>false</code>.</li>
-   *     <li>Case insensitive.</li>
-   *     <li>Leading and trailing half-width blanks are ignored.</li>
-   *     <li>Boolean values are returned as is.</li>
+   *     <li>"1", "true", "yes", "on" (all single-byte characters) are <code>true</code>.</li>
+   *     <li><code>null</code>, blank, or any other values are <code>false</code>.</li>
+   *     <li>Case-insensitive.</li>
+   *     <li>Ignores leading and trailing spaces.</li>
+   *     <li>Returns boolean values as is.</li>
    *   </ol>
    * </li>
    * </ul>
    *
-   * @param {string|boolean} val Target to check
+   * @param {string|boolean} val the target value to check
    * @returns {boolean} <code>true</code> if considered as boolean "true"
    */
   isTrue: function(val) {
@@ -324,8 +324,8 @@ const ValUtil = /** @lends ValUtil */ {
    * <li>Converts a date string to a Date object.</li>
    * </ul>
    *
-   * @param {string} yyyymmdd Target to convert (YYYYMMDD)
-   * @returns {Date} Date object
+   * @param {string} yyyymmdd the target value to convert (YYYYMMDD)
+   * @returns {Date} the Date object
    */
   toDate : function(yyyymmdd) {
     if (!ValUtil.isDate(yyyymmdd)) {
@@ -344,8 +344,8 @@ const ValUtil = /** @lends ValUtil */ {
    * <li>Converts a Date object to a date string.</li>
    * </ul>
    *
-   * @param {Date} dateObj Target to convert
-   * @returns {string} Date string (YYYYMMDD)
+   * @param {Date} dateObj the target Date object to convert
+   * @returns {string} the date string (YYYYMMDD)
    */
   dateTo : function(dateObj) {
     if (ValUtil.isNull(dateObj)) {
@@ -357,7 +357,7 @@ const ValUtil = /** @lends ValUtil */ {
   /**
    * Array check.
    *
-   * @param {Object} obj Target to check
+   * @param {Object} obj the target object to check
    * @returns {boolean} <code>true</code> if array
    */
   isAry : function(obj) {
@@ -369,10 +369,10 @@ const ValUtil = /** @lends ValUtil */ {
   },
 
   /**
-   * Associative array check.
+   * Object check.
    *
-   * @param {Object} obj Target to check
-   * @returns {boolean} <code>true</code> if associative array
+   * @param {Object} obj the target object to check
+   * @returns {boolean} <code>true</code> if object
    */
   isObj : function(obj) {
     if (ValUtil.isNull(obj)) {
@@ -385,10 +385,10 @@ const ValUtil = /** @lends ValUtil */ {
   /**
    * Left padding.
    *
-   * @param {string} value Target
-   * @param {string} pad Padding character
-   * @param {number} len Length after padding
-   * @returns {string} String after left padding
+   * @param {string} value the target value to process
+   * @param {string} pad the character to pad with
+   * @param {number} len the length after padding
+   * @returns {string} the left-padded string
    */
   lpad : function(value, pad, len) {
     const pads = pad.repeat(len);
@@ -398,10 +398,10 @@ const ValUtil = /** @lends ValUtil */ {
   /**
    * Right padding.
    *
-   * @param {string} value Target
-   * @param {string} pad Padding character
-   * @param {number} len Length after padding
-   * @returns {string} String after right padding
+   * @param {string} value the target value to process
+   * @param {string} pad the character to pad with
+   * @param {number} len the length after padding
+   * @returns {string} the right-padded string
    */
   rpad : function(value, pad, len) {
     const pads = pad.repeat(len);
@@ -410,13 +410,13 @@ const ValUtil = /** @lends ValUtil */ {
 
 
   /**
-   * Object type retrieval.<br>
+   * Gets object type.<br>
    * <ul>
-   * <li>Use when detailed type checking is needed since typeof returns 'object' for both <code>null</code> and arrays.</li>
+   * <li>Use this when detailed type checking is needed, since typeof returns 'object' for both <code>null</code> and arrays.</li>
    * </ul>
    *
-   * @param {Object} obj Object
-   * @returns {string} Type string: 'undefined', 'null', 'boolean', 'number', 'string', 'array', 'object', etc.
+   * @param {Object} obj the object
+   * @returns {string} the type string: 'undefined', 'null', 'boolean', 'number', 'string', 'array', 'object', etc.
    */
   toType : function(obj) {
     return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
@@ -426,9 +426,9 @@ const ValUtil = /** @lends ValUtil */ {
    * @private
    * Date object format conversion.
    *
-   * @param {Date} dateObj Date object
-   * @param {string} formatter Format string
-   * @returns {string} Formatted string
+   * @param {Date} dateObj the Date object
+   * @param {string} formatter the format string
+   * @returns {string} the formatted string
    */
   _formatDate : function(dateObj, formatter) {
     formatter = formatter.replace(/YYYY/g, dateObj.getFullYear());
@@ -443,10 +443,10 @@ const ValUtil = /** @lends ValUtil */ {
 };
 
 /**
- * Value formatting class.<br>
+ * Value format class.<br>
  * <ul>
- *   <li>Handles value formatting when displaying on pages.</li>
- *   <li>Mainly called from PageUtil using bracket notation; rarely called directly from feature-specific processing.</li>
+ *   <li>Handles value formatting for page display.</li>
+ *   <li>Mainly executed from PageUtil using bracket notation, and rarely executed directly from module-specific processing.</li>
  *   <li>Requires corresponding unformat processing.</li>
  * </ul>
  * @class
@@ -455,8 +455,8 @@ const FrmUtil = /** @lends FrmUtil */ {
 
   /**
    * Uppercase conversion.
-   * @param {string} value Target
-   * @returns {string} String after uppercase conversion
+   * @param {string} value the target value to process
+   * @returns {string} the uppercased string
    */
   upper: function(value) {
     if (ValUtil.isBlank(value)) {
@@ -467,9 +467,9 @@ const FrmUtil = /** @lends FrmUtil */ {
 
   /**
    * Number (comma formatting).<br>
-   * Returns unformatted if not a number.
-   * @param {string} value Target
-   * @returns {string} String after comma formatting
+   * Returns non-numeric values without formatting.
+   * @param {string} value the target value to process
+   * @returns {string} the comma-formatted string
    */
   num: function(value) {
     if (ValUtil.isBlank(value)) {
@@ -488,9 +488,9 @@ const FrmUtil = /** @lends FrmUtil */ {
 
   /**
    * Date (YYYY/MM/DD format).<br>
-   * Returns unformatted if not a valid date.
-   * @param {string} value Target
-   * @returns {string} Date string in YYYY/MM/DD format
+   * Returns invalid dates without formatting.
+   * @param {string} value the target value to process
+   * @returns {string} the date string in YYYY/MM/DD format
    */
   ymd: function(value) {
     if (ValUtil.isBlank(value)) {
@@ -506,9 +506,9 @@ const FrmUtil = /** @lends FrmUtil */ {
 
   /**
    * Time (HH:MI:SS format).<br>
-   * Return without formatting if not 6-digit number.
-   * @param {string} value Processing target
-   * @returns {string} Time string in HH:MI:SS format
+   * Returns values other than 6-digit numbers without formatting.
+   * @param {string} value the target value to process
+   * @returns {string} the time string in HH:MI:SS format
    */
   hms: function(value) {
     if (ValUtil.isBlank(value)) {
@@ -524,10 +524,10 @@ const FrmUtil = /** @lends FrmUtil */ {
 };
 
 /**
- * Value unformatting class.<br>
+ * Value unformat class.<br>
  * <ul>
- *   <li>Handles value unformatting when creating requests.</li>
- *   <li>Mainly called from PageUtil using bracket notation; rarely called directly from feature-specific processing.</li>
+ *   <li>Handles value unformatting for request creation.</li>
+ *   <li>Mainly executed from PageUtil using bracket notation, and rarely executed directly from module-specific processing.</li>
  *   <li>Requires corresponding format processing.</li>
  * </ul>
  * @class
@@ -536,8 +536,8 @@ const UnFrmUtil = /** @lends UnFrmUtil */ {
 
   /**
    * Uppercase conversion unformat.
-   * @param {string} value Target
-   * @returns {string} Unprocessed string
+   * @param {string} value the target value to process
+   * @returns {string} the unprocessed string
    */
   upper: function(value) {
     // No processing
@@ -545,9 +545,9 @@ const UnFrmUtil = /** @lends UnFrmUtil */ {
   },
 
   /**
-   * Number unformat (comma removal).
-   * @param {string} value Target
-   * @returns {string} String after comma removal
+   * Number unformat (removes commas).
+   * @param {string} value the target value to process
+   * @returns {string} the string with commas removed
    */
   num: function(value) {
     if (ValUtil.isBlank(value)) {
@@ -558,9 +558,9 @@ const UnFrmUtil = /** @lends UnFrmUtil */ {
   },
 
   /**
-   * Date unformat (slash removal).
-   * @param {string} value Target
-   * @returns {string} String after slash removal
+   * Date unformat (removes slashes).
+   * @param {string} value the target value to process
+   * @returns {string} the string with slashes removed
    */
   ymd: function(value) {
     if (ValUtil.isBlank(value)) {
@@ -571,9 +571,9 @@ const UnFrmUtil = /** @lends UnFrmUtil */ {
   },
 
   /**
-   * Time unformat (colon removal).
-   * @param {string} value Target
-   * @returns {string} String after colon removal
+   * Time unformat (removes colons).
+   * @param {string} value the target value to process
+   * @returns {string} the string with colons removed
    */
   hms: function(value) {
     if (ValUtil.isBlank(value)) {
@@ -585,21 +585,21 @@ const UnFrmUtil = /** @lends UnFrmUtil */ {
 };
 
 /**
- * HTTP operation utility class.
+ * HTTP manipulation utility class.
  *
  * @class
  */
 const HttpUtil = /** @lends HttpUtil */ {
   /**
-   * Convert associative array to URL parameters.<br>
+   * Object to URL parameter conversion.<br>
    * <ul>
    * <li><pre>[Example]
-   *      For <code>params = {p1: 'aaa', p2: 'bbb'}</code>,
-   *      convert to <code>p1=aaa&p2=bbb</code>.</pre></li>
+   *      If <code>params = {p1: 'aaa', p2: 'bbb'}</code>,
+   *      converts to <code>p1=aaa&p2=bbb</code>.</pre></li>
    * </ul>
    *
-   * @param {Object.<string,string>} obj Associative array
-   * @returns {string} URL parameter string
+   * @param {Object.<string,string>} obj the object
+   * @returns {string} the URL parameter string
    */
   convUrlParam: function(obj) {
     if (!ValUtil.isObj(obj)) {
@@ -614,13 +614,13 @@ const HttpUtil = /** @lends HttpUtil */ {
   },
 
   /**
-   * URL parameter retrieval.<br>
+   * Gets URL parameters.<br>
    * <ul>
-   *   <li>Retrieves the portion after ? in the URL as an associative array.</li>
+   *   <li>Gets everything after the ? in the URL as an object.</li>
    *   <li>[Example] For "a=01&b=02", returns <code>{a:'01', b:'02'}</code>.</li>
    *   <li>Parameters are removed after retrieval.</li>
    * </ul>
-   * @returns {Object} URL parameter associative array
+   * @returns {Object} the URL parameter object
    */
   getUrlParams: function() {
     const ret = {};
@@ -657,15 +657,15 @@ const HttpUtil = /** @lends HttpUtil */ {
   /**
    * Page navigation.<br>
    * <ul>
-   * <li>Navigates to the specified URL (retrieves HTML file).</li>
-   * <li>Appends parameters to the URL after ? if specified.</li>
+   * <li>Navigates to the specified URL. (Retrieves HTML file)</li>
+   * <li>If parameters are specified, appends them after the ? in the URL.</li>
    * <li><pre>[Example]
- *      When <code>url = 'editpage.html', params = {user_id: 'U001', upd_ts: '20251231T245959001000'}</code>,
- *      accesses <code>editpage.html?user_id=U001&upd_ts=20251231T245959001000</code>.</pre></li>
+   *      If <code>url = 'editpage.html', params = {user_id: 'U001', upd_ts: '20251231T245959001000'}</code>,
+   *      accesses <code>editpage.html?user_id=U001&upd_ts=20251231T245959001000</code>.</pre></li>
    * </ul>
    *
-   * @param {string} url Navigation destination URL
-   * @param {Object.<string, string>|string} [params] Parameters (string also allowed) (optional)
+   * @param {string} url the destination URL
+   * @param {Object.<string, string>|string} [params] the parameters (strings are also allowed) (optional)
    */
   movePage : function(url, params) {
     let loc = '';
@@ -678,24 +678,26 @@ const HttpUtil = /** @lends HttpUtil */ {
         loc += params;
       }
     }
-    // Use replace to prevent going back (go back to the first page opened)
+    // Use replace to prevent going back with the back button (returns to the first opened page)
     location.replace(loc);
-  },  /**
-   * JSON Web service execution (async/await compatible).<br>
+  },
+
+  /**
+   * Executes JSON web service (async/await compatible).<br>
    * <ul>
-   * <li>Sends a JSON request via <code>POST</code> method to the specified URL and receives a JSON response.</li>
-   * <li>Request/response is handled as associative arrays.</li>
+   * <li>Sends a JSON request to the specified URL with the <code>POST</code> method and receives a JSON response.</li>
+   * <li>Request and response are exchanged as objects.</li>
    * </ul>
    * 
-   * @param {string} url Destination URL
-   * @param {Object} [req] Request associative array (optional)
-   * @param {Object.<string, string>} [addHeader] Additional HTTP headers (optional)
-   * @returns {Object} Response associative array
+   * @param {string} url the destination URL
+   * @param {Object} [req] the request object (optional)
+   * @param {Object.<string, string>} [addHeader] the additional HTTP headers (optional)
+   * @returns {Object} the response object
    */
   callJsonService : async function(url, req, addHeader) {
     req = req || {};
     if (!ValUtil.isObj(req)) {
-      // Request data must be an associative array
+      // Request data must be an object
       throw new Error('HttpUtil#callJsonService: Request must be an object. ');
     }
     // Merge headers
@@ -708,7 +710,7 @@ const HttpUtil = /** @lends HttpUtil */ {
         const val = header[key];
         xhr.setRequestHeader(key, val);
       }
-      // Disable automatic JSON parsing for verification
+      // Don't auto-parse JSON for verification
       xhr.responseType = 'text';
 
       // Communication complete event
@@ -716,7 +718,7 @@ const HttpUtil = /** @lends HttpUtil */ {
         if (200 <= xhr.status && xhr.status < 300) {
           let res = null;
           try {
-            // Manual JSON parsing
+            // Manually parse JSON
             res = JSON.parse(xhr.response);
             resolve(res);
           } catch (e) {
@@ -743,31 +745,31 @@ const HttpUtil = /** @lends HttpUtil */ {
 };
 
 /**
- * HTML element operation utility class.
+ * HTML element manipulation utility class.
  *
  * @class
  */
 const DomUtil = /** @lends DomUtil */ {
 
-  /** @private Alternative attribute name for <code>name</code> attribute for non-form input elements */
+  /** @private Alternative attribute name for <code>name</code> attribute of non-form input elements */
   _ORG_ATTR_NAME: 'data-name',
 
-  /** @private Row index attribute when converted to associative array */
+  /** @private Row index attribute when converted to object */
   _ORG_ATTR_OBJ_ROW_INDEX: 'data-obj-row-idx',
   /** @private Value when checkbox is OFF */
   _ORG_ATTR_CHECK_OFF_VALUE: 'data-check-off-value',
   /** @private Value format type */
   _ORG_ATTR_VALUE_FORMAT_TYPE: 'data-value-format-type',
 
-  /** @private Backup for <code>display</code> style */
+  /** @private Backup of <code>display</code> style */
   _ORG_ATTR_STYLE_DISPLAY_BACKUP: 'data-style-display-backup',
-  /** @private Backup for <code>visibility</code> style */
+  /** @private Backup of <code>visibility</code> style */
   _ORG_ATTR_STYLE_VISIBILITY_BACKUP: 'data-style-visibility-backup',
 
   /**
    * Element existence check.
-   * @param {Element|NodeList} elms Target element(s) to check
-   * @returns {boolean} <code>true</code> if HTML element(s) retrieved
+   * @param {Element|NodeList} elms the target elements to check
+   * @returns {boolean} <code>true</code> if HTML elements are retrieved
    */
   isExists: function(elms) {
     if (ValUtil.isNull(elms)) {
@@ -789,7 +791,7 @@ const DomUtil = /** @lends DomUtil */ {
    * @private
    * NodeList check.
    *
-   * @param {Object} elm Target to check
+   * @param {Object} elm the target object to check
    * @returns {boolean} <code>true</code> if <code>NodeList</code>
    */
   _isNodeList: function(elm) {
@@ -804,7 +806,7 @@ const DomUtil = /** @lends DomUtil */ {
    * @private
    * HTMLCollection check.
    *
-   * @param {Object} elm Target to check
+   * @param {Object} elm the target object to check
    * @returns {boolean} <code>true</code> if <code>HTMLCollection</code>
    */
   _isHtmlCollection: function(elm) {
@@ -819,7 +821,7 @@ const DomUtil = /** @lends DomUtil */ {
    * @private
    * HTMLElement check.
    *
-   * @param {Object} elm Target to check
+   * @param {Object} elm the target object to check
    * @returns {boolean} <code>true</code> if <code>HTMLElement</code>
    */
   _isHtmlElement: function(elm) {
@@ -831,12 +833,12 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Check if element is visible.<br>
+   * Checks whether an element is visible.<br>
    * <ul>
-   * <li>Determines hidden if <code>display:none</code> or <code>visibility:hidden</code>.</li>
-   * <li>Also checks visibility of parent elements.</li>
+   * <li>Considers elements with <code>display:none</code> or <code>visibility:hidden</code> as not visible.</li>
+   * <li>Also checks the visibility state of parent elements.</li>
    * </ul>
-   * @param {Element} elm Target element to check
+   * @param {Element} elm the target element to check
    * @returns {boolean} <code>true</code> if visible
    */
   isVisible: function(elm) {
@@ -847,16 +849,16 @@ const DomUtil = /** @lends DomUtil */ {
     // Check the element and its ancestor elements
     let curElm = elm;
     while (DomUtil.isExists(curElm) && curElm !== document.body) {
-      // Hidden items are not considered invisible
+      // Do not consider hidden fields as invisible
       if (curElm.tagName.toLowerCase() === 'input' && ValUtil.nvl(curElm.getAttribute('type')).toLowerCase() === 'hidden') {
         // Move to parent element
         curElm = curElm.parentElement;
         continue;
       }
 
-      // Get merged style using getComputedStyle
+      // Get merged styles with getComputedStyle
       const style = window.getComputedStyle(curElm);
-      // Invisible if display: none or visibility: hidden
+      // Consider invisible if display: none or visibility: hidden
       if (style.display === 'none' || style.visibility === 'hidden') {
         return false;
       }
@@ -868,14 +870,14 @@ const DomUtil = /** @lends DomUtil */ {
 
   /**
    * @private
-   * Get first element from NodeList or array.<br>
+   * Gets the first element from NodeList or array.<br>
    * <ul>
    * <li>Returns the first element from <code>NodeList</code> or array.</li>
-   * <li>Returns as-is if argument is not <code>NodeList</code> or array.</li>
-   * <li>Returns <code>null</code> if argument is invalid.</li>
+   * <li>Returns as is if the argument is not a <code>NodeList</code> or array.</li>
+   * <li>Returns <code>null</code> if the argument is invalid.</li>
    * </ul>
-   * @param {NodeList|Element} elm Target HTML element
-   * @returns {Element|null} First element
+   * @param {NodeList|Element} elm the target HTML element
+   * @returns {Element|null} the first element
    */
   _getListFirst: function(elm) {
     if (!DomUtil.isExists(elm)) {
@@ -892,12 +894,12 @@ const DomUtil = /** @lends DomUtil */ {
 
   /**
    * @private
-   * Convert NodeList to array.<br>
+   * Converts NodeList to array.<br>
    * <ul>
-   * <li>Enables use of array methods like <code>forEach</code>.</li>
+   * <li>Enables usage of array methods like <code>forEach</code>.</li>
    * </ul>
-   * @param {NodeList} list <code>NodeList</code>
-   * @returns {Array<Element>} HTML element array
+   * @param {NodeList} list the <code>NodeList</code>
+   * @returns {Array<Element>} the HTML element array
    */
   _listToAry: function(list) {
     if (!DomUtil.isExists(list)) {
@@ -917,13 +919,13 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * ID selector (get first element).<br>
+   * ID selector (gets the first element).<br>
    * <ul>
-   * <li>Returns <code>null</code> if argument is invalid or element not found.</li>
+   * <li>Returns <code>null</code> if the argument is invalid or element cannot be found.</li>
    * </ul>
-   * @param {string} id <code>id</code> attribute
-   * @param {Object} [outerElm] Search scope element (optional)
-   * @returns {Element|null} Retrieved HTML element
+   * @param {string} id the <code>id</code> attribute
+   * @param {Object} [outerElm] the search scope element (optional)
+   * @returns {Element|null} the retrieved HTML element
    */
   getById : function(id, outerElm) {
     if (ValUtil.isBlank(id)) {
@@ -945,13 +947,13 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Selector (get first element).<br>
+   * Selector (gets the first element).<br>
    * <ul>
-   * <li>Returns <code>null</code> if argument is invalid or element not found.</li>
+   * <li>Returns <code>null</code> if the argument is invalid or element cannot be found.</li>
    * </ul>
-   * @param {string} selector Selector string
-   * @param {Object} [outerElm] Search scope element (optional)
-   * @returns {Element|null} Retrieved HTML element
+   * @param {string} selector the selector string
+   * @param {Object} [outerElm] the search scope element (optional)
+   * @returns {Element|null} the retrieved HTML element
    */
   getSelector: function(selector, outerElm) {
     if (ValUtil.isBlank(selector)) {
@@ -972,13 +974,13 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Name selector (get first element).<br>
+   * Name selector (gets the first element).<br>
    * <ul>
-   * <li>Returns <code>null</code> if argument is invalid or element not found.</li>
+   * <li>Returns <code>null</code> if the argument is invalid or element cannot be found.</li>
    * </ul>
-   * @param {string} name <code>name</code> attribute
-   * @param {Object} [outerElm] Search scope element (optional)
-   * @returns {Element|null} Retrieved HTML element
+   * @param {string} name the <code>name</code> attribute
+   * @param {Object} [outerElm] the search scope element (optional)
+   * @returns {Element|null} the retrieved HTML element
    */
   getByName: function(name, outerElm) {
     if (ValUtil.isBlank(name)) {
@@ -991,15 +993,15 @@ const DomUtil = /** @lends DomUtil */ {
 
   /**
    * @private
-   * Name and value selector (get first element).<br>
+   * Name and value selector (gets the first element).<br>
    * <ul>
    * <li>For radio buttons.</li>
-   * <li>Returns <code>null</code> if argument is invalid or element not found.</li>
+   * <li>Returns <code>null</code> if the argument is invalid or element cannot be found.</li>
    * </ul>
-   * @param {string} name <code>name</code> attribute
-   * @param {string} value <code>value</code> attribute
-   * @param {Object} [outerElm] Search scope element (optional)
-   * @returns {Element|null} Retrieved HTML element
+   * @param {string} name the <code>name</code> attribute
+   * @param {string} value the <code>value</code> attribute
+   * @param {Object} [outerElm] the search scope element (optional)
+   * @returns {Element|null} the retrieved HTML element
    */
   _getByNameAndValue: function(name, value, outerElm) {
     if (ValUtil.isBlank(name) || ValUtil.isBlank(value)) {
@@ -1011,14 +1013,14 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Data-name selector (get first element).<br>
+   * data-name selector (gets the first element).<br>
    * <ul>
    * <li>Gets elements other than form input elements using an alternative attribute name for the <code>name</code> attribute.</li>
-   * <li>Returns <code>null</code> if argument is invalid or element not found.</li>
+   * <li>Returns <code>null</code> if the argument is invalid or element cannot be found.</li>
    * </ul>
-   * @param {string} name <code>data-name</code> attribute
-   * @param {Object} [outerElm] Search scope element (optional)
-   * @returns {Element|null} Retrieved HTML element
+   * @param {string} name the <code>data-name</code> attribute
+   * @param {Object} [outerElm] the search scope element (optional)
+   * @returns {Element|null} the retrieved HTML element
    */
   getByDataName: function(name, outerElm) {
     if (ValUtil.isBlank(name)) {
@@ -1031,13 +1033,13 @@ const DomUtil = /** @lends DomUtil */ {
 
   /**
    * @private
-   * Tag selector (get first element).<br>
+   * Tag selector (gets the first element).<br>
    * <ul>
-   * <li>Returns <code>null</code> if argument is invalid or element not found.</li>
+   * <li>Returns <code>null</code> if the argument is invalid or element cannot be found.</li>
    * </ul>
-   * @param {string} tag HTML tag name
-   * @param {Object} [outerElm] Search scope element (optional)
-   * @returns {Element|null} Retrieved HTML element
+   * @param {string} tag the HTML tag name
+   * @param {Object} [outerElm] the search scope element (optional)
+   * @returns {Element|null} the retrieved HTML element
    */
   _getByTag: function(tag, outerElm) {
     if (ValUtil.isBlank(tag)) {
@@ -1049,15 +1051,15 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Selector (get multiple elements).<br>
+   * Selector (gets multiple elements).<br>
    * <ul>
    * <li>Returns an array of HTML elements.</li>
-   * <li>Returns zero-length array if not found.</li>
-   * <li>Returns <code>null</code> if argument is invalid.</li>
+   * <li>Returns an empty array if no elements are found.</li>
+   * <li>Returns <code>null</code> if the argument is invalid.</li>
    * </ul>
-   * @param {string} selector Selector string
-   * @param {Object} [outerElm] Search scope element (optional)
-   * @returns {Array<Element>|null} Multiple HTML element array 
+   * @param {string} selector the selector string
+   * @param {Object} [outerElm] the search scope element (optional)
+   * @returns {Array<Element>|null} the multiple HTML element array 
    */
   getsSelector: function(selector, outerElm) {
     if (ValUtil.isBlank(selector)) {
@@ -1069,25 +1071,25 @@ const DomUtil = /** @lends DomUtil */ {
         return null;
       }
       const retElms = oElm.querySelectorAll(selector);
-      // querySelectorAll() returns zero-length NodeList if not found
+      // querySelectorAll() returns an empty NodeList if not found
       return DomUtil._listToAry(retElms);
     }
     const retElms = document.querySelectorAll(selector);
-    // querySelectorAll() returns zero-length NodeList if not found
+    // querySelectorAll() returns an empty NodeList if not found
     return DomUtil._listToAry(retElms);
   },
 
   /**
    * @private
-   * Class selector (get multiple elements).<br>
+   * Class selector (gets multiple elements).<br>
    * <ul>
    * <li>Returns an array of HTML elements.</li>
-   * <li>Returns zero-length array if not found.</li>
-   * <li>Returns <code>null</code> if argument is invalid.</li>
+   * <li>Returns an empty array if no elements are found.</li>
+   * <li>Returns <code>null</code> if the argument is invalid.</li>
    * </ul>
-   * @param {string} cls <code>class</code> attribute
-   * @param {Object} [outerElm] Search scope element (optional)
-   * @returns {Array<Element>|null} Multiple HTML element array 
+   * @param {string} cls the <code>class</code> attribute
+   * @param {Object} [outerElm] the search scope element (optional)
+   * @returns {Array<Element>|null} the multiple HTML element array 
    */
   _getsByClass: function(cls, outerElm) {
     if (ValUtil.isBlank(cls)) {
@@ -1100,14 +1102,14 @@ const DomUtil = /** @lends DomUtil */ {
 
   /**
    * @private
-   * Ancestor element ID selector (get first element).<br>
+   * Ancestor element ID selector (gets the first element).<br>
    * <ul>
-   * <li>Searches ancestor elements from the specified element and returns the nearest element matching the id.</li>
-   * <li>Returns <code>null</code> if argument is invalid or element not found.</li>
+   * <li>Searches ancestor elements from the specified element and returns the closest element matching the id.</li>
+   * <li>Returns <code>null</code> if the argument is invalid or element cannot be found.</li>
    * </ul>
-   * @param {Element} baseElm Specified element
-   * @param {string} id <code>id</code> attribute
-   * @returns {Element|null} Retrieved HTML element
+   * @param {Element} baseElm the base element
+   * @param {string} id the <code>id</code> attribute
+   * @returns {Element|null} the retrieved HTML element
    */
   _getParentById: function(baseElm, id) {
     if (ValUtil.isBlank(id)) {
@@ -1125,15 +1127,15 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Ancestor element tag selector (get first element).<br>
+   * Ancestor element tag selector (gets the first element).<br>
    * <ul>
-   * <li>Searches ancestor elements from the base element and returns the nearest element matching the HTML tag.</li>
-   * <li>Used to retrieve the row element containing the clicked button, etc.</li>
-   * <li>Returns <code>null</code> if argument is invalid or element not found.</li>
+   * <li>Searches ancestor elements from the base element and returns the closest element matching the HTML tag.</li>
+   * <li>Used to get the row element containing the pressed button.</li>
+   * <li>Returns <code>null</code> if the argument is invalid or element cannot be found.</li>
    * </ul>
-   * @param {Element} baseElm Base element
-   * @param {string} tag HTML tag name
-   * @returns {Element|null} Retrieved HTML element
+   * @param {Element} baseElm the base element
+   * @param {string} tag the HTML tag name
+   * @returns {Element|null} the retrieved HTML element
    */
   getParentByTag: function(baseElm, tag) {
     if (ValUtil.isBlank(tag)) {
@@ -1151,35 +1153,35 @@ const DomUtil = /** @lends DomUtil */ {
 
   /**
    * @private
-   * Get all direct child elements.<br>
+   * Gets all direct child elements.<br>
    * <ul>
-   * <li>Retrieves all child elements directly under the specified element (excludes text nodes).</li>
+   * <li>Gets all child elements directly under the specified element (excluding text nodes).</li>
    * <li>Returns an array of HTML elements.</li>
-   * <li>Returns zero-length array if no child elements.</li>
-   * <li>Returns <code>null</code> if argument is invalid.</li>
+   * <li>Returns an empty array if there are no child elements.</li>
+   * <li>Returns <code>null</code> if the argument is invalid.</li>
    * </ul>
-   * @param {Element} parentElm Parent element
-   * @returns {Array<Element>|null} Child element array
+   * @param {Element} parentElm the parent element
+   * @returns {Array<Element>|null} the child element array
    */
   _getAllChildren: function(parentElm) {
     if (!DomUtil.isExists(parentElm)) {
       return null;
     }
-    // Use children property (text nodes not included)
+    // Use the children property (text nodes are not included)
     return DomUtil._listToAry(parentElm.children);
   },
 
   /**
-   * Get element value.<br>
+   * Gets element value.<br>
    * <ul>
-   * <li>Retrieves <code>value</code> attribute of <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>.</li>
-   * <li>If the target element has the <code>data-value-format-type</code> attribute that defines the value format type, retrieves the unformatted value using the corresponding method of <code>UnFrmUtil</code>.</li>
-   * <li>If the target element is a text box or text area, retrieves the value with tab characters, trailing blanks, and line break codes removed.</li>
-   * <li>If the target element is a checkbox, returns the value of the <code>value</code> attribute when checked, and retrieves the value of the <code>data-check-off-value</code> attribute when unchecked.</li>
-   * <li>Returns <code>null</code> if argument is invalid.</li>
+   * <li>Gets the <code>value</code> attribute value of <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>.</li>
+   * <li>If the <code>data-value-format-type</code> attribute that defines the value format type is set on the target element, unformats the value using the corresponding method in <code>UnFrmUtil</code>.</li>
+   * <li>If the target element is a text box or text area, removes tab characters, trailing spaces, and newline codes.</li>
+   * <li>For checkboxes, returns the <code>value</code> attribute when checked, and returns the <code>data-check-off-value</code> attribute value when unchecked.</li>
+   * <li>Returns <code>null</code> if the argument is invalid.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @returns {string|null} Value (unformatted)
+   * @param {Element} elm the target element
+   * @returns {string|null} the value (unformatted)
    */
   getVal: function(elm) {
     if (!DomUtil.isExists(elm)) {
@@ -1190,15 +1192,15 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Set element value.<br>
+   * Sets element value.<br>
    * <ul>
-   * <li>Sets <code>value</code> attribute of <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>.</li>
-   * <li>If the target element has the <code>data-value-format-type</code> attribute that defines the value format type, sets the formatted value using the corresponding method of <code>FrmUtil</code>.</li>
-   * <li>Returns <code>false</code> if argument is invalid.</li>
+   * <li>Sets the <code>value</code> attribute value of <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>.</li>
+   * <li>If the <code>data-value-format-type</code> attribute that defines the value format type is set on the target element, formats the value using the corresponding method in <code>FrmUtil</code>.</li>
+   * <li>Returns <code>false</code> if the argument is invalid.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @param {string} value Value to set (value before formatting)
-   * @returns {boolean} <code>true</code> on success
+   * @param {Element} elm the target element
+   * @param {string} value the value to set (before formatting)
+   * @returns {boolean} <code>true</code> on successful setting
    */
   setVal: function(elm, value) {
     if (!DomUtil.isExists(elm)) {
@@ -1209,14 +1211,14 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Get element text.<br>
+   * Gets element text.<br>
    * <ul>
-   * <li>Retrieves the element's <code>textContent</code>.</li>
-   * <li>If the target element has the <code>data-value-format-type</code> attribute that defines the value format type, retrieves the unformatted value using the corresponding method of <code>UnFrmUtil</code>.</li>
-   * <li>Returns <code>null</code> if argument is invalid.</li>
+   * <li>Gets the <code>textContent</code> of the element.</li>
+   * <li>If the <code>data-value-format-type</code> attribute that defines the value format type is set on the target element, unformats the value using the corresponding method in <code>UnFrmUtil</code>.</li>
+   * <li>Returns <code>null</code> if the argument is invalid.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @returns {string|null} Text (unformatted)
+   * @param {Element} elm the target element
+   * @returns {string|null} the text (unformatted)
    */
   getTxt: function(elm) {
     if (!DomUtil.isExists(elm)) {
@@ -1227,15 +1229,15 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Set element text.<br>
+   * Sets element text.<br>
    * <ul>
-   * <li>Sets the element's <code>textContent</code>.</li>
-   * <li>If the target element has the <code>data-value-format-type</code> attribute that defines the value format type, sets the formatted value using the corresponding method of <code>FrmUtil</code>.</li>
-   * <li>Returns <code>false</code> if argument is invalid.</li>
+   * <li>Sets the <code>textContent</code> of the element.</li>
+   * <li>If the <code>data-value-format-type</code> attribute that defines the value format type is set on the target element, formats the value using the corresponding method in <code>FrmUtil</code>.</li>
+   * <li>Returns <code>false</code> if the argument is invalid.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @param {string} text Text to set (value before formatting)
-   * @returns {boolean} <code>true</code> on success
+   * @param {Element} elm the target element
+   * @param {string} text the text to set (before formatting)
+   * @returns {boolean} <code>true</code> on successful setting
    */
   setTxt: function(elm, text) {
     if (!DomUtil.isExists(elm)) {
@@ -1246,14 +1248,14 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Toggle element enabled state.<br>
+   * Toggles element enable state.<br>
    * <ul>
-   * <li>Toggles the element's <code>disabled</code> attribute.</li>
-   * <li>Returns <code>false</code> if argument is invalid.</li>
+   * <li>Toggles the <code>disabled</code> attribute of the element.</li>
+   * <li>Returns <code>false</code> if the argument is invalid.</li>
    * </ul>
-   * @param {Element} elm Target element
+   * @param {Element} elm the target element
    * @param {boolean|string} isEnable <code>true</code> to enable
-   * @returns {boolean} <code>true</code> on success
+   * @returns {boolean} <code>true</code> on successful toggle
    */
   setEnable: function(elm, isEnable) {
     if (!DomUtil.isExists(elm)) {
@@ -1276,16 +1278,16 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Toggle element visibility.<br>
+   * Toggles element visibility.<br>
    * <ul>
-   * <li>Toggles the element's <code>display</code> style or <code>visibility</code> style.</li>
-   * <li>Use <code>visibility</code> style to preserve element space (maintain layout).</li>
-   * <li>Returns <code>false</code> if argument is invalid.</li>
+   * <li>Toggles the <code>display</code> style or <code>visibility</code> style of the element.</li>
+   * <li>If keeping element space (preserving layout), toggles the <code>visibility</code> style.</li>
+   * <li>Returns <code>false</code> if the argument is invalid.</li>
    * </ul>
-   * @param {Element} elm Target element
+   * @param {Element} elm the target element
    * @param {boolean|string} isShow <code>true</code> to show
-   * @param {boolean} keepLayout <code>true</code> to preserve element space
-   * @returns {boolean} <code>true</code> on success
+   * @param {boolean} keepLayout <code>true</code> to keep element space
+   * @returns {boolean} <code>true</code> on successful toggle
    */
   setVisible: function(elm, isShow, keepLayout) {
     if (!DomUtil.isExists(elm)) {
@@ -1305,10 +1307,10 @@ const DomUtil = /** @lends DomUtil */ {
 
   /**
    * @private
-   * Set element visibility style.
-   * @param {Element} elm Target element
+   * Sets element visibility style.
+   * @param {Element} elm the target element
    * @param {boolean} isShow <code>true</code> to show
-   * @returns {boolean} <code>true</code> on success
+   * @returns {boolean} <code>true</code> on successful toggle
    */
   _setVisibilityStyle: function(elm, isShow) {
     // Toggle with visibility style
@@ -1317,7 +1319,7 @@ const DomUtil = /** @lends DomUtil */ {
         return false;
       }
       if (DomUtil.hasAttr(elm, DomUtil._ORG_ATTR_STYLE_VISIBILITY_BACKUP)) {
-        // Restore backed up visibility style
+        // Restore backed-up visibility style
         elm.style.visibility = DomUtil.getAttr(elm, DomUtil._ORG_ATTR_STYLE_VISIBILITY_BACKUP);
       } else {
         elm.style.visibility = '';
@@ -1327,7 +1329,7 @@ const DomUtil = /** @lends DomUtil */ {
         return false;
       }
       if (!ValUtil.isBlank(elm.style.visibility)) {
-        // Backup visibility style
+        // Back up visibility style
         DomUtil.setAttr(elm, DomUtil._ORG_ATTR_STYLE_VISIBILITY_BACKUP, elm.style.visibility);
       }
       elm.style.visibility = 'hidden';
@@ -1337,10 +1339,10 @@ const DomUtil = /** @lends DomUtil */ {
 
   /**
    * @private
-   * Set element display style.
-   * @param {Element} elm Target element
+   * Sets element display style.
+   * @param {Element} elm the target element
    * @param {boolean} isShow <code>true</code> to show
-   * @returns {boolean} <code>true</code> on success
+   * @returns {boolean} <code>true</code> on successful toggle
    */  
   _setDisplayStyle: function(elm, isShow) {
     // Toggle with display style
@@ -1349,7 +1351,7 @@ const DomUtil = /** @lends DomUtil */ {
         return false;
       }
       if (DomUtil.hasAttr(elm, DomUtil._ORG_ATTR_STYLE_DISPLAY_BACKUP)) {
-        // Restore backed up display style
+        // Restore backed-up display style
         elm.style.display = DomUtil.getAttr(elm, DomUtil._ORG_ATTR_STYLE_DISPLAY_BACKUP);
       } else {
         elm.style.display = '';
@@ -1359,7 +1361,7 @@ const DomUtil = /** @lends DomUtil */ {
         return false;
       }
       if (!ValUtil.isBlank(elm.style.display)) {
-        // Backup display style
+        // Back up display style
         DomUtil.setAttr(elm, DomUtil._ORG_ATTR_STYLE_DISPLAY_BACKUP, elm.style.display);
       }
       elm.style.display = 'none';
@@ -1368,22 +1370,22 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Get element attribute.<br>
+   * Gets element attribute.<br>
    * <ul>
-   * <li>Retrieves the value of the specified attribute.</li>
-   * <li>Returns <code>null</code> if argument is invalid.</li>
+   * <li>Gets the specified attribute value.</li>
+   * <li>Returns <code>null</code> if the argument is invalid.</li>
    * <li>Uses dataset API for data-* attributes.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @param {string} attrName Attribute name
-   * @returns {string|number|null} Attribute value
+   * @param {Element} elm the target element
+   * @param {string} attrName the attribute name
+   * @returns {string|number|null} the attribute value
    */
   getAttr: function(elm, attrName) {
     if (!DomUtil.isExists(elm) || ValUtil.isBlank(attrName)) {
       return null;
     }
 
-    // Use dataset API for data-* attributes
+    // Get using dataset API for data-* attributes
     if (attrName.startsWith('data-')) {
       const datasetKey = DomUtil._convDataAttrToDatasetKey(attrName);
       return elm.dataset[datasetKey];
@@ -1393,16 +1395,16 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Set element attribute.<br>
+   * Sets element attribute.<br>
    * <ul>
-   * <li>Sets the value of the specified attribute.</li>
-   * <li>Returns <code>false</code> if argument is invalid.</li>
+   * <li>Sets the specified attribute value.</li>
+   * <li>Returns <code>false</code> if the argument is invalid.</li>
    * <li>Uses dataset API for data-* attributes.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @param {string} attrName Attribute name
-   * @param {string} val Value to set
-   * @returns {boolean} <code>true</code> on success
+   * @param {Element} elm the target element
+   * @param {string} attrName the attribute name
+   * @param {string} val the value to set
+   * @returns {boolean} <code>true</code> on successful setting
    */
   setAttr: function(elm, attrName, val) {
     if (!DomUtil.isExists(elm) || ValUtil.isBlank(attrName)) {
@@ -1410,7 +1412,7 @@ const DomUtil = /** @lends DomUtil */ {
     }
     const value = ValUtil.nvl(val);
 
-    // Use dataset API for data-* attributes
+    // Set using dataset API for data-* attributes
     if (attrName.startsWith('data-')) {
       const datasetKey = DomUtil._convDataAttrToDatasetKey(attrName);
       elm.dataset[datasetKey] = value;
@@ -1422,12 +1424,12 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Check element attribute existence.<br>
+   * Checks element attribute existence.<br>
    * <ul>
    * <li>Uses dataset API for data-* attributes.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @param {string} attrName Attribute name
+   * @param {Element} elm the target element
+   * @param {string} attrName the attribute name
    * @returns {boolean} <code>true</code> if exists
    */
   hasAttr: function(elm, attrName) {
@@ -1435,7 +1437,7 @@ const DomUtil = /** @lends DomUtil */ {
       return false;
     }
 
-    // Use dataset API for data-* attributes
+    // Get using dataset API for data-* attributes
     if (attrName.startsWith('data-')) {
       const datasetKey = DomUtil._convDataAttrToDatasetKey(attrName);
       // Check attribute existence
@@ -1449,22 +1451,22 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Remove element attribute.<br>
+   * Removes element attribute.<br>
    * <ul>
    * <li>Removes the specified attribute.</li>
-   * <li>Returns <code>false</code> if argument is invalid.</li>
+   * <li>Returns <code>false</code> if the argument is invalid.</li>
    * <li>Uses dataset API for data-* attributes.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @param {string} attrName Attribute name
-   * @returns {boolean} <code>true</code> on success
+   * @param {Element} elm the target element
+   * @param {string} attrName the attribute name
+   * @returns {boolean} <code>true</code> on successful removal
    */
   removeAttr: function(elm, attrName) {
     if (!DomUtil.isExists(elm) || ValUtil.isBlank(attrName)) {
       return false;
     }
 
-    // Use dataset API for data-* attributes
+    // Remove using dataset API for data-* attributes
     if (attrName.startsWith('data-')) {
       const datasetKey = DomUtil._convDataAttrToDatasetKey(attrName);
       // Check attribute existence
@@ -1485,13 +1487,13 @@ const DomUtil = /** @lends DomUtil */ {
 
   /**
    * @private
-   * Convert data-* attribute name to dataset key name.<br>
+   * Converts data-* attribute name to dataset key name.<br>
    * <ul>
-   * <li>[Example] <code>'data-obj-row-idx'</code> -> <code>'objRowIndex'</code></li>
-   * <li>[Example] <code>'data-check-off-value'</code> -> <code>'checkOffValue'</code></li>
+   * <li>[Example] <code>'data-obj-row-idx'</code> → <code>'objRowIdx'</code></li>
+   * <li>[Example] <code>'data-check-off-value'</code> → <code>'checkOffValue'</code></li>
    * </ul>
-   * @param {string} attrName data-* attribute name
-   * @returns {string} Dataset key name
+   * @param {string} attrName the data-* attribute name
+   * @returns {string} the dataset key name
    */
   _convDataAttrToDatasetKey: function(attrName) {
       if (attrName.indexOf('data-') !== 0) {
@@ -1500,21 +1502,21 @@ const DomUtil = /** @lends DomUtil */ {
     // Remove 'data-'
     const datasetKey = attrName.substring(5);
 
-    // Convert hyphen to camelCase
+    // Convert hyphens to camelCase
     return datasetKey.replace(/-([a-z])/g, function(match, letter) {
       return letter.toUpperCase();
     });
   },
 
   /**
-   * Add CSS class.<br>
+   * Adds CSS class.<br>
    * <ul>
    * <li>Adds a CSS class to the element.</li>
-   * <li>Returns <code>false</code> if argument is invalid.</li>
+   * <li>Returns <code>false</code> if the argument is invalid.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @param {string} cls Class name
-   * @returns {boolean} <code>true</code> on success
+   * @param {Element} elm the target element
+   * @param {string} cls the class name
+   * @returns {boolean} <code>true</code> on successful addition
    */
   addClass: function(elm, cls) {
     if (!DomUtil.isExists(elm) || ValUtil.isBlank(cls)) {
@@ -1525,15 +1527,15 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Remove CSS class.<br>
+   * Removes CSS class.<br>
    * <ul>
    * <li>Removes a CSS class from the element.</li>
-   * <li>Returns <code>false</code> if argument is invalid.</li>
-   * <li>Returns <code>false</code> if target class does not exist.</li>
+   * <li>Returns <code>false</code> if the argument is invalid.</li>
+   * <li>Returns <code>false</code> if the class to remove doesn't exist.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @param {string} cls Class name
-   * @returns {boolean} <code>true</code> on success
+   * @param {Element} elm the target element
+   * @param {string} cls the class name
+   * @returns {boolean} <code>true</code> on successful removal
    */
   removeClass: function(elm, cls) {
     if (!DomUtil.isExists(elm) || ValUtil.isBlank(cls) || !DomUtil.hasClass(elm, cls)) {
@@ -1544,13 +1546,13 @@ const DomUtil = /** @lends DomUtil */ {
   },
 
   /**
-   * Check CSS class existence.<br>
+   * Checks CSS class existence.<br>
    * <ul>
-   * <li>Checks if the element has the specified CSS class.</li>
+   * <li>Checks whether the element has the specified CSS class.</li>
    * </ul>
-   * @param {Element} elm Target element
-   * @param {string} cls Class name
-   * @returns {boolean} <code>true</code> if has class
+   * @param {Element} elm the target element
+   * @param {string} cls the class name
+   * @returns {boolean} <code>true</code> if the element has the class
    */
   hasClass: function(elm, cls) {
     if (!DomUtil.isExists(elm) || ValUtil.isBlank(cls)) {
@@ -1561,36 +1563,36 @@ const DomUtil = /** @lends DomUtil */ {
 };
 
 /**
- * Page operation utility class.<br>
+ * Page manipulation utility class.<br>
  * <ul>
- *   <li>Performs operations targeting the entire page or specific areas of the page.</li>
- *   <li>Performs operations such as message display, error existence check, form clear, form enable/disable, and form show/hide.</li>
- *   <li>"List" refers to both grids (repeating rows) and details (repeating rows). Explanations about lists apply to both.</li>
+   *   <li>Performs operations on the entire page or specified areas of the page.</li>
+   *   <li>Performs operations such as displaying messages, checking for errors, clearing forms, enabling/disabling forms, and showing/hiding forms.</li>
+   *   <li>Both lists (repeating rows) and details (repeating rows) are collectively called "lists". Sections explaining lists apply to both.</li>
  * </ul>
  * @class
  */
 const PageUtil = /** @lends PageUtil */ {
 
-  /** @private The <code>id</code> attribute name of message display area element and key for message array in response data (specified in Io.java). */
+  /** @private <code>id</code> attribute name of message display area element and message array key in response data (specified in Io.java). */
   _ITEMID_MSG: '_msg',
-  /** @private Key that becomes <code>true</code> if error message exists (specified in Io.java). */
+  /** @private Key that becomes <code>true</code> if there are error messages (specified in Io.java). */
   _ITEMID_HAS_ERR: '_has_err',
-  /** @private Attribute name for <code>title</code> attribute backup. */
+  /** @private Attribute name for backing up <code>title</code> attribute. */
   _ORG_ATTR_TITLE_BACKUP: 'data-title-backup',
-  /** @private <code>name</code> attribute name for associative array conversion of list radio buttons. */
+  /** @private <code>name</code> attribute name for list section radio buttons when converted to object. */
   _ORG_ATTR_DETAIL_RADIO_OBJ_NAME: 'data-radio-obj-name',
 
   /**
-   * Display message.<br>
+   * Displays messages.<br>
    * <ul>
-   *   <li>Display message from response data.</li>
-   *   <li>The key for response data is <code>'_msg'</code>.</li>
-   *   <li>Element with <code>id</code> attribute <code>'_msg'</code> is treated as message display area element.</li>
-   *   <li>If multiple message display area elements exist, set to the first element.</li>
-   *   <li>To control visibility, execute <code>PageUtil#clearMsg()</code> in page initialization to hide.</li>
-   *   <li>If no message exists in response data, clear the text of message display area element (<code>PageUtil#clearMsg()</code> is executed).</li>
+   *   <li>Displays messages from response data.</li>
+   *   <li>The key in response data is <code>'_msg'</code>.</li>
+   *   <li>Elements with <code>id</code> attribute <code>'_msg'</code> become message display area elements.</li>
+   *   <li>If multiple message display area elements exist, sets to the first element.</li>
+   *   <li>To control display, execute <code>PageUtil#clearMsg()</code> in page initialization processing to hide.</li>
+   *   <li>If no messages exist in response data, clears the text of the message display area element. (<code>PageUtil#clearMsg()</code> is executed)</li>
    * </ul>
-   * @param {Object} res Response data
+   * @param {Object} res the response data
    */
   setMsg: function(res) {
     if (!ValUtil.isObj(res)) {
@@ -1601,7 +1603,7 @@ const PageUtil = /** @lends PageUtil */ {
       PageUtil.clearMsg();
       return;
     }
-    // Display message in message display area
+    // Display messages in message display area
     const msgElm = DomUtil.getById(PageUtil._ITEMID_MSG);
     if (!DomUtil.isExists(msgElm)) {
       throw new Error('PageUtil#setMsg: Message element not found. ');
@@ -1627,14 +1629,14 @@ const PageUtil = /** @lends PageUtil */ {
     // Scroll to message area
     msgElm.scrollIntoView(true);
 
-    // Highlight item and set message to <code>title</code> attribute
+    // Highlight fields and set message to <code>title</code> attribute
     for (const msg of msgs) {
       const itemName = msg['item'];
       const rowIdx = msg['row'];
       if (!ValUtil.isBlank(itemName)) {
         let elm;
         if (!ValUtil.isBlank(rowIdx)) {
-          // If row index value is specified, also consider <code>data-obj-row-idx</code> attribute when getting
+          // If row index value is specified, get considering <code>data-obj-row-idx</code> attribute
           elm = DomUtil.getSelector(`[name="${itemName}"][${DomUtil._ORG_ATTR_OBJ_ROW_INDEX}="${rowIdx}"]`);
         } else {
           elm = DomUtil.getByName(itemName);
@@ -1650,7 +1652,7 @@ const PageUtil = /** @lends PageUtil */ {
           }
           // Add CSS class
           DomUtil.addClass(elm, cls);
-          // Backup <code>title</code> attribute and set message
+          // Back up <code>title</code> attribute and set message
           if (!ValUtil.isBlank(elm.title)) {
             DomUtil.setAttr(elm, PageUtil._ORG_ATTR_TITLE_BACKUP, elm.title);
           }
@@ -1661,13 +1663,13 @@ const PageUtil = /** @lends PageUtil */ {
   },
 
   /**
-   * Check error existence.<br>
+   * Checks for error existence.<br>
    * <ul>
-   *   <li>Check for error existence from response data.</li>
-   *   <li>The key for response data is <code>'_has_err'</code>.</li>
+   *   <li>Checks for error existence from response data.</li>
+   *   <li>The key in response data is <code>'_has_err'</code>.</li>
    * </ul>
-   * @param {Object} res Response data
-   * @returns {boolean} <code>true</code> if error exists
+   * @param {Object} res the response data
+   * @returns {boolean} <code>true</code> if errors exist
    */
   hasError: function (res) {
     if (!ValUtil.isObj(res)) {
@@ -1678,9 +1680,9 @@ const PageUtil = /** @lends PageUtil */ {
   },
 
   /**
-   * Clear message.<br>
+   * Clears messages.<br>
    * <ul>
-   *   <li>Clear the text of message display area element.</li>
+   *   <li>Clears the text of the message display area element.</li>
    * </ul>
    */
   clearMsg: function() {
@@ -1691,10 +1693,10 @@ const PageUtil = /** @lends PageUtil */ {
     msgElm.innerHTML = '<ul></ul>';
     DomUtil.setVisible(msgElm, false, false);
     
-    // Clear item highlight and restore <code>title</code> attribute
+    // Remove field highlight and restore <code>title</code> attribute
     const elms = DomUtil.getsSelector('.info-item, .warn-item, .err-item');
     for (const elm of elms) {
-      // Remove CSS class 
+      // Remove CSS classes 
       DomUtil.removeClass(elm, 'info-item');
       DomUtil.removeClass(elm, 'warn-item');
       DomUtil.removeClass(elm, 'err-item');
@@ -1708,21 +1710,21 @@ const PageUtil = /** @lends PageUtil */ {
   },
 
   /**
-   * Get page data.<br>
+   * Gets page data.<br>
    * <ul>
-   *   <li>Get values of data-sending HTML elements (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>) on the page as an associative array.</li>
-   *   <li>Target HTML elements are those with <code>name</code> attribute set, and <code>name</code> attribute becomes the key of the associative array.</li>
-   *   <li>If scope element argument is omitted, <code>&lt;main&gt;</code> is used as scope; if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is used as scope.</li>
-   *   <li>Mainly used to get request data for Web services.</li>
-   *   <li>The following differ from normal <code>&lt;form&gt;</code> POST submission:
+   *   <li>Gets values of data-sending HTML elements (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>) on the page as an associative array.</li>
+   *   <li>HTML elements to be retrieved have the <code>name</code> attribute set, and the <code>name</code> attribute becomes the key of the associative array.</li>
+   *   <li>If the argument retrieval range element is omitted, <code>&lt;main&gt;</code> is the retrieval range, and if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is the retrieval range.</li>
+   *   <li>Mainly retrieves as request data to web services.</li>
+   *   <li>The following differs from normal <code>&lt;form&gt;</code> POST submission.
    *   <ul>
-   *     <li>Disabled items are included.</li>
-   *     <li>Style-hidden items (<code>display:none</code> or <code>visibility:hidden</code>) are not included.</li>
+   *     <li>Includes disabled items.</li>
+   *     <li>Does not include style-hidden items (<code>display:none</code> or <code>visibility:hidden</code>).</li>
    *   </ul></li>
-   *   <li>If <code>data-value-format-type</code> attribute defining value format type is set, get unformatted value using corresponding <code>UnFrmUtil</code> method.</li>
-   *   <li>For text boxes and text areas, get value with tab characters and trailing blank line breaks removed.</li>
-   *   <li>For checkboxes, return <code>value</code> attribute value when checked, and get <code>data-check-off-value</code> attribute value when not checked.</li>
-   *   <li>List section (repeating section) data becomes an array and is stored in associative array with one key.</li>
+   *   <li>If the <code>data-value-format-type</code> attribute defining the value format type is set, gets the unformatted value with the corresponding <code>UnFrmUtil</code> method.</li>
+   *   <li>For text boxes and text areas, gets values with tab characters, trailing blanks, and line breaks removed.</li>
+   *   <li>For checkboxes, returns the value of the <code>value</code> attribute when checked, and gets the value of the <code>data-check-off-value</code> attribute when unchecked.</li>
+   *   <li>List part (repeated part) data becomes an array and is stored in the associative array with one key.</li>
    *   <li><pre>[Example] <code>&lt;input name="user_id" value="U001"&gt;
    *      &lt;input name="birth_dt" value="2025/02/10"&gt;
    *      &lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
@@ -1732,38 +1734,38 @@ const PageUtil = /** @lends PageUtil */ {
    *             &lt;td&gt;&lt;input name="detail.weight_kg" value="12.1"&gt;&lt;/td&gt;&lt;/tr&gt;
    *       &lt;/tbody&gt;&lt;/table&gt;</code> is
    *       retrieved as <code>{ user_id:'U001', birth_dt:'20250210', detail:[{pet_no:'1', weight_kg:'8.9'}, {pet_no:'2', weight_kg:'12.1'}] }</code>.</pre></li>
-   *   <li>List section elements should follow the rules below:
+   *   <li>Elements of list parts must follow the rules below.
    *   <ul> 
-   *     <li>Elements within a row (hereinafter called row-inner elements) have <code>name</code> attribute in <code>tableId.itemName</code> format with <code>"."</code> separator. Note that <code>name</code> attribute with <code>"."</code> separator should only be used for row-inner elements.</li>
-   *     <li>Row-inner elements must have a parent/grandparent element (hereinafter called table element) with <code>id</code> attribute equal to the part before <code>"."</code> separator (<code>tableId</code>).<br>
-   *         In most cases, table element is <code>&lt;tbody&gt;</code> or <code>&lt;table&gt;</code>.</li>
-   *     <li>Direct children of table element become the topmost element of repeating section (hereinafter called row element).<br>
-   *         In most cases, row element is <code>&lt;tr&gt;</code>.</li>
-   *     <li><pre>[NG Example 1] Table element does not exist. (Neither <code>&lt;table&gt;</code> nor <code>&lt;tbody&gt;</code> has <code>id</code> attribute)
+   *     <li>Elements within a row (hereinafter called row-internal elements) have the <code>name</code> attribute separated by <code>"."</code> and set in the format <code>tableId.itemName</code>. Note that <code>name</code> attributes separated by <code>"."</code> should only be used for row-internal elements.</li>
+   *     <li>An element (hereinafter called table element) with the <code>id</code> attribute set to <code>tableId</code>, the part before the <code>"."</code> separator, must exist as the parent or grandparent element of row-internal elements.<br>
+   *         In most cases, the table element is <code>&lt;tbody&gt;</code> or <code>&lt;table&gt;</code>.</li>
+   *     <li>The child element directly under the table element must be the top-level element of the repeated part (hereinafter called row element).<br>
+   *         In most cases, the row element is <code>&lt;tr&gt;</code>.</li>
+   *     <li><pre>[NG Example 1] Table element does not exist. (Neither <code>&lt;table&gt;</code> nor <code>&lt;tbody&gt;</code> has the <code>id</code> attribute)
    *       <code>&lt;table&gt;...omitted...&lt;tbody&gt;
    *         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
    *         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
    *       &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
-   *     <li><pre>[NG Example 2] Row element does not exist directly under table element. (<code>&lt;table&gt;</code> has <code>id</code> attribute but <code>&lt;tbody&gt;</code> is in between)
+   *     <li><pre>[NG Example 2] Row element does not exist directly under table element. (The <code>id</code> attribute is assigned to <code>&lt;table&gt;</code>, but <code>&lt;tbody&gt;</code> is in between)
    *       <code>&lt;table id="detail"&gt;...omitted...&lt;tbody&gt;
    *         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
    *         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
    *       &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
-   *     <li><pre>[OK Example 1] If <code>&lt;tbody&gt;</code> has <code>id</code> attribute, <code>&lt;tbody&gt;</code> becomes table element.
+   *     <li><pre>[OK Example 1] When the <code>id</code> attribute is assigned to <code>&lt;tbody&gt;</code>, <code>&lt;tbody&gt;</code> becomes the table element.
    *       <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
    *         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
    *         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;
    *       &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
-   *     <li><pre>[OK Example 2] If <code>&lt;table&gt;</code> has <code>id</code> attribute, <code>&lt;table&gt;</code> becomes table element. (Example using multiple <code>&lt;tbody&gt;</code>)
+   *     <li><pre>[OK Example 2] When the <code>id</code> attribute is assigned to <code>&lt;table&gt;</code>, <code>&lt;table&gt;</code> becomes the table element. (Example using multiple <code>&lt;tbody&gt;</code>)
    *       <code>&lt;table id="detail"&gt;...omitted...
    *         &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
    *         &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_nm"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
    *       &lt;/table&gt;</code></pre></li>
    *   </ul></li>
-   *   <li>Row-inner elements store row index value in <code>data-obj-row-idx</code> attribute, and are converted to array based on that index.</li>
-   *   <li>Radio buttons within rows have [row index] removed from end of <code>name</code> attribute for return value key. (See <code>PageUtil#setValue</code>)</li>
+   *   <li>Row index values are stored in row-internal elements as the <code>data-obj-row-idx</code> attribute, and they are converted to arrays based on that index.</li>
+   *   <li>For radio buttons within rows, removes the [row index] at the end of the <code>name</code> attribute to use as the return value key. (See <code>PageUtil#setValue</code>)</li>
    * </ul>
-   * @param {Object} [outerElm] Scope element (optional)
+   * @param {Object} [outerElm] Retrieval range element (optional)
    * @returns {Object} Page data associative array (unformatted)
    */
   getValues: function(outerElm) {
@@ -1772,43 +1774,43 @@ const PageUtil = /** @lends PageUtil */ {
       throw new Error('PageUtil#getValues: Argument element is invalid. ');
     }
 
-    // Add row index
+    // Adds row index
     PageUtil._setRowIndex(outerElm);
-    // Get target elements
+    // Gets target elements
     const targetElms = DomUtil.getsSelector('input[name],select[name],textarea[name]', outerElm);
 
     const jsonData = {};
     const listObj = {};
     for (const elm of targetElms) {
       if (!DomUtil.isVisible(elm)) {
-        // Ignore hidden elements
+        // Ignores hidden elements
         continue;
       }
       if (PageUtil._isRadioOff(elm)) {
-        // Ignore unchecked radio buttons
+        // Ignores unchecked radio buttons
         continue;
       }
       const name = elm.getAttribute('name');
       const listNameSepPos = name.indexOf('.');
       if (listNameSepPos > 0 && DomUtil.hasAttr(elm, DomUtil._ORG_ATTR_OBJ_ROW_INDEX)) {
         // List conversion
-        // Temporarily store row-by-row arrays in a map
+        // Stores row arrays in a map temporarily
         const listId = name.substring(0, listNameSepPos);
         let colName = name.substring(listNameSepPos + 1);
         const nameIndexWrapPos = colName.indexOf('[');
         if (nameIndexWrapPos > 1) {
-          // For radio buttons within rows, remove [n] from <code>name</code> attribute
+          // For radio buttons within rows, removes the [n] from the <code>name</code> attribute
           colName = colName.substring(0, nameIndexWrapPos);
         }
         const rowIdx = ~~DomUtil.getAttr(elm, DomUtil._ORG_ATTR_OBJ_ROW_INDEX);
         if (ValUtil.isNull(listObj[listId])) {
-          // If not in map, create new array
+          // Creates a new array if not in the map
           listObj[listId] = [];
         }
         const list = listObj[listId];
         let row = list[rowIdx];
         if (ValUtil.isNull(row)) {
-          // If not in array, create new row object
+          // Creates a new row object if not in the array
           row = {};
           list[rowIdx] = row;
         }
@@ -1832,19 +1834,19 @@ const PageUtil = /** @lends PageUtil */ {
 
 
   /**
-   * Get row data.<br>
+   * Gets row data.<br>
    * <ul>
-   *   <li>Get one row of page data within list as associative array.</li>
-   *   <li>Data retrieval rules are same as <code>PageUtil#getValues</code>.</li>
-   *   <li>Part before <code>"."</code> in <code>name</code> attribute (= table element's <code>id</code> attribute) is removed to create associative array key.</li>
-   *   <li><pre>[Example] For <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
+   *   <li>Gets page data of one row in a list as an associative array.</li>
+   *   <li>Data retrieval rules are the same as <code>PageUtil#getValues</code>.</li>
+   *   <li>The part before <code>"."</code> in the <code>name</code> attribute (= the <code>id</code> attribute of the table element) is removed to become the key of the associative array.</li>
+   *   <li><pre>[Example] When the second row of <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
    *         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_no" value="1"&gt;&lt;/td&gt;
    *             &lt;td&gt;&lt;input name="detail.weight_kg" value="8.9"&gt;&lt;/td&gt;&lt;/tr&gt;
    *         &lt;tr&gt;&lt;td&gt;&lt;input name="detail.pet_no" value="2"&gt;&lt;/td&gt;
    *             &lt;td&gt;&lt;input name="detail.weight_kg" value="12.1"&gt;&lt;/td&gt;&lt;/tr&gt;
-   *       &lt;/tbody&gt;&lt;/table&gt;</code> when specifying 2nd row as argument,
+   *       &lt;/tbody&gt;&lt;/table&gt;</code> is specified as an argument,
    *       <code>{ pet_no:'2', weight_kg:'12.1' }</code> is retrieved.</pre></li>
-   *   <li>For radio buttons within row, [row index] at end of <code>name</code> attribute is removed to create return value key. (See <code>PageUtil#setValues</code>)</li>
+   *   <li>For radio buttons within rows, removes the [row index] at the end of the <code>name</code> attribute to use as the return value key. (See <code>PageUtil#setValues</code>)</li>
    * </ul>
    * @param {Element} rowElm Row element (typically <code>&lt;tr&gt;</code>)
    * @returns {Object} Row data associative array (unformatted)
@@ -1854,17 +1856,17 @@ const PageUtil = /** @lends PageUtil */ {
       throw new Error('PageUtil#getRowValues: Argument element is invalid. ');
     }
 
-    // Get target elements
+    // Gets target elements
     const targetElms = DomUtil.getsSelector('input[name],select[name],textarea[name]', rowElm);
 
     const jsonData = {};
     for (const elm of targetElms) {
       if (!DomUtil.isVisible(elm)) {
-        // Ignore hidden elements
+        // Ignores hidden elements
         continue;
       }
       if (PageUtil._isRadioOff(elm)) {
-        // Ignore unchecked radio buttons
+        // Ignores unchecked radio buttons
         continue;
       }
       let colName = elm.getAttribute('name');
@@ -1873,7 +1875,7 @@ const PageUtil = /** @lends PageUtil */ {
         colName = colName.substring(listNameSepPos + 1);
         const nameIndexWrapPos = colName.indexOf('[');
         if (nameIndexWrapPos > 1) {
-          // For radio buttons within a row, remove [n] from <code>name</code> attribute
+          // For radio buttons within rows, removes [n] from the <code>name</code> attribute
           colName = colName.substring(0, nameIndexWrapPos);
         }
       }
@@ -1886,13 +1888,13 @@ const PageUtil = /** @lends PageUtil */ {
   },
 
   /**
-   * Get row data.<br>
+   * Gets row data.<br>
    * <ul>
-   *   <li>Traverse parent elements from base element argument to get row element (mostly <code>&lt;tr&gt;</code>), and get page data of that row element as an associative array.</li>
-   *   <li>Data retrieval rules are same as <code>PageUtil#getRowValues</code>.</li>
+   *   <li>Traverses parent elements from the argument base element to get the row element (typically <code>&lt;tr&gt;</code>), and gets the page data of that row element as an associative array.</li>
+   *   <li>Data retrieval rules are the same as <code>PageUtil#getRowValues</code>.</li>
    * </ul> 
    * @param {Element} baseElm Base element
-   * @param {string} [rowTag] Row element tag name (optional) defaults to 'tr' if omitted
+   * @param {string} [rowTag] Tag name of row element (optional) Defaults to 'tr' if omitted
    * @returns {Object} Row data associative array (unformatted)
    */
   getRowValuesByInnerElm: function(baseElm, rowTag) {
@@ -1908,17 +1910,17 @@ const PageUtil = /** @lends PageUtil */ {
   },
 
   /**
-   * Set page data.<br>
+   * Sets page data.<br>
    * <ul>
-   *   <li>Set associative array values to HTML elements on the page.</li>
-   *   <li>Target HTML elements are those with <code>name</code> attribute or <code>data-name</code> attribute set, and associative array key becomes the <code>name</code> attribute or <code>data-name</code> attribute of target element.</li>
-   *   <li>To set values to non-input form elements (that do not originally have <code>name</code> attribute) like <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, set <code>data-name</code> attribute.</li>
-   *   <li>For HTML elements without <code>value</code> attribute like <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, set to <code>textContent</code>.</li>
-   *   <li>If scope element argument is omitted, <code>&lt;main&gt;</code> is used as scope; if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is used as scope.</li>
-   *   <li>Mainly used to set response data from Web services.</li>
-   *   <li>Values with keys starting with underscore are used by this framework and cannot be used outside this class, so they are ignored by this method.</li>
-   *   <li>If <code>data-value-format-type</code> attribute defining value format type is set, set formatted value using corresponding <code>FrmUtil</code> method.</li>
-   *   <li>List section data is assumed to be stored as an array in one key of the associative array.</li>
+   *   <li>Sets values from an associative array to HTML elements on the page.</li>
+   *   <li>HTML elements to be set must have the <code>name</code> attribute or <code>data-name</code> attribute, and the key of the associative array becomes the value destination <code>name</code> attribute or <code>data-name</code> attribute.</li>
+   *   <li>For elements other than input form elements (which originally do not have the <code>name</code> attribute) such as <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, sets the <code>data-name</code> attribute.</li>
+   *   <li>For HTML elements that do not have the <code>value</code> attribute such as <code>&lt;span&gt;</code> or <code>&lt;td&gt;</code>, sets to <code>textContent</code>.</li>
+   *   <li>If the argument set range element is omitted, <code>&lt;main&gt;</code> is the set range, and if <code>&lt;main&gt;</code> does not exist, <code>document.body</code> is the set range.</li>
+   *   <li>Mainly sets response data from web services.</li>
+   *   <li>Keys of the associative array starting with underscore are values used by this framework and cannot be used from outside this class, so they are ignored in this method.</li>
+   *   <li>If the <code>data-value-format-type</code> attribute defining the value format type is set, sets the value formatted with the corresponding <code>FrmUtil</code> method.</li>
+   *   <li>List part data is assumed to be stored as an array in one key within the associative array.</li>
    *   <li><pre>[Example] <code>{ user_id:'U001', birth_dt:'20250210', list:[{pet_no:'1', weight_kg:'8.9'}, {pet_no:'2', weight_kg:'12.1'}] }</code> is
    *     set as <code>&lt;input name="user_id" value="U001"&gt;
    *     &lt;input name="birth_dt" value="2025/02/10"&gt;
@@ -1928,19 +1930,19 @@ const PageUtil = /** @lends PageUtil */ {
    *       &lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;2&lt;/td&gt;
    *           &lt;td&gt;&lt;input name="detail.weight_kg" value="12.1"&gt;&lt;/td&gt;&lt;/tr&gt;
    *     &lt;/tbody&gt;&lt;/table&gt;</code>.</pre></li>
-   *   <li>Rules for table element, row element, and row-inner elements in list are same as <code>PageUtil#getValues</code>.</li>
-   *   <li>To synchronize number of arrays in associative array with number of list rows for display, dynamically generate elements from template row element (hereinafter called template row element) and set values.</li>
-   *   <li>Template row element is placed as child element (first) of table element wrapped in <code>&lt;script&gt;</code>.</li>
-   *   <li><pre>[Example] For above example, place template row element as follows:
+   *   <li>Rules for table elements, row elements, and row-internal elements within lists are the same as <code>PageUtil#getValues</code>.</li>
+   *   <li>To link and display the number of arrays in the associative array with the number of rows in the list, dynamically generates elements from the template row element (hereinafter called template row element) and sets values.</li>
+   *   <li>The template row element is placed at the child element (top) of the table element, enclosed in <code>&lt;script&gt;</code>.</li>
+   *   <li><pre>[Example] In the case of the above example, place the template row element as follows.
    *     <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
    *       &lt;script type="text/html"&gt;&lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;&lt;/td&gt;
    *                                    &lt;td&gt;&lt;input name="detail.weight_kg"&gt;&lt;/td&gt;&lt;/tr&gt;
    *       &lt;/script&gt;
    *     &lt;/tbody&gt;&lt;/table&gt;</code></pre></li>
-   *   <li>Radio buttons within template row element have [row index] appended to end of <code>name</code> attribute to group by row.</li>
+   *   <li>Radio buttons within template row elements have [row index] appended to the end of the <code>name</code> attribute to group them per row.</li>
    * </ul>
    * @param {Object} obj Associative array data
-   * @param {Element} [outerElm] Scope element (optional, defaults to <code>document.body</code> if omitted)
+   * @param {Element} [outerElm] Set range element (optional) If omitted, <code>document.body</code> is the target
    */
   setValues: function(obj, outerElm) {
     if (ValUtil.isNull(obj) || typeof (obj) !== 'object') {
@@ -1956,14 +1958,14 @@ const PageUtil = /** @lends PageUtil */ {
       if (typeof (name) !== 'string') {
         continue;
       }
-      // Values starting with underscore are framework-reserved, not accessible outside this class, ignored by this method
+      // Keys starting with underscore are values used by the framework and cannot be used from outside this class, so this method ignores them
       if (name.indexOf('_') === 0) {
         continue;
       }
 
       let val = obj[name];
 
-      // Set to list section if array
+      // For arrays, sets to list part
       if (ValUtil.isAry(val)) {
         PageUtil._setRowValues(name, val, outerElm);
         continue;
@@ -1972,7 +1974,7 @@ const PageUtil = /** @lends PageUtil */ {
       if (val != null) {
         const valto = typeof (val);
         if (valto !== 'string' && valto !== 'number' && valto !== 'boolean') {
-          // Skip non-primitive types
+          // Skips if not a primitive type
           continue;
         }
       }
@@ -1983,16 +1985,16 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Add list rows (multiple rows).<br>
+   * Adds list rows (multiple rows).<br>
    * <ul>
-   *   <li>Assumes template row element exists directly under list parent element argument, generates row elements for array data in associative array argument, sets values, and appends to list parent element.</li>
+   *   <li>Assumes template row element exists directly under the argument list parent element, generates row elements for the array data of the argument associative array, sets values, and adds them to the list parent element.</li>
    * </ul>
    * @param {string} listId <code>id</code> attribute of table element (parent element) ([Example] <code>'detail'</code>)
    * @param {Element} listElm Table element (parent element)
-   * @param {Array<Object>} objAry Row data array (each element is an object representing one row of data)
+   * @param {Array<Object>} objAry Row data array (each element is an associative array representing one row of data)
    */
   _addRows: function(listId, listElm, objAry) {
-    // Get template row
+    // Gets template row
     const templateScript = DomUtil._getByTag('script', listElm);
     if (!DomUtil.isExists(templateScript)) {
       console.warn(`PageUtil#_addRows: Template script not found in list. id=${listId}`);
@@ -2007,7 +2009,7 @@ const PageUtil = /** @lends PageUtil */ {
     const outerHtmlBegin = tempHtmls[0];
     const innerHtml = tempHtmls[1];
 
-    // Extract element name and attributes from opening tag
+    // Extracts element name and attributes from opening tag
     const rowElmInfo = PageUtil._parseHtmlOpenTag(outerHtmlBegin);
     if (ValUtil.isEmpty(rowElmInfo)) {
       console.error(`PageUtil#_addRows: Failed to parse row tag. openTag=${outerHtmlBegin}`);
@@ -2019,9 +2021,9 @@ const PageUtil = /** @lends PageUtil */ {
     // Row index for radio buttons
     let radioRowIdx = -1;
     const oldRowElms = DomUtil.getsSelector(`${rowElmTag}`, listElm);
-    // Get current maximum row index
+    // Gets current max row index
     if (DomUtil.isExists(oldRowElms)) {
-      // Get radio buttons within each row element that have [row index] at end of <code>name</code> attribute
+      // Gets radio buttons within each row element that have [row index] at the end of the <code>name</code> attribute
       for (const oldRowElm of oldRowElms) {
         const radioElm = DomUtil.getSelector('input[type="radio"][name*="["][name$="]"]', oldRowElm);
         if (DomUtil.isExists(radioElm)) {
@@ -2034,18 +2036,18 @@ const PageUtil = /** @lends PageUtil */ {
       }
     }
 
-    // Generate rows for data
+    // Generates rows for data
     for (const obj of objAry) {
-      // Generate row element from template
+      // Generates row element from template
       const rowElm = document.createElement(rowElmTag);
-      // Set row element attributes
+      // Sets row element attributes
       for (const attrName in rowElmAttrs) {
         DomUtil.setAttr(rowElm, attrName, rowElmAttrs[attrName]);
       }
-      // Set inner elements
+      // Sets row-internal elements
       rowElm.innerHTML = innerHtml;
 
-      // Set values to inner elements
+      // Sets values to row-internal elements
       if (ValUtil.isObj(obj)) {
         for (const colName in obj) {
           const val = ValUtil.nvl(obj[colName]);
@@ -2053,8 +2055,8 @@ const PageUtil = /** @lends PageUtil */ {
           PageUtil._getElmToSetElmFormatVal(name, val, rowElm);
         }
       }
-      // Append [row index] to end of <code>name</code> attribute for radio buttons within row to group by row.
-      // Original <code>name</code> attribute is stored in <code>data-radio-obj-name</code> attribute
+      // For radio buttons within row elements, appends [row index] to the end of the <code>name</code> attribute to group them per row.
+      // The original <code>name</code> attribute is stored in the <code>data-radio-obj-name</code> attribute
       radioRowIdx++;
       const radioElms = DomUtil.getsSelector('input[type="radio"][name]', rowElm);
       for (const radioElm of radioElms) {
@@ -2064,32 +2066,32 @@ const PageUtil = /** @lends PageUtil */ {
         DomUtil.setAttr(radioElm, PageUtil._ORG_ATTR_DETAIL_RADIO_OBJ_NAME, name);
       }
 
-      // Append row element to table element
+      // Adds row element to table element
       listElm.appendChild(rowElm);
     }
   },
 
   /**
-   * Add list row.<br>
+   * Adds list row.<br>
    * <ul>
-   *   <li>Generate and add row element using template row element of table element and set default values.</li>
-   *   <li>See <code>PageUtil#setValues</code> for template row.</li>
-   *   <li><pre>[Example] For following template row:
+   *   <li>Generates and adds a row element with the template row element of the table element and sets default values.</li>
+   *   <li>For template rows, see <code>PageUtil#setValues</code>.</li>
+   *   <li><pre>[Example] In the case of the template row below.
    *     <code>&lt;table&gt;...omitted...&lt;tbody id="detail"&gt;
    *       &lt;script type="text/html"&gt;&lt;tr&gt;&lt;td data-name="detail.pet_no"&gt;&lt;/td&gt;
    *                                    &lt;td&gt;&lt;input name="detail.weight_kg"&gt;&lt;/td&gt;&lt;/tr&gt;
    *       &lt;/script&gt;
    *     &lt;/tbody&gt;&lt;/table&gt;</code>
-   *     Default value key excludes table element <code>id</code> attribute (detail.) as follows:
+   *     Keys of default values are as follows, excluding the table element <code>id</code> attribute (detail.).
    *    <code>{ pet_no:'1', weight_kg:'8.9' }</code>
-   *    Multiple rows are added when passing array of associative arrays:
+   *    If an array of associative arrays is passed, multiple rows are added.
    *    <code>[ { pet_no:'1', weight_kg:'8.9' }, { pet_no:'2', weight_kg:'12.1' } ]</code></pre>
    *   </li>
-   *   <li>If default value is omitted, add one empty row element.</li>
+   *   <li>If default values are omitted, adds one empty row element.</li>
    *   <li>To add multiple empty rows, pass <code>new Array(n)</code>.</li>
    * </ul>
    * @param {string} listId <code>id</code> attribute of table element (parent element) ([Example] <code>'detail'</code>)
-   * @param {Object|Array<Object>} [obj] Default value associative array for row addition (optional)
+   * @param {Object|Array<Object>} [obj] Default value associative array when adding row (optional)
    */
   addRow: function(listId, obj) {
     obj = obj || {};
@@ -2109,14 +2111,14 @@ const PageUtil = /** @lends PageUtil */ {
   },
 
   /**
-   * Remove list row.<br>
+   * Removes list row.<br>
    * <ul>
-   *   <li>Remove row element (mostly <code>&lt;tr&gt;</code>) containing element with specified <code>name</code> attribute and <code>value</code> attribute.</li>
+   *   <li>Removes the row element (typically <code>&lt;tr&gt;</code>) that contains an element with the specified <code>name</code> attribute and <code>value</code> attribute.</li>
    * </ul>
-   * @param {string} searchElmName <code>name</code> attribute of search target element ([Example] <code>'detail.chk'</code> for checkbox) <code>data-name</code> attribute not allowed
+   * @param {string} searchElmName <code>name</code> attribute of search target element ([Example] For checkboxes <code>'detail.chk'</code>) <code>data-name</code> attribute is not allowed
    * @param {string} searchElmVal Value of search target element ([Example] <code>'1'</code>)
-   * @param {string} [rowTag] Row element tag name (optional) defaults to <code>'tr'</code> if omitted
-   * @returns {boolean} <code>true</code> on successful deletion
+   * @param {string} [rowTag] Tag name of row element (optional) Defaults to <code>'tr'</code> if omitted
+   * @returns {boolean} <code>true</code> on successful removal
    */
   removeRow: function(searchElmName, searchElmVal, rowTag) {
     rowTag = rowTag || 'tr';
@@ -2131,7 +2133,7 @@ const PageUtil = /** @lends PageUtil */ {
     let found = false;
     for (const elm of searchElms) {
       if (PageUtil._isCheckType(elm) && !elm.checked) {
-        // Ignore unchecked checkboxes and radio buttons
+        // Ignores unchecked checkboxes and radio buttons
         continue;
       }
       const rowElm = DomUtil.getParentByTag(elm, rowTag);
@@ -2150,9 +2152,9 @@ const PageUtil = /** @lends PageUtil */ {
   },
 
   /**
-   * Clear all rows.<br>
+   * Deletes all rows.<br>
    * <ul>
-   *   <li>Remove all row elements except template row.</li>
+   *   <li>Removes all row elements except the template row.</li>
    * </ul>
    * @param {string} listId <code>id</code> attribute of table element (parent element) ([Example] <code>'detail'</code>)
    */
@@ -2170,14 +2172,14 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Clear all rows.<br>
+   * Deletes all rows.<br>
    * <ul>
-   *   <li>Remove all row elements except template row.</li>
+   *   <li>Removes all row elements except the template row.</li>
    * </ul>
    * @param {Element} listElm Table element (parent element)
    */
   _removeAllRows: function(listElm) {
-    // Delete all existing rows (except template row)
+    // Removes all existing rows (except template row)
     const oldRowElms = DomUtil._getAllChildren(listElm);
     for (const rowElm of oldRowElms) {
       if (rowElm.tagName.toLowerCase() === 'script') {
@@ -2189,31 +2191,31 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Add index to row-inner elements using custom attribute.<br>
+   * Adds index to cell elements with custom attribute.<br>
    * <ul>
-   *   <li>Target row-inner elements (elements with <code>name</code> attribute containing <code>".'"</code> separator) that are data-sending elements (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>).</li>
-   *   <li>Add index as <code>data-obj-row-idx</code> attribute.</li>
-   *   <li>Added index is used when converting to associative array in <code>PageUtil#getValues</code>.</li>
-   *   <li>Added index also serves as marker for response value display returned from Web service.</li>
-   *   <li>Index starts from zero and increments for each row element.</li>
-   *   <li>If row element has no row-inner elements in its child/descendant elements, that row is ignored. (No increment)</li>
+   *   <li>Targets cell elements (elements with <code>name</code> attribute containing <code>'."</code>) that are data submission elements (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>).</li>
+   *   <li>Adds index as <code>data-obj-row-idx</code> attribute.</li>
+   *   <li>The added index is used when converting to associative array in <code>PageUtil#getValues</code>.</li>
+   *   <li>The added index also serves as a marker for displaying response values when returned from web service.</li>
+   *   <li>The added index starts from zero and increments for each row element.</li>
+   *   <li>Ignores rows that have no cell elements in their child or descendant elements. (Does not increment)</li>
    *   <li>See JSDoc of <code>PageUtil#getValues</code> for details.</li>
    * </ul>
-   * @param {Object} outerElm Index addition scope element
+   * @param {Object} outerElm Index addition range element
    */
   _setRowIndex : function(outerElm) {
     if (ValUtil.isNull(outerElm)) {
       throw new Error('PageUtil#_setRowIndex: Target element required.');
     }
-    // Get row-inner elements
+    // Gets cell elements
     const rowInElms = DomUtil.getsSelector('input[name*="."],select[name*="."],textarea[name*="."]', outerElm);
-    // Find list elements from page
+    // Finds list elements from page
     const listObj = {};
     for (const elm of rowInElms) {
       const name = elm.getAttribute('name');
       const listId = name.substring(0, name.indexOf('.'));
       if (listObj[listId]) {
-        // Skip if already exists in map
+        // Skips if already exists in map
         continue;
       }
       const listElm = DomUtil._getParentById(elm, listId);
@@ -2223,7 +2225,7 @@ const PageUtil = /** @lends PageUtil */ {
       listObj[listId] = listElm;
     }
 
-    // Loop by list
+    // Loop for each list
     for (const listId in listObj) {
       const listElm = listObj[listId];
       const rowElms = DomUtil._getAllChildren(listElm);
@@ -2238,9 +2240,9 @@ const PageUtil = /** @lends PageUtil */ {
           continue;
         }
         i++;
-        // Row-inner elements loop
+        // Cell element loop
         for (const colElm of colElms) {
-          // Add index to row-inner element
+          // Adds index to cell element
           DomUtil.setAttr(colElm, DomUtil._ORG_ATTR_OBJ_ROW_INDEX, i);
         }
       }
@@ -2249,9 +2251,9 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Get element (by <code>name</code> attribute or <code>data-name</code> attribute).<br>
+   * Gets element (by <code>name</code> attribute or <code>data-name</code> attribute).<br>
    * <ul>
-   *   <li>If element cannot be obtained by <code>name</code> attribute, get by <code>data-name</code> attribute.</li>
+   *   <li>If the element cannot be retrieved by <code>name</code> attribute, retrieves it by <code>data-name</code> attribute.</li>
    * </ul>
    * @param {string} name 
    * @param {Element} outerElm 
@@ -2267,11 +2269,11 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Set row section data.
+   * Sets row part data.
    * 
    * @param {string} listId <code>id</code> attribute of table element (parent element) ([Example] <code>'detail'</code>)
-   * @param {Array<Object>} objAry Array data of associative arrays (one associative array is one row of data)
-   * @param {Element} outerElm Scope element
+   * @param {Array<Object>} objAry Array of associative arrays (one associative array represents one row of data)
+   * @param {Element} outerElm Set range element
    */
   _setRowValues: function(listId, objAry, outerElm) {
     let listElm;
@@ -2284,28 +2286,28 @@ const PageUtil = /** @lends PageUtil */ {
       console.warn(`PageUtil#_setRowValues: List element not found. id=${listId}`);
       return;
     }
-    // Delete existing rows (except template row)
+    // Removes existing rows (except template row)
     PageUtil._removeAllRows(listElm);
-    // Add rows
+    // Adds rows
     PageUtil._addRows(listId, listElm, objAry);
   },
   
   /**
    * @private
-   * Get unformatted element value.<br>
+   * Gets unformatted element value.<br>
    * <ul>
-   * <li>For elements without <code>value</code> attribute like labels, return textContent value.</li>
+   * <li>For elements that do not have <code>value</code> attribute such as labels, returns the value of textContent.</li>
    * <li>See JSDoc of <code>PageUtil#getValues</code> for details.</li>
    * </ul>
    */
   _getElmUnFormatVal: function(elm) {
     if (PageUtil._isCheckType(elm)) {
-      // Checkbox or radio button case
-      // For radio button, passed element has checked ON.
+      // For checkbox or radio button
+      // For radio button, the checked one is passed
       if (elm.checked) {
         return ValUtil.nvl(elm.value);
       } else {
-        // For OFF, get custom attribute value
+        // When OFF, gets the value of custom attribute
         return ValUtil.nvl(DomUtil.getAttr(elm, DomUtil._ORG_ATTR_CHECK_OFF_VALUE));
       }
     }
@@ -2320,11 +2322,11 @@ const PageUtil = /** @lends PageUtil */ {
         val = orgval;
       }
       if (val !== orgval) {
-        // Restore to page if value changed by formatting.
+        // Returns to page if the value changed due to formatting
         PageUtil._setElmFormatVal(elm, val);
       }
     } else {
-      // Processing for labels etc.
+      // Processing for labels, etc.
       val = ValUtil.nvl(elm.textContent);
     }
     // Unformat
@@ -2337,14 +2339,14 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Get element and set value.<br>
+   * Gets element and sets value.<br>
    * <ul>
-   * <li>For radio buttons, select appropriate element and set value.</li>
+   * <li>For radio buttons, selects the appropriate element and sets the value.</li>
    * </ul>
    * @param {string} name Value of <code>name</code> attribute or <code>data-name</code> attribute
    * @param {string} val Value to set
-   * @param {Element} outerElm Scope element
-   * @returns {boolean} <code>true</code> if set succeeded, <code>false</code> if failed
+   * @param {Element} outerElm Set range element
+   * @returns {boolean} <code>true</code> on successful set, <code>false</code> on failure
    */
   _getElmToSetElmFormatVal: function(name, val, outerElm) {
     let elm = PageUtil._getElmBynNameOrDataName(name, outerElm);
@@ -2353,7 +2355,7 @@ const PageUtil = /** @lends PageUtil */ {
       return false;
     }
     if (PageUtil._isRadioNotVal(elm, val)) {
-      // If radio button element with value not matching specified value is passed (first element with same name did not have specified value), replace with element of specified value
+      // If a radio button element whose value is not the specified value is passed (the first element with the same name was not the specified value), replaces it with the element of the specified value
       elm = DomUtil._getByNameAndValue(name, val, outerElm);
       if (!DomUtil.isExists(elm)) {
         console.warn(`PageUtil#_getElmToSetElmFormatVal: Element not found. name=${name} value=${val}`);
@@ -2366,13 +2368,13 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Set element value.
+   * Sets element value.
    */
   _setElmFormatVal: function(elm, val) {
     val = ValUtil.nvl(val);
     if (PageUtil._isCheckType(elm)) {
-      // Checkbox or radio button case
-      // For radio button, element selected by <code>value</code> attribute is passed, so it will always be checked ON.
+      // For checkbox or radio button
+      // For radio button, the element selected by <code>value</code> attribute is passed, so it is always checked ON
       elm.checked = (('' + val) === elm.value);
       return;
     }
@@ -2390,7 +2392,7 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Determine if HTML element has value.
+   * Determines if the HTML element has value.
    */
   _hasValueProp: function(elm) {
     const tag = elm.tagName.toLowerCase();
@@ -2399,7 +2401,7 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Determine if checkbox or radio button.
+   * Determines if the element is a checkbox or radio button.
    */
   _isCheckType: function(elm) {
     const tag = elm.tagName.toLowerCase();
@@ -2412,7 +2414,7 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Determine if radio button and checked OFF.
+   * Determines if the element is a radio button and is not checked.
    */
   _isRadioOff: function(elm) {
     const tag = elm.tagName.toLowerCase();
@@ -2425,7 +2427,7 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Determine if radio button and value is not specified value.
+   * Determines if the element is a radio button and the value is not the specified value.
    */
   _isRadioNotVal: function(elm, val) {
     const tag = elm.tagName.toLowerCase();
@@ -2438,7 +2440,7 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Determine if text input element (including hidden).
+   * Determines if the element is a text input element (including hidden fields).
    */
   _isTextType: function(elm) {
     const tag = elm.tagName.toLowerCase();
@@ -2451,7 +2453,7 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Determine if text area.
+   * Determines if the element is a textarea.
    */
   _isTextArea: function(elm) {
     const tag = elm.tagName.toLowerCase();
@@ -2460,36 +2462,36 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Web service submission character conversion.<br>
+   * Converts characters for web service transmission.<br>
    * <ul>
-   * <li>Processing on Web service is high load, so adjust each item on client side.</li>
-   * <li>Remove tab characters and trailing blanks.</li>
-   * <li>Also remove line breaks or unify to LF.</li>
+   * <li>Processing in web service is high load, so adjusts each field on the client side.</li>
+   * <li>Removes tab characters and trailing blanks.</li>
+   * <li>Either removes newline characters or unifies them to LF.</li>
    * </ul>
    * 
    * @param {string} val Processing value
-   * @param {boolean} [isRetIgnore] <code>true</code> to keep line breaks (optional)
+   * @param {boolean} [isRetIgnore] <code>true</code> to keep newlines (optional)
    * @returns {string} Converted value
    */
   _convPostVal: function(val, isRetIgnore) {
-    // Remove tab characters
+    // Removes tab characters
     const txt = ValUtil.nvl(val).replace(/\t/g, ' ');
     if (isRetIgnore) {
-      // Keep line breaks (unified to LF), remove trailing blanks
+      // Keeps newline characters (unified to LF), removes trailing blanks
       return txt.replace(/\r?\n/g, '\n').replace(/ +$/, '');
     }
-    // Remove line breaks (replace with single-byte blank), remove trailing blanks
+    // Removes newline characters (replaced with single-byte blank), removes trailing blanks
     return txt.replace(/\r?\n/g, ' ').replace(/ +$/, '');
   },
 
   /** 
    * @private
-   * Split HTML tag into first HTML tag, its closing tag, and other inner tags.<br>
+   * Splits HTML into the first HTML tag, its closing tag, and other inner tags.<br>
    * <ul>
-   *   <li>Find first &gt; and last &lt; not enclosed in double or single quotes and split.</li>
+   *   <li>Finds the first &gt; and the last &lt; that are not surrounded by double quotes or single quotes and splits them.</li>
    * </ul>
    * @param {string} html HTML string
-   * @returns {Array<string>} [first tag, inner tag, first tag's closing tag] (zero-length array if not found)
+   * @returns {Array<string>} [First tag, inner tags, closing tag of first tag] (returns an array of length zero if not found)
    */
   _splitHtmlTagsOuterInner: function(html) {
     html = ValUtil.nvl(html).trim();
@@ -2529,14 +2531,14 @@ const PageUtil = /** @lends PageUtil */ {
       i++;
     }
     if (outerBeginEnd < 0) {
-      // First tag not found
+      // If the first tag is not found
       return [];
     }
 
     i = html.length - 1;
     while (i >= 0) {
       const char = html[i];
-      // Assuming no quotes inside closing tag
+      // Assumes no quotes inside closing tag
       if (char === '<') {
         // Found <
         outerEndStart = i;
@@ -2545,7 +2547,7 @@ const PageUtil = /** @lends PageUtil */ {
       i--;
     }
     if (outerEndStart < 0 || outerEndStart <= outerBeginEnd) {
-      // Closing tag of first tag not found
+      // If the closing tag of the first tag is not found
       return [];
     }
 
@@ -2555,31 +2557,31 @@ const PageUtil = /** @lends PageUtil */ {
 
   /**
    * @private
-   * Parse opening tag.<br>
+   * Parses opening tag.<br>
    * <ul>
-   *   <li>Extract tag name and attributes from opening tag.</li>
-   *   <li>Assumes HTML tag is blank-separated, attributes are <code>=</code>-separated or without separator like <code>readonly</code>.</li>
-   *   <li><pre>[Example] <code>&lt;tr class="row" style="color:black" hidden&gt;</code> returns
-   *      <code>['tr', {class: 'row', style: 'color:black', hidden: 'hidden'}]</code>.</pre></li>
+   *   <li>Extracts tag name and attributes from the opening tag.</li>
+   *   <li>Assumes blank-separated elements within HTML tag, attributes are separated by <code>=</code> or no separator such as <code>readonly</code>.</li>
+   *   <li><pre>[Example] <code>&lt;tr class="row" style="color:black" hidden&gt;</code>
+   *      returns <code>['tr', {class: 'row', style: 'color:black', hidden: 'hidden'}]</code>.</pre></li>
    * </ul>
    * @param {string} htmlTag Opening tag string
-   * @returns {Array<string, Object>|null} [tag name, attributes associative array] (returns <code>null</code> if cannot parse)
+   * @returns {Array<string, Object>|null} [Tag name, attribute associative array] (returns <code>null</code> if parsing fails)
    */
   _parseHtmlOpenTag: function(htmlTag) {
     if (ValUtil.isBlank(htmlTag)) {
       return null;
     }
     htmlTag = ValUtil.nvl(htmlTag).trim();
-    // Remove < and > and split by blank
+    // Removes < and > and splits by blank
     htmlTag = htmlTag.substring(1, htmlTag.length - 1).trim();
     const tags = htmlTag.split(' ');
 
-    // Tag name is up to first blank
+    // Tag name is up to the first blank
     const tagName = tags[0].toLowerCase();
     // Attribute values
     const attrs = {};
 
-    // Parse parts other than tag name as attributes
+    // Parses the part other than tag name as attributes
     for (const tag of tags.slice(1)) {
       const att = tag.trim();
       if (ValUtil.isBlank(att)) {
@@ -2588,16 +2590,16 @@ const PageUtil = /** @lends PageUtil */ {
 
       const eqPos = att.indexOf('=');
       if (eqPos < 0) {
-        // Valueless attribute like readonly
+        // Valueless attributes such as readonly
         attrs[att] = att;
         continue;
       }
 
-      // Format: attribute-name=value
+      // Format of attribute name=value
       const attrName = att.substring(0, eqPos);
       let attrVal = att.substring(eqPos + 1).trim();
 
-      // Remove quotes
+      // Removes quotes
       if ((attrVal.startsWith('"') && attrVal.endsWith('"')) ||
         (attrVal.startsWith("'") && attrVal.endsWith("'"))) {
         attrVal = attrVal.substring(1, attrVal.length - 1);
@@ -2614,35 +2616,35 @@ const PageUtil = /** @lends PageUtil */ {
 /**
  * Session storage utility class.<br>
  * <ul>
- *   <li>Store and retrieve associative arrays in browser session storage by the following scope + key:</li>
+ *   <li>Stores and retrieves associative arrays in browser's session storage with the following units + keys.</li>
  *   <ul>
- *     <li>Page scope (per URL HTML file, data persists within one page)</li>
- *     <li>Module scope (per URL module directory, data shared across pages)</li>
- *     <li>System scope (data shared across entire system)</li>
+ *     <li>Page unit (HTML file unit of URL, data retention within one page)</li>
+ *     <li>Module unit (module directory unit of URL, data sharing between pages)</li>
+ *     <li>System unit (data sharing across entire system)</li>
  *   </ul>
- *   <li>Assumes non-critical processing, so generally does not throw exception errors.</li>
+ *   <li>Assumes non-critical processing and does not throw exceptions in principle.</li>
  * </ul>
  * @class
  */
 const StorageUtil = /** @lends StorageUtil */ {
 
-  /** @private Page scope key prefix */
+  /** @private Page unit key prefix */
   _KEY_PREFIX_PAGE: '@page',
-  /** @private Module scope key prefix */
+  /** @private Module unit key prefix */
   _KEY_PREFIX_MODULE: '@module',
-  /** @private System common key prefix */
+  /** @private System-wide key prefix */
   _KEY_PREFIX_SYSTEM: '@system',
 
   /** @private Root directory name */
   _ROOT_DIR_NAME: '[root]',
 
   /**
-   * Get page scope (per URL HTML file) data. <br>
+   * Gets page unit data (HTML file unit of URL). <br>
    * <ul>
-   *   <li>Retrieve associative array from browser session storage by page scope + key.</li>
+   *   <li>Retrieves an associative array from browser's session storage by page unit + key.</li>
    * </ul>
    * @param {string} key Retrieval key
-   * @param {Object} [notExistsValue] Value to return when not exists (optional)
+   * @param {Object} [notExistsValue] Return value when not exists (optional)
    * @returns {Object|null} Retrieved data
    */
   getPageObj: function(key, notExistsValue) {
@@ -2655,12 +2657,12 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Get module scope (per URL module directory) data. <br>
+   * Gets module unit data (module directory unit of URL). <br>
    * <ul>
-   *   <li>Retrieve associative array from browser session storage by module scope + key.</li>
+   *   <li>Retrieves an associative array from browser's session storage by module unit + key.</li>
    * </ul>
    * @param {string} key Retrieval key
-   * @param {Object} [notExistsValue] Value to return when not exists (optional)
+   * @param {Object} [notExistsValue] Return value when not exists (optional)
    * @returns {Object|null} Retrieved data
    */
   getModuleObj: function(key, notExistsValue) {
@@ -2673,12 +2675,12 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Get system scope data.<br>
+   * Gets system unit data.<br>
    * <ul>
-   *   <li>Retrieve associative array from browser session storage by key.</li>
+   *   <li>Retrieves an associative array from browser's session storage by key.</li>
    * </ul>
    * @param {string} key Retrieval key
-   * @param {Object} [notExistsValue] Value to return when not exists (optional)
+   * @param {Object} [notExistsValue] Return value when not exists (optional)
    * @returns {Object|null} Retrieved data
    */
   getSystemObj: function(key, notExistsValue) {
@@ -2691,12 +2693,12 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Store page scope data (per URL HTML file).<br>
+   * Stores page unit data (HTML file unit of URL).<br>
    * <ul>
-   *   <li>Store associative array in browser session storage by page scope + key.</li>
+   *   <li>Stores an associative array in browser's session storage by page unit + key.</li>
    * </ul>
    * @param {string} key Storage key
-   * @param {Object} obj Data to store
+   * @param {Object} obj Storage data
    * @returns {boolean} <code>true</code> on successful storage
    */
   setPageObj: function(key, obj) {
@@ -2708,12 +2710,12 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Store module scope data (per URL module directory).<br>
+   * Stores module unit data (module directory unit of URL).<br>
    * <ul>
-   *   <li>Store associative array in browser session storage by module scope + key.</li>
+   *   <li>Stores an associative array in browser's session storage by module unit + key.</li>
    * </ul>
    * @param {string} key Storage key
-   * @param {Object} obj Data to store
+   * @param {Object} obj Storage data
    * @returns {boolean} <code>true</code> on successful storage
    */
   setModuleObj: function(key, obj) {
@@ -2725,12 +2727,12 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Store system scope data.<br>
+   * Stores system unit data.<br>
    * <ul>
-   *   <li>Store associative array in browser session storage by key.</li>
+   *   <li>Stores an associative array in browser's session storage by key.</li>
    * </ul>
    * @param {string} key Storage key
-   * @param {Object} obj Data to store
+   * @param {Object} obj Storage data
    * @returns {boolean} <code>true</code> on successful storage
    */
   setSystemObj: function(key, obj) {
@@ -2742,9 +2744,9 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Remove page scope data.
+   * Removes page unit data.
    * @param {string} key Key
-   * @returns {boolean} <code>true</code> on successful deletion
+   * @returns {boolean} <code>true</code> on successful removal
    */
   removePage: function(key) {
     if (ValUtil.isBlank(key)) {
@@ -2756,9 +2758,9 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Remove module scope data.
+   * Removes module unit data.
    * @param {string} key Key
-   * @returns {boolean} <code>true</code> on successful deletion
+   * @returns {boolean} <code>true</code> on successful removal
    */
   removeModule: function(key) {
     if (ValUtil.isBlank(key)) {
@@ -2770,9 +2772,9 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Remove system scope data.
-   * @param {string} key Deletion key
-   * @returns {boolean} <code>true</code> on successful deletion
+   * Removes system unit data.
+   * @param {string} key Removal key
+   * @returns {boolean} <code>true</code> on successful removal
    */
   removeSystem: function(key) {
     if (ValUtil.isBlank(key)) {
@@ -2784,9 +2786,9 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Clear all data.<br>
+   * Clears all data.<br>
    * <ul>
-   *   <li>Remove all data stored by this utility.</li>
+   *   <li>Removes all data stored by this utility.</li>
    *   <li>Use for emergency or debugging purposes.</li>
    * </ul>
    * @returns {boolean} <code>true</code> on successful clear
@@ -2800,11 +2802,11 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Validate arguments for retrieval.
+   * Validates arguments for retrieval.
    * @param {string} methodName Retrieval method name
    * @param {string} key Retrieval key
-   * @param {Object} [notExistsValue] Value to return when not exists (optional)
-   * @returns {boolean} <code>false</code> if error
+   * @param {Object} [notExistsValue] Return value when not exists (optional)
+   * @returns {boolean} <code>false</code> on error
    */
   _argsValidateObjGet: function(methodName, key, notExistsValue) {
     if (ValUtil.isBlank(key)) {
@@ -2820,11 +2822,11 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Validate arguments for storage.
+   * Validates arguments for storage.
    * @param {string} methodName Retrieval method name
    * @param {string} key Retrieval key
-   * @param {Object} obj Data to store
-   * @returns {boolean} <code>false</code> if error
+   * @param {Object} obj Storage data
+   * @returns {boolean} <code>false</code> on error
    */
   _argsValidateObjSet: function(methodName, key, obj) {
     if (ValUtil.isBlank(key)) {
@@ -2840,9 +2842,9 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Get data.
+   * Retrieves data.
    * @param {string} key Key
-   * @param {Object} [notExistsValue] Value to return when not exists (optional)
+   * @param {Object} [notExistsValue] Return value when not exists (optional)
    * @returns {Object|null} Retrieved data
    */
   _getObj: function(key, notExistsValue) {
@@ -2858,7 +2860,7 @@ const StorageUtil = /** @lends StorageUtil */ {
       return JSON.parse(json);
     } catch (e) {
       console.error(`StorageUtil#_getObj: Failed to parse JSON data. key=${key}`, e);
-      // Delete corrupted data
+      // Removes corrupted data
       try {
         sessionStorage.removeItem(key);
       } catch (removeError) {
@@ -2870,9 +2872,9 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Store data.
+   * Stores data.
    * @param {string} key Key
-   * @param {Object} obj Data to store
+   * @param {Object} obj Storage data
    * @returns {boolean} <code>true</code> on successful storage
    */
   _setObj: function(key, obj) {
@@ -2892,9 +2894,9 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Remove data.
+   * Removes data.
    * @param {string} key Key
-   * @returns {boolean} <code>true</code> on successful deletion
+   * @returns {boolean} <code>true</code> on successful removal
    */
   _remove: function(key) {
     try {
@@ -2908,9 +2910,9 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Generate page scope key.
+   * Generates page unit key.
    * @param {string} key Key
-   * @returns {string} Page scope key
+   * @returns {string} Page unit key
    */
   _createPageKey: function(key) {
     return StorageUtil._createPageKeyPrefixByLocation() + key;
@@ -2918,27 +2920,27 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Generate page scope key prefix for current page.
-   * @returns {string} Page scope key prefix
+   * Generates page unit key prefix for current page.
+   * @returns {string} Page unit key prefix
    */
   _createPageKeyPrefixByLocation: function() {
-    // Get page name from location
+    // Gets page name from location
     const paths = location.pathname.split('/');
-    // Get page name
+    // Gets page name
     let pageName = paths.pop();
     if (ValUtil.isBlank(pageName)) {
       pageName = 'index';
     } else {
-      // Remove extension
+      // Removes extension
       const dotPos = pageName.lastIndexOf('.');
       if (dotPos > 0) {
         pageName = pageName.substring(0, dotPos);
       }
     }
-    // Get directory name
+    // Gets directory name
     let mdlName = paths.pop();
     if (ValUtil.isBlank(mdlName)) {
-      // Root directory case
+      // For root directory
       mdlName = StorageUtil._ROOT_DIR_NAME;
     }
     return `${StorageUtil._KEY_PREFIX_PAGE}/${mdlName}/${pageName}/`;
@@ -2946,9 +2948,9 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Generate module scope key.
+   * Generates module unit key.
    * @param {string} key Key
-   * @returns {string} Module scope key
+   * @returns {string} Module unit key
    */
   _createModuleKey: function(key) {
     return StorageUtil._createModuleKeyPrefixByLocation() + key;
@@ -2956,18 +2958,18 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Generate module scope key prefix for current module.
-   * @returns {string} Module scope key prefix
+   * Generates module unit key prefix for current module.
+   * @returns {string} Module unit key prefix
    */
   _createModuleKeyPrefixByLocation: function() {
-    // Get module name from location
+    // Gets module name from location
     const paths = location.pathname.split('/');
-    // Remove file name
+    // Removes file name
     paths.pop();
-    // Get directory name
+    // Gets directory name
     let mdlName = paths.pop();
     if (ValUtil.isBlank(mdlName)) {
-      // Root directory case
+      // For root directory
       mdlName = StorageUtil._ROOT_DIR_NAME;
     }
     return `${StorageUtil._KEY_PREFIX_MODULE}/${mdlName}/`;
@@ -2975,18 +2977,18 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Generate system scope key.
+   * Generates system unit key.
    * @param {string} key Key
-   * @returns {string} System scope key
+   * @returns {string} System unit key
    */
   _createSystemKey: function(key) {
     return `${StorageUtil._KEY_PREFIX_SYSTEM}/${key}`;
   },
 
   /**
-   * Clear all page scope data.<br>
+   * Clears all page unit data.<br>
    * <ul>
-   *   <li>Remove all data stored for current page.</li>
+   *   <li>Removes all data stored in the current page.</li>
    * </ul>
    * @returns {boolean} <code>true</code> on successful clear
    */
@@ -2996,9 +2998,9 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Clear all module scope data.<br>
+   * Clears all module unit data.<br>
    * <ul>
-   *   <li>Remove all data stored for current module.</li>
+   *   <li>Removes all data stored in the current module.</li>
    * </ul>
    * @returns {boolean} <code>true</code> on successful clear
    */
@@ -3008,9 +3010,9 @@ const StorageUtil = /** @lends StorageUtil */ {
   },
 
   /**
-   * Clear system scope data.<br>
+   * Clears system unit data.<br>
    * <ul>
-   *   <li>Remove all data stored for system sharing.</li>
+   *   <li>Removes all data stored as system-wide shared data.</li>
    * </ul>
    * @returns {boolean} <code>true</code> on successful clear
    */
@@ -3021,14 +3023,14 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * Clear all data with specified prefix.
+   * Clears all data with specified prefix.
    * @param {string} prefix Prefix
    * @returns {boolean} <code>true</code> on successful clear
    */
   _clear: function(prefix) {
     let count = 0;
     try {
-      // Check all keys in sessionStorage
+      // Checks all keys in sessionStorage
       for (let i = (sessionStorage.length - 1); i >= 0; i--) {
         const key = sessionStorage.key(i);
         if (!ValUtil.isNull(key) && key.startsWith(prefix)) {
@@ -3046,9 +3048,9 @@ const StorageUtil = /** @lends StorageUtil */ {
 
   /**
    * @private
-   * For debugging: Display all stored data.<br>
+   * For debugging: Displays all stored data.<br>
    * <ul>
-   *   <li>Display all currently stored data to console.</li>
+   *   <li>Displays all currently stored data to the console.</li>
    *   <li>Use only for development and debugging purposes.</li>
    * </ul>
    */

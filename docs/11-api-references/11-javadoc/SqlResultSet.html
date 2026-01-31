@@ -26,10 +26,10 @@
         <div>SQL result set wrapper class.
 
 <ul>
-<li>A wrapper class for <code>ResultSet</code> that provides an iterator and handles closing of statement and result set.</li>
-<li>Through this class, data can only be retrieved via the iterator.</li>
-<li>Declare in try clause (try-with-resources statement).</li>
-<li>The column physical names in the row map obtained from this class's iterator are lowercase letters. (Keys of <code>IoItems</code>)</li>
+<li>A wrapper class for the result set <code>ResultSet</code> that provides an iterator and handles closing of the statement and result set.</li>
+<li>By using this class, data can only be retrieved through the iterator.</li>
+<li>Declare in a try clause (try-with-resources statement).</li>
+<li>The physical field names in the row map retrieved from the iterator of this class are in lowercase English letters. (<code>IoItems</code> keys)</li>
 </ul>
 </div>
       </div>
@@ -62,7 +62,7 @@
           <code>public void close()</code>
         </div>
         <div class="method-description">
-          Closes resources.<br>
+          Closes the result set and statement.<br>
 <ul>
 <li>Closes the result set and statement.</li>
 </ul>
@@ -76,9 +76,9 @@
           <code>public boolean isExists()</code>
         </div>
         <div class="method-description">
-          Checks if data exists (matches found for database extraction criteria).<br>
+          Checks if data exists (matches database retrieval conditions).<br>
 <ul>
-<li>On DB2, <code>#isBeforeFirst</code> (with TYPE_FORWARD_ONLY) causes an error.</li>
+<li>In DB2, #isBeforeFirst (with TYPE_FORWARD_ONLY) causes an error.</li>
 </ul>
 
         </div>
@@ -93,9 +93,9 @@
           <code>public int getReadedCount()</code>
         </div>
         <div class="method-description">
-          Gets the number of rows read (not the number of rows matching database extraction criteria).<br>
+          Retrieves the number of rows read (not the count matching database retrieval conditions).<br>
 <ul>
-<li>Returns the number of rows read via the iterator.</li>
+<li>Returns the count read by the iterator.</li>
 </ul>
 
         </div>
@@ -110,7 +110,7 @@
           <code>public boolean isReadedEndRow()</code>
         </div>
         <div class="method-description">
-          Checks if the last row has been read.
+          Determines if the last row has been read.
 
         </div>
         <div class="method-returns">
@@ -124,7 +124,7 @@
           <code>public String[] getItemNames()</code>
         </div>
         <div class="method-description">
-          Gets the database column names.
+          Retrieves database column names.
 
         </div>
         <div class="method-returns">
@@ -138,16 +138,16 @@
           <code>public boolean hasNext()</code>
         </div>
         <div class="method-description">
-          Checks for next row.<br>
+          Checks if the next row exists.<br>
 <ul>
-<li>Closes the result set and statement if no next row exists, in case try clause was not used.</li>
+<li>Closes the result set and statement if the next row does not exist, in case the try clause was not used.</li>
 <li>Does not recheck on consecutive hasNext() calls.</li>
 </ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if next row exists</p>
+          <p><code>boolean</code> - <code>true</code> if the next row exists</p>
         </div>
       </div>
       <div class="method" id="next">
@@ -156,7 +156,7 @@
           <code>public IoItems next()</code>
         </div>
         <div class="method-description">
-          Gets the next row.
+          Retrieves the next row.
 
         </div>
         <div class="method-returns">

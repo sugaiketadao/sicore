@@ -5,16 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * JSON map key-value separation parser.
+ * JSON map key-value separate parser.
  * @hidden
  */
 final class JsonMapKeyValueSeparateParser extends AbstractStringSeparateParser {
 
   /**
-   * Returns the key-value array.
+   * Gets the key-value array.
    *
-   * @param jsonItem the JSON item string
-   * @return the string array {key, value}; returns <code>null</code> for invalid values (nullable)
+   * @param jsonItem JSON item string
+   * @return character array {key, value}. Returns <code>null</code> if the value is invalid (may contain <code>null</code>)
    */
   static String[] getKeyValue(final String jsonItem) {
     // Separates key and value by colon
@@ -39,27 +39,27 @@ final class JsonMapKeyValueSeparateParser extends AbstractStringSeparateParser {
   /**
    * Constructor.
    *
-   * @param jsonItem the JSON item string
+   * @param jsonItem JSON item string
    */
   private JsonMapKeyValueSeparateParser(final String jsonItem) {
     super(jsonItem);
   }
 
   /**
-   * Finds begin-end positions for separation.
+   * Searches for separation start and end positions.<br>
    * <ul>
-   * <li>Separates at colon positions that are not enclosed in double quotes (unescaped).</li>
-   * <li>Returns only the first colon position.</li>
+   * <li>Separates at colon locations not enclosed in double quotations (without escape).</li>
+   * <li>Returns only the first colon location.</li>
    * </ul>
    *
-   * @param value the target string
-   * @return the list of begin-end positions
+   * @param value target string
+   * @return list of start and end positions
    */
   @Override
   protected List<int[]> findBeginEnds(final String value) {
     final List<int[]> idxs = new ArrayList<>();
     if (ValUtil.isBlank(value)) {
-      // Empty case
+      // If blank
       return idxs;
     }
 
@@ -92,20 +92,20 @@ final class JsonMapKeyValueSeparateParser extends AbstractStringSeparateParser {
         if (isPreEsc(value, i)) {
           continue;
         }
-        // Only when not escaped
-        // Toggle within double quotes
+        // Only if not escaped
+        // Toggles inside double quotations
         inDq = !inDq;
         continue;
       }
       if (inDq) {
-        // Ignores within double quotes
+        // Ignores inside double quotations
         continue;
       }
 
       if (c == ':') {
-        // Stores as key end position at colon
+        // If colon, stores it as the key end position
         trimDqPosAdd(idxs, beginPos, endPos, value);
-        // Next begin position
+        // Next start position
         beginPos = i + 1;
         endPos = beginPos;
         notBlank = false;

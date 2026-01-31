@@ -52,14 +52,14 @@
               <tr>
                 <td><code>cls</code></td>
                 <td><code>Class&lt;?&gt;</code></td>
-                <td>the target class for logging</td>
+                <td>log target class</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>LogWriter</code> - the log writer instance</p>
+          <p><code>LogWriter</code> - log writer instance</p>
         </div>
       </div>
       <div class="method" id="newLogWriter">
@@ -85,19 +85,19 @@
               <tr>
                 <td><code>cls</code></td>
                 <td><code>Class&lt;?&gt;</code></td>
-                <td>the target class for logging</td>
+                <td>log target class</td>
               </tr>
               <tr>
                 <td><code>traceCode</code></td>
                 <td><code>String</code></td>
-                <td>the trace code</td>
+                <td>trace code</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>LogWriter</code> - the log writer instance</p>
+          <p><code>LogWriter</code> - log writer instance</p>
         </div>
       </div>
       <div class="method" id="stdout">
@@ -123,7 +123,7 @@
               <tr>
                 <td><code>msgs</code></td>
                 <td><code>String...</code></td>
-                <td>the messages</td>
+                <td>messages</td>
               </tr>
             </tbody>
           </table>
@@ -152,12 +152,12 @@
               <tr>
                 <td><code>e</code></td>
                 <td><code>Throwable</code></td>
-                <td>the error object</td>
+                <td>error object</td>
               </tr>
               <tr>
                 <td><code>msgs</code></td>
                 <td><code>String...</code></td>
-                <td>the messages</td>
+                <td>messages</td>
               </tr>
             </tbody>
           </table>
@@ -179,12 +179,11 @@
           <code>public boolean isDevelopMode()</code>
         </div>
         <div class="method-description">
-          Returns whether develop mode is enabled.
-
+          Checks development mode.
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if develop mode is enabled</p>
+          <p><code>boolean</code> - <code>true</code> if in development mode</p>
         </div>
       </div>
       <div class="method" id="getStackTrace">
@@ -193,9 +192,9 @@
           <code>public String getStackTrace(String lineSep, Throwable e)</code>
         </div>
         <div class="method-description">
-          Returns the stack trace of the error object.
+          Gets the stack trace of an error object.<br>
 <ul>
-<li>Stops retrieving stack trace if <code>BreakException</code> is encountered.</li>
+<li>Stops getting stack trace if it is <code>BreakException</code>.</li>
 </ul>
 
         </div>
@@ -213,19 +212,19 @@
               <tr>
                 <td><code>lineSep</code></td>
                 <td><code>String</code></td>
-                <td>the line separator</td>
+                <td>line separator</td>
               </tr>
               <tr>
                 <td><code>e</code></td>
                 <td><code>Throwable</code></td>
-                <td>the error object</td>
+                <td>error object</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the stack trace</p>
+          <p><code>String</code> - stack trace</p>
         </div>
       </div>
       <div class="method" id="joinKeyVal">
@@ -234,10 +233,10 @@
           <code>public String joinKeyVal(Object... keyVal)</code>
         </div>
         <div class="method-description">
-          Concatenates key-value strings.
+          Joins key-value strings.<br>
 <ul>
-<li>Creates a log string by concatenating in the format "key=value, key=value, key=value,...".</li>
-<li>If the value is an array, list, or map, calls the respective concatenation method.</li>
+<li>Joins in the format "key=value, key=value, key=value,..." to create a log string.</li>
+<li>If the value is an array, list, or map, calls the respective join method to join them.</li>
 </ul>
 
         </div>
@@ -255,14 +254,14 @@
               <tr>
                 <td><code>keyVal</code></td>
                 <td><code>Object...</code></td>
-                <td>the key-values (key, value, key, value, key, value,...)</td>
+                <td>key-value pairs (key, value, key, value, key, value,...)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the concatenated string in "key=value, key=value, key=value" format</p>
+          <p><code>String</code> - joined string in the format "key=value, key=value, key=value"</p>
         </div>
       </div>
       <div class="method" id="joinValues">
@@ -271,9 +270,9 @@
           <code>public String joinValues(String... values)</code>
         </div>
         <div class="method-description">
-          Concatenates values.
+          Joins values.<br>
 <ul>
-<li>Creates a log string by concatenating in the format "value, value,...".</li>
+<li>Joins in the format "value, value,... " to create a log string.</li>
 </ul>
 
         </div>
@@ -291,14 +290,14 @@
               <tr>
                 <td><code>values</code></td>
                 <td><code>String...</code></td>
-                <td>the values to concatenate</td>
+                <td>values to join</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the string in "value, value, value, value" format</p>
+          <p><code>String</code> - string in the format "value, value, value, value"</p>
         </div>
       </div>
       <div class="method" id="join">
@@ -307,9 +306,9 @@
           <code>public String join(String[] values)</code>
         </div>
         <div class="method-description">
-          Concatenates array values.
+          Joins array values.<br>
 <ul>
-<li>Creates a log string by concatenating in the format "[value, value,...]".</li>
+<li>Joins in the format " [value, value,...] " to create a log string.</li>
 </ul>
 
         </div>
@@ -327,14 +326,14 @@
               <tr>
                 <td><code>values</code></td>
                 <td><code>String[]</code></td>
-                <td>the values to concatenate</td>
+                <td>values to join</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the string in "[value, value, value, value]" format</p>
+          <p><code>String</code> - string in the format "[value, value, value, value]"</p>
         </div>
       </div>
       <div class="method" id="join">
@@ -343,9 +342,9 @@
           <code>public String join(List&lt;?&gt; values)</code>
         </div>
         <div class="method-description">
-          Concatenates list values.
+          Joins list values.<br>
 <ul>
-<li>Creates a log string by concatenating values in the list in the format "[value, value,...]".</li>
+<li>Joins values in the list in the format " [value, value,...] " to create a log string.</li>
 </ul>
 
         </div>
@@ -363,14 +362,14 @@
               <tr>
                 <td><code>values</code></td>
                 <td><code>List&lt;?&gt;</code></td>
-                <td>the list to concatenate</td>
+                <td>list to join</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the string in "[value, value, value, value]" format</p>
+          <p><code>String</code> - string in the format "[value, value, value, value]"</p>
         </div>
       </div>
       <div class="method" id="join">
@@ -379,9 +378,9 @@
           <code>public String join(Map&lt;String, T&gt; map)</code>
         </div>
         <div class="method-description">
-          Concatenates map key-values.
+          Joins map key-value pairs.<br>
 <ul>
-<li>Creates a log string by concatenating keys and values in the map in the format "{key=value, key=value, key=value,...}".</li>
+<li>Joins keys and values in the map in the format " {key=value, key=value, key=value,...} " to create a log string.</li>
 </ul>
 
         </div>
@@ -399,14 +398,14 @@
               <tr>
                 <td><code>map</code></td>
                 <td><code>Map&lt;String, T&gt;</code></td>
-                <td>the map to concatenate</td>
+                <td>map to join</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the string in "{key=value, key=value, key=value}" format</p>
+          <p><code>String</code> - string in the format "{key=value, key=value, key=value}"</p>
         </div>
       </div>
       <div class="method" id="replaceNullValue">
@@ -415,10 +414,8 @@
           <code>public String replaceNullValue(String value)</code>
         </div>
         <div class="method-description">
-          Replaces <code>null</code>.
-<p>
-Returns a replacement character for log if the value is <code>null</code>.
-</p>
+          Replaces <code>null</code>.<br>
+If the value is <code>null</code>, returns the replacement character for logging.
 
         </div>
         <div class="method-parameters">
@@ -435,14 +432,14 @@ Returns a replacement character for log if the value is <code>null</code>.
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>the value; replacement character if <code>null</code></td>
+                <td>replacement character if <code>null</code></td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the value as is if not <code>null</code>; replacement character if <code>null</code></p>
+          <p><code>String</code> - the value as is if not <code>null</code>, replacement character if <code>null</code></p>
         </div>
       </div>
       <div class="method" id="formatDaysTime">
@@ -451,10 +448,10 @@ Returns a replacement character for log if the value is <code>null</code>.
           <code>public String formatDaysTime(long msec)</code>
         </div>
         <div class="method-description">
-          Formats date and time.
+          Formats date-time.<br>
 <ul>
-<li>Converts milliseconds to a human-readable format (days, hours, minutes, seconds, milliseconds).</li>
-<li>Example: "11T03:15:30.123", "0T00:00:00.000"</li>
+<li>Converts milliseconds to readable format (days, hours, minutes, seconds, milliseconds).</li>
+<li>Example: "11T03:15:30.123", "0T01:00:00.000"</li>
 </ul>
 
         </div>
@@ -472,14 +469,14 @@ Returns a replacement character for log if the value is <code>null</code>.
               <tr>
                 <td><code>msec</code></td>
                 <td><code>long</code></td>
-                <td>the milliseconds</td>
+                <td>milliseconds</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the formatted uptime</p>
+          <p><code>String</code> - formatted uptime</p>
         </div>
       </div>
       <div class="method" id="getClassNameAndLineNo">
@@ -488,9 +485,9 @@ Returns a replacement character for log if the value is <code>null</code>.
           <code>public String getClassNameAndLineNo(Class&lt;?&gt; callerClass)</code>
         </div>
         <div class="method-description">
-          Retrieves caller information.
+          Gets caller information.
 <ul>
-<li>Retrieves the class package + class name + line number of the caller from the stack trace.</li>
+<li>Gets the class package + class name + line number of the caller from the stack trace.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -507,14 +504,14 @@ Returns a replacement character for log if the value is <code>null</code>.
               <tr>
                 <td><code>callerClass</code></td>
                 <td><code>Class&lt;?&gt;</code></td>
-                <td>the caller class</td>
+                <td>caller class</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the class package + class name + line number</p>
+          <p><code>String</code> - class package + class name + line number</p>
         </div>
       </div>
     </div>

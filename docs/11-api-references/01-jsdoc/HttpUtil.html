@@ -22,7 +22,7 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>HTTP operation utility class.
+        <div>HTTP manipulation utility class.
 </div>
       </div>
     </div>
@@ -34,11 +34,11 @@
           <code>convUrlParam(obj)</code>
         </div>
         <div class="method-description">
-          Convert associative array to URL parameters.<br>
+          Object to URL parameter conversion.<br>
 <ul>
 <li><pre>[Example]
-     For <code>params = {p1: 'aaa', p2: 'bbb'}</code>,
-     convert to <code>p1=aaa&p2=bbb</code>.</pre></li>
+     If <code>params = {p1: 'aaa', p2: 'bbb'}</code>,
+     converts to <code>p1=aaa&p2=bbb</code>.</pre></li>
 </ul>
 
         </div>
@@ -56,14 +56,14 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object.&lt;string,string&gt;</code></td>
-                <td>Associative array</td>
+                <td>the object</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - URL parameter string</p>
+          <p><code>string</code> - the URL parameter string</p>
         </div>
       </div>
       <div class="method">
@@ -72,16 +72,16 @@
           <code>getUrlParams()</code>
         </div>
         <div class="method-description">
-          URL parameter retrieval.<br>
+          Gets URL parameters.<br>
 <ul>
-  <li>Retrieves the portion after ? in the URL as an associative array.</li>
+  <li>Gets everything after the ? in the URL as an object.</li>
   <li>[Example] For "a=01&b=02", returns <code>{a:'01', b:'02'}</code>.</li>
   <li>Parameters are removed after retrieval.</li>
 </ul>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>Object</code> - URL parameter associative array</p>
+          <p><code>Object</code> - the URL parameter object</p>
         </div>
       </div>
       <div class="method">
@@ -92,10 +92,10 @@
         <div class="method-description">
           Page navigation.<br>
 <ul>
-<li>Navigates to the specified URL (retrieves HTML file).</li>
-<li>Appends parameters to the URL after ? if specified.</li>
+<li>Navigates to the specified URL. (Retrieves HTML file)</li>
+<li>If parameters are specified, appends them after the ? in the URL.</li>
 <li><pre>[Example]
-     When <code>url = 'editpage.html', params = {user_id: 'U001', upd_ts: '20251231T245959001000'}</code>,
+     If <code>url = 'editpage.html', params = {user_id: 'U001', upd_ts: '20251231T245959001000'}</code>,
      accesses <code>editpage.html?user_id=U001&upd_ts=20251231T245959001000</code>.</pre></li>
 </ul>
 
@@ -114,12 +114,12 @@
               <tr>
                 <td><code>url</code></td>
                 <td><code>string</code></td>
-                <td>Navigation destination URL</td>
+                <td>the destination URL</td>
               </tr>
               <tr>
                 <td><code>[params]</code></td>
                 <td><code>Object.&lt;string, string&gt;|string</code></td>
-                <td>Parameters (string also allowed) (optional)</td>
+                <td>the parameters (strings are also allowed) (optional)</td>
               </tr>
             </tbody>
           </table>

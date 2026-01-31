@@ -23,14 +23,14 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>Log writer class.
+        <div>Log writer class.<br>
 <ul>
 <li>Accepts log output from individual processes.</li>
-<li>Handles formatting of log text.</li>
-<li>Gets text writer instance from log text handler <code>LogTxtHandler</code> and outputs logs.</li>
-<li>Holds two log text handlers: one for info and one for errors.</li>
-<li>Outputs logs to console as well in develop mode.</li>
-<li>Log text opening and closing is handled by log text handler; this class does not open or close.</li>
+<li>Handles log text formatting.</li>
+<li>Gets text writer instances from log text handler <code>LogTxtHandler</code> to output logs.</li>
+<li>Holds two log text handlers for information and error.</li>
+<li>Outputs logs to console in development mode.</li>
+<li>Opening and closing of log text is handled by the log text handler, not by this class.</li>
 </ul>
 </div>
       </div>
@@ -43,7 +43,7 @@
           <code>public void flush()</code>
         </div>
         <div class="method-description">
-          Flushes the log writers.
+          Flushes.
   
         </div>
       </div>
@@ -53,7 +53,7 @@
           <code>public void error(Throwable e, String msg)</code>
         </div>
         <div class="method-description">
-          Outputs an error.
+          Outputs error.
 
         </div>
         <div class="method-parameters">
@@ -70,12 +70,12 @@
               <tr>
                 <td><code>e</code></td>
                 <td><code>Throwable</code></td>
-                <td>the error instance</td>
+                <td>error instance</td>
               </tr>
               <tr>
                 <td><code>msg</code></td>
                 <td><code>String</code></td>
-                <td>the log message</td>
+                <td>log output message</td>
               </tr>
             </tbody>
           </table>
@@ -87,7 +87,7 @@
           <code>public void error(Throwable e)</code>
         </div>
         <div class="method-description">
-          Outputs an error.
+          Outputs error.
 
         </div>
         <div class="method-parameters">
@@ -104,7 +104,7 @@
               <tr>
                 <td><code>e</code></td>
                 <td><code>Throwable</code></td>
-                <td>the error instance</td>
+                <td>error instance</td>
               </tr>
             </tbody>
           </table>
@@ -116,7 +116,7 @@
           <code>public void error(String msg)</code>
         </div>
         <div class="method-description">
-          Outputs an error.
+          Outputs error.
 
         </div>
         <div class="method-parameters">
@@ -133,7 +133,7 @@
               <tr>
                 <td><code>msg</code></td>
                 <td><code>String</code></td>
-                <td>the log message</td>
+                <td>log output message</td>
               </tr>
             </tbody>
           </table>
@@ -145,7 +145,7 @@
           <code>public void info(String msg)</code>
         </div>
         <div class="method-description">
-          Outputs info.
+          Outputs information.
 
         </div>
         <div class="method-parameters">
@@ -162,7 +162,7 @@
               <tr>
                 <td><code>msg</code></td>
                 <td><code>String</code></td>
-                <td>the log message</td>
+                <td>log output message</td>
               </tr>
             </tbody>
           </table>
@@ -174,7 +174,8 @@
           <code>public void begin()</code>
         </div>
         <div class="method-description">
-          Outputs begin info.
+          Outputs start information.
+
   
         </div>
       </div>
@@ -184,7 +185,8 @@
           <code>public void end()</code>
         </div>
         <div class="method-description">
-          Outputs end info.
+          Outputs end information.
+
   
         </div>
       </div>
@@ -194,8 +196,7 @@
           <code>public void end(int exitStatus)</code>
         </div>
         <div class="method-description">
-          Outputs end info.
-
+          Outputs end information.
         </div>
         <div class="method-parameters">
           <h4>Parameters</h4>
@@ -211,7 +212,7 @@
               <tr>
                 <td><code>exitStatus</code></td>
                 <td><code>int</code></td>
-                <td>the exit status</td>
+                <td>exit status</td>
               </tr>
             </tbody>
           </table>
@@ -240,7 +241,7 @@
               <tr>
                 <td><code>msg</code></td>
                 <td><code>String</code></td>
-                <td>the log message</td>
+                <td>log output message</td>
               </tr>
             </tbody>
           </table>
@@ -252,12 +253,12 @@
           <code>public boolean isDevelopMode()</code>
         </div>
         <div class="method-description">
-          Returns whether develop mode is enabled.
+          Checks development mode.
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if develop log is enabled</p>
+          <p><code>boolean</code> - <code>true</code> if development log is enabled</p>
         </div>
       </div>
       <div class="method" id="startWatch">

@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * File operation utility class.
+ * File operations utility class.
  */
 public final class FileUtil {
 
-  /** Date-time formatter: timestamp for file. */
+  /** Date-time formatter: timestamp for files. */
   private static final DateTimeFormatter DTF_FILE_TIMESTAMP =
       DateTimeFormatter.ofPattern("uuuuMMdd'T'HHmmss").withResolverStyle(ResolverStyle.STRICT);
 
@@ -46,11 +46,11 @@ public final class FileUtil {
   /**
    * Joins file paths.<br>
    * <ul>
-   * <li>If blank is passed as the last argument, returns a path ending with / or backslash.</li>
-   * <li>The separator will be the OS-appropriate character.</li>
+   * <li>Passing blank at the end of arguments returns a path ending with / or \.</li>
+   * <li>The separator is the OS-appropriate character.</li>
    * </ul>
    *
-   * @param paths the file paths (multiple)
+   * @param paths file paths (multiple specification)
    * @return the file path
    */
   public static String joinPath(final String... paths) {
@@ -74,10 +74,10 @@ public final class FileUtil {
   /**
    * Converts to OS path.<br>
    * <ul>
-   * <li>Replaces separators with OS-appropriate characters.</li>
+   * <li>The separator is replaced with the OS-appropriate character.</li>
    * </ul>
    *
-   * @param path the file path
+   * @param path file path
    * @return the file path
    */
   public static String convOsPath(final String path) {
@@ -87,11 +87,11 @@ public final class FileUtil {
   /**
    * Converts to absolute path.<br>
    * <ul>
-   * <li>Converts relative paths to absolute paths.</li>
-   * <li>Replaces separators with OS-appropriate characters.</li>
+   * <li>Relative paths are converted to absolute paths.</li>
+   * <li>The separator is replaced with the OS-appropriate character.</li>
    * </ul>
    *
-   * @param path the relative path
+   * @param path relative path
    * @return the absolute path
    */
   public static String convAbsolutePath(final String path) {
@@ -106,7 +106,7 @@ public final class FileUtil {
       }
       if ("..".equals(paths[i])) {
         if (i == 1) {
-          // Skip if next to root since there is no parent
+          // ルートの次の場合は親が無いのでスキップ
           continue;
         }
         ret = (new File(ret)).getParentFile().getPath();
@@ -118,9 +118,9 @@ public final class FileUtil {
   }
 
   /**
-   * Checks if file exists (directories also accepted).
+   * Checks if a file exists (directories are also acceptable).
    *
-   * @param checkPath the path to check
+   * @param checkPath path to check
    * @return <code>true</code> if exists
    */
   public static boolean exists(final String checkPath) {
@@ -129,9 +129,9 @@ public final class FileUtil {
   }
 
   /**
-   * Checks if parent directory exists (directories also accepted).
+   * Checks if the parent directory exists (directories are also acceptable).
    *
-   * @param checkPath the path to check
+   * @param checkPath path to check
    * @return <code>true</code> if exists
    */
   public static boolean existsParent(final String checkPath) {
@@ -143,9 +143,9 @@ public final class FileUtil {
   }
 
   /**
-   * Retrieves file name from full path (directories also accepted).
+   * Retrieves the file name from the full path (directories are also acceptable).
    *
-   * @param fullPath the full path
+   * @param fullPath full path
    * @return the file name only
    */
   public static String getFileName(final String fullPath) {
@@ -153,9 +153,9 @@ public final class FileUtil {
   }
 
   /**
-   * Retrieves parent directory path from full path (directories also accepted).
+   * Retrieves the parent directory path from the full path (directories are also acceptable).
    *
-   * @param fullPath the full path
+   * @param fullPath full path
    * @return the parent directory path
    */
   public static String getParentPath(final String fullPath) {
@@ -163,9 +163,9 @@ public final class FileUtil {
   }
 
   /**
-   * Retrieves file modified date-time.
+   * Retrieves the file modified date-time.
    *
-   * @param fullPath the full path
+   * @param fullPath full path
    * @return the file modified date-time (yyyyMMddHHmmss)
    */
   public static String getFileModifiedDateTime(final String fullPath) {
@@ -180,7 +180,7 @@ public final class FileUtil {
   /**
    * Splits file name or full path into extension and the rest.
    *
-   * @param fileName the file name or full path
+   * @param fileName file name or full path
    * @return the string array {part before extension, extension} (neither includes the dot)
    */
   public static String[] splitFileTypeMark(final String fileName) {
@@ -188,7 +188,7 @@ public final class FileUtil {
     final String[] ret = new String[2];
 
     if (markIdx <= 0) {
-      // Return without extension if no extension or file name starts with dot.
+      // Files without extension or starting with a dot are returned without extension.
       ret[0] = fileName;
       ret[1] = ValUtil.BLANK;
       return ret;
@@ -199,18 +199,18 @@ public final class FileUtil {
   }
 
   /**
-   * Retrieves file path (absolute path) list.<br>
+   * Retrieves the file path (absolute path) list.<br>
    * <ul>
    * <li>File name and extension search strings are case-insensitive.</li>
    * </ul>
    *
-   * @param dirPath     the target directory path
-   * @param typeMark    the search extension (optional) <code>null</code> if omitted, dot character not required
-   * @param prefixMatch the search file name prefix match (optional) <code>null</code> if omitted
-   * @param middleMatch the search file name middle match (optional) <code>null</code> if omitted
-   * @param suffixMatch the search file name suffix match (optional) <code>null</code> if omitted
+   * @param dirPath     target directory path
+   * @param typeMark    search extension (optional) <code>null</code> if omitted ※ dot character not required
+   * @param prefixMatch search file name prefix match (optional) <code>null</code> if omitted
+   * @param middleMatch search file name middle match (optional) <code>null</code> if omitted
+   * @param suffixMatch search file name suffix match (optional) <code>null</code> if omitted
    * @return the file path (absolute path) list
-   * @throws RuntimeException if directory does not exist
+   * @throws RuntimeException if the directory does not exist
    */
   public static List<String> getFileList(final String dirPath, final String typeMark,
       final String prefixMatch, final String middleMatch, final String suffixMatch) {
@@ -237,22 +237,22 @@ public final class FileUtil {
           names[0] = names[0].toLowerCase();
           names[1] = names[1].toLowerCase();
           if (!ValUtil.isBlank(typeMarkL) && !names[1].equals(typeMarkL)) {
-            // Extension does not match
+            // 拡張子 一致しない
             return false;
           }
           if (!ValUtil.isBlank(prefixMatchL) && !names[0].startsWith(prefixMatchL)) {
-            // File name prefix does not match
+            // ファイル名 前方一致しない
             return false;
           }
           if (!ValUtil.isBlank(middleMatchL) && !names[0].contains(middleMatchL)) {
-            // File name middle does not match
+            // ファイル名 中間一致しない
             return false;
           }
           if (!ValUtil.isBlank(suffixMatchL) && !names[0].endsWith(suffixMatchL)) {
-            // File name suffix does not match
+            // ファイル名 後方一致しない
             return false;
           }
-          // Matches specified conditions
+          // 指定された条件に一致する
           return true;
         }
       };
@@ -273,8 +273,8 @@ public final class FileUtil {
    * Moves a file.
    *
    * @see #move(File, File)
-   * @param srcFilePath the source file path
-   * @param destFilePath the destination file path (directory can be specified)
+   * @param srcFilePath source file path
+   * @param destFilePath destination file path (directory specification allowed)
    * @return the destination file object
    */
   public static File move(final String srcFilePath, final String destFilePath) {
@@ -284,13 +284,13 @@ public final class FileUtil {
   /**
    * Moves a file.<br>
    * <ul>
-   * <li>If the destination is a directory, the file name will be the same as the source.</li>
+   * <li>If the destination is a directory specification, the file name will be the same as the source.</li>
    * </ul>
    *
-   * @param srcFile the source file
-   * @param destFile the destination file (directory can be specified)
+   * @param srcFile source file
+   * @param destFile destination file (directory specification allowed)
    * @return the destination file object
-   * @throws IllegalArgumentException if destination file already exists
+   * @throws IllegalArgumentException if the destination file already exists
    * @throws IllegalStateException if file move fails
    */
   public static File move(final File srcFile, final File destFile) {
@@ -314,8 +314,8 @@ public final class FileUtil {
    * Copies a file.
    *
    * @see #copy(File, File)
-   * @param srcFilePath the source file path
-   * @param destFilePath the destination file path (directory can be specified)
+   * @param srcFilePath source file path
+   * @param destFilePath destination file path (directory specification allowed)
    * @return the destination file object
    */
   public static File copy(final String srcFilePath, final String destFilePath) {
@@ -325,13 +325,13 @@ public final class FileUtil {
   /**
    * Copies a file.<br>
    * <ul>
-   * <li>If the destination is a directory, the file name will be the same as the source.</li>
+   * <li>If the destination is a directory specification, the file name will be the same as the source.</li>
    * </ul>
    *
-   * @param srcFile the source file
-   * @param destFile the destination file (directory can be specified)
+   * @param srcFile source file
+   * @param destFile destination file (directory specification allowed)
    * @return the destination file object
-   * @throws IllegalArgumentException if destination file already exists
+   * @throws IllegalArgumentException if the destination file already exists
    * @throws IllegalStateException if file copy fails
    */
   public static File copy(final File srcFile, final File destFile) {
@@ -352,7 +352,7 @@ public final class FileUtil {
   }
 
   /**
-   * Resolves the destination path for move or copy.
+   * Resolves the move/copy destination path.
    */
   private static Path resolveDestinationPath(final File srcFile, final File destFile) {
     if (destFile.isDirectory()) {
@@ -365,11 +365,11 @@ public final class FileUtil {
   /**
    * Deletes a file.<br>
    * <ul>
-   * <li>Returns <code>false</code> if file does not exist.</li>
+   * <li>Returns <code>false</code> if the file does not exist.</li>
    * </ul>
    *
-   * @param deleteFilePath the delete file path
-   * @return <code>false</code> if file does not exist
+   * @param deleteFilePath file path to delete
+   * @return <code>false</code> if the file does not exist
    * @throws IllegalStateException if file deletion fails
    */
   public static boolean delete(final String deleteFilePath) {
@@ -390,8 +390,8 @@ public final class FileUtil {
    * Deletes a file.
    *
    * @see #delete(String)
-   * @param deleteFile the delete file
-   * @return <code>false</code> if file does not exist
+   * @param deleteFile file to delete
+   * @return <code>false</code> if the file does not exist
    */
   public static boolean delete(final File deleteFile) {
     return delete(deleteFile.getAbsolutePath());
@@ -400,8 +400,8 @@ public final class FileUtil {
   /**
    * Creates a directory.
    *
-   * @param dirPath the directory path
-   * @return <code>false</code> if already exists
+   * @param dirPath directory path
+   * @return <code>false</code> if it already exists
    * @throws IllegalStateException if directory creation fails
    */
   public static boolean makeDir(final String dirPath) {
@@ -410,7 +410,7 @@ public final class FileUtil {
       return false;
     }
     try {
-      // Create parent directories if they do not exist
+      // 無ければ親ディレクトリも作成する
       Files.createDirectories(path);
     } catch (IOException e) {
       throw new RuntimeException("Exception error occurred in directory creation. " + LogUtil.joinKeyVal("path", dirPath),

@@ -22,7 +22,7 @@
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>Value operation utility class.</div>
+        <div>Value manipulation utility class.</div>
       </div>
     </div>
     <div class="section">
@@ -35,7 +35,7 @@
         <div class="method-description">
           <code>null</code> check.<br>
 <ul>
-<li>Checks if the Object is <code>null</code>.</li>
+<li>Checks whether the Object is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -53,7 +53,7 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object</code></td>
-                <td>Target to check</td>
+                <td>the target object to check</td>
               </tr>
             </tbody>
           </table>
@@ -71,7 +71,7 @@
         <div class="method-description">
           Blank check.<br>
 <ul>
-<li>Checks if the string is spaces only, zero length, or <code>null</code>.</li>
+<li>Checks whether the string is spaces only, zero length, or <code>null</code>.</li>
 </ul>
 
         </div>
@@ -89,7 +89,7 @@
               <tr>
                 <td><code>str</code></td>
                 <td><code>string</code></td>
-                <td>Target to check</td>
+                <td>the target string to check</td>
               </tr>
             </tbody>
           </table>
@@ -105,9 +105,9 @@
           <code>nvl(value, rep)</code>
         </div>
         <div class="method-description">
-          <code>null</code> blank replacement.<br>
+          <code>null</code> to blank replacement.<br>
 <ul>
-<li>Returns blank or replacement string if the string is <code>null</code>.</li>
+<li>Returns blank or replacement string if the value is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -125,19 +125,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Target to check</td>
+                <td>the target value to check</td>
               </tr>
               <tr>
                 <td><code>[rep]</code></td>
                 <td><code>string</code></td>
-                <td>Replacement string (optional). Returns blank if omitted.</td>
+                <td>the replacement string (optional). Returns blank if omitted.</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - Blank or replacement string if <code>null</code></p>
+          <p><code>string</code> - the blank or replacement string if <code>null</code></p>
         </div>
       </div>
       <div class="method">
@@ -148,7 +148,7 @@
         <div class="method-description">
           Blank replacement.<br>
 <ul>
-<li>Returns replacement string if the string is blank.</li>
+<li>Returns the replacement string if the value is blank.</li>
 </ul>
 
         </div>
@@ -166,19 +166,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Target to check</td>
+                <td>the target value to check</td>
               </tr>
               <tr>
                 <td><code>rep</code></td>
                 <td><code>string</code></td>
-                <td>Replacement string</td>
+                <td>the replacement string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - Replacement string if blank</p>
+          <p><code>string</code> - the replacement string if blank</p>
         </div>
       </div>
       <div class="method">
@@ -187,7 +187,7 @@
           <code>substring(value, beginIndex, endIndex)</code>
         </div>
         <div class="method-description">
-          Safe string extraction.
+          Safe string substring.
 
         </div>
         <div class="method-parameters">
@@ -204,24 +204,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Target string</td>
+                <td>the target string</td>
               </tr>
               <tr>
                 <td><code>[beginIndex]</code></td>
                 <td><code>number</code></td>
-                <td>Start index (optional). Default is 0.</td>
+                <td>the start index (optional). Default is 0</td>
               </tr>
               <tr>
                 <td><code>[endIndex]</code></td>
                 <td><code>number</code></td>
-                <td>End index (optional). Default is string length.</td>
+                <td>the end index (optional). Default is the string length</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - Extracted string</p>
+          <p><code>string</code> - the extracted substring</p>
         </div>
       </div>
       <div class="method">
@@ -232,7 +232,7 @@
         <div class="method-description">
           String comparison.<br>
 <ul>
-<li>Compares <code>null</code> as empty string.</li>
+<li>Treats <code>null</code> as an empty string for comparison.</li>
 </ul>
 
         </div>
@@ -250,12 +250,12 @@
               <tr>
                 <td><code>val1</code></td>
                 <td><code>string</code></td>
-                <td>Comparison target 1</td>
+                <td>the first value to compare</td>
               </tr>
               <tr>
                 <td><code>val2</code></td>
                 <td><code>string</code></td>
-                <td>Comparison target 2</td>
+                <td>the second value to compare</td>
               </tr>
             </tbody>
           </table>
@@ -271,10 +271,10 @@
           <code>equalsObj(obj1, obj2, ignoreKeys)</code>
         </div>
         <div class="method-description">
-          Associative array comparison.<br>
+          Object comparison.<br>
 <ul>
-  <li>Compares values of keys that exist in both targets. Keys that exist in only one are excluded from comparison.</li>
-  <li>Determines "not equal" if either target is not an associative array.</li>
+  <li>Compares values of keys that exist in both objects, and excludes keys that exist in only one.</li>
+  <li>Returns "not equal" if either target is not an object.</li>
 </ul>
 
         </div>
@@ -292,17 +292,17 @@
               <tr>
                 <td><code>obj1</code></td>
                 <td><code>Object</code></td>
-                <td>Comparison target 1</td>
+                <td>the first object to compare</td>
               </tr>
               <tr>
                 <td><code>obj2</code></td>
                 <td><code>Object</code></td>
-                <td>Comparison target 2</td>
+                <td>the second object to compare</td>
               </tr>
               <tr>
                 <td><code>ignoreKeys</code></td>
                 <td><code>string</code></td>
-                <td>Keys to exclude from comparison (multiple allowed)</td>
+                <td>the keys to ignore (multiple keys can be specified)</td>
               </tr>
             </tbody>
           </table>
@@ -321,10 +321,10 @@
           Empty check.<br>
 <ul>
   <li>Returns <code>true</code> if <code>null</code> is passed.</li>
-  <li>Returns same result as isBlank() if a string is passed.</li>
-  <li>Checks if length is zero when an array is passed.</li>
-  <li>Checks if length is zero when HTML element collection result is passed.</li>
-  <li>Checks if key array length is zero when an associative array is passed.</li>
+  <li>Returns the same result as isBlank() if a string is passed.</li>
+  <li>Checks for zero length if an array is passed.</li>
+  <li>Checks for zero length if an HTML element collection is passed.</li>
+  <li>Checks for zero length of key array if an object is passed.</li>
 </ul>
 
         </div>
@@ -342,7 +342,7 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object</code></td>
-                <td>Target to check</td>
+                <td>the target object to check</td>
               </tr>
             </tbody>
           </table>
@@ -360,7 +360,7 @@
         <div class="method-description">
           Numeric check.<br>
 <ul>
-<li>Checks if the string is valid as a number.</li>
+<li>Checks whether the string is a valid number.</li>
 </ul>
 
         </div>
@@ -378,17 +378,17 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Target to check</td>
+                <td>the target value to check</td>
               </tr>
               <tr>
                 <td><code>[minusNg]</code></td>
                 <td><code>boolean</code></td>
-                <td><code>true</code> to disallow negative values (optional)</td>
+                <td><code>true</code> to reject negative values (optional)</td>
               </tr>
               <tr>
                 <td><code>[decNg]</code></td>
                 <td><code>boolean</code></td>
-                <td><code>true</code> to disallow decimals (optional)</td>
+                <td><code>true</code> to reject decimal values (optional)</td>
               </tr>
             </tbody>
           </table>
@@ -406,7 +406,7 @@
         <div class="method-description">
           Valid date check.<br>
 <ul>
-<li>Checks if the string is valid as a date.</li>
+<li>Checks whether the string is a valid date.</li>
 </ul>
 
         </div>
@@ -424,7 +424,7 @@
               <tr>
                 <td><code>yyyymmdd</code></td>
                 <td><code>string</code></td>
-                <td>Target to check (YYYYMMDD)</td>
+                <td>the target value to check (YYYYMMDD)</td>
               </tr>
             </tbody>
           </table>
@@ -442,14 +442,14 @@
         <div class="method-description">
           Boolean check.<br>
 <ul>
-<li>Checks if the string is a value considered as boolean "true".</li>
+<li>Checks whether the string is considered as boolean "true".</li>
 <li>Performs the following evaluation:
   <ol>
-    <li>"1", "true", "yes", "on" (all half-width) are <code>true</code>.</li>
-    <li><code>null</code> or blank is <code>false</code>; anything else not listed above is <code>false</code>.</li>
-    <li>Case insensitive.</li>
-    <li>Leading and trailing half-width blanks are ignored.</li>
-    <li>Boolean values are returned as is.</li>
+    <li>"1", "true", "yes", "on" (all single-byte characters) are <code>true</code>.</li>
+    <li><code>null</code>, blank, or any other values are <code>false</code>.</li>
+    <li>Case-insensitive.</li>
+    <li>Ignores leading and trailing spaces.</li>
+    <li>Returns boolean values as is.</li>
   </ol>
 </li>
 </ul>
@@ -469,7 +469,7 @@
               <tr>
                 <td><code>val</code></td>
                 <td><code>string|boolean</code></td>
-                <td>Target to check</td>
+                <td>the target value to check</td>
               </tr>
             </tbody>
           </table>
@@ -505,14 +505,14 @@
               <tr>
                 <td><code>yyyymmdd</code></td>
                 <td><code>string</code></td>
-                <td>Target to convert (YYYYMMDD)</td>
+                <td>the target value to convert (YYYYMMDD)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>Date</code> - Date object</p>
+          <p><code>Date</code> - the Date object</p>
         </div>
       </div>
       <div class="method">
@@ -541,14 +541,14 @@
               <tr>
                 <td><code>dateObj</code></td>
                 <td><code>Date</code></td>
-                <td>Target to convert</td>
+                <td>the target Date object to convert</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - Date string (YYYYMMDD)</p>
+          <p><code>string</code> - the date string (YYYYMMDD)</p>
         </div>
       </div>
       <div class="method">
@@ -574,7 +574,7 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object</code></td>
-                <td>Target to check</td>
+                <td>the target object to check</td>
               </tr>
             </tbody>
           </table>
@@ -590,7 +590,7 @@
           <code>isObj(obj)</code>
         </div>
         <div class="method-description">
-          Associative array check.
+          Object check.
 
         </div>
         <div class="method-parameters">
@@ -607,14 +607,14 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object</code></td>
-                <td>Target to check</td>
+                <td>the target object to check</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if associative array</p>
+          <p><code>boolean</code> - <code>true</code> if object</p>
         </div>
       </div>
       <div class="method">
@@ -640,24 +640,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Target</td>
+                <td>the target value to process</td>
               </tr>
               <tr>
                 <td><code>pad</code></td>
                 <td><code>string</code></td>
-                <td>Padding character</td>
+                <td>the character to pad with</td>
               </tr>
               <tr>
                 <td><code>len</code></td>
                 <td><code>number</code></td>
-                <td>Length after padding</td>
+                <td>the length after padding</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - String after left padding</p>
+          <p><code>string</code> - the left-padded string</p>
         </div>
       </div>
       <div class="method">
@@ -683,24 +683,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>string</code></td>
-                <td>Target</td>
+                <td>the target value to process</td>
               </tr>
               <tr>
                 <td><code>pad</code></td>
                 <td><code>string</code></td>
-                <td>Padding character</td>
+                <td>the character to pad with</td>
               </tr>
               <tr>
                 <td><code>len</code></td>
                 <td><code>number</code></td>
-                <td>Length after padding</td>
+                <td>the length after padding</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - String after right padding</p>
+          <p><code>string</code> - the right-padded string</p>
         </div>
       </div>
       <div class="method">
@@ -709,9 +709,9 @@
           <code>toType(obj)</code>
         </div>
         <div class="method-description">
-          Object type retrieval.<br>
+          Gets object type.<br>
 <ul>
-<li>Use when detailed type checking is needed since typeof returns 'object' for both <code>null</code> and arrays.</li>
+<li>Use this when detailed type checking is needed, since typeof returns 'object' for both <code>null</code> and arrays.</li>
 </ul>
 
         </div>
@@ -729,14 +729,14 @@
               <tr>
                 <td><code>obj</code></td>
                 <td><code>Object</code></td>
-                <td>Object</td>
+                <td>the object</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>string</code> - Type string: 'undefined', 'null', 'boolean', 'number', 'string', 'array', 'object', etc.</p>
+          <p><code>string</code> - the type string: 'undefined', 'null', 'boolean', 'number', 'string', 'array', 'object', etc.</p>
         </div>
       </div>
     </div>

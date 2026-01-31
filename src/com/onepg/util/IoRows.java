@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class IoRows extends ArrayList<IoItems> {
 
-  /** Begin row number. */
+  /** Start row number. */
   private int beginRowNo = -1;
   /** End row number. */
   private int endRowNo = -1;
@@ -29,10 +29,10 @@ public final class IoRows extends ArrayList<IoItems> {
   /**
    * Constructor.<br>
    * <ul>
-   * <li>Deep copies the contents, so the reference to the source list is disconnected.</li>
+   * <li>Since the content is deep-copied, the reference with the source list is disconnected.</li>
    * </ul>
    *
-   * @param srcList the source list
+   * @param srcList source list
    */
   public IoRows(final Collection<? extends Map<? extends String, ? extends String>> srcList) {
     if (ValUtil.isNull(srcList)) {
@@ -47,7 +47,7 @@ public final class IoRows extends ArrayList<IoItems> {
     }
 
     if (srcList instanceof IoRows) {
-      // Copy class variable values if source map is this class
+      // If the source map is this class, copy class variable values
       final IoRows tlist = (IoRows) srcList;
       setBeginRowNo(tlist.getBeginRowNo());
       setEndRowNo(tlist.getEndRowNo());
@@ -63,27 +63,27 @@ public final class IoRows extends ArrayList<IoItems> {
   }
 
   /**
-   * Retrieves the begin row number.
+   * Gets the start row number.
    *
-   * @return the begin row number
+   * @return start row number
    */
   public int getBeginRowNo() {
     return beginRowNo;
   }
 
   /**
-   * Stores the begin row number.
+   * Stores the start row number.
    *
-   * @param beginRowNo the begin row number
+   * @param beginRowNo start row number
    */
   public void setBeginRowNo(final int beginRowNo) {
     this.beginRowNo = beginRowNo;
   }
 
   /**
-   * Retrieves the end row number.
+   * Gets the end row number.
    *
-   * @return the end row number
+   * @return end row number
    */
   public int getEndRowNo() {
     return endRowNo;
@@ -92,16 +92,16 @@ public final class IoRows extends ArrayList<IoItems> {
   /**
    * Stores the end row number.
    *
-   * @param endRowNo the end row number
+   * @param endRowNo end row number
    */
   public void setEndRowNo(final int endRowNo) {
     this.endRowNo = endRowNo;
   }
 
   /**
-   * Determines if limit exceeded.
+   * Checks whether the limit is exceeded.
    *
-   * @return <code>true</code> if limit exceeded
+   * @return <code>true</code> if the limit is exceeded
    */
   public boolean isLimitOver() {
     return limitOverFlag;
@@ -110,7 +110,7 @@ public final class IoRows extends ArrayList<IoItems> {
   /**
    * Stores the limit exceeded flag.
    *
-   * @param limitOver <code>true</code> if limit exceeded
+   * @param limitOver <code>true</code> if the limit is exceeded
    */
   public void setLimitOver(final boolean limitOver) {
     this.limitOverFlag = limitOver;
