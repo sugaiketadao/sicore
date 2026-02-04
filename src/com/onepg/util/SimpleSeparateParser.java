@@ -16,7 +16,7 @@ import java.util.List;
  * }</code></pre>
  * @hidden
  */
-public final class SimpleSeparateParser extends AbstractStringSeparateParser {
+final class SimpleSeparateParser extends AbstractStringSeparateParser {
 
   /** Separator string. */
   private final String sep;
@@ -27,8 +27,8 @@ public final class SimpleSeparateParser extends AbstractStringSeparateParser {
    * @param line String
    * @param sep Separator string
    */
-  public SimpleSeparateParser(final String line, final String sep) {
-    super(line);
+  SimpleSeparateParser(final String line, final String sep) {
+    super(line, true);
     this.sep = sep;
   }
 

@@ -5,26 +5,30 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * String separation processing base class.
+ * String separation processing base class.<br>
+ * <ul>
+ * <li>Provides functionality to split a string according to specified rules and iterate over each item.</li>
+ * <li>Subclasses implement the separation rules.</li>
+ * </ul>
  * @hidden
  */
 abstract class AbstractStringSeparateParser implements Iterable<String> {
 
   /** Target string. */
   private final String value;
-  /** Begin-end position list. */
+  /** List of start and end positions. */
   private List<int[]> beginEnds = null;
 
 
   /**
-   * Searches for separation begin and end positions.<br>
+   * Searches for separation start and end positions.<br>
    * <ul>
-   * <li>Returns the begin position of one separated item at index 0 of the array and the end position at index 1.</li>
-   * <li>Returns as a list assuming multiple items.</li>
+   * <li>Returns the start position of one separated item at array index 0 and the end position at index 1.</li>
+   * <li>Returns a list assuming multiple items.</li>
    * </ul>
    *
    * @param value target string
-   * @return the begin-end position list
+   * @return list of start and end positions
    */
   protected abstract List<int[]> findBeginEnds(final String value);
 
@@ -34,26 +38,56 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
    * @param value target string
    */
   AbstractStringSeparateParser(final String value) {
-    this.value = value; // nullも許可する設計なのでそのまま
+    this(value, false);
+  }
+
+  /**
+   * Constructor.
+   * <ul>
+   * <li>When subclass constructor has processing such as member variable initialization after <code>super()</code> call, need to delay initialization and perform it when <code>iterator()</code> is executed.</li>
+   * </ul>
+   * <pre>[Delayed constructor example]<code>
+   *   SubParser(final String line, final String sep) {
+   *     super(line, true);
+   *     this.sep = sep;
+   *   }</code></pre>
+   * 
+   * @param value target string
+   * @param delayInit delayed initialization flag; <code>true</code> delays initialization
+   */
+  AbstractStringSeparateParser(final String value, final boolean delayInit) {
+    this.value = value; // Design allows null, so use as is
+    if (!delayInit) {
+      init();
+    }
   }
 
   @Override
   public Iterator<String> iterator() {
-    // Lazy initialization for performance improvement
+    init();
+    return new StringSeparateIterator();
+  }
+
+  /**
+   * Initialization processing.<br>
+   * <ul>
+   * <li>Calls search for separation start and end positions.</li>
+   * </ul>
+   */
+  private void init() {
     if (ValUtil.isNull(this.beginEnds)) {
-      if (ValUtil.isNull(value)) {
+      if (ValUtil.isNull(this.value)) {
         this.beginEnds = new ArrayList<>();
       } else {
         this.beginEnds = findBeginEnds(this.value);
       }
     }
-    return new StringSeparateIterator();
   }
 
   /**
-   * Determines if a character is escaped.<br>
+   * Checks if escaped.<br>
    * <ul>
-   * <li>Determines if the character at the specified position is escaped (escaped if preceded by an odd number of backslashes).</li>
+   * <li>Checks if the character at the specified position is escaped (escaped if preceded by an odd number of backslashes)</li>
    * </ul>
    *
    * @param target target to check
@@ -76,9 +110,9 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
   }
 
   /**
-   * Determines if a character is escaped (char[] version).<br>
+   * Checks if escaped (char[] version).<br>
    * <ul>
-   * <li>Determines if the character at the specified position is escaped (escaped if preceded by an odd number of backslashes).</li>
+   * <li>Checks if the character at the specified position is escaped (escaped if preceded by an odd number of backslashes)</li>
    * </ul>
    *
    * @param target target char array to check
@@ -86,7 +120,7 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
    * @return <code>true</code> if escaped
    */
   protected static boolean isPreEsc(final char[] target, final int targetPos) {
-    if (targetPos <= 0 || target == null || targetPos >= target.length) {
+    if (targetPos <= 0 || ValUtil.isNull(target) || targetPos >= target.length) {
       return false;
     }
 
@@ -94,23 +128,23 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
     for (int i = targetPos - 1; i >= 0 && target[i] == '\\'; i--) {
       bsCount++;
     }
-
-    return (bsCount & 1) == 1;
+    // Returns true for odd number
+    return (bsCount % 2 == 1);
   }
 
   /**
-   * Stores the inner part in the list if both ends are double quotations.
+   * Stores inside to list when both ends are double quotes.
    *
    * @param retList  result list
-   * @param beginPos begin position
+   * @param beginPos start position
    * @param endPos   end position
    * @param value    original string
    */
   protected void trimDqPosAdd(final List<int[]> retList, final int beginPos, final int endPos,
       final String value) {
     if (beginPos < value.length() && endPos > 0 && beginPos + 1 < endPos
-        && "\"".equals(value.substring(beginPos, beginPos + 1))
-        && "\"".equals(value.substring(endPos - 1, endPos))) {
+        && value.charAt(beginPos) == '"'
+        && value.charAt(endPos - 1) == '"') {
         retList.add(new int[] {beginPos + 1, endPos - 1});
     } else {
         retList.add(new int[] {beginPos, endPos});
@@ -134,9 +168,9 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
     }
 
     /**
-     * Checks if the next string exists.
+     * Checks if next string exists.
      *
-     * @return <code>true</code> if the next string exists
+     * @return <code>true</code> if next string exists
      */
     @Override
     public boolean hasNext() {
@@ -144,7 +178,7 @@ abstract class AbstractStringSeparateParser implements Iterable<String> {
     }
 
     /**
-     * Retrieves the next string.
+     * Gets next string.
      *
      * @return the next string
      */

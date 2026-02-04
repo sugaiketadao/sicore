@@ -54,10 +54,10 @@ are read-only.<br>
 <br>
 
 <ul>
-<li>Can input and output CSV.</li>
-<li>Can input and output JSON.</li>
-<li>Can input and output URL parameters.</li>
-<li>The basic rules and restrictions conform to <code>AbstractIoTypeMap</code>.</li>
+<li>Supports CSV input and output.</li>
+<li>Supports JSON input and output.</li>
+<li>Supports URL parameter input and output.</li>
+<li>Follows the basic rules and restrictions of <code>AbstractIoTypeMap</code>.</li>
 </ul>
 </div>
       </div>
@@ -1893,59 +1893,41 @@ are read-only.<br>
       <div class="method" id="createCsv">
         <h3 class="method-name">createCsv</h3>
         <div class="method-signature">
-          <code>public String createCsv()</code>
+          <code>public String createCsv(CsvType csvType)</code>
         </div>
         <div class="method-description">
-          Creates CSV.<br>
+          Creates CSV string.<br>
 <ul>
-<li>Creates the CSV string in the value addition order.</li>
-<li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
+<li>Creates CSV string in the order values were added to the map.</li>
+<li>When CSV type includes double quotes, converts double quotes (") within values to two double quotes ("").</li>
+<li>When CSV type allows line breaks and values contain line break codes, unifies line break codes (CRLF/CR) to LF.</li>
+<li>When CSV type does not allow line breaks (other than line break types) and values contain line break codes, converts line break codes (CRLF/CR/LF) to half-width spaces.</li>
+<li>String lists, nested maps, multi-row lists, and array lists are not output.</li>
 </ul>
 
         </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>String</code> - CSV string</p>
-        </div>
-      </div>
-      <div class="method" id="createCsvAllDq">
-        <h3 class="method-name">createCsvAllDq</h3>
-        <div class="method-signature">
-          <code>public String createCsvAllDq()</code>
-        </div>
-        <div class="method-description">
-          Creates CSV with double quotations.<br>
-<ul>
-<li>Creates the CSV string in the value addition order.</li>
-<li>Outputs all items with double quotations added.</li>
-<li>If the value contains double quotations, they are converted to two double quotation characters.</li>
-<li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
-</ul>
-
-        </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>String</code> - CSV string</p>
-        </div>
-      </div>
-      <div class="method" id="createCsvDq">
-        <h3 class="method-name">createCsvDq</h3>
-        <div class="method-signature">
-          <code>public String createCsvDq()</code>
-        </div>
-        <div class="method-description">
-          Creates CSV with CSV specification-compliant double quotations.<br>
-<ul>
-<li>Creates the CSV string in the value addition order.</li>
-<li>Outputs necessary items with double quotations added in compliance with CSV specification.</li>
-<li>If the value contains double quotations, they are converted to two double quotation characters.</li>
-<li>String lists, nested maps, multiple rows lists, and array lists are not output.</li>
-</ul>
-
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>csvType</code></td>
+                <td><code>CsvType</code></td>
+                <td>CSV type</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - CSV string</p>
+          <p><code>String</code> - the CSV string</p>
         </div>
       </div>
       <div class="method" id="createUrlParam">
@@ -1954,12 +1936,12 @@ are read-only.<br>
           <code>public String createUrlParam()</code>
         </div>
         <div class="method-description">
-          Creates URL parameters (the part after ? in the URL).
+          Creates URL parameter (the part after ? in URL).
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - URL-encoded GET parameters</p>
+          <p><code>String</code> - the URL-encoded GET parameter</p>
         </div>
       </div>
       <div class="method" id="createJson">
@@ -1968,25 +1950,27 @@ are read-only.<br>
           <code>public String createJson()</code>
         </div>
         <div class="method-description">
-          Creates JSON.
+          Creates JSON string.
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - JSON string</p>
+          <p><code>String</code> - the JSON string</p>
         </div>
       </div>
       <div class="method" id="putAllByCsv">
         <h3 class="method-name">putAllByCsv</h3>
         <div class="method-signature">
-          <code>public int putAllByCsv(String[] keys, String csv)</code>
+          <code>public int putAllByCsv(String[] keys, String csv, CsvType csvType)</code>
         </div>
         <div class="method-description">
-          Stores CSV.<br>
+          Stores CSV values.<br>
 <ul>
-<li>Storage with already existing keys results in a runtime error.</li>
-<li>Items with blank keys in the argument key name array are not stored. (Apply to items that do not need storage)</li>
-<li>If the number of CSV items is greater than the number of key name array elements, the surplus items are not stored.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
+<li>Items with blank keys in the key array are not stored. (Specify blank keys for columns to skip.)</li>
+<li>When the number of CSV items exceeds the number of keys, excess items are not stored.</li>
+<li>When the number of keys exceeds the number of CSV items, the values for those keys are always blank.</li>
+<li>For CSV with double quotes, two consecutive double quotes ("") within values are converted to a single double quote (") and stored.</li>
 </ul>
 
         </div>
@@ -2004,12 +1988,17 @@ are read-only.<br>
               <tr>
                 <td><code>keys</code></td>
                 <td><code>String[]</code></td>
-                <td>key name array</td>
+                <td>key array</td>
               </tr>
               <tr>
                 <td><code>csv</code></td>
                 <td><code>String</code></td>
                 <td>CSV string</td>
+              </tr>
+              <tr>
+                <td><code>csvType</code></td>
+                <td><code>CsvType</code></td>
+                <td>CSV type</td>
               </tr>
             </tbody>
           </table>
@@ -2017,56 +2006,6 @@ are read-only.<br>
         <div class="method-returns">
           <h4>Return Value</h4>
           <p><code>int</code> - the number of stored items</p>
-        </div>
-      </div>
-      <div class="method" id="putAllByCsvDq">
-        <h3 class="method-name">putAllByCsvDq</h3>
-        <div class="method-signature">
-          <code>public int putAllByCsvDq(String[] keys, String csv)</code>
-        </div>
-        <div class="method-description">
-          Stores CSV with double quotations.<br>
-<ul>
-<li>Storage with already existing keys results in a runtime error.</li>
-<li>Items with blank keys in the argument key name array are not stored. (Apply to items that do not need storage)</li>
-<li>If the number of CSV items is greater than the number of key name array elements, the surplus items are not stored.</li>
-<li>Two consecutive double quotations within the value are converted to one double quotation and stored.</li>
-</ul>
-
-        </div>
-        <div class="method-parameters">
-          <h4>Parameters</h4>
-          <table class="parameter-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>keys</code></td>
-                <td><code>String[]</code></td>
-                <td>key name array</td>
-              </tr>
-              <tr>
-                <td><code>csv</code></td>
-                <td><code>String</code></td>
-                <td>CSV string</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>int</code> - the number of stored items</p>
-        </div>
-        <div class="see-also">
-          <h4>See Also</h4>
-          <ul>
-            <li><a href="#putAllByCsv">#putAllByCsv(String[], String)</a></li>
-          </ul>
         </div>
       </div>
       <div class="method" id="putAllByUrlParam">
@@ -2075,9 +2014,9 @@ are read-only.<br>
           <code>public int putAllByUrlParam(String url)</code>
         </div>
         <div class="method-description">
-          Stores URL parameter (the part after ? in the URL) values.<br>
+          Stores URL parameter values (the part after ? in URL).<br>
 <ul>
-<li>Storage with already existing keys results in a runtime error.</li>
+<li>Storing with an already existing key results in a runtime error.</li>
 </ul>
 
         </div>
@@ -2095,7 +2034,7 @@ are read-only.<br>
               <tr>
                 <td><code>url</code></td>
                 <td><code>String</code></td>
-                <td>entire URL or URL parameters</td>
+                <td>the entire URL or URL parameter</td>
               </tr>
             </tbody>
           </table>
@@ -2111,7 +2050,7 @@ are read-only.<br>
           <code>public int putAllByJson(String json)</code>
         </div>
         <div class="method-description">
-          Stores JSON.
+          Stores JSON values.
 
         </div>
         <div class="method-parameters">

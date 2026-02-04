@@ -5,7 +5,6 @@ import com.onepg.util.LogWriter;
 import com.onepg.util.PropertiesUtil;
 import com.onepg.util.ValUtil;
 import com.onepg.util.ValUtil.CharSet;
-import com.onepg.util.ValUtil.LineSep;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.BufferedReader;
@@ -114,7 +113,7 @@ final class ServerUtil {
     // Includes stack trace in response
     final String[] errTxts = new String[txts.length + 1];
     System.arraycopy(txts, 0, errTxts, 0, txts.length);
-    errTxts[txts.length] = LogUtil.getStackTrace(LineSep.LF.toString(), e);
+    errTxts[txts.length] = LogUtil.getStackTrace(ValUtil.LF, e);
     responseText(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, errTxts);
   }
 
@@ -131,7 +130,7 @@ final class ServerUtil {
    */
   static void responseText(final HttpExchange exchange, final int httpStatus, final String... txts)
       throws IOException {
-    final String txt = ValUtil.join(LineSep.LF.toString(), txts);
+    final String txt = ValUtil.join(ValUtil.LF, txts);
     final Headers headers = exchange.getResponseHeaders();
     setSecurityHeaders(headers);
     headers.set("Content-Type", "text/plain; charset=UTF-8");
@@ -386,7 +385,7 @@ final class ServerUtil {
     final StringBuilder sb = new StringBuilder();
     try (final InputStream is = exchange.getRequestBody();
          final BufferedReader br = new BufferedReader(
-             new InputStreamReader(is, CharSet.UTF8.toString()))) {
+             new InputStreamReader(is, ValUtil.UTF8))) {
       String line;
       while ((line = br.readLine()) != null) {
         sb.append(line);
@@ -453,10 +452,10 @@ final class ServerUtil {
     byte[] resBytes;
     if (acceptEncoding.contains("gzip") && resTxt.length() > 1024) {
         // GZIP compression
-        resBytes = compresseGzip(resTxt.getBytes(CharSet.UTF8.toString()));
+        resBytes = compresseGzip(resTxt.getBytes(ValUtil.UTF8));
         headers.set("Content-Encoding", "gzip");
     } else {
-        resBytes = resTxt.getBytes(CharSet.UTF8.toString());
+        resBytes = resTxt.getBytes(ValUtil.UTF8);
     }
     
     exchange.sendResponseHeaders(httpStatus, resBytes.length);

@@ -367,7 +367,7 @@ try (TxtReader reader = new TxtReader("/path/to/data.csv", ValUtil.UTF8)) {
   // Skip header row
   reader.skip();
   
-  // Define key name array
+  // Define key array
   String[] keys = {"user_id", "user_nm", "email"};
   
   // Process one row at a time (Iterator pattern)

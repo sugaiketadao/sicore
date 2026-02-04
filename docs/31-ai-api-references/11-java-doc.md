@@ -137,6 +137,58 @@ public void doExecute(Io io)
 
 **Package**: com.onepg.util
 
+## CsvReader
+
+**Package**: com.onepg.util
+
+### Methods
+
+#### iterator
+
+```
+public Iterator<IoItems> iterator()
+```
+
+**Returns**: `Iterator<IoItems>`
+
+#### close
+
+```
+public void close()
+```
+
+#### getReadedCount
+
+```
+public int getReadedCount()
+```
+
+**Returns**: `int`
+
+#### isReadedEndRow
+
+```
+public boolean isReadedEndRow()
+```
+
+**Returns**: `boolean`
+
+#### hasNext
+
+```
+public boolean hasNext()
+```
+
+**Returns**: `boolean`
+
+#### next
+
+```
+public IoItems next()
+```
+
+**Returns**: `IoItems`
+
 ## DbUtil
 
 **Package**: com.onepg.db
@@ -1981,24 +2033,11 @@ public int hashCode()
 #### createCsv
 
 ```
-public String createCsv()
+public String createCsv(CsvType csvType)
 ```
 
-**Returns**: `String`
-
-#### createCsvAllDq
-
-```
-public String createCsvAllDq()
-```
-
-**Returns**: `String`
-
-#### createCsvDq
-
-```
-public String createCsvDq()
-```
+**Parameters**:
+- `csvType`: `CsvType`
 
 **Returns**: `String`
 
@@ -2021,24 +2060,13 @@ public String createJson()
 #### putAllByCsv
 
 ```
-public int putAllByCsv(String[] keys, String csv)
+public int putAllByCsv(String[] keys, String csv, CsvType csvType)
 ```
 
 **Parameters**:
 - `keys`: `String[]`
 - `csv`: `String`
-
-**Returns**: `int`
-
-#### putAllByCsvDq
-
-```
-public int putAllByCsvDq(String[] keys, String csv)
-```
-
-**Parameters**:
-- `keys`: `String[]`
-- `csv`: `String`
+- `csvType`: `CsvType`
 
 **Returns**: `int`
 
@@ -3183,33 +3211,12 @@ public String join(String joint, Set<String> list)
 #### joinCsv
 
 ```
-public String joinCsv(String[] values)
+public String joinCsv(String[] values, CsvType csvType)
 ```
 
 **Parameters**:
 - `values`: `String[]`
-
-**Returns**: `String`
-
-#### joinCsvAllDq
-
-```
-public String joinCsvAllDq(String[] values)
-```
-
-**Parameters**:
-- `values`: `String[]`
-
-**Returns**: `String`
-
-#### joinCsvDq
-
-```
-public String joinCsvDq(String[] values)
-```
-
-**Parameters**:
-- `values`: `String[]`
+- `csvType`: `CsvType`
 
 **Returns**: `String`
 
@@ -3253,22 +3260,12 @@ public String[] splitReg(String value, String sep, int limitLength)
 #### splitCsv
 
 ```
-public String[] splitCsv(String csv)
+public String[] splitCsv(String csv, CsvType csvType)
 ```
 
 **Parameters**:
 - `csv`: `String`
-
-**Returns**: `String[]`
-
-#### splitCsvDq
-
-```
-public String[] splitCsvDq(String csv)
-```
-
-**Parameters**:
-- `csv`: `String`
+- `csvType`: `CsvType`
 
 **Returns**: `String[]`
 

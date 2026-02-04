@@ -4,38 +4,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CSV (with double quotations) parser.
+ * CSV (with double quotes) parser.
  * @hidden
  */
-public final class CsvDqParser extends AbstractStringSeparateParser {
+final class CsvDqParser extends AbstractStringSeparateParser {
+  
+  /** 
+   * Flag indicating unclosed double quotes.
+   * (To prevent the value calculated in findBeginEnds() from being overwritten by initial value set during field declaration, do not set initial value here and set value only within findBeginEnds())
+   */
+  private boolean unclosedDq;
 
   /**
    * Constructor.
    *
    * @param csv CSV string
    */
-  public CsvDqParser(final String csv) {
+  CsvDqParser(final String csv) {
     super(csv);
   }
 
   /**
-   * Searches for separation begin and end positions.<br>
+   * Searches for separation start and end positions.<br>
    * <ul>
-   * <li>Separates at comma positions not enclosed by double quotations (without escape).</li>
-   * <li>Commas inside double quotations are not treated as delimiters.</li>
-   * <li>Escaped double quotations (\") are treated as characters.</li>
-   * <li>Two consecutive double quotations ("") are treated as characters.</li>
-   * <li>Leading and trailing whitespace characters are removed.</li>
+   * <li>Splits at comma positions not enclosed by unescaped double quotes.</li>
+   * <li>Commas within double quotes are not treated as separators.</li>
+   * <li>Escaped double quotes (\" ) are treated as normal characters.</li>
+   * <li>Two consecutive double quotes ("") are treated as a single double quote character (").</li>
+   * <li>Leading and trailing whitespace characters of each item are removed.</li>
+   * <li>Also checks if double quotes are closed.</li>
    * </ul>
    *
    * @param value target string
-   * @return the begin-end position list
+   * @return list of start and end positions
    */
   @Override
   protected List<int[]> findBeginEnds(final String value) {
+    this.unclosedDq = false;
     final List<int[]> idxs = new ArrayList<>();
     if (ValUtil.isBlank(value)) {
-      // If empty
+      // When empty
       return idxs;
     }
 
@@ -61,37 +69,50 @@ public final class CsvDqParser extends AbstractStringSeparateParser {
         if (isPreEsc(value, i)) {
           continue;
         }
-        // If the next character after double quotation is also a double quotation, treat as escape sequence ("" → ")
+        // Treat as escape sequence (""→") when next character after double quote is also double quote
         if (i + 1 < value.length() && value.charAt(i + 1) == '"') {
           if (inDq) {
-            // Valid only inside double quotations
-            // Skip the next double quotation as well
+            // Valid only within double quotes
+            // Also skip next double quote
             i++; 
             continue;
           }
         }
-        // Only if not escaped
-        // Toggle inside double quotations
+        // Only when not escaped
+        // Toggle within double quotes
         inDq = !inDq;
         continue;
       }
       if (inDq) {
-        // Ignore inside double quotations
+        // Ignore within double quotes
         continue;
       }
       if (c == ',') {
-        // If comma, add begin and end positions
+        // Add start and end positions when comma
         trimDqPosAdd(idxs, beginPos, endPos, value);
-        // Next begin position
+        // Next start position
         beginPos = i + 1;
         endPos = beginPos;
         notBlank = false;
       }
     }
 
-    // Add the last begin and end positions
+    // Add last start and end positions
     trimDqPosAdd(idxs, beginPos, endPos, value);
+
+    // Turn on flag when double quotes are not closed
+    if (inDq) {
+      this.unclosedDq = true;
+    }
     return idxs;
   }
 
+  /**
+   * Gets flag indicating unclosed double quotes.
+   *
+   * @return <code>true</code> if double quotes are not closed
+   */  
+  boolean isUnclosedDq() {
+    return this.unclosedDq; 
+  }
 }

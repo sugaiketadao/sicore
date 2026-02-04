@@ -4,11 +4,12 @@ import com.onepg.bat.AbstractDbAccessBatch;
 import com.onepg.db.SqlConst;
 import com.onepg.db.SqlUtil;
 import com.onepg.db.SqlConst.BindType;
+import com.onepg.util.CsvReader;
 import com.onepg.util.FileUtil;
 import com.onepg.util.ValUtil.CharSet;
+import com.onepg.util.ValUtil.CsvType;
 import com.onepg.util.IoItems;
 import com.onepg.util.LogUtil;
-import com.onepg.util.TxtReader;
 import com.onepg.util.ValUtil;
 
 /**
@@ -82,25 +83,16 @@ public class ExampleImport extends AbstractDbAccessBatch {
     }
 
     // Reads the file and updates the database
-    try (final TxtReader tr = new TxtReader(inputPath, CharSet.UTF8)) {
-      final String headerLine = tr.getFirstLine();
-      if (ValUtil.isBlank(headerLine)) {
-        // Checks if the input file is empty
-        throw new RuntimeException("Input file is empty. " + LogUtil.joinKeyVal("input", inputPath));
-      }
-      final String[] itemNames = ValUtil.splitCsvDq(headerLine);
-      for (final String line : tr) {
-        final IoItems row = new IoItems();
-        row.putAllByCsvDq(itemNames, line);
-
+    try (final CsvReader cr = new CsvReader(inputPath, CharSet.UTF8, CsvType.DQ_ALL)) {
+      for (final IoItems row : cr) {
         if (!SqlUtil.executeOne(getDbConn(), SQL_UPD_USER.bind(row))) {
           // Executes insert if the update count is 0
           SqlUtil.executeOne(getDbConn(), SQL_INS_USER.bind(row));
         }
       }
-      if (tr.getReadedCount() == 1) {
-        // Only the header row exists
-        super.logger.info("No data found to export. " + LogUtil.joinKeyVal("input", inputPath));
+      if (cr.getReadedCount() <= 1) {
+        // When there are no data rows (header only or empty file)
+        super.logger.info("No data found to import. " + LogUtil.joinKeyVal("input", inputPath));
       }
     }
     return 0;

@@ -166,6 +166,7 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
    * <li>Returns <code>null</code> in the following cases
    *   <ul><li>File is already closed.</li>
    *       <li>File is empty (zero rows), or has already reached the last row.</li></ul>
+   * <li>An exception is thrown if any rows have already been read.</li>
    * </ul>
    *
    * @return First row string
@@ -173,6 +174,9 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
   public String getFirstLine() {
     if (this.isClosed) {
       return null;
+    }
+    if (readedCount > 0) {
+      throw new RuntimeException("First line can only be read when no lines have been read yet. " + LogUtil.joinKeyVal("path", this.filePath) + LogUtil.joinKeyVal("readedCount", String.valueOf(readedCount)));
     }
     try {
       final String line = this.br.readLine();

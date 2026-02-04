@@ -6,6 +6,7 @@ import com.onepg.db.SqlResultSet;
 import com.onepg.db.SqlUtil;
 import com.onepg.util.FileUtil;
 import com.onepg.util.ValUtil.CharSet;
+import com.onepg.util.ValUtil.CsvType;
 import com.onepg.util.ValUtil.LineSep;
 import com.onepg.util.IoItems;
 import com.onepg.util.LogUtil;
@@ -65,11 +66,11 @@ public class ExampleExport extends AbstractDbAccessBatch {
 
     // Retrieves data from the database and outputs to a file
     try (final SqlResultSet rSet = SqlUtil.select(getDbConn(), SQL_SEL_USER);
-        final TxtWriter tw = new TxtWriter(outputPath, LineSep.LF, CharSet.UTF8)) {
+        final TxtWriter tw = new TxtWriter(outputPath, LineSep.CRLF, CharSet.UTF8)) {
       final String[] itemNames = rSet.getItemNames();
-      tw.println(ValUtil.joinCsvAllDq(itemNames));
+      tw.println(ValUtil.joinCsv(itemNames, CsvType.DQ_ALL_LF));
       for (final IoItems row : rSet) {
-        tw.println(row.createCsvDq());
+        tw.println(row.createCsv(CsvType.DQ_ALL_LF));
       }
       if (rSet.getReadedCount() == 0) {
         super.logger.info("No data found to export. " + LogUtil.joinKeyVal("output", outputPath));

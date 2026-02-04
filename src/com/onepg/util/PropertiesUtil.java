@@ -1,6 +1,5 @@
 package com.onepg.util;
 
-import com.onepg.util.ValUtil.CharSet;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -53,7 +52,7 @@ import java.util.regex.Pattern;
 public final class PropertiesUtil {
 
   /** Properties file character set. */
-  private static final String PROP_FILE_CHAR_SET = CharSet.UTF8.toString();
+  private static final String PROP_FILE_CHAR_SET = ValUtil.UTF8;
   /** Default configuration directory name. */
   private static final String DEFAULT_PROP_DIRNAME = "config";
   /** Configuration key - configuration directory specification. */

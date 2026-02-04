@@ -1,6 +1,5 @@
 package com.onepg.util;
 
-import com.onepg.util.ValUtil.LineSep;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -153,7 +152,7 @@ public final class LogWriter {
     if (ValUtil.isNull(e)) {
       etrace = null;
     } else {
-      etrace = LogUtil.getStackTrace(LineSep.LF.toString(), e);
+      etrace = LogUtil.getStackTrace(ValUtil.LF, e);
     }
     writeLog(this.errPrefix, msg, true, etrace);
   }
