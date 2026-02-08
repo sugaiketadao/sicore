@@ -43,6 +43,7 @@
           Invokes main processing.<br>
 <ul>
 <li>Converts arguments from URL parameter format to map format, executes log start processing, acquires database connection, and then calls the <code>doExecute</code> method.</li>
+<li>Accepts multiple arguments as an array to accommodate the length limit per command-line argument.</li>
 <li>The converted arguments are passed to the <code>doExecute</code> method as the <code>IoItems</code> class.</li>
 <li>If the return value of the <code>doExecute</code> method is 0, the processing is considered to have terminated normally and commits.</li>
 <li>If the return value of the <code>doExecute</code> method is other than 0 or an exception error occurs, the processing is considered to have terminated abnormally and rolls back. (Rollback is performed by <code>Connection#close()</code>)</li>

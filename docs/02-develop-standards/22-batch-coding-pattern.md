@@ -95,15 +95,12 @@ public class ExampleExport extends AbstractDbAccessBatch {
 
     // Retrieve from database and output to file
     try (final SqlResultSet rSet = SqlUtil.select(getDbConn(), SQL_SEL_USER);
-        final TxtWriter tw = new TxtWriter(outputPath, LineSep.LF, CharSet.UTF8)) {
-      // Output header row
-      final String[] itemNames = rSet.getItemNames();
-      tw.println(ValUtil.joinCsvAllDq(itemNames));
-      // Output data rows
+        final CsvWriter cw = new CsvWriter(outputPath, LineSep.CRLF, CharSet.UTF8, CsvType.DQ_ALL_LF)) {
+      // Outputs the column names
+      cw.println(rSet.getItemNames());
       for (final IoItems row : rSet) {
-        tw.println(row.createCsvAllDq());
+        cw.println(row);
       }
-      // Zero record log
       if (rSet.getReadedCount() == 0) {
         super.logger.info("No data found to export. " + LogUtil.joinKeyVal("output", outputPath));
       }
@@ -205,25 +202,16 @@ public class ExampleImport extends AbstractDbAccessBatch {
       throw new RuntimeException("Input path not exists. " + LogUtil.joinKeyVal("input", inputPath));
     }
 
-    // Read file and register to database
-    try (final TxtReader tr = new TxtReader(inputPath, CharSet.UTF8)) {
-      // Get header row
-      final String headerLine = tr.getFirstLine();
-      if (ValUtil.isBlank(headerLine)) {
-        throw new RuntimeException("Input file is empty. " + LogUtil.joinKeyVal("input", inputPath));
-      }
-      final String[] itemNames = ValUtil.splitCsvDq(headerLine);
-      // Process data rows
-      for (final String line : tr) {
-        final IoItems row = new IoItems();
-        row.putAllByCsvDq(itemNames, line);
-        // UPSERT processing (UPDATE → INSERT)
+    // Reads the file and updates the database
+    try (final CsvReader cr = new CsvReader(inputPath, CharSet.UTF8, CsvType.DQ_ALL_LF)) {
+      for (final IoItems row : cr) {
         if (!SqlUtil.executeOne(getDbConn(), SQL_UPD_USER.bind(row))) {
+          // Executes insert if the update count is 0
           SqlUtil.executeOne(getDbConn(), SQL_INS_USER.bind(row));
         }
       }
-      // Zero record log
-      if (tr.getReadedCount() == 1) {
+      if (cr.getReadedCount() <= 1) {
+        // When there are no data rows (header only or empty file)
         super.logger.info("No data found to import. " + LogUtil.joinKeyVal("input", inputPath));
       }
     }

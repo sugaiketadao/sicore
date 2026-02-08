@@ -83,7 +83,7 @@ public class ExampleImport extends AbstractDbAccessBatch {
     }
 
     // Reads the file and updates the database
-    try (final CsvReader cr = new CsvReader(inputPath, CharSet.UTF8, CsvType.DQ_ALL)) {
+    try (final CsvReader cr = new CsvReader(inputPath, CharSet.UTF8, CsvType.DQ_ALL_LF)) {
       for (final IoItems row : cr) {
         if (!SqlUtil.executeOne(getDbConn(), SQL_UPD_USER.bind(row))) {
           // Executes insert if the update count is 0

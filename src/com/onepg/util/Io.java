@@ -673,7 +673,7 @@ public final class Io extends AbstractIoTypeMap {
    *
    * @return URL-encoded GET parameters
    */
-  public String createUrlParam() {
+  String createUrlParam() {
     final Map<String, String> valMap = super.getValMap();
     final StringBuilder sb = new StringBuilder();
     for (final String key : super.allKeySet()) {

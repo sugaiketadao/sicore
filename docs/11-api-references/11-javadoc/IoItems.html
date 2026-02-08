@@ -1890,87 +1890,16 @@ are read-only.<br>
           <p><code>int</code> - the hash code</p>
         </div>
       </div>
-      <div class="method" id="createCsv">
-        <h3 class="method-name">createCsv</h3>
+      <div class="method" id="putAllByBatParam">
+        <h3 class="method-name">putAllByBatParam</h3>
         <div class="method-signature">
-          <code>public String createCsv(CsvType csvType)</code>
+          <code>public int putAllByBatParam(String[] args)</code>
         </div>
         <div class="method-description">
-          Creates CSV string.<br>
-<ul>
-<li>Creates CSV string in the order values were added to the map.</li>
-<li>When CSV type includes double quotes, converts double quotes (") within values to two double quotes ("").</li>
-<li>When CSV type allows line breaks and values contain line break codes, unifies line break codes (CRLF/CR) to LF.</li>
-<li>When CSV type does not allow line breaks (other than line break types) and values contain line break codes, converts line break codes (CRLF/CR/LF) to half-width spaces.</li>
-<li>String lists, nested maps, multi-row lists, and array lists are not output.</li>
-</ul>
-
-        </div>
-        <div class="method-parameters">
-          <h4>Parameters</h4>
-          <table class="parameter-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>csvType</code></td>
-                <td><code>CsvType</code></td>
-                <td>CSV type</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>String</code> - the CSV string</p>
-        </div>
-      </div>
-      <div class="method" id="createUrlParam">
-        <h3 class="method-name">createUrlParam</h3>
-        <div class="method-signature">
-          <code>public String createUrlParam()</code>
-        </div>
-        <div class="method-description">
-          Creates URL parameter (the part after ? in URL).
-
-        </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>String</code> - the URL-encoded GET parameter</p>
-        </div>
-      </div>
-      <div class="method" id="createJson">
-        <h3 class="method-name">createJson</h3>
-        <div class="method-signature">
-          <code>public String createJson()</code>
-        </div>
-        <div class="method-description">
-          Creates JSON string.
-
-        </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>String</code> - the JSON string</p>
-        </div>
-      </div>
-      <div class="method" id="putAllByCsv">
-        <h3 class="method-name">putAllByCsv</h3>
-        <div class="method-signature">
-          <code>public int putAllByCsv(String[] keys, String csv, CsvType csvType)</code>
-        </div>
-        <div class="method-description">
-          Stores CSV values.<br>
+          Stores batch parameter values (the content format is the same as URL parameters).<br>
 <ul>
 <li>Storing with an already existing key results in a runtime error.</li>
-<li>Items with blank keys in the key array are not stored. (Specify blank keys for columns to skip.)</li>
-<li>When the number of CSV items exceeds the number of keys, excess items are not stored.</li>
-<li>When the number of keys exceeds the number of CSV items, the values for those keys are always blank.</li>
-<li>For CSV with double quotes, two consecutive double quotes ("") within values are converted to a single double quote (") and stored.</li>
+<li>Accepts multiple arguments as an array to accommodate the length limit per command-line argument.</li>
 </ul>
 
         </div>
@@ -1986,55 +1915,9 @@ are read-only.<br>
             </thead>
             <tbody>
               <tr>
-                <td><code>keys</code></td>
+                <td><code>args</code></td>
                 <td><code>String[]</code></td>
-                <td>key array</td>
-              </tr>
-              <tr>
-                <td><code>csv</code></td>
-                <td><code>String</code></td>
-                <td>CSV string</td>
-              </tr>
-              <tr>
-                <td><code>csvType</code></td>
-                <td><code>CsvType</code></td>
-                <td>CSV type</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>int</code> - the number of stored items</p>
-        </div>
-      </div>
-      <div class="method" id="putAllByUrlParam">
-        <h3 class="method-name">putAllByUrlParam</h3>
-        <div class="method-signature">
-          <code>public int putAllByUrlParam(String url)</code>
-        </div>
-        <div class="method-description">
-          Stores URL parameter values (the part after ? in URL).<br>
-<ul>
-<li>Storing with an already existing key results in a runtime error.</li>
-</ul>
-
-        </div>
-        <div class="method-parameters">
-          <h4>Parameters</h4>
-          <table class="parameter-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>url</code></td>
-                <td><code>String</code></td>
-                <td>the entire URL or URL parameter</td>
+                <td>batch parameter array (each element is a URL parameter format string)</td>
               </tr>
             </tbody>
           </table>
@@ -2042,39 +1925,6 @@ are read-only.<br>
         <div class="method-returns">
           <h4>Return Value</h4>
           <p><code>int</code> - the number of stored parameters</p>
-        </div>
-      </div>
-      <div class="method" id="putAllByJson">
-        <h3 class="method-name">putAllByJson</h3>
-        <div class="method-signature">
-          <code>public int putAllByJson(String json)</code>
-        </div>
-        <div class="method-description">
-          Stores JSON values.
-
-        </div>
-        <div class="method-parameters">
-          <h4>Parameters</h4>
-          <table class="parameter-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>json</code></td>
-                <td><code>String</code></td>
-                <td>JSON string</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>int</code> - the number of stored items</p>
         </div>
       </div>
     </div>

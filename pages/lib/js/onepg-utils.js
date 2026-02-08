@@ -2160,11 +2160,11 @@ const PageUtil = /** @lends PageUtil */ {
    */
   clearRows: function (listId) {
     if (ValUtil.isBlank(listId)) {
-      throw new Error('PageUtil#addRow: Argument listId is invalid. ');
+      throw new Error('PageUtil#clearRows: Argument listId is invalid. ');
     }
     const listElm = DomUtil.getById(listId);
     if (!DomUtil.isExists(listElm)) {
-      console.warn(`PageUtil#addRow: List element not found. id=${listId}`);
+      console.warn(`PageUtil#clearRows: List element not found. id=${listId}`);
       return;
     }
     PageUtil._removeAllRows(listElm);

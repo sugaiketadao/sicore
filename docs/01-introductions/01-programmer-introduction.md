@@ -56,7 +56,15 @@ Executed class: com.example.app.service.exmodule.ExampleListSearch
 - State managed by browser's `sessionStorage`.
 - Easy to scale out.
 
-### 1.5 Original CSS (No External Framework)
+### 1.5 Three-tier Scope of Session Storage
+
+| Scope | Method | Usage Example |
+|-|-|-|
+| Page unit | `get/setPageObj()` | Hold search conditions on list page. |
+| Module unit | `get/setModuleObj()` | Hold data being entered between pages. |
+| System unit | `get/setSystemObj()` | Hold login information. |
+
+### 1.6 Original CSS (No External Framework)
 
 ```html
 <!-- 12-column grid system -->
@@ -75,14 +83,6 @@ Executed class: com.example.app.service.exmodule.ExampleListSearch
 - Consists of only minimal necessary CSS (onepg-base.css single file).
 - Responsive support ready (PC, tablet, smartphone).
 - Low learning cost (fewer class names to remember).
-
-### 1.6 Three-tier Scope of Session Storage
-
-| Scope | Method | Usage Example |
-|-|-|-|
-| Page unit | `get/setPageObj()` | Hold search conditions on list page. |
-| Module unit | `get/setModuleObj()` | Hold data being entered between pages. |
-| System unit | `get/setSystemObj()` | Hold login information. |
 
 ---
 

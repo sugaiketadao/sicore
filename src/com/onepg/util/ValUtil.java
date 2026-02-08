@@ -398,7 +398,7 @@ public final class ValUtil {
    * @param csvType CSV type
    * @return the joined CSV string
    */
-  public static String joinCsv(final String[] values, final CsvType csvType) {
+  static String joinCsv(final String[] values, final CsvType csvType) {
     if (isEmpty(values)) {
       return BLANK;
     }
@@ -558,7 +558,7 @@ public final class ValUtil {
    * @param csvType CSVタイプ
    * @return 分割した文字列配列
    */
-  public static String[] splitCsv(final String csv, final CsvType csvType) {
+  static String[] splitCsv(final String csv, final CsvType csvType) {
     if (isNull(csv)) {
       return new String[] {};
     }

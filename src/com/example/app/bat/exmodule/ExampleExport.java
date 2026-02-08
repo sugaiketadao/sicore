@@ -4,13 +4,13 @@ import com.onepg.bat.AbstractDbAccessBatch;
 import com.onepg.db.SqlConst;
 import com.onepg.db.SqlResultSet;
 import com.onepg.db.SqlUtil;
+import com.onepg.util.CsvWriter;
 import com.onepg.util.FileUtil;
 import com.onepg.util.ValUtil.CharSet;
 import com.onepg.util.ValUtil.CsvType;
 import com.onepg.util.ValUtil.LineSep;
 import com.onepg.util.IoItems;
 import com.onepg.util.LogUtil;
-import com.onepg.util.TxtWriter;
 import com.onepg.util.ValUtil;
 
 /**
@@ -66,11 +66,11 @@ public class ExampleExport extends AbstractDbAccessBatch {
 
     // Retrieves data from the database and outputs to a file
     try (final SqlResultSet rSet = SqlUtil.select(getDbConn(), SQL_SEL_USER);
-        final TxtWriter tw = new TxtWriter(outputPath, LineSep.CRLF, CharSet.UTF8)) {
-      final String[] itemNames = rSet.getItemNames();
-      tw.println(ValUtil.joinCsv(itemNames, CsvType.DQ_ALL_LF));
+        final CsvWriter cw = new CsvWriter(outputPath, LineSep.CRLF, CharSet.UTF8, CsvType.DQ_ALL_LF)) {
+      // Outputs the column names
+      cw.println(rSet.getItemNames());
       for (final IoItems row : rSet) {
-        tw.println(row.createCsv(CsvType.DQ_ALL_LF));
+        cw.println(row);
       }
       if (rSet.getReadedCount() == 0) {
         super.logger.info("No data found to export. " + LogUtil.joinKeyVal("output", outputPath));

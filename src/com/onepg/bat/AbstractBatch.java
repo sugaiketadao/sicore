@@ -63,6 +63,7 @@ public abstract class AbstractBatch {
    * Invokes main processing.<br>
    * <ul>
    * <li>Converts arguments from URL parameter format to map format, executes log start processing, and then calls the <code>doExecute</code> method.</li>
+   * <li>Accepts multiple arguments as an array to accommodate the length limit per command-line argument.</li>
    * <li>The converted arguments are passed to the <code>doExecute</code> method as the <code>IoItems</code> class.</li>
    * <li>If the return value of the <code>doExecute</code> method is 0, the processing is considered to have terminated normally.</li>
    * <li>If the return value of the <code>doExecute</code> method is other than 0 or an exception error occurs, the processing is considered to have terminated abnormally.</li>
@@ -72,9 +73,7 @@ public abstract class AbstractBatch {
    */
   protected void callMain(final String[] args) {
     final IoItems argsMap = new IoItems();
-    if (!ValUtil.isEmpty(argsMap)) {
-      argsMap.putAllByUrlParam(args[0]);
-    }
+    argsMap.putAllByBatParam(args);
     if (this.logger.isDevelopMode()) {
       this.logger.develop(LogUtil.joinKeyVal("arguments", argsMap));
     }
