@@ -286,10 +286,8 @@ public final class DbUtil {
    * <li>Also disconnects busy connections.</li>
    * </ul>
    * 
-   * @return <code>true</code> if disconnected
    */
-  public static synchronized boolean closePooledConn() {
-    boolean ret = false;
+  public static synchronized void closePooledConn() {
     // Use iterator as it will be removed
     final Iterator<String> connNameIte = connPoolMaps_.keySet().iterator();
     // Loop through connection pool management map
@@ -315,13 +313,11 @@ public final class DbUtil {
         @SuppressWarnings("resource")
         final DbConn dbConn = new DbConn(conn, serialCode);
         dbConn.rollbackCloseForce();
-        ret = true;
       }
       // Remove from connection pool management map and busy connection management map after disconnecting all databases
       connPoolMaps_.remove(connName);
       connBusyLists_.remove(connName);
     }
-    return ret;
   }
 
   /**

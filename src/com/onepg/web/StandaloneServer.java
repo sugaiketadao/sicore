@@ -187,17 +187,13 @@ public final class StandaloneServer {
     }
     try {
       // Disconnects pooled DB
-      if (DbUtil.closePooledConn()) {
-        LogUtil.stdout("Disconnected pooled DB connections.");
-      }
+      DbUtil.closePooledConn();
     } catch (final Exception | Error e) {
       LogUtil.stdout(e, "An exception error occurred in disconnecting pooled DB connections. ");
     }
     try {
       // Closes log text file
-      if (LogTxtHandler.closeAll()) {
-        LogUtil.stdout("Closed log text file.");
-      }
+      LogTxtHandler.closeAll();
     } catch (final Exception | Error e) {
       LogUtil.stdout(e, "An exception error occurred in log text file close.");
     }

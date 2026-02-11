@@ -20,34 +20,102 @@
       <div class="class-details">
         <p><strong>Package:</strong> com.onepg.bat</p>
         <p><strong>Class Name:</strong> AbstractDbAccessBatch <span class="abstract-badge">(Abstract Class)</span></p>
-        <p><strong>Extends:</strong> <a href="AbstractBatch.html">AbstractBatch</a></p>
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>Database access batch processing base class.<br>
+        <div>Base class for database access batch processing.<br>
 <ul>
 <li>Base class for batch processing that includes database connections.</li>
 <li>Automatically handles database connection acquisition and closing.</li>
+<li>Provides common processing (logging, exception handling, etc.) for each batch.</li>
+<li>Subclasses define specific batch processing by implementing the <code>doExecute</code> method.</li>
+<li>When a subclass calls the <code>callMain</code> method of this class from the <code>main</code> method, the <code>doExecute</code> method is executed.</li>
+<li>Arguments to the subclass <code>main</code> method are assumed to be passed as-is to the <code>callMain</code> method in URL parameter format.</li>
+<li>Arguments in URL parameter format are converted to map format and passed to the <code>doExecute</code> method as an <code>IoItems</code> instance.</li>
+<li>When an error occurs in the subclass <code>doExecute</code> method, it is assumed to throw an Exception.</li>
+<li>The return value of the <code>callMain</code> method on successful completion is 0.</li>
+<li>The return value of the <code>callMain</code> method when an Exception is thrown in the <code>doExecute</code> method is 1.</li>
 </ul>
+<pre>
+[Implementation Example] <code>public class ExampleBatch extends AbstractDbAccessBatch {
+   public static void main(String[] args) {
+     System.exit((new ExampleBatch()).callMain(args));
+   }
 </div>
       </div>
     </div>
     <div class="section">
+      <h2>Constants and Variables</h2>
+      <div class="field-list">
+        <div class="field-item" id="traceCode">
+          <h3 class="field-name">traceCode</h3>
+          <div class="field-signature">
+            <code>protected String traceCode</code>
+          </div>
+          <div class="field-description">
+            Trace code. 
+          </div>
+        </div>
+        <div class="field-item" id="logger">
+          <h3 class="field-name">logger</h3>
+          <div class="field-signature">
+            <code>protected LogWriter logger</code>
+          </div>
+          <div class="field-description">
+            Log writer. 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
       <h2>Method List</h2>
+      <div class="method" id="doExecute">
+        <h3 class="method-name">doExecute <span class="abstract-badge">(Abstract Method)</span></h3>
+        <div class="method-signature">
+          <code>protected void doExecute(IoItems args)</code>
+        </div>
+        <div class="method-description">
+          Main processing.<br>
+<ul>
+<li>Subclasses implement specific batch processing.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>args</code></td>
+                <td><code>IoItems</code></td>
+                <td>arguments</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div class="method" id="callMain">
         <h3 class="method-name">callMain</h3>
         <div class="method-signature">
-          <code>protected void callMain(String[] args)</code>
+          <code>protected int callMain(String[] args)</code>
         </div>
         <div class="method-description">
           Invokes main processing.<br>
 <ul>
-<li>Converts arguments from URL parameter format to map format, executes log start processing, acquires database connection, and then calls the <code>doExecute</code> method.</li>
-<li>Accepts multiple arguments as an array to accommodate the length limit per command-line argument.</li>
-<li>The converted arguments are passed to the <code>doExecute</code> method as the <code>IoItems</code> class.</li>
-<li>If the return value of the <code>doExecute</code> method is 0, the processing is considered to have terminated normally and commits.</li>
-<li>If the return value of the <code>doExecute</code> method is other than 0 or an exception error occurs, the processing is considered to have terminated abnormally and rolls back. (Rollback is performed by <code>Connection#close()</code>)</li>
-<li>After processing ends, the database connection is always closed.</li>
+<li>Converts arguments from URL parameter format to map format, executes log start processing, and then calls the <code>doExecute</code> method.</li>
+<li>Accepts multiple arguments as an array to handle length limitations per command line argument.</li>
+<li>The converted arguments are passed to the <code>doExecute</code> method as an <code>IoItems</code> instance.</li>
+<li>If an Exception is thrown in the <code>doExecute</code> method, the processing is considered to have terminated abnormally.</li>
+<li>Commits when the processing completes successfully.</li>
+<li>Rolls back when the processing terminates abnormally. (The rollback itself is performed by <code>Connection#close()</code>)</li>
+<li>Always closes the database connection after processing ends.</li>
 </ul>
 
         </div>
@@ -65,10 +133,14 @@
               <tr>
                 <td><code>args</code></td>
                 <td><code>String[]</code></td>
-                <td>the arguments</td>
+                <td>arguments</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - 0 on successful completion, 1 on abnormal termination</p>
         </div>
       </div>
       <div class="method" id="getDbConn">
@@ -77,7 +149,7 @@
           <code>protected Connection getDbConn()</code>
         </div>
         <div class="method-description">
-          Gets database connection.<br>
+          Retrieves database connection.<br>
 <ul>
 <li>Returns the current database connection.</li>
 <li>The connection is valid only within the <code>callMain</code> method.</li>

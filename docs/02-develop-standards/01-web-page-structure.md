@@ -382,7 +382,6 @@ The setting values for `data-value-format-type` are as follows.
 | `num` | Number - comma-separated | `1000000` | `1,000,000` |
 | `ymd` | Date - YYYY/MM/DD format | `20251231` | `2025/12/31` |
 | `hms` | Time - HH:MI:SS format | `123456` | `12:34:56` |
-| `upper` | Uppercase conversion (code/ID) | `abc123` | `ABC123` ※Remains uppercase even after unformatting |
 
 <!-- AI_SKIP_START -->
 #### data-value-format-type Attribute Usage Examples and Benefits
@@ -398,8 +397,6 @@ The setting values for `data-value-format-type` are as follows.
 <!-- Time (HH:MI:SS format) -->
 <input type="text" name="stroll_tm" data-value-format-type="hms">
 
-<!-- Uppercase conversion -->
-<input type="text" name="user_id" data-value-format-type="upper">
 ```
 
 **JavaScript operation**:

@@ -258,17 +258,6 @@ hasClass(elm, cls)
 
 ### Methods
 
-#### upper
-
-```
-upper(value)
-```
-
-**Parameters**:
-- `value`: `string`
-
-**Returns**: `string`
-
 #### num
 
 ```
@@ -585,17 +574,6 @@ clearSystem()
 ## UnFrmUtil
 
 ### Methods
-
-#### upper
-
-```
-upper(value)
-```
-
-**Parameters**:
-- `value`: `string`
-
-**Returns**: `string`
 
 #### num
 

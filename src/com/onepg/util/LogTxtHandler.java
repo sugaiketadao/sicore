@@ -85,7 +85,9 @@ public final class LogTxtHandler implements AutoCloseable {
         return logTxtPoolMaps_.get(logPath);
       }
 
-      LogUtil.stdout("Creates a log text handler. " + LogUtil.joinKeyVal("path", logPath));
+      if (LogUtil.isDevelopMode()) {
+        LogUtil.stdout("Creates a log text handler. " + LogUtil.joinKeyVal("path", logPath));
+      }
       // Log text handler
       final LogTxtHandler lfh = new LogTxtHandler(logPath);
       // Stores the log text handler in the map
@@ -100,8 +102,7 @@ public final class LogTxtHandler implements AutoCloseable {
    * <li>Closes all pooled log text handlers.</li>
    * </ul>
    */
-  public static synchronized boolean closeAll() {
-    boolean ret = false;
+  public static synchronized void closeAll() {
     // Creates a copy of keys and iterates because the close processing of LogTxtHandler deletes from the pool
     for (final String key : new ArrayList<>(logTxtPoolMaps_.keySet())) {
       final LogTxtHandler handler = logTxtPoolMaps_.get(key);
@@ -109,16 +110,16 @@ public final class LogTxtHandler implements AutoCloseable {
         continue;
       } 
       try {
-        LogUtil.stdout("Closes the log text handler. " + LogUtil.joinKeyVal("path", key));
+        if (LogUtil.isDevelopMode()) {
+          LogUtil.stdout("Closes the log text handler. " + LogUtil.joinKeyVal("path", key));
+        }
         handler.close();
-        ret = true;
       } catch (final Exception e) {
         // Suppresses errors during log close (because errors may occur during log output)
         LogUtil.stdout(e, "An exception occurred while closing the log text handler. " + LogUtil.joinKeyVal("path", key));
       }
     }
     logTxtPoolMaps_.clear();
-    return ret;
   }
 
 

@@ -194,7 +194,6 @@ Automatically formats display values:
 | `num` | `1000000` | `1,000,000` |
 | `ymd` | `20251231` | `2025/12/31` |
 | `hms` | `123456` | `12:34:56` |
-| `upper` | `abc123` | `ABC123` |
 
 ```html
 <input type="text" name="income_am" data-value-format-type="num">

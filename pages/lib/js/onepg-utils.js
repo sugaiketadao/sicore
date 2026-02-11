@@ -454,18 +454,6 @@ const ValUtil = /** @lends ValUtil */ {
 const FrmUtil = /** @lends FrmUtil */ {
 
   /**
-   * Uppercase conversion.
-   * @param {string} value the target value to process
-   * @returns {string} the uppercased string
-   */
-  upper: function(value) {
-    if (ValUtil.isBlank(value)) {
-      return value;
-    }
-    return value.toUpperCase();
-  },
-
-  /**
    * Number (comma formatting).<br>
    * Returns non-numeric values without formatting.
    * @param {string} value the target value to process
@@ -533,16 +521,6 @@ const FrmUtil = /** @lends FrmUtil */ {
  * @class
  */
 const UnFrmUtil = /** @lends UnFrmUtil */ {
-
-  /**
-   * Uppercase conversion unformat.
-   * @param {string} value the target value to process
-   * @returns {string} the unprocessed string
-   */
-  upper: function(value) {
-    // No processing
-    return value;
-  },
 
   /**
    * Number unformat (removes commas).

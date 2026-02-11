@@ -325,6 +325,9 @@ public final class IoItems extends AbstractIoTypeMap {
 
     int count = 0;
     for (final String param : new SimpleSeparateParser(params, "&")) {
+      if (ValUtil.isBlank(param)) {
+        continue;
+      }
       final String[] keyVal = ValUtil.splitReg(param, "=", 2);
       final String key = keyVal[0];
       final String val;
@@ -360,17 +363,11 @@ public final class IoItems extends AbstractIoTypeMap {
     if (ValUtil.isEmpty(args)) {
       return 0;
     }
-    final StringBuilder sb = new StringBuilder();
+    int count = 0;
     for (final String arg : args) {
-      if (sb.length() > 0 && !arg.startsWith("&")) {
-        sb.append('&');
-      }
-      sb.append(arg);
-      if (arg.endsWith("&")) {
-        sb.setLength(sb.length() - 1);
-      }
+      count += putAllByUrlParam(arg);
     }
-    return putAllByUrlParam(sb.toString());
+    return count;
   }
 
   /**

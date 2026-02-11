@@ -61,15 +61,14 @@ public class ExampleImport extends AbstractDbAccessBatch {
    * @param args arguments
    */
   public static void main(String[] args) {
-    final ExampleImport batch = new ExampleImport();
-    batch.callMain(args);
+    System.exit((new ExampleImport()).callMain(args));
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public int doExecute(final IoItems io) throws Exception {
+  protected void doExecute(final IoItems io) throws Exception {
     // Retrieves the input file path
     final String inputPath = io.getString("input");
 
@@ -95,6 +94,5 @@ public class ExampleImport extends AbstractDbAccessBatch {
         super.logger.info("No data found to import. " + LogUtil.joinKeyVal("input", inputPath));
       }
     }
-    return 0;
   }
 }

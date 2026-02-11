@@ -11,5 +11,12 @@
     ],
     "java.debug.settings.onBuildFailureProceed": true,
     
-    "files.eol": "\n"
+    "files.eol": "\n",
+    
+    "[bat]": {
+        "files.encoding": "shiftjis"
+    },
+    "files.associations": {
+        "script_bat/**/*.*": "bat"
+    }
 }

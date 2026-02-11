@@ -1,27 +1,27 @@
 package com.onepg.bat;
 
 import com.onepg.util.IoItems;
+import com.onepg.util.LogTxtHandler;
 import com.onepg.util.LogUtil;
 import com.onepg.util.LogWriter;
 import com.onepg.util.ValUtil;
 
 /**
- * Batch processing base class.<br>
+ * Base class for batch processing.<br>
  * <ul>
- * <li>Provides common processing (log output, exception handling, etc.) for each batch processing.</li>
+ * <li>Provides common processing (logging, exception handling, etc.) for each batch.</li>
  * <li>Subclasses define specific batch processing by implementing the <code>doExecute</code> method.</li>
  * <li>When a subclass calls the <code>callMain</code> method of this class from the <code>main</code> method, the <code>doExecute</code> method is executed.</li>
- * <li>Arguments to the subclass <code>main</code> method are assumed to use only the first argument (<code>args[0]</code>) in URL parameter format and pass it to the <code>callMain</code> method.</li>
- * <li>Arguments in URL parameter format are converted to map format and passed to the <code>doExecute</code> method as the <code>IoItems</code> class.</li>
- * <li>In case of error within the subclass <code>doExecute</code> method, Exception is assumed to be thrown.</li>
- * <li>The return value to the caller of the <code>main</code> method (mainly batch or shell) on normal termination is 0.</li>
- * <li>The return value when Exception is thrown is 1.</li>
+ * <li>Arguments to the subclass <code>main</code> method are assumed to be passed as-is to the <code>callMain</code> method in URL parameter format.</li>
+ * <li>Arguments in URL parameter format are converted to map format and passed to the <code>doExecute</code> method as an <code>IoItems</code> instance.</li>
+ * <li>When an error occurs in the subclass <code>doExecute</code> method, it is assumed to throw an Exception.</li>
+ * <li>The return value of the <code>callMain</code> method on successful completion is 0.</li>
+ * <li>The return value of the <code>callMain</code> method when an Exception is thrown in the <code>doExecute</code> method is 1.</li>
  * </ul>
  * <pre>
- * [Implementation Example]<code>public class ExampleBatch extends AbstractBatch {
+ * [Implementation Example] <code>public class ExampleBatch extends AbstractBatch {
  *    public static void main(String[] args) {
- *      final ExampleBatch batch = new ExampleBatch();
- *      batch.callMain(args);
+ *      System.exit((new ExampleBatch()).callMain(args));
  *    }
  * 
  *    @Override
@@ -29,7 +29,7 @@ import com.onepg.util.ValUtil;
  *      // Implement batch processing content
  *    }
  * }</code>
- * [Execution Example]<code>java com.example.ExampleBatch "param1=value1&param2=value2"</code>
+ * [Execution Example] <code>java com.example.ExampleBatch "param1=value1&param2=value2"</code>
  * </pre> 
  */
 public abstract class AbstractBatch {
@@ -45,11 +45,10 @@ public abstract class AbstractBatch {
    * <li>Subclasses implement specific batch processing.</li>
    * </ul>
    *
-   * @param args the arguments
-   * @return the return value of the main method
+   * @param args arguments
    * @throws Exception exception error
    */
-  protected abstract int doExecute(final IoItems args) throws Exception;
+  protected abstract void doExecute(final IoItems args) throws Exception;
 
   /**
    * Constructor.
@@ -63,15 +62,15 @@ public abstract class AbstractBatch {
    * Invokes main processing.<br>
    * <ul>
    * <li>Converts arguments from URL parameter format to map format, executes log start processing, and then calls the <code>doExecute</code> method.</li>
-   * <li>Accepts multiple arguments as an array to accommodate the length limit per command-line argument.</li>
-   * <li>The converted arguments are passed to the <code>doExecute</code> method as the <code>IoItems</code> class.</li>
-   * <li>If the return value of the <code>doExecute</code> method is 0, the processing is considered to have terminated normally.</li>
-   * <li>If the return value of the <code>doExecute</code> method is other than 0 or an exception error occurs, the processing is considered to have terminated abnormally.</li>
+   * <li>Accepts multiple arguments as an array to handle length limitations per command line argument.</li>
+   * <li>The converted arguments are passed to the <code>doExecute</code> method as an <code>IoItems</code> instance.</li>
+   * <li>If an Exception is thrown in the <code>doExecute</code> method, the processing is considered to have terminated abnormally.</li>
    * </ul>
    *
-   * @param args the arguments
+   * @param args arguments
+   * @return 0 on successful completion, 1 on abnormal termination
    */
-  protected void callMain(final String[] args) {
+  protected int callMain(final String[] args) {
     final IoItems argsMap = new IoItems();
     argsMap.putAllByBatParam(args);
     if (this.logger.isDevelopMode()) {
@@ -81,12 +80,32 @@ public abstract class AbstractBatch {
     int status = 0;
     try {
       this.logger.begin();
-      status = doExecute(argsMap);
+      doExecute(argsMap);
     } catch (final Exception | Error e) {
       status = 1;
       this.logger.error(e, "An exception error occurred in batch processing. ");
     }
     this.logger.end(status);
-    System.exit(status);
+
+    // Close resources
+    closeResources();
+
+    return status;
+  }
+
+  /**
+   * Closes resources.<br>
+   * <ul>
+   * <li>Closes the log text file.</li>
+   * </ul>
+   */
+  private final void closeResources() {
+    try {
+      // Close log text file
+      LogTxtHandler.closeAll();
+    } catch (final Exception | Error e) {
+      LogUtil.stdout(e, "An exception error occurred in log text file close.");
+    }
   }
 }
+
