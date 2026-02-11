@@ -73,6 +73,8 @@ $ psql -h localhost -p 5432 -d db01 -U postgres
 Change the schema priority of the created database. (Specify the created schema before `public`)
 # ALTER DATABASE db01 SET search_path TO schema01, public;
 # quit
+
+If an error occurs with CREATE SCHEMA, log in with the created user and create the schema (execute the above SQL).
 ```
 
 10. Verify the current schema.　***Skip this step if using only the public schema***
