@@ -321,6 +321,20 @@ div.grid-row > div[class*="grid-col-"] > div.item-body {
     text-align: left;
     margin-right: 0;
   }
+  
+  /* Prevent buttons from stretching to full screen width */
+  div.grid-row > div[class*="grid-col-"] > button,
+  div.grid-row > div[class*="grid-col-"] > a.button {
+    align-self: flex-start;
+  }
+  div.grid-row > div.align-right > button,
+  div.grid-row > div.align-right > a.button {
+    align-self: flex-end;
+  }
+  div.grid-row > div.align-center > button,
+  div.grid-row > div.align-center > a.button {
+    align-self: center;
+  }
 }
 
 /* Smartphone */
