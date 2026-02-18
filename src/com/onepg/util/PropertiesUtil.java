@@ -38,7 +38,9 @@ import java.util.regex.Pattern;
  * config.properties</li>
  * <li>The number of properties files is flexible, but configuration keys must be unique across properties files. (Duplication with framework component properties files is acceptable)</li>
  * <li>If the configuration value is enclosed in ${ and }, it is replaced with the value of the enclosed environment variable. (Partial replacement is also possible) <br>
- * However, if the environment variable does not exist, a system error occurs.</li>
+ * However, if the environment variable does not exist, a system error occurs.<br>
+ * [Example Windows environment] <code>${USERNAME}</code> is replaced with the current user name.<br>
+ * [Example Linux environment] <code>${USER}</code> is replaced with the current user name.</li>
  * <li>$ApplicationDirPath in the configuration value is replaced with the application deployment directory path. (Partial replacement is also possible)<br>
  * For details on the application deployment directory, refer to <code>#APPLICATION_DIR_PATH</code>.</li>
  * <li>$TemporaryDirPath in the configuration value is replaced with the OS temporary directory path. (Partial replacement is also possible)<br>
