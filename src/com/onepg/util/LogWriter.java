@@ -21,6 +21,8 @@ public final class LogWriter {
 
   /** Generation class name. */
   private final String clsName;
+  /** Parent process ID. */
+  private final long ppid;
   /** Thread name. */
   private final String threadName;
   /** Information log text handler. */
@@ -53,17 +55,19 @@ public final class LogWriter {
    * Constructor.
    *
    * @param cls               log target class
+   * @param ppid              parent process ID
    * @param traceCode         trace code (optional)
    * @param isDevelopMode     development mode
    * @param infLogFileHandler information log text handler
    * @param errLogFileHandler error log text handler
    * @param consoleWriter     console writer
    */
-  LogWriter(final Class<?> cls, final String traceCode, final boolean isDevelopMode,
+  LogWriter(final Class<?> cls, final long ppid, final String traceCode, final boolean isDevelopMode,
       final LogTxtHandler infLogTxtHandler, final LogTxtHandler errLogTxtHandler,
       final PrintWriter consoleWriter) {
 
     this.clsName = cls.getName();
+    this.ppid = ppid;
     this.threadName = Thread.currentThread().getName();
     this.traceCode = ValUtil.nvl(traceCode);
     this.isDevelopMode = isDevelopMode;
@@ -79,7 +83,7 @@ public final class LogWriter {
     this.infPrefix = prefixTraceCode + " [INF] ";
     this.errPrefix = prefixTraceCode + " [ERR] ";
     this.devPrefix = prefixTraceCode + " [DEV] ";
-    this.beginEndSuffix = LogUtil.joinKeyVal("class", this.clsName, "thread", this.threadName);
+    this.beginEndSuffix = LogUtil.joinKeyVal("class", this.clsName, "ppid", this.ppid, "thread", this.threadName);
   }
 
   /**

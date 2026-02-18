@@ -57,7 +57,7 @@ printStdErr() {
 printLog() {
   local MSG="$1"
   local YMDHMS=$(getNowTimestamp)
-  echo ${YMDHMS} ${APP_NAME}/${JOB_ID} "#${PS_ID}" ${MSG} >> ${LOG_FILE} 2>&1
+  echo ${YMDHMS} ${APP_NAME}/${JOB_ID} pid=${PS_ID} ${MSG} >> ${LOG_FILE} 2>&1
 }
 
 #
@@ -71,9 +71,9 @@ printLog() {
 printAlert() {
   local MSG="$1"
   local YMDHMS=$(getNowTimestamp)
-  echo ${YMDHMS} ${APP_NAME}/${JOB_ID} "#${PS_ID}" ${MSG} >> ${LOG_FILE} 2>&1
+  echo ${YMDHMS} ${APP_NAME}/${JOB_ID} pid=${PS_ID} ${MSG} >> ${LOG_FILE} 2>&1
   if [[ "${ALERT_FILE}" != "" ]] ; then
-    echo ${YMDHMS} ${APP_NAME}/${JOB_ID} "#${PS_ID}" ${MSG} >> ${ALERT_FILE} 2>&1
+    echo ${YMDHMS} ${APP_NAME}/${JOB_ID} pid=${PS_ID} ${MSG} >> ${ALERT_FILE} 2>&1
   fi
 }
 

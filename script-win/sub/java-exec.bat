@@ -162,7 +162,7 @@ rem #
 :printLog
 set MSG=%1
 call :getNowTimestamp YMDHMS
-echo %YMDHMS% %APP_NAME%/%JOB_ID% #%PS_ID% %MSG:"=%>>%LOG_FILE% 2>&1
+echo %YMDHMS% %APP_NAME%/%JOB_ID% pid=%PS_ID% %MSG:"=%>>%LOG_FILE% 2>&1
 exit /b
 
 rem #
@@ -176,9 +176,9 @@ rem #
 :printAlert
 set MSG=%1
 call :getNowTimestamp YMDHMS
-echo %YMDHMS% %APP_NAME%/%JOB_ID% #%PS_ID% %MSG:"=%>>%LOG_FILE% 2>&1
+echo %YMDHMS% %APP_NAME%/%JOB_ID% pid=%PS_ID% %MSG:"=%>>%LOG_FILE% 2>&1
 if "%ALERT_FILE%"=="" (
   exit /b
 )
-echo %YMDHMS% %APP_NAME%/%JOB_ID% #%PS_ID% %MSG:"=%>>%ALERT_FILE% 2>&1
+echo %YMDHMS% %APP_NAME%/%JOB_ID% pid=%PS_ID% %MSG:"=%>>%ALERT_FILE% 2>&1
 exit /b
