@@ -340,18 +340,7 @@ div.grid-row > div[class*="grid-col-"] > div.item-body {
 /* Smartphone */
 @media screen and (max-width: 768px) {
   /* Makes grid columns full width */
-  div.grid-col-1,
-  div.grid-col-2,
-  div.grid-col-3,
-  div.grid-col-4,
-  div.grid-col-5,
-  div.grid-col-6,
-  div.grid-col-7,
-  div.grid-col-8,
-  div.grid-col-9,
-  div.grid-col-10,
-  div.grid-col-11,
-  div.grid-col-12 {
+  div[class*="grid-col-"] {
     width: 100%;
   }
   
@@ -505,7 +494,8 @@ select:focus,
 textarea:focus,
 input[type="checkbox"]:focus,
 input[type="radio"]:focus,
-button:focus  {
+button:focus,
+a.button:focus {
   outline: none;
   box-shadow: var(--onepg-base--shadow--focus);
 }
