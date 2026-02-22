@@ -25,6 +25,7 @@
           <li><a href="#section-5">Table styles.</a></li>
           <li><a href="#section-6">Utility styles.</a></li>
           <li><a href="#section-7">Message display/item highlight styles.</a></li>
+          <li><a href="#constants">Constant List</a></li>
         </ul>
       </div>
     </div>
@@ -169,6 +170,210 @@
 <li>Items to be highlighted are specified with message text in the arguments of Java framework component <code>Io#putMsg()</code>.</li>
 </ul>
       </div>
+    </div>
+    <div class="section" id="constants">
+      <h2>Constant List</h2>
+      <p class="constants-note">All constant names start with <code>--onepg-base--</code>. (e.g., <code>line-height--all</code> &rarr; <code>--onepg-base--line-height--all</code>)</p>
+      <table class="constants-table">
+        <thead><tr><th>Constant Label</th><th>Constant Name (after --onepg-base--)</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Overall line height</td>
+            <td><code>line-height--all</code></td>
+            <td><code>1.5</code></td>
+          </tr>
+          <tr>
+            <td>Section left/right margin</td>
+            <td><code>spacing--section-lr</code></td>
+            <td><code>1.5rem</code></td>
+          </tr>
+          <tr>
+            <td>Section top/bottom margin</td>
+            <td><code>spacing--section-tb</code></td>
+            <td><code>1rem</code></td>
+          </tr>
+          <tr>
+            <td>Header/footer section top/bottom margin</td>
+            <td><code>spacing--section-tb-header-footer</code></td>
+            <td><code>0.5rem</code></td>
+          </tr>
+          <tr>
+            <td>Input item height</td>
+            <td><code>height--inputitem</code></td>
+            <td><code>2rem</code></td>
+          </tr>
+          <tr>
+            <td>Input item border width</td>
+            <td><code>border-width--inputitem</code></td>
+            <td><code>1px</code></td>
+          </tr>
+          <tr>
+            <td>Input item frame left/right padding</td>
+            <td><code>spacing--inputitem-lr</code></td>
+            <td><code>0.25rem</code></td>
+          </tr>
+          <tr>
+            <td>Input item frame border radius</td>
+            <td><code>radius--inputitem</code></td>
+            <td><code>4px</code></td>
+          </tr>
+          <tr>
+            <td>Button frame border radius</td>
+            <td><code>radius--button</code></td>
+            <td><code>calc(var(--onepg-base--height--inputitem) / 2)</code></td>
+          </tr>
+          <tr>
+            <td>Button frame left/right padding</td>
+            <td><code>spacing--button-lr</code></td>
+            <td><code>var(--onepg-base--radius--button)</code></td>
+          </tr>
+          <tr>
+            <td>Item left/right margin</td>
+            <td><code>spacing--item-lr</code></td>
+            <td><code>0.25rem</code></td>
+          </tr>
+          <tr>
+            <td>Grid row spacing</td>
+            <td><code>spacing--grid-rows</code></td>
+            <td><code>0.75rem</code></td>
+          </tr>
+          <tr>
+            <td>Grid column spacing</td>
+            <td><code>spacing--grid-cols</code></td>
+            <td><code>0.25rem</code></td>
+          </tr>
+          <tr>
+            <td>Background color</td>
+            <td><code>color--bg</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#e5e4e6;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#e5e4e6</code></td>
+          </tr>
+          <tr>
+            <td>Header/footer background color</td>
+            <td><code>color--bg-header-footer</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#eae5e3;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#eae5e3</code></td>
+          </tr>
+          <tr>
+            <td>Table stripe background color</td>
+            <td><code>color--bg-stripe</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#dddcd6;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#dddcd6</code></td>
+          </tr>
+          <tr>
+            <td>Text color</td>
+            <td><code>color--text</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#2e2930;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#2e2930</code></td>
+          </tr>
+          <tr>
+            <td>Disabled text color</td>
+            <td><code>color--text-disabled</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#9ea1a3;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#9ea1a3</code></td>
+          </tr>
+          <tr>
+            <td>Danger text color</td>
+            <td><code>color--text-danger</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#e83929;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#e83929</code></td>
+          </tr>
+          <tr>
+            <td>Input item background color</td>
+            <td><code>color--input-bg</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#f8fbf8;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#f8fbf8</code></td>
+          </tr>
+          <tr>
+            <td>Border color</td>
+            <td><code>color--border</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#c8c2c6;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#c8c2c6</code></td>
+          </tr>
+          <tr>
+            <td>Disabled background color</td>
+            <td><code>color--input-bg-disabled</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:transparent;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>transparent</code></td>
+          </tr>
+          <tr>
+            <td>Button background color</td>
+            <td><code>color--button-bg</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#595857;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#595857</code></td>
+          </tr>
+          <tr>
+            <td>Danger button color</td>
+            <td><code>color--button-bg-danger</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#d3381c;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#d3381c</code></td>
+          </tr>
+          <tr>
+            <td>Button border color</td>
+            <td><code>color--button-border</code></td>
+            <td><code>var(--onepg-base--color--border)</code></td>
+          </tr>
+          <tr>
+            <td>Button disabled background color</td>
+            <td><code>color--button-bg-disabled</code></td>
+            <td><code>var(--onepg-base--color--button-border)</code></td>
+          </tr>
+          <tr>
+            <td>Button disabled border color</td>
+            <td><code>color--button-border-disabled</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#dcd6d9;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#dcd6d9</code></td>
+          </tr>
+          <tr>
+            <td>Button text color</td>
+            <td><code>color--button-text</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#fffffc;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#fffffc</code></td>
+          </tr>
+          <tr>
+            <td>Table border color</td>
+            <td><code>color--table-border</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#a89dac;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#a89dac</code></td>
+          </tr>
+          <tr>
+            <td>Focus border color</td>
+            <td><code>color--focus</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#2ca9e1;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#2ca9e1</code></td>
+          </tr>
+          <tr>
+            <td>Message display area left/right padding</td>
+            <td><code>spacing--msg-lr</code></td>
+            <td><code>0.5rem</code></td>
+          </tr>
+          <tr>
+            <td>Info message background color</td>
+            <td><code>color--info-msg-bg</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#bce2e8;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#bce2e8</code></td>
+          </tr>
+          <tr>
+            <td>Warning message background color</td>
+            <td><code>color--warn-msg-bg</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#f8e58c;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#f8e58c</code></td>
+          </tr>
+          <tr>
+            <td>Error message background color</td>
+            <td><code>color--err-msg-bg</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#eebbcb;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#eebbcb</code></td>
+          </tr>
+          <tr>
+            <td>Info item background color</td>
+            <td><code>color--info-item-bg</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#bce2e8;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#bce2e8</code></td>
+          </tr>
+          <tr>
+            <td>Warning item background color</td>
+            <td><code>color--warn-item-bg</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#f8e58c;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#f8e58c</code></td>
+          </tr>
+          <tr>
+            <td>Error item background color</td>
+            <td><code>color--err-item-bg</code></td>
+            <td><span style="display:inline-block;width:1em;height:1em;background:#eebbcb;border:1px solid #ccc;vertical-align:middle;margin-right:4px;"></span><code>#eebbcb</code></td>
+          </tr>
+          <tr>
+            <td>Focus shadow</td>
+            <td><code>shadow--focus</code></td>
+            <td><code>0 0 0 2px var(--onepg-base--color--focus)</code></td>
+          </tr>
+          <tr>
+            <td>Header/footer fixed shadow</td>
+            <td><code>shadow--header-footer</code></td>
+            <td><code>0 2px 4px rgba(0, 0, 0, 0.1)</code></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <div class="footer">

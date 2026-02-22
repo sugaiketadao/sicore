@@ -54,7 +54,6 @@
   --onepg-base--height--inputitem: 2rem;
   /* Input item border width */
   --onepg-base--border-width--inputitem: 1px;
-  /* Calculated input item line height */
   --onepg-base--line-height--inputitem-calc: calc(var(--onepg-base--height--inputitem) - var(--onepg-base--border-width--inputitem) * 2);
   /* Input item frame left/right padding */
   --onepg-base--spacing--inputitem-lr: 0.25rem;
@@ -388,7 +387,7 @@ div.table table > tbody label {
   white-space: nowrap;
   /* Aligns text position and height with text box */
   display: inline-block;
-  line-height: var(--onepg-base--line-height--inputitem-calc);
+  line-height: var(--onepg-base--line-height--inputitem-calc); /* Calculated input item line height */
   vertical-align: middle;
   height: var(--onepg-base--height--inputitem);
   border-top: var(--onepg-base--border-width--inputitem) solid transparent;
@@ -605,7 +604,7 @@ button.danger:not(:disabled) {
 a.button {
   /* Style to make button shape */
   display: inline-block;
-  line-height: var(--onepg-base--line-height--inputitem-calc);
+  line-height: var(--onepg-base--line-height--inputitem-calc); /* Calculated input item line height */
   vertical-align: middle;
   text-decoration: none;
   text-align: center;

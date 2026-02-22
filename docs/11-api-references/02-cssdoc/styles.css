@@ -78,6 +78,34 @@ body {
   white-space: pre-wrap;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.constants-note {
+  margin-bottom: 0.75rem;
+  color: #495057;
+}
+
+.constants-table th {
+  background: #667eea;
+  color: white;
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+
+.constants-table td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: top;
+}
+
+.constants-table tr:nth-child(even) td {
+  background: #f8f9fa;
+}
+
 code {
   background: #e9ecef;
   padding: 0.2rem 0.4rem;
