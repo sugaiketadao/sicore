@@ -324,6 +324,19 @@ movePage(url, params)
 - `url`: `string`
 - `[params]`: `Object.<string, string>|string`
 
+#### callJsonService
+
+```
+async callJsonService(url, req, addHeader)
+```
+
+**Parameters**:
+- `url`: `string`
+- `[req]`: `Object`
+- `[addHeader]`: `Object.<string, string>`
+
+**Returns**: `Object`
+
 ## PageUtil
 
 ### Methods

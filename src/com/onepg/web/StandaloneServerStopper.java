@@ -18,7 +18,7 @@ import java.util.Scanner;
 public final class StandaloneServerStopper {
 
   /** HTTP connection timeout (milliseconds). */
-  private static final int HTTP_TIMEOUT_MS = 5000;
+  private static final int HTTP_TIMEOUT_MS = 5_000;
 
   /**
    * Main processing.
@@ -97,14 +97,14 @@ public final class StandaloneServerStopper {
     // Checks up to 10 times at 1-second intervals
     for (int i = 0; i < 10; i++) {
       try {
-        Thread.sleep(1000); // Waits 1 second
+        Thread.sleep(1_000); // Waits 1 second
 
         final URI uri = new URI(checkUrl);
         final URL url = uri.toURL();
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setConnectTimeout(1000);
-        connection.setReadTimeout(1000);
+        connection.setConnectTimeout(1_000);
+        connection.setReadTimeout(1_000);
 
         final int responseCode = connection.getResponseCode();
         connection.disconnect();

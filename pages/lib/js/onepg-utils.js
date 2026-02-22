@@ -2592,7 +2592,7 @@ const PageUtil = /** @lends PageUtil */ {
 
 
 /**
- * Session storage utility class.<br>
+ * Storage utility class.<br>
  * <ul>
  *   <li>Stores and retrieves associative arrays in browser's session storage with the following units + keys.</li>
  *   <ul>
@@ -2601,6 +2601,7 @@ const PageUtil = /** @lends PageUtil */ {
  *     <li>System unit (data sharing across entire system)</li>
  *   </ul>
  *   <li>Assumes non-critical processing and does not throw exceptions in principle.</li>
+ *   <li>Not synchronized with the web server.</li>
  * </ul>
  * @class
  */

@@ -434,24 +434,24 @@ public final class LogUtil {
         return "0T00:00:00.000";
       }
       // Overflow prevention
-      if (Long.MAX_VALUE < (msec / 1000)) {
+      if (Long.MAX_VALUE < (msec / 1_000)) {
         return ValUtil.BLANK;
       }
 
-      final long sec = msec / 1000;
+      final long sec = msec / 1_000;
       final long min = sec / 60;
       final long hur = min / 60;
       long day = hur / 24;
       
       // Checks for unrealistic values
-      if (day > 999999) { // About 2700 years or more
+      if (day > 999_999) { // About 2700 years or more
         day = -1;
       }
 
       final long sepHur = hur % 24;     // Range of 0-23
       final long sepMin = min % 60;     // Range of 0-59
       final long sepSec = sec % 60;     // Range of 0-59
-      final long sepMsec = msec % 1000; // Range of 0-999 (milliseconds)
+      final long sepMsec = msec % 1_000; // Range of 0-999 (milliseconds)
       
       final StringBuilder sb = new StringBuilder();
       sb.append(day).append("T");

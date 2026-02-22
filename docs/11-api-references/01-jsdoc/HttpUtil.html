@@ -125,6 +125,53 @@
           </table>
         </div>
       </div>
+      <div class="method">
+        <h3 id="callJsonService" class="method-name">callJsonService</h3>
+        <div class="method-signature">
+          <code>async callJsonService(url, req, addHeader)</code>
+        </div>
+        <div class="method-description">
+          Executes JSON web service (async/await compatible).<br>
+<ul>
+<li>Sends a JSON request to the specified URL with the <code>POST</code> method and receives a JSON response.</li>
+<li>Request and response are exchanged as objects.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>url</code></td>
+                <td><code>string</code></td>
+                <td>the destination URL</td>
+              </tr>
+              <tr>
+                <td><code>[req]</code></td>
+                <td><code>Object</code></td>
+                <td>the request object (optional)</td>
+              </tr>
+              <tr>
+                <td><code>[addHeader]</code></td>
+                <td><code>Object.&lt;string, string&gt;</code></td>
+                <td>the additional HTTP headers (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Object</code> - the response object</p>
+        </div>
+      </div>
     </div>
   </div>
   <div class="footer">

@@ -62,7 +62,7 @@ final class JsonArraySeparateParser extends AbstractStringSeparateParser {
 
     // Performance optimization (using 1000 characters as threshold)
     final char[] valChars;
-    final boolean useCharAry = (value.length() > 1000);
+    final boolean useCharAry = (value.length() > 1_000);
     if (useCharAry) {
       // Uses char[] array
       valChars = value.toCharArray();

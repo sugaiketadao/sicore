@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,9 +41,9 @@ final class ServerUtil {
   /** Optimal buffer size (bytes). */
   private static final int OPTIMAL_BUFFER_SIZE = calcBufferSize();
   /** Minimum file size for text compression (1KB). */
-  private static final long TXT_TO_COMPRESS_MIN_SIZE = 1024;
-  /** Maximum file size for text compression (1MB). */
-  private static final long TXT_TO_COMPRESS_MAX_SIZE = 1024 * 1024;
+  private static final long TXT_TO_COMPRESS_MIN_SIZE = 1_024;
+  /** Maximum file size for text compression (1MB). (to avoid OutOfMemoryError) */
+  private static final long TXT_TO_COMPRESS_MAX_SIZE = 1_024 * 1_024;
   
   /** HTTP date format (RFC 1123). */
   private static final DateTimeFormatter DTF_HTTP_DATE = 
@@ -69,17 +68,17 @@ final class ServerUtil {
     // Available memory
     final long maxMemory = Runtime.getRuntime().maxMemory();
     // 4GB or more
-    if (maxMemory > 4L * 1024 * 1024 * 1024) {
+    if (maxMemory > 4L * 1_024 * 1_024 * 1_024) {
       // 64KB
-      return 65536;
+      return 65_536;
     }
     // 1GB or more
-    if (maxMemory > 1024 * 1024 * 1024) {
+    if (maxMemory > 1_024 * 1_024 * 1_024) {
       // 32KB
-      return 32768;
+      return 32_768;
     }
     // Basic size 8KB
-    return 8192;
+    return 8_192;
   }
 
   /**
@@ -235,8 +234,8 @@ final class ServerUtil {
     } else if (fileName.endsWith(".eot")) {
       checkCtype = "application/vnd.ms-fontobject";
     } else {
-      // Uses Java standard MIME type for others
-      checkCtype = Files.probeContentType(resFile.toPath());
+      // Uses Java standard MIME type for others (substitutes with an empty string if null)
+      checkCtype = ValUtil.nvl(Files.probeContentType(resFile.toPath()));
     }
     
     // Determines if text
@@ -269,8 +268,8 @@ final class ServerUtil {
     headers.set("ETag", "\"" + serverModMsec + "-" + resFile.length() + "\"");
 
     final long fileSize = resFile.length();
-    if (isText && TXT_TO_COMPRESS_MIN_SIZE < fileSize && fileSize <= TXT_TO_COMPRESS_MAX_SIZE) {
-      // Compresses and responds if text file is within target size for compression
+    if (isText && fileSize <= TXT_TO_COMPRESS_MAX_SIZE) {
+      // Reads the text file into memory and returns a compressed response if its size is within the upper limit (whether to compress is determined inside responseCompressed)
       final String fileContent = Files.readString(resFile.toPath(),
           java.nio.charset.Charset.forName(charSet.toString()));
       responseCompressed(exchange, HttpURLConnection.HTTP_OK, fileContent);
@@ -307,7 +306,7 @@ final class ServerUtil {
       // Serial value (milliseconds)
       final long clientModMsec = clientModTime.toInstant().toEpochMilli();
       // If the file modification date is not equal to or later than the client-side date (compares considering a 1-second error margin)
-      if (serverModMsec <= clientModMsec + 1000) {
+      if (serverModMsec <= clientModMsec + 1_000) {
         return true;
       }
     } catch (Exception e) {
@@ -403,7 +402,6 @@ final class ServerUtil {
     // XSS protection
     headers.set("X-Content-Type-Options", "nosniff");
     headers.set("X-Frame-Options", "DENY");
-    headers.set("X-XSS-Protection", "1; mode=block");
         
     // CSP (Content Security Policy)
     headers.set("Content-Security-Policy", 
@@ -419,8 +417,7 @@ final class ServerUtil {
    * @param exchange HTTP send/receive data
    * @param resFile  Display file
    */
-  private static void responseCopyOrStream(final HttpExchange exchange, final File resFile)
-      throws IOException, FileNotFoundException {
+  private static void responseCopyOrStream(final HttpExchange exchange, final File resFile) throws IOException {
     exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, resFile.length());
     try (final OutputStream os = exchange.getResponseBody()) {
       if (resFile.length() <= OPTIMAL_BUFFER_SIZE) {
@@ -450,17 +447,17 @@ final class ServerUtil {
     final String acceptEncoding = ValUtil.nvl(exchange.getRequestHeaders().getFirst("Accept-Encoding"));
     
     byte[] resBytes;
-    if (acceptEncoding.contains("gzip") && resTxt.length() > 1024) {
-        // GZIP compression
-        resBytes = compresseGzip(resTxt.getBytes(ValUtil.UTF8));
-        headers.set("Content-Encoding", "gzip");
+    if (acceptEncoding.contains("gzip") && TXT_TO_COMPRESS_MIN_SIZE < resTxt.length()) {
+      // GZIP compression
+      resBytes = compressGzip(resTxt.getBytes(ValUtil.UTF8));
+      headers.set("Content-Encoding", "gzip");
     } else {
-        resBytes = resTxt.getBytes(ValUtil.UTF8);
+      resBytes = resTxt.getBytes(ValUtil.UTF8);
     }
     
     exchange.sendResponseHeaders(httpStatus, resBytes.length);
     try (final OutputStream os = exchange.getResponseBody()) {
-        os.write(resBytes);
+      os.write(resBytes);
     }
   }
 
@@ -469,12 +466,12 @@ final class ServerUtil {
    * @param data Compression target data
    * @return Compressed data
    */
-  private static byte[] compresseGzip(final byte[] data) throws IOException {
+  private static byte[] compressGzip(final byte[] data) throws IOException {
     try (final ByteArrayOutputStream baos = new ByteArrayOutputStream();
          final GZIPOutputStream gzos = new GZIPOutputStream(baos)) {
-        gzos.write(data);
-        gzos.finish();
-        return baos.toByteArray();
+      gzos.write(data);
+      gzos.finish();
+      return baos.toByteArray();
     }
   }
 }
