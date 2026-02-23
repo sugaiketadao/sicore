@@ -443,6 +443,52 @@ clearRows(listId)
 **Parameters**:
 - `listId`: `string`
 
+## SessionUtil
+
+### Methods
+
+#### getString
+
+```
+getString(key)
+```
+
+**Parameters**:
+- `key`: `string`
+
+**Returns**: `string|null`
+
+#### setString
+
+```
+setString(key, val)
+```
+
+**Parameters**:
+- `key`: `string`
+- `val`: `string`
+
+**Returns**: `boolean`
+
+#### remove
+
+```
+remove(key)
+```
+
+**Parameters**:
+- `key`: `string`
+
+**Returns**: `boolean`
+
+#### clear
+
+```
+clear()
+```
+
+**Returns**: `boolean`
+
 ## StorageUtil
 
 ### Methods
@@ -705,7 +751,7 @@ equalsObj(obj1, obj2, ignoreKeys)
 **Parameters**:
 - `obj1`: `Object`
 - `obj2`: `Object`
-- `ignoreKeys`: `string`
+- `[ignoreKeys]`: `Array<string>`
 
 **Returns**: `boolean`
 

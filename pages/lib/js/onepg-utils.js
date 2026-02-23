@@ -126,7 +126,7 @@ const ValUtil = /** @lends ValUtil */ {
    *
    * @param {Object} obj1 the first object to compare
    * @param {Object} obj2 the second object to compare
-   * @param {string} ignoreKeys the keys to ignore (multiple keys can be specified)
+   * @param {Array<string>} [ignoreKeys] an array of keys to exclude from comparison (optional)
    * @returns {boolean} <code>true</code> if contents are equal
    */
   equalsObj : function(obj1, obj2, ignoreKeys) {
@@ -136,15 +136,14 @@ const ValUtil = /** @lends ValUtil */ {
     if (!ValUtil.isObj(obj2)) {
       return false;
     }
-    const ignoreKeyAry = Array.prototype.slice.call(arguments, 2);
+    ignoreKeys = ignoreKeys || [];
     for (const key in obj1){
       // Ignore if it's an excluded key
-      if (ignoreKeyAry.indexOf(key) >= 0) {
+      if (ignoreKeys.indexOf(key) >= 0) {
         continue;
       }
       // Ignore if the key doesn't exist in obj2
-      // Writing comparison value (<code>false</code>) to avoid confusion with loops
-      if (key in obj2 === false) {
+      if (!Object.hasOwn(obj2, key)) {
         continue;
       }
 
@@ -161,6 +160,7 @@ const ValUtil = /** @lends ValUtil */ {
 
       if (t === 'array') {
         // For arrays, process assuming each element is an object.
+        // If val2 is not an array, its length will be undefined, so they are determined not to be equal.
         if (val1.length !== val2.length) {
           return false;
         }
@@ -678,10 +678,15 @@ const HttpUtil = /** @lends HttpUtil */ {
       // Request data must be an object
       throw new Error('HttpUtil#callJsonService: Request must be an object. ');
     }
+    // Add session data to the request
+    if (!ValUtil.isEmpty(SessionUtil._sessionData)) {
+      req[SessionUtil._IOKEY] = SessionUtil._sessionData;
+    }
+
     // Merge headers
     const header = Object.assign(addHeader || {}, { 'Content-Type': 'application/json' });
 
-    return new Promise(function(resolve, reject) {
+    const pr = new Promise(function(resolve, reject) {
       const xhr = new XMLHttpRequest();
       xhr.open('POST', url, true);
       for (const key in header) {
@@ -698,6 +703,13 @@ const HttpUtil = /** @lends HttpUtil */ {
           try {
             // Manually parse JSON
             res = JSON.parse(xhr.response);
+            // Extract session data from the response and remove it
+            if (Object.hasOwn(res, SessionUtil._IOKEY)) {
+              if (ValUtil.isObj(res[SessionUtil._IOKEY])) {
+                SessionUtil._sessionData = res[SessionUtil._IOKEY];
+              }
+              delete res[SessionUtil._IOKEY];
+            }
             resolve(res);
           } catch (e) {
             reject(new Error(`Json parse error. \n${e.name}\n : ${e.message}`));
@@ -719,6 +731,12 @@ const HttpUtil = /** @lends HttpUtil */ {
       // Send
       xhr.send(JSON.stringify(req));
     });
+    
+    if (Object.hasOwn(req, SessionUtil._IOKEY)) {
+      // Remove the session data added to the request
+      delete req[SessionUtil._IOKEY];
+    }
+    return pr;
   },
 };
 
@@ -1551,10 +1569,12 @@ const DomUtil = /** @lends DomUtil */ {
  */
 const PageUtil = /** @lends PageUtil */ {
 
-  /** @private <code>id</code> attribute name of message display area element and message array key in response data (specified in Io.java). */
+  /** @private <code>id</code> attribute name for the message display area element. */
   _ITEMID_MSG: '_msg',
-  /** @private Key that becomes <code>true</code> if there are error messages (specified in Io.java). */
-  _ITEMID_HAS_ERR: '_has_err',
+  /** @private Key for the message array in the response data (specified in Io.java). */
+  _IOKEY_MSG: '_msg',
+  /** @private Key for the error existence flag in the response data (specified in Io.java). */
+  _IOKEY_HAS_ERR: '_has_err',
   /** @private Attribute name for backing up <code>title</code> attribute. */
   _ORG_ATTR_TITLE_BACKUP: 'data-title-backup',
   /** @private <code>name</code> attribute name for list section radio buttons when converted to object. */
@@ -1576,7 +1596,7 @@ const PageUtil = /** @lends PageUtil */ {
     if (!ValUtil.isObj(res)) {
       throw new Error('PageUtil#setMsg: Argument response is invalid. ');
     }
-    const msgs = res[PageUtil._ITEMID_MSG];
+    const msgs = res[PageUtil._IOKEY_MSG];
     if (ValUtil.isEmpty(msgs)) {
       PageUtil.clearMsg();
       return;
@@ -1653,7 +1673,7 @@ const PageUtil = /** @lends PageUtil */ {
     if (!ValUtil.isObj(res)) {
       throw new Error('PageUtil#hasErr: Argument response is invalid. ');
     }
-    const hasErr = res[PageUtil._ITEMID_HAS_ERR];
+    const hasErr = res[PageUtil._IOKEY_HAS_ERR];
     return ValUtil.isTrue(hasErr);
   },
 
@@ -2592,9 +2612,9 @@ const PageUtil = /** @lends PageUtil */ {
 
 
 /**
- * Storage utility class.<br>
+ * Browser storage utility class.<br>
  * <ul>
- *   <li>Stores and retrieves associative arrays in browser's session storage with the following units + keys.</li>
+ *   <li>Stores and retrieves an associative array from browser storage using the following unit + key combinations.</li>
  *   <ul>
  *     <li>Page unit (HTML file unit of URL, data retention within one page)</li>
  *     <li>Module unit (module directory unit of URL, data sharing between pages)</li>
@@ -2620,7 +2640,7 @@ const StorageUtil = /** @lends StorageUtil */ {
   /**
    * Gets page unit data (HTML file unit of URL). <br>
    * <ul>
-   *   <li>Retrieves an associative array from browser's session storage by page unit + key.</li>
+   *   <li>Retrieves an associative array from browser's browser storage by page unit + key.</li>
    * </ul>
    * @param {string} key Retrieval key
    * @param {Object} [notExistsValue] Return value when not exists (optional)
@@ -2638,7 +2658,7 @@ const StorageUtil = /** @lends StorageUtil */ {
   /**
    * Gets module unit data (module directory unit of URL). <br>
    * <ul>
-   *   <li>Retrieves an associative array from browser's session storage by module unit + key.</li>
+   *   <li>Retrieves an associative array from browser's browser storage by module unit + key.</li>
    * </ul>
    * @param {string} key Retrieval key
    * @param {Object} [notExistsValue] Return value when not exists (optional)
@@ -2656,7 +2676,7 @@ const StorageUtil = /** @lends StorageUtil */ {
   /**
    * Gets system unit data.<br>
    * <ul>
-   *   <li>Retrieves an associative array from browser's session storage by key.</li>
+   *   <li>Retrieves an associative array from browser's browser storage by key.</li>
    * </ul>
    * @param {string} key Retrieval key
    * @param {Object} [notExistsValue] Return value when not exists (optional)
@@ -2674,7 +2694,7 @@ const StorageUtil = /** @lends StorageUtil */ {
   /**
    * Stores page unit data (HTML file unit of URL).<br>
    * <ul>
-   *   <li>Stores an associative array in browser's session storage by page unit + key.</li>
+   *   <li>Stores an associative array in browser's browser storage by page unit + key.</li>
    * </ul>
    * @param {string} key Storage key
    * @param {Object} obj Storage data
@@ -2691,7 +2711,7 @@ const StorageUtil = /** @lends StorageUtil */ {
   /**
    * Stores module unit data (module directory unit of URL).<br>
    * <ul>
-   *   <li>Stores an associative array in browser's session storage by module unit + key.</li>
+   *   <li>Stores an associative array in browser's browser storage by module unit + key.</li>
    * </ul>
    * @param {string} key Storage key
    * @param {Object} obj Storage data
@@ -2708,7 +2728,7 @@ const StorageUtil = /** @lends StorageUtil */ {
   /**
    * Stores system unit data.<br>
    * <ul>
-   *   <li>Stores an associative array in browser's session storage by key.</li>
+   *   <li>Stores an associative array in browser's browser storage by key.</li>
    * </ul>
    * @param {string} key Storage key
    * @param {Object} obj Storage data
@@ -3073,3 +3093,93 @@ const StorageUtil = /** @lends StorageUtil */ {
   }
 };
 
+
+/**
+ * Session utility class.<br>
+ * <ul>
+ *   <li>Manages information shared with web services.</li>
+ *   <li>Information managed by this class is retained per server session.</li>
+ * </ul>
+ * @class
+ */
+const SessionUtil = /** @lends SessionUtil */ {
+
+  /** @private Key in the request and response data (specified in Io.java). */
+  _IOKEY: '_session',
+  /** @private Session data */
+  _sessionData: {},
+
+  /**
+   * Retrieves a session value.
+   *
+   * @param {string} key the key to retrieve
+   * @returns {string|null} the retrieved data
+   */
+  getString: function(key) {
+    const val = SessionUtil._sessionData[key];
+    if (ValUtil.isNull(val)) {
+      return null;
+    }
+    return val;
+  },
+
+  /**
+   * Stores a session value.
+   *
+   * @param {string} key the key to store
+   * @param {string} val the session value
+   * @returns {boolean} <code>true</code> when storage is successful
+   */
+  setString: function(key, val) {
+    if (ValUtil.toType(val) !== 'string') {
+      console.error(`SessionUtil#setString: store data must be a string.`);
+      return false;
+    }
+    SessionUtil._sessionData[key] = val;
+    return true;
+  },
+
+  /**
+   * Removes a session value.
+   *
+   * @param {string} key the key
+   * @returns {boolean} <code>true</code> when removal is successful
+   */
+  remove: function(key) {
+    if (Object.hasOwn(SessionUtil._sessionData, key)) {
+      delete SessionUtil._sessionData[key];
+      return true;
+    }
+    return false;
+  },
+
+  /**
+   * Clears all session values.
+   *
+   * @returns {boolean} <code>true</code> when clearing is successful
+   */
+  clear: function() {
+    SessionUtil._sessionData = {};
+    return true;
+  },
+
+  /**
+   * @private
+   * For debugging: Displays all session values.<br>
+   * <ul>
+   *   <li>Displays all currently stored session values to the console.</li>
+   *   <li>Use only for development and debugging purposes.</li>
+   * </ul>
+   */
+  _debugAll: function() {
+    console.group('SessionUtil#_debugAll: All Data');
+    
+    try {      
+      console.log('Session Data:', SessionUtil._sessionData);
+    } catch (e) {
+      console.error('SessionUtil#_debugAll: Failed to show data.', e);
+    }
+    
+    console.groupEnd();
+  }
+};

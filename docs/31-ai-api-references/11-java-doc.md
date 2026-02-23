@@ -1132,6 +1132,14 @@ public int hashCode()
 
 **Returns**: `int`
 
+#### session
+
+```
+public AbstractIoTypeMap session()
+```
+
+**Returns**: `AbstractIoTypeMap`
+
 #### getList
 
 ```

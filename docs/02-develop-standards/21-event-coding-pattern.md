@@ -71,7 +71,7 @@ Both humans and AI can quickly create similar functions by following these patte
     2. Call initialization web service `/services/exmodule/ExampleListInit`.
     3. Web service class `ExampleListInit` is executed.
     4. Web service response is returned to browser.
-    5. Retrieve previous database retrieval conditions from session.
+    5. Retrieve previous database retrieval conditions from browser storage.
     6. Merge web service response with previous database retrieval conditions.
     7. Set merged values to database retrieval conditions area.
 <!-- AI_SKIP_END -->
@@ -129,7 +129,7 @@ public class ExampleListInit extends AbstractDbAccessWebService {
     1. Clear messages.
     2. Clear list area.
     3. Retrieve search conditions from DB extraction conditions area.
-    4. Save search conditions to session (for next initialization).
+    4. Save search conditions to browser storage (for next initialization).
     5. Call search web service `/services/exmodule/ExampleListSearch`.
     6. Web service class `ExampleListSearch` is executed.
         1. Execute validation (if error, set error message and terminate).
@@ -151,7 +151,7 @@ const search = async function () {
   PageUtil.clearRows('list');
   // Retrieve search conditions
   const req = PageUtil.getValues(DomUtil.getById('searchConditionsArea'));
-  // Save search conditions to session (optional)
+  // Save search conditions to browser storage (optional)
   StorageUtil.setPageObj('searchConditions', req);
   // Call web service
   const res = await HttpUtil.callJsonService('/services/exmodule/ExampleListSearch', req);

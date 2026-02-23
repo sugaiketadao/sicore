@@ -25,7 +25,7 @@ const search = async function () {
   PageUtil.clearRows('list');
   // Retrieve values from search conditions area
   const req = PageUtil.getValues(DomUtil.getById('searchConditionsArea'));
-  // Save current search conditions to session
+  // Save current search conditions to browser storage
   StorageUtil.setPageObj('searchConditions', req); 
   // Call list search web service
   const res = await HttpUtil.callJsonService('/services/exmodule/ExampleListSearch', req);

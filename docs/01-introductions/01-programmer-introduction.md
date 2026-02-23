@@ -56,7 +56,7 @@ Executed class: com.example.app.service.exmodule.ExampleListSearch
 - State managed by browser's `sessionStorage`.
 - Easy to scale out.
 
-### 1.5 Three-tier Scope of Session Storage
+### 1.5 Three-Tier Scope of Browser Storage
 
 | Scope | Method | Usage Example |
 |-|-|-|

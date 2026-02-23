@@ -494,7 +494,7 @@ init();
     - Request data creation
     - Web server processing invocation
     - Element disabling/hiding/read-only control
-    - Session management
+    - Browser storage management
 - Initial values for form input elements to be set on page load are returned as response from web service, and do not set initial values with JavaScript only.
 
 ### Framework Basic Components
@@ -510,8 +510,8 @@ Methods of JavaScript component classes of this framework used in standard pages
 | `HttpUtil.callJsonService()` | Call JSON web service |
 | `HttpUtil.movePage()` | Navigate to specified URL |
 | `HttpUtil.getUrlParams()` | Retrieve URL parameters |
-| `StorageUtil.getPageObj()` | Retrieve page-level session data |
-| `StorageUtil.setPageObj()` | Store page-level session data |
+| `StorageUtil.getPageObj()` | Retrieve page-level browser storage data |
+| `StorageUtil.setPageObj()` | Store page-level browser storage data |
 | `DomUtil.getByName()` | Retrieve `name` attribute selector element |
 | `DomUtil.getById()` | Retrieve `id` attribute selector element |
 | `DomUtil.setEnable()` | Toggle element enable state |
@@ -519,7 +519,7 @@ Methods of JavaScript component classes of this framework used in standard pages
 
 <!-- AI_SKIP_START -->
 ### StorageUtil 3-Tier Scope
-Session storage can be managed with three scopes according to usage.
+Browser storage can be managed with three scopes according to usage.
 
 | Scope | `StorageUtil` Retrieval Method | Storage Method | Usage | Usage Example |
 |-|-|-|-|-|

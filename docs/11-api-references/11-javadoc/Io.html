@@ -59,6 +59,8 @@ are read-only.<br>
 <li>Can store multiple rows of variable type maps in a list.</li>
 <li>Can store string arrays (lists) in a list.</li>
 <li>The above data structures are deep copied at both storage and retrieval time.</li>
+<li>Can hold session data shared between the server and web pages.</li>
+<li>Can hold messages for display on web pages.</li>
 <li>Can input and output JSON.</li>
 <li>Can input and output URL parameters.</li>
 <li>The basic rules and restrictions conform to <code>AbstractIoTypeMap</code>.</li>
@@ -137,10 +139,20 @@ does not affect the list held by this class.</li>
 </ul>
 </li>
 
+<li>About session data
+<ul>
+<li>Operations on session data directly affect the data held by this instance.</li>
+<li>Session data is also stored when loading JSON.</li>
+<li>Session data is also output when creating JSON.</li>
+<li>The key for JSON input/output is fixed to <code>_session</code>.</li>
+</ul>
+</li>
+
 <li>About messages
 <ul>
-<li>Can store message IDs and target item names, etc., and messages are output together at JSON output time.</li>
-<li>By passing message text as an argument at JSON output time, the stored message text is also output together.</li>
+<li>Can hold message IDs and target item names, and messages are also output when creating JSON.</li>
+<li>The key for JSON creation is fixed to <code>_msg</code>. The error flag is fixed to <code>_has_err</code>.</li>
+<li>When creating JSON, by passing the message text (message definitions) as an argument, the text corresponding to the held message IDs is also output.</li>
 <li><code>{0}, {1}, ...</code> in the message text are replaced with strings passed as arguments when adding messages.</li>
 </ul>
 </li>
@@ -1997,6 +2009,23 @@ does not affect the list held by this class.</li>
         <div class="method-returns">
           <h4>Return Value</h4>
           <p><code>int</code> - the hash code</p>
+        </div>
+      </div>
+      <div class="method" id="session">
+        <h3 class="method-name">session</h3>
+        <div class="method-signature">
+          <code>public AbstractIoTypeMap session()</code>
+        </div>
+        <div class="method-description">
+          References session data.<br>
+<ul>
+<li>Since this method returns a reference without performing a deep copy, operations on the return value directly affect the session data held by this instance.</li>
+</ul>
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>AbstractIoTypeMap</code> - the session data (reference)</p>
         </div>
       </div>
       <div class="method" id="getList">

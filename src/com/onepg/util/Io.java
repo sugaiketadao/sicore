@@ -15,6 +15,8 @@ import java.util.Map;
  * <li>Can store multiple rows of variable type maps in a list.</li>
  * <li>Can store string arrays (lists) in a list.</li>
  * <li>The above data structures are deep copied at both storage and retrieval time.</li>
+ * <li>Can hold session data shared between the server and web pages.</li>
+ * <li>Can hold messages for display on web pages.</li>
  * <li>Can input and output JSON.</li>
  * <li>Can input and output URL parameters.</li>
  * <li>The basic rules and restrictions conform to <code>AbstractIoTypeMap</code>.</li>
@@ -93,10 +95,20 @@ import java.util.Map;
  * </ul>
  * </li>
  * 
+ * <li>About session data
+ * <ul>
+ * <li>Operations on session data directly affect the data held by this instance.</li>
+ * <li>Session data is also stored when loading JSON.</li>
+ * <li>Session data is also output when creating JSON.</li>
+ * <li>The key for JSON input/output is fixed to <code>_session</code>.</li>
+ * </ul>
+ * </li>
+ * 
  * <li>About messages
  * <ul>
- * <li>Can store message IDs and target item names, etc., and messages are output together at JSON output time.</li>
- * <li>By passing message text as an argument at JSON output time, the stored message text is also output together.</li>
+ * <li>Can hold message IDs and target item names, and messages are also output when creating JSON.</li>
+ * <li>The key for JSON creation is fixed to <code>_msg</code>. The error flag is fixed to <code>_has_err</code>.</li>
+ * <li>When creating JSON, by passing the message text (message definitions) as an argument, the text corresponding to the held message IDs is also output.</li>
  * <li><code>{0}, {1}, ...</code> in the message text are replaced with strings passed as arguments when adding messages.</li>
  * </ul>
  * </li>
@@ -107,6 +119,13 @@ import java.util.Map;
  */
 public final class Io extends AbstractIoTypeMap {
 
+  /** Key - message array. */
+  private static final String KEY_MSG = "_msg";
+  /** Key - error existence flag. */
+  private static final String KEY_HAS_ERR = "_has_err";
+  /** Key - session data. */
+  private static final String KEY_SESSION = "_session";
+
   /** Map for storing string lists. */
   private final Map<String, List<String>> listMap = new LinkedHashMap<>();
   /** Map for storing nested maps. */
@@ -115,6 +134,8 @@ public final class Io extends AbstractIoTypeMap {
   private final Map<String, IoRows> rowsMap = new LinkedHashMap<>();
   /** Map for storing array lists. */
   private final Map<String, IoArrays> arysMap = new LinkedHashMap<>();
+  /** Session data. */
+  private final IoItems sessionData = new IoItems();
 
   /** Storage type. */
   private enum StorageType {
@@ -151,6 +172,7 @@ public final class Io extends AbstractIoTypeMap {
    * Constructor.<br>
    * <ul>
    * <li>The reference to the source map is disconnected because the content is deep copied.</li>
+   * <li>Session data is also copied.</li>
    * <li>Messages are also copied.</li>
    * </ul>
    *
@@ -165,6 +187,18 @@ public final class Io extends AbstractIoTypeMap {
 
     // The reference to the source map is disconnected because deep copying is performed.
     putAllByIoMap(srcMap, false);
+  }
+
+  /**
+   * References session data.<br>
+   * <ul>
+   * <li>Since this method returns a reference without performing a deep copy, operations on the return value directly affect the session data held by this instance.</li>
+   * </ul>
+   * 
+   * @return the session data (reference)
+   */
+  public AbstractIoTypeMap session() {
+    return this.sessionData;
   }
 
   /**
@@ -770,12 +804,18 @@ public final class Io extends AbstractIoTypeMap {
       sb.append('"').append(escVal).append('"').append(',');
     }
 
+    // Add session data
+    if (!ValUtil.isEmpty(sessionData)) {
+      final String json = sessionData.createJson();
+      sb.append('"').append(KEY_SESSION).append('"').append(':').append(json).append(',');
+    }
+
     // Add messages (only if messages exist)
     if (hasMsg()) {
       final String msg = createMsgJsoAry(msgTextMap);
-      sb.append('"').append("_msg").append('"').append(':').append(msg).append(',');
+      sb.append('"').append(KEY_MSG).append('"').append(':').append(msg).append(',');
       // Add error flag
-      sb.append('"').append("_has_err").append('"').append(':').append(hasErrorMsg()).append(',');
+      sb.append('"').append(KEY_HAS_ERR).append('"').append(':').append(hasErrorMsg()).append(',');
     }
 
     ValUtil.deleteLastChar(sb);
@@ -900,6 +940,21 @@ public final class Io extends AbstractIoTypeMap {
         sb.append(sval);
         sb.append(',');
       }
+      
+      // Add session data
+      if (!ValUtil.isEmpty(sessionData)) {
+        final String log = sessionData.createLogString();
+        sb.append(KEY_SESSION).append('=').append(log).append(',');
+      }
+
+      // Add messages (only if messages exist)
+      if (hasMsg()) {
+        final String log = createMsgLogString();
+        sb.append(KEY_MSG).append('=').append(log).append(',');
+        // Add error flag
+        sb.append(KEY_HAS_ERR).append('=').append(hasErrorMsg()).append(',');
+      }
+
       ValUtil.deleteLastChar(sb);
       sb.insert(0, '{');
       sb.append('}');
@@ -987,6 +1042,7 @@ public final class Io extends AbstractIoTypeMap {
    * Stores the input/output map.<br>
    * <ul>
    * <li>The reference to the source map is disconnected because the content is deep copied.</li>
+   * <li>Session data is also copied (deep copy).</li>
    * <li>Messages are also copied.</li>
    * </ul>
    *
@@ -1024,6 +1080,10 @@ public final class Io extends AbstractIoTypeMap {
         putCopyArys(key, srcMap.arysMap.get(key), canOverwrite);
       }
     }
+    
+    // Also copy session data (deep copy)
+    this.sessionData.putAllForce(srcMap.sessionData);
+    
     // Also copy messages
     copyMsg(srcMap);
   }
@@ -1109,6 +1169,11 @@ public final class Io extends AbstractIoTypeMap {
       final String val = keyVal[1];
 
       count++;
+      if (KEY_SESSION.equals(key)) {
+        // Add session data
+        sessionData.putAllByJson(val);
+        continue;
+      }
       if (JsonMapSeparateParser.JSON_MAP_PATTERN.matcher(val).find()) {
         // Add nested map
         final Io nest = new Io();
@@ -1419,7 +1484,7 @@ public final class Io extends AbstractIoTypeMap {
      * @return message type
      */
     private MsgType getType() {
-      return type;
+      return this.type;
     }
 
     /**
@@ -1433,16 +1498,16 @@ public final class Io extends AbstractIoTypeMap {
      */
     private String createKey() {
       final StringBuilder sb = new StringBuilder();
-      sb.append(this.type.ordinal()).append("_").append(this.msgId);
+      sb.append(this.type.ordinal()).append('_').append(this.msgId);
       if (!ValUtil.isEmpty(this.replaceVals)) {
-        sb.append("_").append(String.join("&", this.replaceVals));
+        sb.append('_').append(String.join("&", this.replaceVals));
       }
       if (!ValUtil.isBlank(this.itemId)) {
         if (ValUtil.isBlank(this.rowListId)) {
-          sb.append(this.itemId);
+          sb.append('_').append(this.itemId);
         } else {
-          sb.append(this.rowListId).append("[").append(ValUtil.paddingLeftZero(this.rowIndex, 4)).append("].")
-              .append(this.itemId);
+          sb.append('_').append(this.rowListId).append('[').append(ValUtil.paddingLeftZero(this.rowIndex, 4)).append("].")
+            .append(this.itemId);
         }
       }
       return sb.toString();
@@ -1511,6 +1576,28 @@ public final class Io extends AbstractIoTypeMap {
       final String regex = "\\{[0-9]+\\}";
       ret = ret.replaceAll(regex, ValUtil.BLANK);
       return ret;
+    }
+    
+    /**
+     * Generates a log string.
+     *
+     * @return log string
+     */
+    private String createLogString() {
+      final StringBuilder sb = new StringBuilder();
+      sb.append(this.type.ordinal()).append(':').append(this.msgId);
+      if (!ValUtil.isEmpty(this.replaceVals)) {
+        sb.append(':').append(String.join("&", this.replaceVals));
+      }
+      if (!ValUtil.isBlank(this.itemId)) {
+        if (ValUtil.isBlank(this.rowListId)) {
+          sb.append(':').append(this.itemId);
+        } else {
+          sb.append(':').append(this.rowListId).append('[').append(ValUtil.paddingLeftZero(this.rowIndex, 4)).append("].")
+            .append(this.itemId);
+        }
+      }
+      return sb.toString();
     }
   }
 
@@ -1667,8 +1754,7 @@ public final class Io extends AbstractIoTypeMap {
   /**
    * Creates message JSON array.<br>
    * <ul>
-   * <li>If the message text map is specified,
-   * sets the message text corresponding to the message ID.</li>
+   * <li>If the message text map is specified, sets the message text corresponding to the message ID.</li>
    * <li>If the message text map is not specified, the message text is an empty string.</li>
    * </ul>
    * 
@@ -1682,6 +1768,25 @@ public final class Io extends AbstractIoTypeMap {
       for (final MsgBean msgBean : this.msgMap.values()) {
         final String msgJson = msgBean.createJson(msgTextMap);
         sb.append(msgJson).append(',');
+      }
+      ValUtil.deleteLastChar(sb);
+    }
+    sb.append(']');
+    return sb.toString();
+  }
+  
+  /**
+   * メッセージログ出力文字列.
+   * 
+   * @return ログ出力文字列
+   */
+  private String createMsgLogString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append('[');
+    if (!ValUtil.isEmpty(this.msgMap)) {
+      for (final MsgBean msgBean : this.msgMap.values()) {
+        final String log = msgBean.createLogString();
+        sb.append(log).append(',');
       }
       ValUtil.deleteLastChar(sb);
     }
