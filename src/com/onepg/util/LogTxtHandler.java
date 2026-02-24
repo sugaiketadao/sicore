@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Log text handler class.<br>
@@ -29,7 +29,7 @@ public final class LogTxtHandler implements AutoCloseable {
   private static final String ERR_FILE_PROP_KEY_SUFFIX = ".err.file";
 
   /** Log text handler pool map &lt;file path, log text handler&gt; (singleton). */
-  private static final Map<String, LogTxtHandler> logTxtPoolMaps_ = new HashMap<>();
+  private static final Map<String, LogTxtHandler> logTxtPoolMaps_ = new ConcurrentHashMap<>();
 
   /** Base file path (without extension). */
   private final String baseFilePath;
@@ -154,7 +154,7 @@ public final class LogTxtHandler implements AutoCloseable {
   /**
    * Opens the file.
    */
-  private final void open() {
+  private void open() {
     this.tw = new TxtSerializeWriter(this.filePath, LineSep.LF, CharSet.UTF8, false, true, false);
   }
 
@@ -188,6 +188,9 @@ public final class LogTxtHandler implements AutoCloseable {
     if (!nowDate.equals(this.beforePrintDate)) {
       rolling(nowDate);
     }
+    if (ValUtil.isNull(this.tw)) {
+      throw new RuntimeException("Text writer is not available. " + LogUtil.joinKeyVal("path", this.filePath));
+    }
     return this.tw;
   }
 
@@ -214,8 +217,16 @@ public final class LogTxtHandler implements AutoCloseable {
       return;
     }
     
+    // Calling close() would remove this from the pool, so directly closes the text writer before moving the file
     try {
-      close();
+      this.tw.close();
+    } catch (final Exception e) {
+      // Suppresses errors during log close, but outputs for debugging
+      LogUtil.stdout(e, "An exception occurred while closing the text writer. " + LogUtil.joinKeyVal("path", this.tw.getFilePath()));
+      return;
+    }
+    this.tw = null;
+    try {
       if (FileUtil.exists(this.filePath)) {
         FileUtil.move(this.filePath, destPath);
       }

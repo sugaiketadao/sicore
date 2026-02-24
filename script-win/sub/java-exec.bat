@@ -121,10 +121,16 @@ rem #
 rem # @param $1 Variable name to set the date
 rem #
 :getNowDate
-rem # Assumes %date% = YYYY/MM/DD
-set "%~1=%date:~0,4%%date:~5,2%%date:~8,2%"
-rem # Assumes %date% = MM/DD/YYYY or MM.DD.YYYY
-rem # set "%~1=%date:~6,4%%date:~0,2%%date:~3,2%"
+if "%DATE_FORMAT%"=="US" (
+  rem # Assumes MM/DD/YYYY format
+  set "%~1=%date:~6,4%%date:~0,2%%date:~3,2%"
+) else if "%DATE_FORMAT%"=="EU" (
+  rem # Assumes DD/MM/YYYY format
+  set "%~1=%date:~6,4%%date:~3,2%%date:~0,2%"
+) else (
+  rem # Assumes YYYY/MM/DD format
+  set "%~1=%date:~0,4%%date:~5,2%%date:~8,2%"
+)
 exit /b
 
 rem #

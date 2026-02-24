@@ -91,17 +91,17 @@ public final class LogWriter {
    */
   public void flush() {
     try {
-        this.infHdr.getWriter().flush();
+      this.infHdr.getWriter().flush();
     } catch (Exception e) {
-        // Suppresses errors during log processing
-        LogUtil.stdout(e, "An exception occurred while flushing the info log. ");
+      // Suppresses errors during log processing
+      LogUtil.stdout(e, "An exception occurred while flushing the info log. ");
     }
     
     try {
-        this.errHdr.getWriter().flush();
+      this.errHdr.getWriter().flush();
     } catch (Exception e) {
-        // Suppresses errors during log processing
-        LogUtil.stdout(e, "An exception occurred while flushing the error log. ");
+      // Suppresses errors during log processing
+      LogUtil.stdout(e, "An exception occurred while flushing the error log. ");
     }
   }
 
@@ -125,23 +125,33 @@ public final class LogWriter {
                      final String stackTrace) {
     final String log = createMsg(prefix, msg);
     
-    // Outputs to information log
-    this.infHdr.getWriter().println(log);
-    
+    try {
+      // Outputs to information log
+      this.infHdr.getWriter().println(log);
+    } catch (Exception e) {
+      // Suppresses errors during log processing
+      LogUtil.stdout(e, "An exception occurred while writing to the info log. " + LogUtil.joinKeyVal("log", log));
+    }
+
     // When also outputting to error log
     if (toErrorLog) {
+      try {
         this.errHdr.getWriter().println(log);
         if (stackTrace != null) {
-            this.errHdr.getWriter().println(stackTrace);
+          this.errHdr.getWriter().println(stackTrace);
         }
+      } catch (Exception e) {
+        // Suppresses errors during log processing
+        LogUtil.stdout(e, "An exception occurred while writing to the error log. " + LogUtil.joinKeyVal("log", log));
+      }
     }
     
     // Console output in development mode
     if (this.isDevelopMode) {
-        this.console.println(log);
-        if (stackTrace != null) {
-            this.console.println(stackTrace);
-        }
+      this.console.println(log);
+      if (stackTrace != null) {
+        this.console.println(stackTrace);
+      }
     }
   }
 
@@ -195,7 +205,12 @@ public final class LogWriter {
   public void begin() {
     final String log = createMsg(this.infPrefix, "<begin> " + this.beginEndSuffix);
 
-    this.infHdr.getWriter().println(log);
+    try {
+      this.infHdr.getWriter().println(log);
+    } catch (Exception e) {
+      // Suppresses errors during log processing
+      LogUtil.stdout(e, "An exception occurred while writing to the begin log. " + LogUtil.joinKeyVal("log", log));
+    }
     if (this.isDevelopMode) {
       this.console.println(log);
     }
@@ -208,7 +223,12 @@ public final class LogWriter {
   public void end() {
     final String log = createMsg(this.infPrefix, "< end > " + this.beginEndSuffix);
 
-    this.infHdr.getWriter().println(log);
+    try {
+      this.infHdr.getWriter().println(log);
+    } catch (Exception e) {
+      // Suppresses errors during log processing
+      LogUtil.stdout(e, "An exception occurred while writing to the end log. " + LogUtil.joinKeyVal("log", log));
+    }
     if (this.isDevelopMode) {
       this.console.println(log);
     }
@@ -221,7 +241,12 @@ public final class LogWriter {
   public void end(final int exitStatus) {
     final String log = createMsg(this.infPrefix, "< end > " + this.beginEndSuffix + " " + LogUtil.joinKeyVal("status", exitStatus));
 
-    this.infHdr.getWriter().println(log);
+    try {
+      this.infHdr.getWriter().println(log);
+    } catch (Exception e) {
+      // Suppresses errors during log processing
+      LogUtil.stdout(e, "An exception occurred while writing to the end log. " + LogUtil.joinKeyVal("log", log));
+    }
     if (this.isDevelopMode) {
       this.console.println(log);
     }
@@ -238,7 +263,12 @@ public final class LogWriter {
     }
     final String log = createMsg(this.devPrefix, msg);
 
-    this.infHdr.getWriter().println(log);
+    try {
+      this.infHdr.getWriter().println(log);
+    } catch (Exception e) {
+      // Suppresses errors during log processing
+      LogUtil.stdout(e, "An exception occurred while writing to the develop log. " + LogUtil.joinKeyVal("log", log));
+    }
     this.console.println(log);
   }
 
