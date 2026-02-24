@@ -2855,6 +2855,19 @@ public int update(Connection conn, String tableName, AbstractIoTypeMap params, S
 
 **Returns**: `int`
 
+#### updateAll
+
+```
+public int updateAll(Connection conn, String tableName, AbstractIoTypeMap params)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `tableName`: `String`
+- `params`: `AbstractIoTypeMap`
+
+**Returns**: `int`
+
 #### deleteOne
 
 ```
@@ -2895,6 +2908,18 @@ public int delete(Connection conn, String tableName, AbstractIoTypeMap params, S
 - `tableName`: `String`
 - `params`: `AbstractIoTypeMap`
 - `whereItems`: `String[]`
+
+**Returns**: `int`
+
+#### deleteAll
+
+```
+public int deleteAll(Connection conn, String tableName)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `tableName`: `String`
 
 **Returns**: `int`
 

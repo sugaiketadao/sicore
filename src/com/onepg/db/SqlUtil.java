@@ -372,6 +372,7 @@ public final class SqlUtil {
 
       sbInto.addQuery(" ( ");
       sbVals.addQuery(" ( ");
+      int count = 0;
       for (final String itemName : params.keySet()) {
         if (!itemClsMap.containsKey(itemName)) {
           // Skips parameters that do not exist in the table
@@ -386,6 +387,12 @@ public final class SqlUtil {
         // Adds SQL
         sbInto.addQuery(itemName).addQuery(",");
         sbVals.addQuery("?,", param);
+        count++;
+      }
+      if (count <= 0) {
+        // No registration target items
+        throw new RuntimeException("No registration target items exist. " + LogUtil.joinKeyVal("tableName", tableName,
+            "params", params));
       }
 
       // Assembles SQL
@@ -455,6 +462,7 @@ public final class SqlUtil {
 
       sbInto.addQuery(" ( ");
       sbVals.addQuery(" ( ");
+      int count = 0;
       for (final String itemName : params.keySet()) {
         if (!itemClsMap.containsKey(itemName)) {
           // Skips parameters that do not exist in the table
@@ -473,7 +481,14 @@ public final class SqlUtil {
         // Adds SQL
         sbInto.addQuery(itemName).addQuery(",");
         sbVals.addQuery("?,", param);
+        count++;
       }
+      if (count <= 0) {
+        // No registration target items
+        throw new RuntimeException("No registration target items exist. " + LogUtil.joinKeyVal("tableName", tableName,
+            "params", params));
+      }
+
       // Adds timestamp SQL
       sbInto.addQuery(tsItem);
       sbVals.addQuery(curTs);
@@ -666,6 +681,50 @@ public final class SqlUtil {
   }
 
   /**
+   * Updates all records with specified table.<br>
+   * <ul>
+   * <li>Updates all records by specifying table name.</li>
+   * <li>Ignores parameters that do not exist in the table.</li>
+   * <li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+   * the value will be updated in the added column without implementation modification.</li>
+   * </ul>
+   *
+   * @param conn       the database connection
+   * @param tableName  the table name
+   * @param params     the parameter values
+   *
+   * @return the update count
+   */
+  public static int updateAll(final Connection conn, final String tableName, final AbstractIoTypeMap params) {
+
+    if (ValUtil.isEmpty(params)) {
+      throw new RuntimeException("Parameters are required. ");
+    }
+
+    final SqlBuilder sb = new SqlBuilder();
+    try {
+      // Database column name and class type map
+      final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
+
+      sb.addQuery("UPDATE ").addQuery(tableName);
+      // Adds SET clause
+      addSetQuery(sb, params, null, itemClsMap);
+
+    } catch (SQLException e) {
+      throw new RuntimeException("Exception error occurred during data update SQL generation. " + LogUtil.joinKeyVal("tableName", tableName,
+          "params", params), e);
+    }
+
+    try {
+      // Executes SQL
+      final int ret = executeSql(conn, sb);
+      return ret;
+    } catch (SQLException e) {
+      throw new RuntimeException("Exception error occurred during data update. " + LogUtil.joinKeyVal("sql", sb), e);
+    }
+  }
+
+  /**
    * Deletes one record with specified table.<br>
    * <ul>
    * <li>Deletes one record by specifying table name.</li>
@@ -788,6 +847,31 @@ public final class SqlUtil {
   }
 
   /**
+   * Deletes all records with specified table.<br>
+   * <ul>
+   * <li>Deletes all records by specifying table name.</li>
+   * </ul>
+   *
+   * @param conn the database connection
+   * @param tableName the table name
+   *
+   * @return the delete count
+   */
+  public static int deleteAll(final Connection conn, final String tableName) {
+
+    final SqlBuilder sb = new SqlBuilder();
+    sb.addQuery("DELETE FROM ").addQuery(tableName);
+
+    try {
+      // Executes SQL
+      final int ret = executeSql(conn, sb);
+      return ret;
+    } catch (SQLException e) {
+      throw new RuntimeException("Exception error occurred during data delete. " + LogUtil.joinKeyVal("sql", sb), e);
+    }
+  }
+
+  /**
    * Adds SET clause.
    *
    * @param sb         the SQL builder
@@ -809,6 +893,7 @@ public final class SqlUtil {
       whereItemList = Arrays.asList(whereItems);
     }
 
+    int count = 0;
     for (final String itemName : params.keySet()) {
       if (!itemClsMap.containsKey(itemName)) {
         // Skips parameters that do not exist in the table
@@ -825,7 +910,12 @@ public final class SqlUtil {
       final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
       // Adds SQL
       sb.addQuery(itemName).addQuery("=?", param).addQuery(",");
+      count++;
     }
+    if (count == 0) {
+      throw new RuntimeException("No columns to update. " + LogUtil.joinKeyVal("params", params, "whereItems", whereItems));
+    }
+    // Removes the last comma
     sb.delLastChar();
   }
 
@@ -842,20 +932,22 @@ public final class SqlUtil {
       final AbstractIoTypeMap params, final String[] whereItems, final Map<String, ItemClsType> itemClsMap) {
 
     if (ValUtil.isEmpty(whereItems)) {
-      return;
+      // Throws an error if no extraction condition column names are specified
+      throw new RuntimeException("Extraction condition column names are required. " + LogUtil.joinKeyVal("tableName", tableName, "params", params));
     }
 
     // Creates WHERE clause
     sb.addQuery(" WHERE ");
     for (final String itemName : whereItems) {
       if (!itemClsMap.containsKey(itemName)) {
-        // Skips parameters that do not exist in the table
-        continue;
+        // Throws an error if the column does not exist in the table
+        throw new RuntimeException("Extraction condition field does not exist in table. " +
+          LogUtil.joinKeyVal("tableName", tableName, "whereItemName", itemName, "params", params));
       }
       if (!params.containsKey(itemName)) {
         // Throws error if filter condition column does not exist in parameters
-        throw new RuntimeException("Extraction condition field does not exist in parameters. " + LogUtil.joinKeyVal("tableName",
-            tableName, "whereItemName", itemName, "params", params));
+        throw new RuntimeException("Extraction condition field does not exist in parameters. " +
+          LogUtil.joinKeyVal("tableName", tableName, "whereItemName", itemName, "params", params));
       }
 
       // Column class type
@@ -1048,20 +1140,20 @@ public final class SqlUtil {
     // Database metadata
     final DatabaseMetaData cmeta = conn.getMetaData();
     // Column information result set
-    final ResultSet rset = cmeta.getColumns(null, null, tableName, null);
+    try (final ResultSet rset = cmeta.getColumns(null, null, tableName, null)) {
+      while (rset.next()) {
+        // Column name
+        final String itemName = rset.getString("COLUMN_NAME").toLowerCase();
+        // Type number
+        final int typeNo = rset.getInt("DATA_TYPE");
+        // Type name
+        // Oracle's DATE type also has time and is judged as TIMESTAMP, so needs to judge by type name.
+        final String typeName = rset.getString("TYPE_NAME");
+        // Column class type
+        final ItemClsType itemCls = convItemClsType(typeNo, typeName, dbmsName);
 
-    while (rset.next()) {
-      // Column name
-      final String itemName = rset.getString("COLUMN_NAME").toLowerCase();
-      // Type number
-      final int typeNo = rset.getInt("DATA_TYPE");
-      // Type name
-      // Oracle's DATE type also has time and is judged as TIMESTAMP, so needs to judge by type name.
-      final String typeName = rset.getString("TYPE_NAME");
-      // Column class type
-      final ItemClsType itemCls = convItemClsType(typeNo, typeName, dbmsName);
-
-      itemClsMap.put(itemName, itemCls);
+        itemClsMap.put(itemName, itemCls);
+      }
     }
     return itemClsMap;
   }
@@ -1267,8 +1359,7 @@ public final class SqlUtil {
       return true;
     } 
     // MS-SqlServer unique constraint violation error check
-    if (dbmsName == DbmsName.MSSQL && "23000".equals(e.getSQLState())
-        && e.getMessage().contains("Violation of UNIQUE KEY constraint")) {
+    if (dbmsName == DbmsName.MSSQL && (e.getErrorCode() == 2627 || e.getErrorCode() == 2601)) {
       return true;
     }
     // SQLite unique constraint violation error check
@@ -1309,10 +1400,10 @@ public final class SqlUtil {
   private static final Map<DbmsName, SqlConst> SQL_SELECT_TODAY = new HashMap<>();
   static {
     SQL_SELECT_TODAY.put(DbmsName.POSTGRESQL, SqlConst.begin().addQuery("SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today").end());
-    SQL_SELECT_TODAY.put(DbmsName.ORACLE,    SqlConst.begin().addQuery("SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM DUAL").end());
-    SQL_SELECT_TODAY.put(DbmsName.MSSQL,     SqlConst.begin().addQuery("SELECT CONVERT(VARCHAR, FORMAT(GETDATE(), 'yyyyMMdd')) today").end());
-    SQL_SELECT_TODAY.put(DbmsName.SQLITE,    SqlConst.begin().addQuery("SELECT strftime('%Y%m%d', 'now', 'localtime') today").end());
-    SQL_SELECT_TODAY.put(DbmsName.DB2, SqlConst.begin().addQuery("SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM SYSIBM.DUAL").end());
+    SQL_SELECT_TODAY.put(DbmsName.ORACLE,     SqlConst.begin().addQuery("SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM DUAL").end());
+    SQL_SELECT_TODAY.put(DbmsName.MSSQL,      SqlConst.begin().addQuery("SELECT CONVERT(VARCHAR, FORMAT(GETDATE(), 'yyyyMMdd')) today").end());
+    SQL_SELECT_TODAY.put(DbmsName.SQLITE,     SqlConst.begin().addQuery("SELECT strftime('%Y%m%d', 'now', 'localtime') today").end());
+    SQL_SELECT_TODAY.put(DbmsName.DB2,        SqlConst.begin().addQuery("SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today FROM SYSIBM.DUAL").end());
   }
   
   /**
@@ -1382,7 +1473,7 @@ public final class SqlUtil {
    */
   private static String trimQuerySpaces(final String sql) {
     if (ValUtil.isBlank(sql)) {
-        return ValUtil.BLANK;
+      return ValUtil.BLANK;
     }
     
     final int length = sql.length();
@@ -1396,31 +1487,30 @@ public final class SqlUtil {
     
     // Pre-calculates trim before and after
     while (beginPos < endPos && Character.isWhitespace(chars[beginPos])) {
-        beginPos++;
+      beginPos++;
     }
     while (endPos > beginPos && Character.isWhitespace(chars[endPos - 1])) {
-        endPos--;
+      endPos--;
     }
     
     for (int i = beginPos; i < endPos; i++) {
-        final char c = chars[i];
-
-        if (c == '\'' && (i == 0 || chars[i-1] != '\\')) {
-            inSq = !inSq;
-            ret.append(c);
-            prevSpace = false;
-        } else if (inSq) {
-            ret.append(c);
-            prevSpace = false;
-        } else if (Character.isWhitespace(c)) {
-            if (!prevSpace) {
-                ret.append(' ');
-                prevSpace = true;
-            }
-        } else {
-            ret.append(c);
-            prevSpace = false;
+      final char c = chars[i];
+      if (c == '\'') {
+        inSq = !inSq;
+        ret.append(c);
+        prevSpace = false;
+      } else if (inSq) {
+        ret.append(c);
+        prevSpace = false;
+      } else if (Character.isWhitespace(c)) {
+        if (!prevSpace) {
+          ret.append(' ');
+          prevSpace = true;
         }
+      } else {
+        ret.append(c);
+        prevSpace = false;
+      }
     }
     
     return ret.toString();

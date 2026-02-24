@@ -288,11 +288,8 @@ public final class DbUtil {
    * 
    */
   public static synchronized void closePooledConn() {
-    // Use iterator as it will be removed
-    final Iterator<String> connNameIte = connPoolMaps_.keySet().iterator();
-    // Loop through connection pool management map
-    while (connNameIte.hasNext()) {
-      final String connName = connNameIte.next();
+    // Iterate over a copy of keys to allow removal from the pool
+    for (final String connName : new ArrayList<>(connPoolMaps_.keySet())) {
       // Connection pool (thread-safe)
       final ConcurrentMap<String, Connection> connPoolMap = connPoolMaps_.get(connName);
       // Busy connections (thread-safe)
@@ -304,7 +301,7 @@ public final class DbUtil {
         final String serialCode = connEnt.getKey();
         if (connBusyList.contains(serialCode)) {
           // If connection is busy
-          LogUtil.stdout("Warninng! Database connection is currently busy during close pooled connections. "
+          LogUtil.stdout("Warning! Database connection is currently busy during close pooled connections. "
               + LogUtil.joinKeyVal("serialCode", serialCode));
         }
         // Database connection
@@ -412,7 +409,10 @@ public final class DbUtil {
       final String productName =
           ValUtil.nvl(conn.getMetaData().getDatabaseProductName()).toLowerCase();
       for (final DbmsName dbmsName : DbmsName.values()) {
-        if (dbmsName.toString().toLowerCase().contains(productName)) {
+        if (dbmsName == DbmsName.ETC) {
+          continue;
+        } 
+        if (productName.contains(dbmsName.toString().toLowerCase())) {
           return dbmsName;
         }
       }

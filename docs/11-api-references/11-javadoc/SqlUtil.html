@@ -673,6 +673,55 @@ the value will be updated in the added column without implementation modificatio
           <p><code>int</code> - the update count</p>
         </div>
       </div>
+      <div class="method" id="updateAll">
+        <h3 class="method-name">updateAll</h3>
+        <div class="method-signature">
+          <code>public int updateAll(Connection conn, String tableName, AbstractIoTypeMap params)</code>
+        </div>
+        <div class="method-description">
+          Updates all records with specified table.<br>
+<ul>
+<li>Updates all records by specifying table name.</li>
+<li>Ignores parameters that do not exist in the table.</li>
+<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
+the value will be updated in the added column without implementation modification.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>conn</code></td>
+                <td><code>Connection</code></td>
+                <td>the database connection</td>
+              </tr>
+              <tr>
+                <td><code>tableName</code></td>
+                <td><code>String</code></td>
+                <td>the table name</td>
+              </tr>
+              <tr>
+                <td><code>params</code></td>
+                <td><code>AbstractIoTypeMap</code></td>
+                <td>the parameter values</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the update count</p>
+        </div>
+      </div>
       <div class="method" id="deleteOne">
         <h3 class="method-name">deleteOne</h3>
         <div class="method-signature">
@@ -838,6 +887,47 @@ when timestamp exclusive control is not required.</li>
                 <td><code>whereItems</code></td>
                 <td><code>String[]</code></td>
                 <td>the filter condition column names</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the delete count</p>
+        </div>
+      </div>
+      <div class="method" id="deleteAll">
+        <h3 class="method-name">deleteAll</h3>
+        <div class="method-signature">
+          <code>public int deleteAll(Connection conn, String tableName)</code>
+        </div>
+        <div class="method-description">
+          Deletes all records with specified table.<br>
+<ul>
+<li>Deletes all records by specifying table name.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>conn</code></td>
+                <td><code>Connection</code></td>
+                <td>the database connection</td>
+              </tr>
+              <tr>
+                <td><code>tableName</code></td>
+                <td><code>String</code></td>
+                <td>the table name</td>
               </tr>
             </tbody>
           </table>
