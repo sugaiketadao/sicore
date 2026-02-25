@@ -147,8 +147,8 @@ Open the project in VS Code (if you haven't already, refer to "How to Verify Sam
 
 - AI reads the requirements definition document and automatically generates the necessary HTML, JavaScript, and Java code.
 - After generation, refer to [AI Prompt Guide (Debug & Fix)](docs/21-ai-guides/02-ai-debug-guide.md).
-- ⚠️ Use an AI agent that strictly adheres to instructions. (As of December 2025, Claude Opus 4.5 is recommended)
-- 🚫 Highly creative AI agents may not be suitable for this task.
+- ⚠️Use an AI model that strictly follows instructions. (As of December 2025, Claude Opus 4.5 is recommended)
+- 🚫 Highly creative AI models may not be suitable for this task.
 
 ---
 ## 💬 Contribution
