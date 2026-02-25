@@ -37,11 +37,13 @@ public final class CsvReader implements Iterable<IoItems>, AutoCloseable {
   private final String[] keys;
   /** CSV type */
   private final CsvType csvType;
+  /** 読込済行数（ヘッダ行を除く）. */
+  private int readedCount = 0;
 
   /**
    * Constructor.<br>
    * <ul>
-   * <li>Uses the first line of the file as column names and uses them as keys for <code>IoItems</code>.</li>
+   * <li>ファイルの１行目をヘッダ行とし <code>IoItems</code> のキーに使用する。</li>
    * </ul>
    *
    * @param filePath file path
@@ -99,16 +101,16 @@ public final class CsvReader implements Iterable<IoItems>, AutoCloseable {
   }
 
   /**
-   * Gets the number of read rows.<br>
+   * 読込済行数（ヘッダ行を除く）取得.<br>
    * <ul>
-   * <li>Returns the count of rows read by the iterator.</li>
-   * <li>When the first line of the file is used as keys, the header row is not counted.</li>
+   * <li>イテレーターで読み込んだ件数を返す。</li>
+   * <li>ファイルの１行目をキー（ヘッダ行）として使用した場合、１行目はカウントされない。</li>
    * </ul>
    *
-   * @return the number of read rows
+   * @return 読込済行数
    */
   public int getReadedCount() {
-    return this.txtReader.getReadedCount();
+    return this.readedCount;
   }
 
   /**
@@ -161,6 +163,8 @@ public final class CsvReader implements Iterable<IoItems>, AutoCloseable {
     @Override
     public IoItems next() {
       final String line = this.txtIterator.next();
+      // 読込済行数をカウントアップ
+      readedCount++;
       
       if (csvType == CsvType.NO_DQ) {
         // No double quotes

@@ -142,12 +142,16 @@ $ sudo chmod 777 /tmp/share_docker/
 
 2. Copy the target SQL file to the Ubuntu directory on WSL.
     - Copy the SQL file to `\\wsl.localhost\Ubuntu\tmp\share_docker` using Explorer.
+    - `/tmp/share_docker/` on WSL is mounted as `/tmp/share_host/` on Docker. (See docker-compose above)
 
-3. Log in to the database on Ubuntu on Docker and execute the SQL file.
+3. Log in to the DB on Ubuntu on Docker and execute the SQL file.
 
 ```SQL
-[Example]
-=> \i /tmp/share_host/example_data_create.sql
+[Example] Change the client encoding, move to the directory, and execute the file
+=> \encoding UTF8
+=> show client_encoding;
+=> \cd /tmp/share_host
+=> \i example_data_create.sql
 ```
 
 ---

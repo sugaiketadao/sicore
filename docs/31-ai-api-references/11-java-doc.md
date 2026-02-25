@@ -2841,6 +2841,33 @@ public boolean updateOne(Connection conn, String tableName, AbstractIoTypeMap pa
 
 **Returns**: `boolean`
 
+#### updateOneByPkey
+
+```
+public boolean updateOneByPkey(Connection conn, String tableName, AbstractIoTypeMap params)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `tableName`: `String`
+- `params`: `AbstractIoTypeMap`
+
+**Returns**: `boolean`
+
+#### updateOneByPkey
+
+```
+public boolean updateOneByPkey(Connection conn, String tableName, AbstractIoTypeMap params, String tsItem)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `tableName`: `String`
+- `params`: `AbstractIoTypeMap`
+- `tsItem`: `String`
+
+**Returns**: `boolean`
+
 #### update
 
 ```
@@ -2893,6 +2920,33 @@ public boolean deleteOne(Connection conn, String tableName, AbstractIoTypeMap pa
 - `tableName`: `String`
 - `params`: `AbstractIoTypeMap`
 - `keyItems`: `String[]`
+- `tsItem`: `String`
+
+**Returns**: `boolean`
+
+#### deleteOneByPkey
+
+```
+public boolean deleteOneByPkey(Connection conn, String tableName, AbstractIoTypeMap params)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `tableName`: `String`
+- `params`: `AbstractIoTypeMap`
+
+**Returns**: `boolean`
+
+#### deleteOneByPkey
+
+```
+public boolean deleteOneByPkey(Connection conn, String tableName, AbstractIoTypeMap params, String tsItem)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `tableName`: `String`
+- `params`: `AbstractIoTypeMap`
 - `tsItem`: `String`
 
 **Returns**: `boolean`

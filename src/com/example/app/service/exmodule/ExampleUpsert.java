@@ -180,7 +180,7 @@ public class ExampleUpsert extends AbstractDbAccessWebService {
     }
 
     // Updates one row in the database
-    if (!SqlUtil.updateOne(getDbConn(), "t_user", io, new String[]{"user_id"}, "upd_ts")) {
+    if (!SqlUtil.updateOneByPkey(getDbConn(), "t_user", io, "upd_ts")) {
       io.putMsg(MsgType.ERROR, "e0002", new String[] { io.getString("user_id") }, "user_id");
     }
   }

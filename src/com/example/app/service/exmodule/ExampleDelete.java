@@ -37,7 +37,7 @@ public class ExampleDelete extends AbstractDbAccessWebService {
    */
   private void deleteHead(final Io io) {
     // Deletes one row from the database
-    if (!SqlUtil.deleteOne(getDbConn(), "t_user", io, new String[]{"user_id"}, "upd_ts")) {
+    if (!SqlUtil.deleteOneByPkey(getDbConn(), "t_user", io, "upd_ts")) {
       io.putMsg(MsgType.ERROR, "e0002", new String[] { io.getString("user_id") }, "user_id");
     }
   }

@@ -36,7 +36,7 @@
             <code>public String ORACLE_PROTOCOL_ERR_AVOID_SQL</code>
           </div>
           <div class="field-description">
-            SQL to avoid ORACLE protocol violation.<br>
+            SQL to avoid Oracle protocol violation errors.<br>
 <a href="https://support.oracle.com/knowledge/Middleware/2707017_1.html">support.oracle.com (reference)</a>
   
           </div>
@@ -51,11 +51,11 @@
           <code>public IoItems selectOneExists(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Retrieves one record (error on zero records).<br>
+          Retrieves a single record (throws an error if no record exists).<br>
 <ul>
-<li>Uses this method with the premise that only one target record exists.</li>
-<li>Throws a runtime exception if the result is zero records.</li>
-<li>Throws a runtime exception if the result is multiple records.</li>
+<li>Use this method when exactly one matching record is expected to exist.</li>
+<li>Throws an exception if the result is zero records.</li>
+<li>Throws an exception if multiple records are returned.</li>
 </ul>
 
         </div>
@@ -94,12 +94,12 @@
           <code>public IoItems selectOne(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Retrieves one record.<br>
+          Retrieves a single record.<br>
 <ul>
-<li>Uses this method with the premise that only one target record exists.</li>
+<li>Use this method when exactly one matching record is expected to exist.</li>
 <li>Returns <code>null</code> if the result is zero records.</li>
-<li>Throws a runtime exception if the result is multiple records.</li>
-<li>Column physical names become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Throws an exception if multiple records are returned.</li>
+<li>Physical field names are in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -138,11 +138,11 @@
           <code>public IoItems selectOneMultiIgnore(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Retrieves one record (multiple records acceptable).<br>
+          Retrieves a single record (multiple records allowed).<br>
 <ul>
 <li>Returns <code>null</code> if the result is zero records.</li>
-<li>Returns the first record without error even if multiple records can be retrieved.</li>
-<li>Column physical names become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Returns the first record without error even if multiple records are retrieved.</li>
+<li>Physical field names are in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -183,28 +183,27 @@
         <div class="method-description">
           Retrieves multiple records.<br>
 <ul>
-<li>Returns as <code>SqlResultSet</code>.</li>
-<li>Column physical names of row maps retrieved from the <code>SqlResultSet</code>
-iterator become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>Uses in try clause (try-with-resources statement).</li>
-<li>This class sets the default fetch size to 500. Uses <code>SqlUtil#selectFetchAll(Connection, SqlBean)</code> to fetch all records.</li>
-<li>About fetch size per DBMS
+<li>Returns a <code>SqlResultSet</code>.</li>
+<li>Physical field names of row maps obtained from the <code>SqlResultSet</code> iterator are in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Use in a try statement (try-with-resources).</li>
+<li>The default fetch size in this class is 500. Use <code>SqlUtil#selectFetchAll(Connection, SqlBean)</code> to fetch all records.</li>
+<li>Notes on fetch size per DBMS:
 <ul>
-<li>Oracle defaults to 10 records which is small, so specifies fetch size.</li>
-<li>PostgreSQL defaults to fetch all records which may cause OutOfMemory, so specifies fetch size.</li>
-<li>PostgreSQL causes cursor invalid error (SQLSTATE 34000) when specifying fetch size (not fetching all records), updating retrieved data, and performing intermediate commit. In such case, stops intermediate commit or fetches all records.<br>
-Also resolves by dividing and retrieving data with SQL LIMIT clause though processing becomes complex.</li>
-<li>MS-SqlServer may not follow the specified fetch size, so divides and retrieves data with SQL LIMIT clause when there is a possibility of OutOfMemory.</li>
+<li>Oracle defaults to 10, which is small, so specify the fetch size.</li>
+<li>PostgreSQL defaults to fetching all records, which may cause OutOfMemory, so specify the fetch size.</li>
+<li>With PostgreSQL, specifying a fetch size (without fetching all), updating retrieved data, and performing intermediate commits causes a cursor invalidation error (SQLSTATE 34000). In that case, stop intermediate commits or fetch all records.<br>
+Alternatively, though more complex, splitting data retrieval using a SQL LIMIT clause also resolves the issue.</li>
+<li>With MS SQL Server, specifying a fetch size may not work as expected, so use a SQL LIMIT clause to split data retrieval if OutOfMemory is a concern.</li>
 </ul>
 </li>
 </ul>
 <pre>[Example]
 <code>try (final SqlResultSet rSet = SqlUtil.select(getDbConn(), sqlBuilder);) {
   for (final IoItems row : rSet) {
-    : Omitted
+    : (omitted)
   }
   if (rSet.getReadedCount() <= 0) {
-    // For zero records case
+    // Zero records.
   }
 }</code>
 </pre>
@@ -245,11 +244,11 @@ Also resolves by dividing and retrieving data with SQL LIMIT clause though proce
           <code>public SqlResultSet selectFetchAll(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Retrieves multiple records (fetch all records).<br>
+          Retrieves multiple records (fetches all records).<br>
 <ul>
-<li>Basically does not use this method.</li>
-<li>Uses this method only when defects occur without fetching all records.</li>
-<li>This method may cause memory error when retrieving a large number of records.</li>
+<li>Do not use this method in general.</li>
+<li>Use this method only when issues occur without fetching all records.</li>
+<li>Retrieving a large number of records with this method may cause an OutOfMemory error.</li>
 </ul>
 
         </div>
@@ -296,12 +295,11 @@ Also resolves by dividing and retrieving data with SQL LIMIT clause though proce
         <div class="method-description">
           Retrieves multiple records in bulk.<br>
 <ul>
-<li>Returns multiple row list.</li>
-<li>Returns a list with zero size if the result is zero records.</li>
-<li>Column physical names of the map for one row become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>This method consumes memory, so uses <code>#select(Connection, SqlBean)</code>
-for loop processing.</li>
-<li>This method may cause memory error when retrieving a large number of records.</li>
+<li>Returns a list of multiple rows.</li>
+<li>Returns an empty list if the result is zero records.</li>
+<li>Physical field names of each row map are in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Use <code>#select(Connection, SqlBean)</code> for loop processing since this method consumes memory.</li>
+<li>Retrieving a large number of records with this method may cause an OutOfMemory error.</li>
 </ul>
 
         </div>
@@ -329,14 +327,14 @@ for loop processing.</li>
               <tr>
                 <td><code>limitCount</code></td>
                 <td><code>int</code></td>
-                <td>the retrieval count limit</td>
+                <td>the maximum number of records to retrieve</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>IoRows</code> - the multiple row list</p>
+          <p><code>IoRows</code> - the list of multiple rows</p>
         </div>
       </div>
       <div class="method" id="selectBulkAll">
@@ -345,14 +343,13 @@ for loop processing.</li>
           <code>public IoRows selectBulkAll(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          Retrieves multiple records in bulk (retrieves all records).<br>
+          Retrieves all records in bulk.<br>
 <ul>
-<li>Returns multiple row list.</li>
-<li>Returns a list with zero size if the result is zero records.</li>
-<li>Column physical names of the map for one row become lowercase alphabetic characters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
-<li>This method consumes memory, so uses <code>#select(Connection, SqlBean)</code>
-for loop processing.</li>
-<li>This method may cause memory error when retrieving a large number of records.</li>
+<li>Returns a list of multiple rows.</li>
+<li>Returns an empty list if the result is zero records.</li>
+<li>Physical field names of each row map are in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Use <code>#select(Connection, SqlBean)</code> for loop processing since this method consumes memory.</li>
+<li>Retrieving a large number of records with this method may cause an OutOfMemory error.</li>
 </ul>
 
         </div>
@@ -382,7 +379,7 @@ for loop processing.</li>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>IoRows</code> - the multiple row list</p>
+          <p><code>IoRows</code> - the list of multiple rows</p>
         </div>
       </div>
       <div class="method" id="insertOne">
@@ -391,13 +388,12 @@ for loop processing.</li>
           <code>public boolean insertOne(Connection conn, String tableName, AbstractIoTypeMap params)</code>
         </div>
         <div class="method-description">
-          Inserts one record with specified table.<br>
+          Inserts a single record into the specified table.<br>
 <ul>
-<li>Inserts one record by specifying table name.</li>
-<li>Ignores parameters that do not exist in the table.</li>
-<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
-the value will be inserted into the added column without implementation modification.</li>
-<li>Throws a runtime exception if the affected count is zero for reasons other than unique constraint violation.</li>
+<li>Inserts one record into the specified table.</li>
+<li>Parameters not present in the table are ignored.</li>
+<li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be inserted into the new column without modifying the implementation.</li>
+<li>Throws an exception if the number of affected rows is zero for reasons other than a unique constraint violation.</li>
 </ul>
 
         </div>
@@ -432,7 +428,7 @@ the value will be inserted into the added column without implementation modifica
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>false</code> for unique constraint violation, <code>true</code> if one record is normally inserted</p>
+          <p><code>boolean</code> - <code>false</code> if a unique constraint violation occurs; <code>true</code> if the record was successfully inserted</p>
         </div>
       </div>
       <div class="method" id="insertOne">
@@ -441,14 +437,13 @@ the value will be inserted into the added column without implementation modifica
           <code>public boolean insertOne(Connection conn, String tableName, AbstractIoTypeMap params, String tsItem)</code>
         </div>
         <div class="method-description">
-          Inserts one record with specified table (automatic timestamp setting).<br>
+          Inserts a single record into the specified table (with automatic timestamp setting).<br>
 <ul>
-<li>Inserts one record by specifying table name.</li>
-<li>Sets timestamp for optimistic concurrency control.</li>
-<li>Ignores parameters that do not exist in the table.</li>
-<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
-the value will be inserted into the added column without implementation modification.</li>
-<li>Throws a runtime exception if the affected count is zero for reasons other than unique constraint violation.</li>
+<li>Inserts one record into the specified table.</li>
+<li>Sets the timestamp for optimistic locking.</li>
+<li>Parameters not present in the table are ignored.</li>
+<li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be inserted into the new column without modifying the implementation.</li>
+<li>Throws an exception if the number of affected rows is zero for reasons other than a unique constraint violation.</li>
 </ul>
 
         </div>
@@ -481,14 +476,14 @@ the value will be inserted into the added column without implementation modifica
               <tr>
                 <td><code>tsItem</code></td>
                 <td><code>String</code></td>
-                <td>the timestamp column name (for optimistic concurrency control)</td>
+                <td>the timestamp column name (for optimistic locking)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>false</code> for unique constraint violation, <code>true</code> if one record is normally inserted</p>
+          <p><code>boolean</code> - <code>false</code> if a unique constraint violation occurs; <code>true</code> if the record was successfully inserted</p>
         </div>
       </div>
       <div class="method" id="updateOne">
@@ -497,16 +492,15 @@ the value will be inserted into the added column without implementation modifica
           <code>public boolean updateOne(Connection conn, String tableName, AbstractIoTypeMap params, String[] keyItems)</code>
         </div>
         <div class="method-description">
-          Updates one record with specified table.<br>
+          Updates a single record in the specified table.<br>
 <ul>
-<li>Updates one record by specifying table name.</li>
-<li>Throws a runtime exception if multiple records are updated.</li>
-<li>Ignores parameters that do not exist in the table.</li>
-<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
-the value will be updated in the added column without implementation modification.</li>
-<li>WHERE clause is created by key columns.</li>
-<li>Key columns must be included in parameter values.</li>
-<li>Alphabetic characters of key column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Updates one record in the specified table.</li>
+<li>Throws an exception if multiple records are updated.</li>
+<li>Parameters not present in the table are ignored.</li>
+<li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
+<li>A WHERE clause is built using the key columns.</li>
+<li>Key columns MUST be included in the parameter values.</li>
+<li>Key column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -534,7 +528,7 @@ the value will be updated in the added column without implementation modificatio
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>the parameter values (including key column names)</td>
+                <td>the parameter values (including key columns)</td>
               </tr>
               <tr>
                 <td><code>keyItems</code></td>
@@ -546,7 +540,7 @@ the value will be updated in the added column without implementation modificatio
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if one record is updated, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - <code>true</code> if one record was updated; <code>false</code> if zero records were updated</p>
         </div>
       </div>
       <div class="method" id="updateOne">
@@ -555,20 +549,18 @@ the value will be updated in the added column without implementation modificatio
           <code>public boolean updateOne(Connection conn, String tableName, AbstractIoTypeMap params, String[] keyItems, String tsItem)</code>
         </div>
         <div class="method-description">
-          Updates one record with specified table (timestamp exclusive control update).<br>
+          Updates a single record in the specified table (with timestamp optimistic locking).<br>
 <ul>
-<li>Updates one record by specifying table name.</li>
-<li>Throws a runtime exception if multiple records are updated.</li>
-<li>Performs optimistic concurrency control with timestamp.</li>
-<li>Ignores parameters that do not exist in the table.</li>
-<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
-the value will be updated in the added column without implementation modification.</li>
-<li>WHERE clause is created by key columns and timestamp column (exclusive control).</li>
-<li>Key columns and timestamp column must be included in parameter values.</li>
-<li>Alphabetic characters of key column names and timestamp column name must be specified in lowercase. (<code>AbstractIoTypeMap</code>
-key rule)</li>
-<li>Timestamp column is updated with current date/time.</li>
-<li>Uses <code>#updateOne(Connection, String, AbstractIoTypeMap, String[])</code> when timestamp exclusive control is not required.</li>
+<li>Updates one record in the specified table.</li>
+<li>Throws an exception if multiple records are updated.</li>
+<li>Performs optimistic locking using a timestamp.</li>
+<li>Parameters not present in the table are ignored.</li>
+<li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
+<li>A WHERE clause is built using the key columns and the timestamp column (for locking).</li>
+<li>Key columns and the timestamp column MUST be included in the parameter values.</li>
+<li>Key column names and the timestamp column name MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>The timestamp column is updated to the current date and time.</li>
+<li>Use <code>#updateOne(Connection, String, AbstractIoTypeMap, String[])</code> if timestamp optimistic locking is not required.</li>
 </ul>
 
         </div>
@@ -596,7 +588,7 @@ key rule)</li>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>the parameter values (including key column names)</td>
+                <td>the parameter values (including key columns and the timestamp column)</td>
               </tr>
               <tr>
                 <td><code>keyItems</code></td>
@@ -606,31 +598,31 @@ key rule)</li>
               <tr>
                 <td><code>tsItem</code></td>
                 <td><code>String</code></td>
-                <td>the timestamp column name (for optimistic concurrency control)</td>
+                <td>the timestamp column name (for optimistic locking)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if one record is updated, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - <code>true</code> if one record was updated; <code>false</code> if zero records were updated</p>
         </div>
       </div>
-      <div class="method" id="update">
-        <h3 class="method-name">update</h3>
+      <div class="method" id="updateOneByPkey">
+        <h3 class="method-name">updateOneByPkey</h3>
         <div class="method-signature">
-          <code>public int update(Connection conn, String tableName, AbstractIoTypeMap params, String[] whereItems)</code>
+          <code>public boolean updateOneByPkey(Connection conn, String tableName, AbstractIoTypeMap params)</code>
         </div>
         <div class="method-description">
-          Updates with specified table.<br>
+          Updates a single record in the specified table by primary key.<br>
 <ul>
-<li>Updates multiple records by specifying table name.</li>
-<li>Ignores parameters that do not exist in the table.</li>
-<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
-the value will be updated in the added column without implementation modification.</li>
-<li>WHERE clause is created by filter condition columns.</li>
-<li>Filter condition columns must be included in parameter values.</li>
-<li>Alphabetic characters of filter condition column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Updates one record in the specified table.</li>
+<li>Throws an exception if multiple records are updated.</li>
+<li>Parameters not present in the table are ignored.</li>
+<li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
+<li>A WHERE clause is built using the primary key columns of the table.</li>
+<li>Throws an exception if the table has no primary key.</li>
+<li>Primary key columns MUST be included in the parameter values.</li>
 </ul>
 
         </div>
@@ -658,19 +650,131 @@ the value will be updated in the added column without implementation modificatio
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>the parameter values (including filter condition column names)</td>
-              </tr>
-              <tr>
-                <td><code>whereItems</code></td>
-                <td><code>String[]</code></td>
-                <td>the filter condition column names (optional) <code>null</code> if omitted</td>
+                <td>the parameter values (including primary key columns)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the update count</p>
+          <p><code>boolean</code> - <code>true</code> if one record was updated; <code>false</code> if zero records were updated</p>
+        </div>
+      </div>
+      <div class="method" id="updateOneByPkey">
+        <h3 class="method-name">updateOneByPkey</h3>
+        <div class="method-signature">
+          <code>public boolean updateOneByPkey(Connection conn, String tableName, AbstractIoTypeMap params, String tsItem)</code>
+        </div>
+        <div class="method-description">
+          Updates a single record in the specified table by primary key (with timestamp optimistic locking).<br>
+<ul>
+<li>Updates one record in the specified table.</li>
+<li>Throws an exception if multiple records are updated.</li>
+<li>Performs optimistic locking using a timestamp.</li>
+<li>Parameters not present in the table are ignored.</li>
+<li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
+<li>A WHERE clause is built using the primary key columns and the timestamp column (for locking).</li>
+<li>Throws an exception if the table has no primary key.</li>
+<li>Primary key columns and the timestamp column MUST be included in the parameter values.</li>
+<li>The timestamp column name MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>The timestamp column is updated to the current date and time.</li>
+<li>Use <code>#updateOneByPkey(Connection, String, AbstractIoTypeMap)</code> if timestamp optimistic locking is not required.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>conn</code></td>
+                <td><code>Connection</code></td>
+                <td>the database connection</td>
+              </tr>
+              <tr>
+                <td><code>tableName</code></td>
+                <td><code>String</code></td>
+                <td>the table name</td>
+              </tr>
+              <tr>
+                <td><code>params</code></td>
+                <td><code>AbstractIoTypeMap</code></td>
+                <td>the parameter values (including primary key columns and the timestamp column)</td>
+              </tr>
+              <tr>
+                <td><code>tsItem</code></td>
+                <td><code>String</code></td>
+                <td>the timestamp column name (for optimistic locking)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if one record was updated; <code>false</code> if zero records were updated</p>
+        </div>
+      </div>
+      <div class="method" id="update">
+        <h3 class="method-name">update</h3>
+        <div class="method-signature">
+          <code>public int update(Connection conn, String tableName, AbstractIoTypeMap params, String[] whereItems)</code>
+        </div>
+        <div class="method-description">
+          Updates multiple records in the specified table.<br>
+<ul>
+<li>Updates multiple records in the specified table.</li>
+<li>Parameters not present in the table are ignored.</li>
+<li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
+<li>A WHERE clause is built using the search condition columns.</li>
+<li>Search condition columns MUST be included in the parameter values.</li>
+<li>Search condition column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>conn</code></td>
+                <td><code>Connection</code></td>
+                <td>the database connection</td>
+              </tr>
+              <tr>
+                <td><code>tableName</code></td>
+                <td><code>String</code></td>
+                <td>the table name</td>
+              </tr>
+              <tr>
+                <td><code>params</code></td>
+                <td><code>AbstractIoTypeMap</code></td>
+                <td>the parameter values (including search condition columns)</td>
+              </tr>
+              <tr>
+                <td><code>whereItems</code></td>
+                <td><code>String[]</code></td>
+                <td>the search condition column names (optional; pass <code>null</code> if omitted)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the number of updated records</p>
         </div>
       </div>
       <div class="method" id="updateAll">
@@ -679,12 +783,11 @@ the value will be updated in the added column without implementation modificatio
           <code>public int updateAll(Connection conn, String tableName, AbstractIoTypeMap params)</code>
         </div>
         <div class="method-description">
-          Updates all records with specified table.<br>
+          Updates all records in the specified table.<br>
 <ul>
-<li>Updates all records by specifying table name.</li>
-<li>Ignores parameters that do not exist in the table.</li>
-<li>Attention is required because if a column is added to the table after implementation completion and the column name already exists in the parameters,<br>
-the value will be updated in the added column without implementation modification.</li>
+<li>Updates all records in the specified table.</li>
+<li>Parameters not present in the table are ignored.</li>
+<li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
 </ul>
 
         </div>
@@ -719,7 +822,7 @@ the value will be updated in the added column without implementation modificatio
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the update count</p>
+          <p><code>int</code> - the number of updated records</p>
         </div>
       </div>
       <div class="method" id="deleteOne">
@@ -728,13 +831,14 @@ the value will be updated in the added column without implementation modificatio
           <code>public boolean deleteOne(Connection conn, String tableName, AbstractIoTypeMap params, String[] keyItems)</code>
         </div>
         <div class="method-description">
-          Deletes one record with specified table.<br>
+          Deletes a single record from the specified table.<br>
 <ul>
-<li>Deletes one record by specifying table name.</li>
-<li>Throws a runtime exception if multiple records are deleted.</li>
-<li>WHERE clause is created by key columns.</li>
-<li>Key columns must be included in parameter values.</li>
-<li>Alphabetic characters of key column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Deletes one record from the specified table.</li>
+<li>Throws an exception if multiple records are deleted.</li>
+<li>A WHERE clause is built using the key columns.</li>
+<li>Key columns MUST be included in the parameter values.</li>
+<li>Parameters that are not key columns are ignored.</li>
+<li>Key column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
 </ul>
 
         </div>
@@ -762,7 +866,7 @@ the value will be updated in the added column without implementation modificatio
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>the parameter values (including key column names)</td>
+                <td>the parameter values (including key columns)</td>
               </tr>
               <tr>
                 <td><code>keyItems</code></td>
@@ -774,7 +878,7 @@ the value will be updated in the added column without implementation modificatio
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if one record is deleted, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - <code>true</code> if one record was deleted; <code>false</code> if zero records were deleted</p>
         </div>
       </div>
       <div class="method" id="deleteOne">
@@ -783,18 +887,16 @@ the value will be updated in the added column without implementation modificatio
           <code>public boolean deleteOne(Connection conn, String tableName, AbstractIoTypeMap params, String[] keyItems, String tsItem)</code>
         </div>
         <div class="method-description">
-          Deletes one record with specified table (timestamp exclusive control delete).<br>
+          Deletes a single record from the specified table (with timestamp optimistic locking).<br>
 <ul>
-<li>Deletes one record by specifying table name.</li>
-<li>Throws a runtime exception if multiple records are deleted.</li>
-<li>Performs optimistic concurrency control with timestamp.</li>
-<li>WHERE clause is created by key columns and timestamp column (exclusive control).</li>
-<li>Key columns and timestamp column must be included in parameter values.</li>
-<li>Alphabetic characters of key column names and timestamp column name must be specified in lowercase. (<code>AbstractIoTypeMap</code>
-key rule)</li>
-<li>Uses
-<code>#deleteOne(Connection, String, AbstractIoTypeMap, String[])</code>
-when timestamp exclusive control is not required.</li>
+<li>Deletes one record from the specified table.</li>
+<li>Throws an exception if multiple records are deleted.</li>
+<li>Performs optimistic locking using a timestamp.</li>
+<li>A WHERE clause is built using the key columns and the timestamp column (for locking).</li>
+<li>Key columns and the timestamp column MUST be included in the parameter values.</li>
+<li>Parameters that are neither key columns nor the timestamp column are ignored.</li>
+<li>Key column names and the timestamp column name MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Use <code>#deleteOne(Connection, String, AbstractIoTypeMap, String[])</code> if timestamp optimistic locking is not required.</li>
 </ul>
 
         </div>
@@ -822,7 +924,7 @@ when timestamp exclusive control is not required.</li>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>the parameter values (including key column names)</td>
+                <td>the parameter values (including key columns and the timestamp column)</td>
               </tr>
               <tr>
                 <td><code>keyItems</code></td>
@@ -832,28 +934,30 @@ when timestamp exclusive control is not required.</li>
               <tr>
                 <td><code>tsItem</code></td>
                 <td><code>String</code></td>
-                <td>the timestamp column name (for optimistic concurrency control)</td>
+                <td>the timestamp column name (for optimistic locking)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if one record is deleted, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - <code>true</code> if one record was deleted; <code>false</code> if zero records were deleted</p>
         </div>
       </div>
-      <div class="method" id="delete">
-        <h3 class="method-name">delete</h3>
+      <div class="method" id="deleteOneByPkey">
+        <h3 class="method-name">deleteOneByPkey</h3>
         <div class="method-signature">
-          <code>public int delete(Connection conn, String tableName, AbstractIoTypeMap params, String[] whereItems)</code>
+          <code>public boolean deleteOneByPkey(Connection conn, String tableName, AbstractIoTypeMap params)</code>
         </div>
         <div class="method-description">
-          Deletes with specified table.<br>
+          Deletes a single record from the specified table by primary key.<br>
 <ul>
-<li>Deletes multiple records by specifying table name.</li>
-<li>WHERE clause is created by filter condition columns.</li>
-<li>Filter condition columns must be included in parameter values.</li>
-<li>Alphabetic characters of filter condition column names must be specified in lowercase. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Deletes one record from the specified table.</li>
+<li>Throws an exception if multiple records are deleted.</li>
+<li>A WHERE clause is built using the primary key columns of the table.</li>
+<li>Throws an exception if the table has no primary key.</li>
+<li>Primary key columns MUST be included in the parameter values.</li>
+<li>Parameters that are not primary key columns are ignored.</li>
 </ul>
 
         </div>
@@ -881,19 +985,127 @@ when timestamp exclusive control is not required.</li>
               <tr>
                 <td><code>params</code></td>
                 <td><code>AbstractIoTypeMap</code></td>
-                <td>the parameter values (including filter condition column names)</td>
-              </tr>
-              <tr>
-                <td><code>whereItems</code></td>
-                <td><code>String[]</code></td>
-                <td>the filter condition column names</td>
+                <td>the parameter values (including primary key columns)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the delete count</p>
+          <p><code>boolean</code> - <code>true</code> if one record was deleted; <code>false</code> if zero records were deleted</p>
+        </div>
+      </div>
+      <div class="method" id="deleteOneByPkey">
+        <h3 class="method-name">deleteOneByPkey</h3>
+        <div class="method-signature">
+          <code>public boolean deleteOneByPkey(Connection conn, String tableName, AbstractIoTypeMap params, String tsItem)</code>
+        </div>
+        <div class="method-description">
+          Deletes a single record from the specified table by primary key (with timestamp optimistic locking).<br>
+<ul>
+<li>Deletes one record from the specified table.</li>
+<li>Throws an exception if multiple records are deleted.</li>
+<li>Performs optimistic locking using a timestamp.</li>
+<li>A WHERE clause is built using the primary key columns and the timestamp column (for locking).</li>
+<li>Throws an exception if the table has no primary key.</li>
+<li>Primary key columns and the timestamp column MUST be included in the parameter values.</li>
+<li>Parameters that are neither primary key columns nor the timestamp column are ignored.</li>
+<li>The timestamp column name MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Use <code>#deleteOneByPkey(Connection, String, AbstractIoTypeMap)</code> if timestamp optimistic locking is not required.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>conn</code></td>
+                <td><code>Connection</code></td>
+                <td>the database connection</td>
+              </tr>
+              <tr>
+                <td><code>tableName</code></td>
+                <td><code>String</code></td>
+                <td>the table name</td>
+              </tr>
+              <tr>
+                <td><code>params</code></td>
+                <td><code>AbstractIoTypeMap</code></td>
+                <td>the parameter values (including primary key columns and the timestamp column)</td>
+              </tr>
+              <tr>
+                <td><code>tsItem</code></td>
+                <td><code>String</code></td>
+                <td>the timestamp column name (for optimistic locking)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if one record was deleted; <code>false</code> if zero records were deleted</p>
+        </div>
+      </div>
+      <div class="method" id="delete">
+        <h3 class="method-name">delete</h3>
+        <div class="method-signature">
+          <code>public int delete(Connection conn, String tableName, AbstractIoTypeMap params, String[] whereItems)</code>
+        </div>
+        <div class="method-description">
+          Deletes multiple records from the specified table.<br>
+<ul>
+<li>Deletes multiple records from the specified table.</li>
+<li>A WHERE clause is built using the search condition columns.</li>
+<li>Search condition columns MUST be included in the parameter values.</li>
+<li>Search condition column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>conn</code></td>
+                <td><code>Connection</code></td>
+                <td>the database connection</td>
+              </tr>
+              <tr>
+                <td><code>tableName</code></td>
+                <td><code>String</code></td>
+                <td>the table name</td>
+              </tr>
+              <tr>
+                <td><code>params</code></td>
+                <td><code>AbstractIoTypeMap</code></td>
+                <td>the parameter values (including search condition columns)</td>
+              </tr>
+              <tr>
+                <td><code>whereItems</code></td>
+                <td><code>String[]</code></td>
+                <td>the search condition column names</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>int</code> - the number of deleted records</p>
         </div>
       </div>
       <div class="method" id="deleteAll">
@@ -902,9 +1114,9 @@ when timestamp exclusive control is not required.</li>
           <code>public int deleteAll(Connection conn, String tableName)</code>
         </div>
         <div class="method-description">
-          Deletes all records with specified table.<br>
+          Deletes all records from the specified table.<br>
 <ul>
-<li>Deletes all records by specifying table name.</li>
+<li>Deletes all records from the specified table.</li>
 </ul>
 
         </div>
@@ -934,7 +1146,7 @@ when timestamp exclusive control is not required.</li>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the delete count</p>
+          <p><code>int</code> - the number of deleted records</p>
         </div>
       </div>
       <div class="method" id="executeOne">
@@ -943,9 +1155,9 @@ when timestamp exclusive control is not required.</li>
           <code>public boolean executeOne(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          SQL one record insert, update, or delete.<br>
+          SQL １件登録・更新・削除.<br>
 <ul>
-<li>Throws a runtime exception if the affected count is multiple records.</li>
+<li>反映件数が複数件の場合は例外エラーとする。</li>
 </ul>
 
         </div>
@@ -963,19 +1175,19 @@ when timestamp exclusive control is not required.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>the database connection</td>
+                <td>DB接続</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
                 <td><code>SqlBean</code></td>
-                <td>the SQL Bean</td>
+                <td>SQL Bean</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if the affected count is one record, <code>false</code> if zero records</p>
+          <p><code>boolean</code> - 反映件数が１件の場合は <code>true</code>、０件の場合は <code>false</code></p>
         </div>
       </div>
       <div class="method" id="execute">
@@ -984,7 +1196,7 @@ when timestamp exclusive control is not required.</li>
           <code>public int execute(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          SQL insert, update, or delete.
+          SQL 登録・更新・削除.
 
         </div>
         <div class="method-parameters">
@@ -1001,19 +1213,19 @@ when timestamp exclusive control is not required.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>the database connection</td>
+                <td>DB接続</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
                 <td><code>SqlBean</code></td>
-                <td>the SQL Bean</td>
+                <td>SQL Bean</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - the affected count</p>
+          <p><code>int</code> - 反映件数</p>
         </div>
       </div>
       <div class="method" id="getToday">
@@ -1022,7 +1234,7 @@ when timestamp exclusive control is not required.</li>
           <code>public String getToday(Connection conn)</code>
         </div>
         <div class="method-description">
-          Retrieves current date by DBMS.
+          DBMS別 現在日付取得.
 
         </div>
         <div class="method-parameters">
@@ -1039,14 +1251,14 @@ when timestamp exclusive control is not required.</li>
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>the database connection</td>
+                <td>DB接続</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - the current date (YYYYMMDD format)</p>
+          <p><code>String</code> - 現在日付（YYYYMMDD形式）</p>
         </div>
       </div>
     </div>

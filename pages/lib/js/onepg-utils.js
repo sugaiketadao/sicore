@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Value manipulation utility class.
  * @class
