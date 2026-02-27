@@ -113,7 +113,7 @@ public class ExampleListInit extends AbstractDbAccessWebService {
 ### Application Points
 
 - Retrieve options (dropdown, etc.) to display initially from DB and set them.
-- Set initial values based on logged-in user information.
+- Set initial values based on sign-in user information.
 <!-- AI_SKIP_END -->
 
 ---

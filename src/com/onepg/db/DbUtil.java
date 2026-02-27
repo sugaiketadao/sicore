@@ -63,13 +63,13 @@ public final class DbUtil {
   private static final String DEFAULT_CONN_NAME = "default";
 
   /** Database connection - URL suffix. */
-  private static final String PKEY_SUFFIX_URL = ".conn.url";
+  private static final String PPKEY_SUFFIX_URL = ".conn.url";
   /** Database connection - user suffix. */
-  private static final String PKEY_SUFFIX_USER = ".conn.user";
+  private static final String PPKEY_SUFFIX_USER = ".conn.user";
   /** Database connection - password suffix. */
-  private static final String PKEY_SUFFIX_PASS = ".conn.pass";
+  private static final String PPKEY_SUFFIX_PASS = ".conn.pass";
   /** Database connection - maximum connection count (pool size) suffix. */
-  private static final String PKEY_SUFFIX_MAX = ".conn.max";
+  private static final String PPKEY_SUFFIX_MAX = ".conn.max";
 
   /** Database configuration. */
   private static final IoItems PROP_MAP;
@@ -90,8 +90,7 @@ public final class DbUtil {
    * <li>Connection serial codes are generated within the <code>DbConn</code> class when connections are established.</li>
    * </ul>
    */
-  private static final Map<String, ConcurrentMap<String, Connection>> connPoolMaps_ =
-      new HashMap<>();
+  private static final Map<String, ConcurrentMap<String, Connection>> connPoolMaps_ = new HashMap<>();
 
   /**
    * Busy connection management map &lt;database connection name, busy connection list &lt;connection serial code&gt;&gt; (singleton).<br>
@@ -260,7 +259,7 @@ public final class DbUtil {
     // If there are no unused connections and the maximum connection count has not been reached, create a new connection and return it.
 
     // Maximum connection count (pool size)
-    final int maxSize = PROP_MAP.getInt(connName + PKEY_SUFFIX_MAX);
+    final int maxSize = PROP_MAP.getInt(connName + PPKEY_SUFFIX_MAX);
 
     if (connPoolMap.size() >= maxSize) {
       throw new RuntimeException("Database connection limit reached. " + LogUtil.joinKeyVal("maxSize", maxSize));
@@ -324,20 +323,20 @@ public final class DbUtil {
    * @return the database connection
    */
   private static Connection createConn(final String connName) {
-    if (!PROP_MAP.containsKey(connName + PKEY_SUFFIX_URL)) {
+    if (!PROP_MAP.containsKey(connName + PPKEY_SUFFIX_URL)) {
       throw new RuntimeException("Configuration does not exist. "  + LogUtil.joinKeyVal("ConnName", connName));
     }
 
     // Database URL
-    final String url = PROP_MAP.getString(connName + PKEY_SUFFIX_URL);
+    final String url = PROP_MAP.getString(connName + PPKEY_SUFFIX_URL);
 
     // Database user
     final String user;
     // Database password
     final String pass;
-    if (PROP_MAP.containsKey(connName + PKEY_SUFFIX_USER)) {
-      user = PROP_MAP.getString(connName + PKEY_SUFFIX_USER);
-      pass = PROP_MAP.getString(connName + PKEY_SUFFIX_PASS);
+    if (PROP_MAP.containsKey(connName + PPKEY_SUFFIX_USER)) {
+      user = PROP_MAP.getString(connName + PPKEY_SUFFIX_USER);
+      pass = PROP_MAP.getString(connName + PPKEY_SUFFIX_PASS);
     } else {
       user = null;
       pass = null;
@@ -457,8 +456,8 @@ public final class DbUtil {
   public static List<String> getConnNames() {
     final List<String> ret = new ArrayList<>();
     for (final String key : PROP_MAP.keySet()) {
-      if (key.endsWith(PKEY_SUFFIX_URL)) {
-        final String connName = key.substring(0, key.length() - PKEY_SUFFIX_URL.length());
+      if (key.endsWith(PPKEY_SUFFIX_URL)) {
+        final String connName = key.substring(0, key.length() - PPKEY_SUFFIX_URL.length());
         ret.add(connName);
       }
     }

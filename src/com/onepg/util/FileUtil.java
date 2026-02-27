@@ -106,7 +106,7 @@ public final class FileUtil {
       }
       if ("..".equals(paths[i])) {
         if (i == 1) {
-          // ルートの次の場合は親が無いのでスキップ
+          // Skip because there is no parent when the current element is immediately after the root
           continue;
         }
         ret = (new File(ret)).getParentFile().getPath();
@@ -237,22 +237,22 @@ public final class FileUtil {
           names[0] = names[0].toLowerCase();
           names[1] = names[1].toLowerCase();
           if (!ValUtil.isBlank(typeMarkL) && !names[1].equals(typeMarkL)) {
-            // 拡張子 一致しない
+            // Extension does not match
             return false;
           }
           if (!ValUtil.isBlank(prefixMatchL) && !names[0].startsWith(prefixMatchL)) {
-            // ファイル名 前方一致しない
+            // File name does not match prefix
             return false;
           }
           if (!ValUtil.isBlank(middleMatchL) && !names[0].contains(middleMatchL)) {
-            // ファイル名 中間一致しない
+            // File name does not match middle string
             return false;
           }
           if (!ValUtil.isBlank(suffixMatchL) && !names[0].endsWith(suffixMatchL)) {
-            // ファイル名 後方一致しない
+            // File name does not match suffix
             return false;
           }
-          // 指定された条件に一致する
+          // Matches the specified conditions
           return true;
         }
       };
@@ -410,7 +410,7 @@ public final class FileUtil {
       return false;
     }
     try {
-      // 無ければ親ディレクトリも作成する
+      // Also creates parent directories if they do not exist
       Files.createDirectories(path);
     } catch (IOException e) {
       throw new RuntimeException("Exception error occurred in directory creation. " + LogUtil.joinKeyVal("path", dirPath),

@@ -320,6 +320,6 @@ public final class LogWriter {
     final long seconds = (millis / MILLIS_PER_SECOND) % 60;
     final long milliseconds = millis % MILLIS_PER_SECOND;
     
-    return String.format("%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
+    return "%02d:%02d:%02d.%03d".formatted(hours, minutes, seconds, milliseconds);
   }
 }

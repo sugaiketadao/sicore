@@ -1155,9 +1155,9 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
           <code>public boolean executeOne(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          SQL １件登録・更新・削除.<br>
+          Executes insert, update, or delete for a single record (SQL).<br>
 <ul>
-<li>反映件数が複数件の場合は例外エラーとする。</li>
+<li>Throws an exception error if multiple records are affected.</li>
 </ul>
 
         </div>
@@ -1175,7 +1175,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>DB接続</td>
+                <td>database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
@@ -1187,7 +1187,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 反映件数が１件の場合は <code>true</code>、０件の場合は <code>false</code></p>
+          <p><code>boolean</code> - <code>true</code> if one record is affected, <code>false</code> if zero</p>
         </div>
       </div>
       <div class="method" id="execute">
@@ -1196,7 +1196,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
           <code>public int execute(Connection conn, SqlBean sb)</code>
         </div>
         <div class="method-description">
-          SQL 登録・更新・削除.
+          Executes insert, update, or delete (SQL).
 
         </div>
         <div class="method-parameters">
@@ -1213,7 +1213,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>DB接続</td>
+                <td>database connection</td>
               </tr>
               <tr>
                 <td><code>sb</code></td>
@@ -1225,7 +1225,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - 反映件数</p>
+          <p><code>int</code> - the number of affected records</p>
         </div>
       </div>
       <div class="method" id="getToday">
@@ -1234,7 +1234,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
           <code>public String getToday(Connection conn)</code>
         </div>
         <div class="method-description">
-          DBMS別 現在日付取得.
+          Retrieves the current date per DBMS.
 
         </div>
         <div class="method-parameters">
@@ -1251,14 +1251,14 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
               <tr>
                 <td><code>conn</code></td>
                 <td><code>Connection</code></td>
-                <td>DB接続</td>
+                <td>database connection</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 現在日付（YYYYMMDD形式）</p>
+          <p><code>String</code> - the current date (YYYYMMDD format)</p>
         </div>
       </div>
     </div>

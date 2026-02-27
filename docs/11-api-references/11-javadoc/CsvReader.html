@@ -79,16 +79,16 @@
           <code>public int getReadedCount()</code>
         </div>
         <div class="method-description">
-          読込済行数（ヘッダ行を除く）取得.<br>
+          Returns the number of rows read (excluding the header row).<br>
 <ul>
-<li>イテレーターで読み込んだ件数を返す。</li>
-<li>ファイルの１行目をキー（ヘッダ行）として使用した場合、１行目はカウントされない。</li>
+<li>Returns the number of rows read by the iterator.</li>
+<li>If the first row of the file is used as the key (header row), it is not counted.</li>
 </ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>int</code> - 読込済行数</p>
+          <p><code>int</code> - the number of rows read</p>
         </div>
       </div>
       <div class="method" id="isReadedEndRow">

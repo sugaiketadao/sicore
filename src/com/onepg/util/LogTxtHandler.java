@@ -24,9 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class LogTxtHandler implements AutoCloseable {
 
   /** Information log file configuration key suffix. */
-  private static final String INF_FILE_PROP_KEY_SUFFIX = ".inf.file";
+  private static final String INF_FILE_PPKEY_SUFFIX = ".inf.file";
   /** Error log file configuration key suffix. */
-  private static final String ERR_FILE_PROP_KEY_SUFFIX = ".err.file";
+  private static final String ERR_FILE_PPKEY_SUFFIX = ".err.file";
 
   /** Log text handler pool map &lt;file path, log text handler&gt; (singleton). */
   private static final Map<String, LogTxtHandler> logTxtPoolMaps_ = new ConcurrentHashMap<>();
@@ -61,9 +61,9 @@ public final class LogTxtHandler implements AutoCloseable {
   static LogTxtHandler getInstance(final String keyPrefix, final boolean isErr) {
     final String key;
     if (isErr) {
-      key = keyPrefix + ERR_FILE_PROP_KEY_SUFFIX;
+      key = keyPrefix + ERR_FILE_PPKEY_SUFFIX;
     } else {
-      key = keyPrefix + INF_FILE_PROP_KEY_SUFFIX;
+      key = keyPrefix + INF_FILE_PPKEY_SUFFIX;
     }
     // Gets configuration
     if (!LogUtil.PROP_MAP.containsKey(key)) {

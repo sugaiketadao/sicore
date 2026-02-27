@@ -455,10 +455,10 @@ public final class LogUtil {
       
       final StringBuilder sb = new StringBuilder();
       sb.append(day).append("T");
-      sb.append(String.format("%02d", sepHur)).append(":");
-      sb.append(String.format("%02d", sepMin)).append(":");
-      sb.append(String.format("%02d", sepSec)).append(".");
-      sb.append(String.format("%03d", sepMsec));
+      sb.append("%02d".formatted(sepHur)).append(":");
+      sb.append("%02d".formatted(sepMin)).append(":");
+      sb.append("%02d".formatted(sepSec)).append(".");
+      sb.append("%03d".formatted(sepMsec));
 
       return sb.toString();
     } catch (Exception ignore) {

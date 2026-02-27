@@ -591,18 +591,18 @@ public final class SqlUtil {
     
     final SqlBuilder sb = new SqlBuilder();
     try {
-      // DB項目名・クラスタイプマップ
+      // DB field name / class type map
       final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
 
       final String[] whereItems = Arrays.copyOf(keyItems, keyItems.length + 1);
       whereItems[keyItems.length] = tsItem;
 
       sb.addQuery("UPDATE ").addQuery(tableName);
-      // SET句追加
+      // Add SET clause
       addSetQuery(sb, params, whereItems, itemClsMap);
-      // タイムスタンプ項目は現在日時で更新
+      // Update timestamp field with current datetime
       sb.addQuery(",").addQuery(tsItem).addQuery("=").addQuery(curTs);
-      // WHERE句追加
+      // Add WHERE clause
       addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
 
     } catch (SQLException e) {
@@ -611,7 +611,7 @@ public final class SqlUtil {
     }
 
     try {
-      // SQL実行
+      // Execute SQL
       final int ret = executeSql(conn, sb);
       if (ret > 1) {
         throw new RuntimeException("Multiple records were updated. " + LogUtil.joinKeyVal("sql", sb));
@@ -1023,43 +1023,43 @@ public final class SqlUtil {
       final AbstractIoTypeMap params, final String[] whereItems, final Map<String, ItemClsType> itemClsMap) {
 
     if (ValUtil.isEmpty(whereItems)) {
-      // 抽出条件項目名が指定されていない場合はエラー
+      // Error if no extraction condition column names are specified
       throw new RuntimeException("Extraction condition column names are required. " + LogUtil.joinKeyVal("tableName", tableName, "params", params));
     }
 
-    // WHERE句の作成
+    // Build WHERE clause
     sb.addQuery(" WHERE ");
     for (final String itemName : whereItems) {
       if (!itemClsMap.containsKey(itemName)) {
-        // テーブルに存在しない場合はエラー
+        // Error if the field does not exist in the table
         throw new RuntimeException("Extraction condition field does not exist in table. " +
           LogUtil.joinKeyVal("tableName", tableName, "whereItemName", itemName, "params", params));
       }
       if (!params.containsKey(itemName)) {
-        // 抽出条件項目がパラメーターに存在しない場合はエラー
+        // Error if the extraction condition field does not exist in parameters
         throw new RuntimeException("Extraction condition field does not exist in parameters. " +
           LogUtil.joinKeyVal("tableName", tableName, "whereItemName", itemName, "params", params));
       }
 
-      // 項目クラスタイプ
+      // Field class type
       final ItemClsType itemCls = itemClsMap.get(itemName);
-      // 項目クラスタイプごとの値取得
+      // Retrieve value by field class type
       final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
-      // SQL追加
+      // Add SQL
       sb.addQuery(itemName).addQuery("=?", param).addQuery(" AND ");
     }
     sb.delLastChar(4);
   }
 
   /**
-   * SQL １件登録・更新・削除.<br>
+   * Executes insert, update, or delete for a single record (SQL).<br>
    * <ul>
-   * <li>反映件数が複数件の場合は例外エラーとする。</li>
+   * <li>Throws an exception error if multiple records are affected.</li>
    * </ul>
    *
-   * @param conn DB接続
+   * @param conn database connection
    * @param sb SQL Bean
-   * @return 反映件数が１件の場合は <code>true</code>、０件の場合は <code>false</code>
+   * @return <code>true</code> if one record is affected, <code>false</code> if zero
    */
   public static boolean executeOne(final Connection conn, final SqlBean sb) {
     final int ret = execute(conn, sb);
@@ -1070,11 +1070,11 @@ public final class SqlUtil {
   }
 
   /**
-   * SQL 登録・更新・削除.
+   * Executes insert, update, or delete (SQL).
    *
-   * @param conn DB接続
+   * @param conn database connection
    * @param sb SQL Bean
-   * @return 反映件数
+   * @return the number of affected records
    */
   public static int execute(final Connection conn, final SqlBean sb) {
     try {
@@ -1085,38 +1085,38 @@ public final class SqlUtil {
   }
 
   /**
-   * SQL実行.
+   * Executes SQL.
    *
-   * @param conn DB接続
+   * @param conn database connection
    * @param sb SQL Bean
-   * @return 反映件数
-   * @throws SQLException SQL例外エラー
+   * @return the number of affected records
+   * @throws SQLException SQL exception error
    */
   private static int executeSql(final Connection conn, final SqlBean sb)
       throws SQLException {
         
     if (logger.isDevelopMode()) {
-      // SQLログ出力
+      // Output SQL log
       logger.develop("SQL#EXECUTE execution. " + LogUtil.joinKeyVal("sql", sb));
     }
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
-    // ステートメント生成
+    // Generate statement
     try (final PreparedStatement stmt = conn.prepareStatement(sb.getQuery());) {
-      // ステートメントにパラメーターセット
+      // Set parameters to statement
       setStmtParameters(stmt, sb.getBindValues(), dbmsName);
-      // SQL実行
+      // Execute SQL
       final int ret = stmt.executeUpdate();
       return ret;
     }
   }
 
   /**
-   * ステートメントにパラメーターセット.
+   * Sets parameters to the statement.
    *
-   * @param stmt     ステートメント
-   * @param bindValues   バインド値リスト
-   * @param dbmsName DBMS名
-   * @throws SQLException SQL例外エラー
+   * @param stmt     statement
+   * @param bindValues   bind value list
+   * @param dbmsName DBMS name
+   * @throws SQLException SQL exception error
    */
   private static void setStmtParameters(final PreparedStatement stmt, final List<Object> bindValues,
       final DbmsName dbmsName) throws SQLException {
@@ -1127,13 +1127,13 @@ public final class SqlUtil {
         if (ValUtil.isNull(bindValue)) {
           stmt.setObject(bindNo, bindValue);
         } else if (bindValue instanceof java.sql.Timestamp) {
-          // java.sql.Timestamp の場合は String に変換してセット
+          // Convert to String and set if java.sql.Timestamp
           final java.sql.Timestamp ts = (java.sql.Timestamp) bindValue;
           final LocalDateTime ldt = ts.toLocalDateTime();
           final String s = DTF_SQL_TIMESTAMP.format(ldt);
           stmt.setString(bindNo, s);
         } else if (bindValue instanceof java.sql.Date) {
-          // java.sql.Date の場合は String に変換してセット
+          // Convert to String and set if java.sql.Date
           final java.sql.Date dt = (java.sql.Date) bindValue;
           final LocalDate ld = dt.toLocalDate();
           final String s = DTF_SQL_DATE.format(ld);
@@ -1148,59 +1148,59 @@ public final class SqlUtil {
   }
 
   /**
-   * ステートメントにフェッチ関連プロパティをセット.
+   * Sets fetch-related properties to the statement.
    *
-   * @param stmt ステートメント
-   * @param fetchSize フェッチサイズ
-   * @throws SQLException SQL例外エラー
+   * @param stmt statement
+   * @param fetchSize fetch size
+   * @throws SQLException SQL exception error
    */
   private static void setStmtFetchProperty(final PreparedStatement stmt, final int fetchSize)
       throws SQLException {
-    // フェッチ方向とフェッチサイズをセット
+    // Set fetch direction and fetch size
     stmt.setFetchDirection(ResultSet.FETCH_FORWARD);
     stmt.setFetchSize(fetchSize);
   }
 
   /**
-   * 結果セットからDB項目名・クラスタイプマップ作成.<br>
+   * Creates a DB field name / class type map from the result set.<br>
    * <ul>
-   * <li>結果セットから項目名とクラスタイプのマップを作成する。</li>
-   * <li>マップは項目順を保持する。</li>
-   * <li>項目物理名は英字小文字に変換する。（<code>AbstractIoTypeMap</code> のキールールとあわせる）</li>
+   * <li>Creates a map of field names and class types from the result set.</li>
+   * <li>Preserves the field order in the map.</li>
+   * <li>Converts physical field names to lowercase letters. (To match the key rules of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param rset 結果セット
-   * @return DB項目名・クラスタイプマップ
-   * @throws SQLException SQL例外エラー
+   * @param rset result set
+   * @return the DB field name / class type map
+   * @throws SQLException SQL exception error
    */
   private static Map<String, ItemClsType> createItemNameClsMap(final ResultSet rset)
       throws SQLException {
 
-    // DB項目名・クラスタイプマップ
+    // DB field name / class type map
     final Map<String, ItemClsType> itemClsMap = new LinkedHashMap<>();
 
-    // DBMS名
+    // DBMS name
     final DbmsName dbmsName = DbUtil.getDbmsName(rset);
-    // 結果セットメタ情報
+    // Result set metadata
     final ResultSetMetaData rmeta = rset.getMetaData();
-    // 列数
+    // Column count
     final int itemCount = rmeta.getColumnCount();
-    // 結果セット列のループ
+    // Loop through result set columns
     for (int c = 1; c <= itemCount; c++) {
-      // 列名
+      // Column name
       final String itemName;
       if (DbmsName.DB2 == dbmsName) {
-        // DB2 の #getColumnName は別名でなく元の項目名を返すため
+        // Because DB2's #getColumnName returns the original field name, not the alias
         itemName = rmeta.getColumnLabel(c).toLowerCase();
       } else {
         itemName = rmeta.getColumnName(c).toLowerCase();
       }
-      // 型No
+      // Type number
       final int typeNo = rmeta.getColumnType(c);
-      // 型名
-      // Oracle は DATE型も時刻を持っており TIMESTAMP と判断されるので型名で判断する必要がある。
+      // Type name
+      // Oracle's DATE type also holds time information and is treated as TIMESTAMP, so the type name must be used for determination.
       final String typeName = rmeta.getColumnTypeName(c).toUpperCase();
-      // 項目クラスタイプ
+      // Field class type
       final ItemClsType itemCls = convItemClsType(typeNo, typeName, dbmsName);
 
       itemClsMap.put(itemName, itemCls);
@@ -1209,38 +1209,38 @@ public final class SqlUtil {
   }
 
   /**
-   * テーブル指定でDB項目名・クラスタイプマップ作成.<br>
+   * Creates a DB field name / class type map for the specified table.<br>
    * <ul>
-   * <li>DBメタ情報から項目名とクラスタイプのマップを作成する。</li>
-   * <li>マップは項目順を保持する。</li>
-   * <li>項目物理名は英字小文字に変換する。（<code>AbstractIoTypeMap</code> のキールールとあわせる）</li>
+   * <li>Creates a map of field names and class types from DB metadata.</li>
+   * <li>Preserves the field order in the map.</li>
+   * <li>Converts physical field names to lowercase letters. (To match the key rules of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn DB接続
-   * @param tableName テーブル名
-   * @throws SQLException SQL例外エラー
+   * @param conn database connection
+   * @param tableName table name
+   * @throws SQLException SQL exception error
    */
   private static Map<String, ItemClsType> createItemNameClsMapByMeta(final Connection conn,
       final String tableName) throws SQLException {
 
-    // DB項目名・クラスタイプマップ
+    // DB field name / class type map
     final Map<String, ItemClsType> itemClsMap = new LinkedHashMap<>();
 
-    // DBMS名
+    // DBMS name
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
-    // DBメタ情報
+    // DB metadata
     final DatabaseMetaData cmeta = conn.getMetaData();
-    // 列情報結果セット
+    // Column information result set
     try (final ResultSet rset = cmeta.getColumns(null, null, tableName, null)) {
       while (rset.next()) {
-        // 列名
+        // Column name
         final String itemName = rset.getString("COLUMN_NAME").toLowerCase();
-        // 型No
+        // Type number
         final int typeNo = rset.getInt("DATA_TYPE");
-        // 型名
-        // Oracle は DATE型も時刻を持っており TIMESTAMP と判断されるので型名で判断する必要がある。
+        // Type name
+        // Oracle's DATE type also holds time information and is treated as TIMESTAMP, so the type name must be used for determination.
         final String typeName = rset.getString("TYPE_NAME");
-        // 項目クラスタイプ
+        // Field class type
         final ItemClsType itemCls = convItemClsType(typeNo, typeName, dbmsName);
 
         itemClsMap.put(itemName, itemCls);
@@ -1250,27 +1250,27 @@ public final class SqlUtil {
   }
 
   /**
-   * DB項目クラスタイプ変換.
+   * Converts a DB field class type.
    *
-   * @param typeNo   型No
-   * @param typeName 型名大文字
-   * @param dbmsName DBMS名
-   * @return クラスタイプ
+   * @param typeNo   type number
+   * @param typeName type name in uppercase
+   * @param dbmsName DBMS name
+   * @return the class type
    */
   private static ItemClsType convItemClsType(final int typeNo, final String typeName, final DbmsName dbmsName) {
     final ItemClsType itemCls;
-    if (/* BigDecimal にマッピングされる JDBC型 */ Types.DECIMAL == typeNo || Types.NUMERIC == typeNo
-        || /* Integer にマッピングされる JDBC型 */ Types.TINYINT == typeNo || Types.SMALLINT == typeNo
-        || Types.INTEGER == typeNo || /* Long にマッピングされる JDBC型 */ Types.BIGINT == typeNo
-        || /* Float にマッピングされる JDBC型 */ Types.FLOAT == typeNo || Types.REAL == typeNo
-        || /* Double にマッピングされる JDBC型 */ Types.DOUBLE == typeNo) {
-      // 数値の型は BigDecimal に統一する
+    if (/* JDBC types mapped to BigDecimal */ Types.DECIMAL == typeNo || Types.NUMERIC == typeNo
+        || /* JDBC types mapped to Integer */ Types.TINYINT == typeNo || Types.SMALLINT == typeNo
+        || Types.INTEGER == typeNo || /* JDBC type mapped to Long */ Types.BIGINT == typeNo
+        || /* JDBC types mapped to Float */ Types.FLOAT == typeNo || Types.REAL == typeNo
+        || /* JDBC type mapped to Double */ Types.DOUBLE == typeNo) {
+      // Unify all numeric types to BigDecimal
       itemCls = ItemClsType.BIGDECIMAL_CLS;
     } else if (Types.DATE == typeNo) {
       if ("DATETIME".equals(typeName) && DbmsName.MSSQL == dbmsName) {
         itemCls = ItemClsType.TIMESTAMP_CLS;
       } else if (DbmsName.SQLITE == dbmsName) {
-        // SQLLite で Types.DATE が結果セットから返された場合は実際は文字列なので変換する必要がある（#createIoItemsFromResultSet 参照）
+        // When Types.DATE is returned from the result set in SQLite, it is actually a string and must be converted (see #createIoItemsFromResultSet)
         itemCls = ItemClsType.STRING_TO_DATE_CLS;
       } else {
         itemCls = ItemClsType.DATE_CLS;
@@ -1279,7 +1279,7 @@ public final class SqlUtil {
       if ("DATE".equals(typeName) && DbmsName.ORACLE == dbmsName) {
         itemCls = ItemClsType.DATE_CLS;
       } else if (DbmsName.SQLITE == dbmsName) {
-        // SQLLite で Types.TIMESTAMP が結果セットから返された場合は実際は文字列なので変換する必要がある（#createIoItemsFromResultSet 参照）
+        // When Types.TIMESTAMP is returned from the result set in SQLite, it is actually a string and must be converted (see #createIoItemsFromResultSet)
         itemCls = ItemClsType.STRING_TO_TS_CLS;
       } else {
         itemCls = ItemClsType.TIMESTAMP_CLS;
@@ -1287,16 +1287,16 @@ public final class SqlUtil {
     } else {
       if (DbmsName.SQLITE == dbmsName) {
         if ("DATE".equals(typeName)) {
-          // SQLLite のテーブルメタ情報は Types.VARCHAR でタイプ名が "DATE" となる
+          // In SQLite table metadata, the type is Types.VARCHAR with type name "DATE"
           itemCls = ItemClsType.STRING_TO_DATE_CLS;
         } else if ("TIMESTAMP".equals(typeName)) {
-          // SQLLite のテーブルメタ情報は Types.VARCHAR でタイプ名が "TIMESTAMP" となる
+          // In SQLite table metadata, the type is Types.VARCHAR with type name "TIMESTAMP"
           itemCls = ItemClsType.STRING_TO_TS_CLS;
         } else {
           itemCls = ItemClsType.STRING_CLS;
         }
       } else {
-        // 文字列の型は String に統一する
+        // Unify all string types to String
         itemCls = ItemClsType.STRING_CLS;
       }
     }
@@ -1304,29 +1304,29 @@ public final class SqlUtil {
   }
 
   /**
-   * 結果セット行マップ作成.<br>
+   * Creates a row map from the result set.<br>
    * <ul>
-   * <li>結果セットの現在行の値をマップで返す。</li>
+   * <li>Returns the values of the current row of the result set as a map.</li>
    * </ul>
    *
-   * @param rset 結果セット
-   * @param itemClsMap DB項目名・クラスタイプマップ
-   * @return 行マップ
+   * @param rset result set
+   * @param itemClsMap DB field name / class type map
+   * @return the row map
    */
   static IoItems createIoItemsFromResultSet(final ResultSet rset,
       final Map<String, ItemClsType> itemClsMap) {
 
-    // 行マップ
+    // Row map
     final IoItems rowMap = new IoItems();
 
-    // DB項目のループ
+    // Loop through DB fields
     for (final Map.Entry<String, ItemClsType> ent : itemClsMap.entrySet()) {
-      // 項目名
+      // Field name
       final String itemName = ent.getKey();
       try {
-        // 項目クラスタイプ
+        // Field class type
         final ItemClsType itemCls = ent.getValue();
-        // 項目クラスタイプごとの値セット
+        // Set value by field class type
         if (ItemClsType.STRING_CLS == itemCls) {
           final String value = rset.getString(itemName);
           rowMap.put(itemName, value);
@@ -1346,7 +1346,7 @@ public final class SqlUtil {
             continue;
           }
           final LocalDate ld = LocalDate.parse(value, DTF_SQL_DATE);
-          // 本来は Date でセットする必要があるが、IoItems 内で LocalDate に変換されてセットされるためそのままセット
+          // Should be set as Date, but since it is converted to LocalDate inside IoItems, set as is
           rowMap.put(itemName, ld);
         } else if (ItemClsType.STRING_TO_TS_CLS == itemCls) {
           final String value = rset.getString(itemName);
@@ -1357,22 +1357,22 @@ public final class SqlUtil {
           final String ajustVal;
           final int len = value.length();
           if (len == 19) {
-            // 小数秒が無い場合は .000000 を付与する（"uuuu-MM-dd HH:mm:ss"＝19文字）
+            // Append .000000 if there is no fractional second ("uuuu-MM-dd HH:mm:ss" = 19 chars)
             ajustVal = value + ".000000";
           } else if (19 < len && len < 26) {
-            // 小数秒の桁数不足は 000000 を付与する（"uuuu-MM-dd HH:mm:ss.SSSSSS"＝26文字）
+            // Append 000000 if fractional seconds are insufficient ("uuuu-MM-dd HH:mm:ss.SSSSSS" = 26 chars)
             ajustVal = ValUtil.substring(value + "000000", 0, 26);
           } else if (len == 26) {
             ajustVal = value;
           } else if (len > 26) {
-            // 小数秒の桁数は 6桁で切る（"uuuu-MM-dd HH:mm:ss.SSSSSS"＝26文字）
+            // Truncate fractional seconds to 6 digits ("uuuu-MM-dd HH:mm:ss.SSSSSS" = 26 chars)
             ajustVal = ValUtil.substring(value, 0, 26);
           } else {
             rowMap.putNull(itemName);
             continue;
           }
           final LocalDateTime ldt = LocalDateTime.parse(ajustVal, DTF_SQL_TIMESTAMP);
-          // 本来は Timestamp でセットする必要があるが、IoItems 内で LocalDateTime に変換されてセットされるためそのままセット
+          // Should be set as Timestamp, but since it is converted to LocalDateTime inside IoItems, set as is
           rowMap.put(itemName, ldt);
         } else {
           throw new RuntimeException("Item class type is invalid. "
@@ -1387,15 +1387,15 @@ public final class SqlUtil {
   }
 
   /**
-   * パラメーター値取得.<br>
+   * Retrieves a parameter value.<br>
    * <ul>
-   * <li>DB項目クラスタイプによってパラメーターの getter を使い分けて値を取得して返す。</li>
+   * <li>Uses the appropriate getter based on the DB field class type to retrieve and return the value.</li>
    * </ul>
    *
-   * @param params パラメーター
-   * @param itemName 項目名
-   * @param itemCls DB項目クラスタイプ
-   * @return パラメーター値
+   * @param params parameters
+   * @param itemName field name
+   * @param itemCls DB field class type
+   * @return the parameter value
    */
   private static Object getValueFromIoItemsByItemCls(final AbstractIoTypeMap params, final String itemName,
       final ItemClsType itemCls) {
@@ -1430,35 +1430,35 @@ public final class SqlUtil {
   }
 
   /**
-   * 一意制約違反エラー判定.<br>
+   * Determines if a unique constraint violation error occurred.<br>
    * <ul>
-   * <li>DBMS別に一意制約違反エラーかどうかを判定する。</li>
-   * <li>一意制約違反の場合は <code>true</code> を返す。</li>
+   * <li>Determines whether a unique constraint violation error occurred per DBMS.</li>
+   * <li>Returns <code>true</code> if a unique constraint violation occurs.</li>
    * </ul>
    *
-   * @param e SQL例外
-   * @param dbmsName DBMS名
-   * @return 一意制約違反エラーの場合は <code>true</code>
+   * @param e SQL exception
+   * @param dbmsName DBMS name
+   * @return <code>true</code> if a unique constraint violation error
    */
   private static boolean isUniqueKeyErr(final SQLException e, final DbmsName dbmsName) {
-    // Oracle 一意制約違反エラー判定
+    // Determine Oracle unique constraint violation error
     if (dbmsName == DbmsName.ORACLE && e.getErrorCode() == 1) {
       return true;
     }
-    // PostgreSQL 一意制約違反エラー判定
+    // Determine PostgreSQL unique constraint violation error
     if (dbmsName == DbmsName.POSTGRESQL && "23505".equals(e.getSQLState())) {
       return true;
     } 
-    // MS-SqlServer 一意制約違反エラー判定
+    // Determine MS-SqlServer unique constraint violation error
     if (dbmsName == DbmsName.MSSQL && (e.getErrorCode() == 2627 || e.getErrorCode() == 2601)) {
       return true;
     }
-    // SQLite 一意制約違反エラー判定
+    // Determine SQLite unique constraint violation error
     if (dbmsName == DbmsName.SQLITE && e.getErrorCode() == 19
         && e.getMessage().contains("UNIQUE constraint failed")) {
       return true;
     }
-    // DB2 一意制約違反エラー判定
+    // Determine DB2 unique constraint violation error
     if (dbmsName == DbmsName.DB2 && "23505".equals(e.getSQLState())) {
       return true;
     }
@@ -1467,20 +1467,20 @@ public final class SqlUtil {
   }
 
   /**
-   * 主キー項目名取得.<br>
+   * Retrieves primary key field names.<br>
    * <ul>
-   * <li>JDBCメタ情報からテーブルの主キー項目名を取得します。</li>
-   * <li>主キーが存在しないテーブルは実行時エラーとなります。</li>
-   * <li>項目物理名は英字小文字に変換します。（<code>AbstractIoTypeMap</code> のキールール）</li>
+   * <li>Retrieves primary key field names of the table from JDBC metadata.</li>
+   * <li>Throws a runtime error for tables without primary keys.</li>
+   * <li>Converts physical field names to lowercase letters. (Key rules of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
-   * @param conn      DB接続
-   * @param tableName テーブル名
-   * @return 主キー項目名配列（KEY_SEQ 順）
+   * @param conn      database connection
+   * @param tableName table name
+   * @return the primary key field name array (in KEY_SEQ order)
    */
   private static String[] getPkeys(final Connection conn, final String tableName) {
     try {
-      // KEY_SEQ 順で並べる
+      // Sort in KEY_SEQ order
       final Map<Short, String> pkMap = new TreeMap<>();
       try (final ResultSet rset = conn.getMetaData().getPrimaryKeys(null, null, tableName)) {
         while (rset.next()) {
@@ -1493,28 +1493,28 @@ public final class SqlUtil {
     }
   }
 
-  /** タイムスタンプ取得SQL（小数秒6桁） マップ. */
+  /** Timestamp retrieval SQL (6-digit fractional seconds) map. */
   private static final Map<DbmsName, String> SQL_CUR_TS = new HashMap<>();
-  /** タイムスタンプ取得SQL（小数秒6桁） その他. */
+  /** Timestamp retrieval SQL (6-digit fractional seconds) for others. */
   private static final String SQL_CUR_TS_OTHER;
   static {
-    // SQLLite は小数秒3桁しか取得できないため、000を付与して6桁にする
+    // SQLite can only retrieve 3 fractional second digits, so append 000 to make 6 digits
     SQL_CUR_TS.put(DbmsName.SQLITE, "strftime('%Y-%m-%d %H:%M:%f000', 'now', 'localtime')");
     SQL_CUR_TS.put(DbmsName.MSSQL, "SYSDATETIME()");
     SQL_CUR_TS_OTHER = "CURRENT_TIMESTAMP(6)";
   }
 
   /**
-   * DBMS別 現在タイムスタンプ値取得SQL取得.
+   * Retrieves the current timestamp SQL per DBMS.
    *
-   * @param dbmsName DBMS名
-   * @return 現在タイムスタンプ値取得SQL
+   * @param dbmsName DBMS name
+   * @return the current timestamp retrieval SQL
    */
   private static String getCurrentTimestampSql(final DbmsName dbmsName) {
     return SQL_CUR_TS.getOrDefault(dbmsName, SQL_CUR_TS_OTHER);
   }
 
-  /** 日付取得SELECT文 マップ. */
+  /** Date retrieval SELECT statement map. */
   private static final Map<DbmsName, SqlConst> SQL_SELECT_TODAY = new HashMap<>();
   static {
     SQL_SELECT_TODAY.put(DbmsName.POSTGRESQL, SqlConst.begin().addQuery("SELECT TO_CHAR(CURRENT_TIMESTAMP,'YYYYMMDD') today").end());
@@ -1525,10 +1525,10 @@ public final class SqlUtil {
   }
   
   /**
-   * DBMS別 現在日付取得.
+   * Retrieves the current date per DBMS.
    *
-   * @param conn DB接続
-   * @return 現在日付（YYYYMMDD形式）
+   * @param conn database connection
+   * @return the current date (YYYYMMDD format)
    */
   public static String getToday(final Connection conn) {
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
@@ -1540,54 +1540,54 @@ public final class SqlUtil {
     return ret.getString("today");
   }
 
-  /** １バイトブランク. */
+  /** Single-byte blank. */
   private static final String ONEBLANK = " ";
 
   /**
-   * SQL追加.<br>
+   * Appends SQL.<br>
    * <ul>
-   * <li>SQL文字列を StringBuilder に追加します。</li>
-   * <li>引数SQLの先頭がブランクの場合、先頭に１文字ブランク追加します。（ただし既存SQLが空または最後がブランクの場合は追加しない）</li>
-   * <li>引数SQLの前後のブランクをトリムし、２文字以上のブランクを１文字ブランクに置き換えます。</li>
-   * <li>引数SQLの最後がブランクの場合、最後に１文字ブランク追加します。</li>
+   * <li>Appends an SQL string to the StringBuilder.</li>
+   * <li>If the SQL argument starts with a blank, prepends a single-byte blank. (Does not prepend if the existing SQL is empty or ends with a blank.)</li>
+   * <li>Trims blanks from both ends of the SQL argument and replaces two or more consecutive blanks with a single blank.</li>
+   * <li>If the SQL argument ends with a blank, appends a single-byte blank.</li>
    * </ul>
    * 
-   * @param toSb  追加先 StringBuilder
-   * @param sql 追加するSQL
+   * @param toSb  target StringBuilder to append to
+   * @param sql SQL to append
    */
   static void appendQuery(final StringBuilder toSb, final String sql) {
     if (ValUtil.isBlank(sql)) {
       return;
     }
 
-    // 引数SQLの先頭がブランクの場合、先頭に１文字ブランク追加
-    // ただし既存SQLが空または最後がブランクの場合は追加しない
+    // If the SQL argument starts with a blank, prepend a single-byte blank
+    // Do not prepend if the existing SQL is empty or ends with a blank
     if (sql.startsWith(ONEBLANK) && toSb.length() > 0
         && toSb.charAt(toSb.length() - 1) != ' ') {
       toSb.append(ONEBLANK);
     }
 
-    // 前後のブランクをトリム
-    // ２文字以上のブランクを１文字ブランクに置き換え
-    // ただしシングルクォーテーションに挟まれたブランクは置き換えない
+    // Trim blanks from both ends
+    // Replace two or more consecutive blanks with a single blank
+    // Do not replace blanks enclosed in single quotes
     toSb.append(trimQuerySpaces(sql));
 
-    // 引数SQLの最後がブランクの場合、最後に１文字ブランク追加
+    // If the SQL argument ends with a blank, append a single-byte blank
     if (sql.endsWith(ONEBLANK)) {
       toSb.append(ONEBLANK);
     }
   }
 
   /**
-   * SQL文字列内の２文字以上のブランクを１文字ブランクに置き換え.<br>
+   * Replaces two or more consecutive blanks in an SQL string with a single blank.<br>
    * <ul>
-   * <li>前後のブランクをトリム。</li>
-   * <li>２文字以上のブランクを１文字ブランクに置き換え。</li>
-   * <li>シングルクォーテーションに挟まれたブランクは置き換えない。</li>
+   * <li>Trims blanks from both ends.</li>
+   * <li>Replaces two or more consecutive blanks with a single blank.</li>
+   * <li>Does not replace blanks enclosed in single quotes.</li>
    * </ul>
    * 
    * @param sql SQL
-   * @return 結果SQL
+   * @return the resulting SQL
    */
   private static String trimQuerySpaces(final String sql) {
     if (ValUtil.isBlank(sql)) {
@@ -1595,7 +1595,7 @@ public final class SqlUtil {
     }
     
     final int length = sql.length();
-    final char[] chars = sql.toCharArray(); // 配列アクセスで高速化
+    final char[] chars = sql.toCharArray(); // Convert to array for faster access
     final StringBuilder ret = new StringBuilder(length);
     
     boolean inSq = false;
@@ -1603,7 +1603,7 @@ public final class SqlUtil {
     int beginPos = 0;
     int endPos = length;
     
-    // 前後のトリムを事前計算
+    // Pre-calculate trimming from both ends
     while (beginPos < endPos && Character.isWhitespace(chars[beginPos])) {
       beginPos++;
     }

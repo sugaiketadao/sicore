@@ -645,10 +645,10 @@
           <code>public String join(String joint, List&lt;String&gt; list)</code>
         </div>
         <div class="method-description">
-          リスト連結.<br>
+          Joins list.<br>
 <ul>
-<li>リストが空の場合はブランクを返す。</li>
-<li><code>null</code> はブランクとして連結される。</li>
+<li>Returns blank if list is empty.</li>
+<li><code>null</code> is joined as blank.</li>
 </ul>
 
         </div>
@@ -666,19 +666,19 @@
               <tr>
                 <td><code>joint</code></td>
                 <td><code>String</code></td>
-                <td>つなぎ目文字</td>
+                <td>joining character</td>
               </tr>
               <tr>
                 <td><code>list</code></td>
                 <td><code>List&lt;String&gt;</code></td>
-                <td>連結対象</td>
+                <td>targets to join</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 連結した文字列</p>
+          <p><code>String</code> - the joined string</p>
         </div>
       </div>
       <div class="method" id="join">
@@ -687,10 +687,10 @@
           <code>public String join(String joint, Set&lt;String&gt; list)</code>
         </div>
         <div class="method-description">
-          リスト連結.<br>
+          Joins set.<br>
 <ul>
-<li>リストが空の場合はブランクを返す。</li>
-<li><code>null</code> はブランクとして連結される。</li>
+<li>Returns blank if set is empty.</li>
+<li><code>null</code> is joined as blank.</li>
 </ul>
 
         </div>
@@ -708,19 +708,19 @@
               <tr>
                 <td><code>joint</code></td>
                 <td><code>String</code></td>
-                <td>つなぎ目文字</td>
+                <td>joining character</td>
               </tr>
               <tr>
                 <td><code>list</code></td>
                 <td><code>Set&lt;String&gt;</code></td>
-                <td>連結対象</td>
+                <td>targets to join</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 連結した文字列</p>
+          <p><code>String</code> - the joined string</p>
         </div>
       </div>
       <div class="method" id="split">
@@ -729,9 +729,9 @@
           <code>public String[] split(String value, String sep)</code>
         </div>
         <div class="method-description">
-          配列分割.<br>
+          Splits into array.<br>
 <ul>
-<li>文字が <code>null</code> の場合は長さゼロの配列を返す。</li>
+<li>Returns a zero-length array if the string is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -749,19 +749,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>分割対象文字</td>
+                <td>target string to split</td>
               </tr>
               <tr>
                 <td><code>sep</code></td>
                 <td><code>String</code></td>
-                <td>分割文字</td>
+                <td>separator character</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String[]</code> - 分割した文字列配列</p>
+          <p><code>String[]</code> - the split string array</p>
         </div>
       </div>
       <div class="method" id="splitReg">
@@ -770,9 +770,9 @@
           <code>public String[] splitReg(String value, String sep)</code>
         </div>
         <div class="method-description">
-          正規表現配列分割.<br>
+          Splits into array using regular expression.<br>
 <ul>
-<li>文字が <code>null</code> の場合は長さゼロの配列を返す。</li>
+<li>Returns a zero-length array if the string is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -790,19 +790,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>分割対象文字</td>
+                <td>target string to split</td>
               </tr>
               <tr>
                 <td><code>sep</code></td>
                 <td><code>String</code></td>
-                <td>分割文字（正規表現）</td>
+                <td>separator character (regular expression)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String[]</code> - 分割した文字列配列</p>
+          <p><code>String[]</code> - the split string array</p>
         </div>
       </div>
       <div class="method" id="splitReg">
@@ -811,9 +811,9 @@
           <code>public String[] splitReg(String value, String sep, int limitLength)</code>
         </div>
         <div class="method-description">
-          正規表現配列分割.<br>
+          Splits into array using regular expression.<br>
 <ul>
-<li>文字が <code>null</code> の場合は長さゼロの配列を返す。</li>
+<li>Returns a zero-length array if the string is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -831,24 +831,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>分割対象文字</td>
+                <td>target string to split</td>
               </tr>
               <tr>
                 <td><code>sep</code></td>
                 <td><code>String</code></td>
-                <td>分割文字（正規表現）</td>
+                <td>separator character (regular expression)</td>
               </tr>
               <tr>
                 <td><code>limitLength</code></td>
                 <td><code>int</code></td>
-                <td>最大長さ</td>
+                <td>maximum length</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String[]</code> - 分割した文字列配列</p>
+          <p><code>String[]</code> - the split string array</p>
         </div>
       </div>
       <div class="method" id="equals">
@@ -857,9 +857,9 @@
           <code>public boolean equals(String str1, String str2)</code>
         </div>
         <div class="method-description">
-          文字列比較.<br>
+          Compares strings.<br>
 <ul>
-<li><code>null</code> はゼロバイトブランク文字として比較する。</li>
+<li>Treats <code>null</code> as a zero-byte blank string for comparison.</li>
 </ul>
 
         </div>
@@ -877,19 +877,19 @@
               <tr>
                 <td><code>str1</code></td>
                 <td><code>String</code></td>
-                <td>比較対象その1</td>
+                <td>first target to compare</td>
               </tr>
               <tr>
                 <td><code>str2</code></td>
                 <td><code>String</code></td>
-                <td>比較対象その2</td>
+                <td>second target to compare</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 同値の場合は <code>true</code></p>
+          <p><code>boolean</code> - <code>true</code> if equal</p>
         </div>
       </div>
       <div class="method" id="equals">
@@ -898,9 +898,9 @@
           <code>public boolean equals(BigDecimal dec1, BigDecimal dec2)</code>
         </div>
         <div class="method-description">
-          数値比較.<br>
+          Compares numbers.<br>
 <ul>
-<li><code>null</code> はゼロとして比較する。</li>
+<li>Treats <code>null</code> as zero for comparison.</li>
 </ul>
 
         </div>
@@ -918,19 +918,19 @@
               <tr>
                 <td><code>dec1</code></td>
                 <td><code>BigDecimal</code></td>
-                <td>比較対象その1</td>
+                <td>first target to compare</td>
               </tr>
               <tr>
                 <td><code>dec2</code></td>
                 <td><code>BigDecimal</code></td>
-                <td>比較対象その2</td>
+                <td>second target to compare</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 同値の場合は <code>true</code></p>
+          <p><code>boolean</code> - <code>true</code> if equal</p>
         </div>
       </div>
       <div class="method" id="substring">
@@ -939,9 +939,9 @@
           <code>public String substring(String value, Integer beginIndex)</code>
         </div>
         <div class="method-description">
-          文字列安全切り取り（開始インデックスのみ指定）.<br>
+          Safely extracts a substring (start index only).<br>
 <ul>
-<li>開始インデックスから文字列の最後まで切り取る。</li>
+<li>Extracts from the start index to the end of the string.</li>
 </ul>
 
         </div>
@@ -959,19 +959,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>対象文字列</td>
+                <td>target string</td>
               </tr>
               <tr>
                 <td><code>beginIndex</code></td>
                 <td><code>Integer</code></td>
-                <td>開始インデックス</td>
+                <td>start index</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 切り取り文字列</p>
+          <p><code>String</code> - the extracted string</p>
         </div>
       </div>
       <div class="method" id="substring">
@@ -980,10 +980,10 @@
           <code>public String substring(String value, Integer beginIndex, Integer endIndex)</code>
         </div>
         <div class="method-description">
-          文字列安全切り取り.<br>
+          Safely extracts a substring.<br>
 <ul>
-<li>文字列の指定範囲を安全に切り取る。</li>
-<li>範囲外の指定や不正な値に対して適切に処理する。</li>
+<li>Safely extracts a specified range of the string.</li>
+<li>Handles out-of-range specifications and invalid values appropriately.</li>
 </ul>
 
         </div>
@@ -1001,24 +1001,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>対象文字列</td>
+                <td>target string</td>
               </tr>
               <tr>
                 <td><code>beginIndex</code></td>
                 <td><code>Integer</code></td>
-                <td>開始インデックス（省略可能）<code>null</code> を渡した（省略した）場合は0</td>
+                <td>start index (optional); defaults to 0 if <code>null</code> is passed (omitted)</td>
               </tr>
               <tr>
                 <td><code>endIndex</code></td>
                 <td><code>Integer</code></td>
-                <td>終了インデックス（省略可能）<code>null</code> を渡した（省略した）場合は文字列長</td>
+                <td>end index (optional); defaults to the string length if <code>null</code> is passed (omitted)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 切り取り文字列</p>
+          <p><code>String</code> - the extracted string</p>
         </div>
       </div>
       <div class="method" id="isAlphabetNumber">
@@ -1027,9 +1027,9 @@
           <code>public boolean isAlphabetNumber(String value)</code>
         </div>
         <div class="method-description">
-          英数字チェック.<br>
+          Checks alphanumeric.<br>
 <ul>
-<li>文字列が英数字として有効かチェックする。</li>
+<li>Checks if the string is valid as alphanumeric characters.</li>
 </ul>
 
         </div>
@@ -1047,14 +1047,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>チェック対象</td>
+                <td>target to check</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 有効な場合は <code>true</code></p>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
         </div>
       </div>
       <div class="method" id="isNumber">
@@ -1063,9 +1063,9 @@
           <code>public boolean isNumber(String value)</code>
         </div>
         <div class="method-description">
-          数値チェック.<br>
+          Checks numeric.<br>
 <ul>
-<li>文字列が数値として有効かチェックする。</li>
+<li>Checks if the string is valid as a numeric value.</li>
 </ul>
 
         </div>
@@ -1083,14 +1083,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>チェック対象</td>
+                <td>target to check</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 有効な場合は <code>true</code></p>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
         </div>
       </div>
       <div class="method" id="isNumber">
@@ -1099,9 +1099,9 @@
           <code>public boolean isNumber(String value, boolean minusNg, boolean decNg)</code>
         </div>
         <div class="method-description">
-          数値チェック.<br>
+          Checks numeric.<br>
 <ul>
-<li>文字列が数値として有効かチェックする。</li>
+<li>Checks if the string is valid as a numeric value.</li>
 </ul>
 
         </div>
@@ -1119,24 +1119,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>チェック対象</td>
+                <td>target to check</td>
               </tr>
               <tr>
                 <td><code>minusNg</code></td>
                 <td><code>boolean</code></td>
-                <td>マイナス値を無効とする場合は <code>true</code></td>
+                <td><code>true</code> to treat negative values as invalid</td>
               </tr>
               <tr>
                 <td><code>decNg</code></td>
                 <td><code>boolean</code></td>
-                <td>小数を無効とする場合は <code>true</code></td>
+                <td><code>true</code> to treat decimals as invalid</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 有効な場合は <code>true</code></p>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
         </div>
       </div>
       <div class="method" id="checkLength">
@@ -1145,9 +1145,9 @@
           <code>public boolean checkLength(String value, int len)</code>
         </div>
         <div class="method-description">
-          桁数チェック.<br>
+          Checks length.<br>
 <ul>
-<li><code>#isBlank(String)</code> が <code>true</code> の前提とし、チェック対象がブランクの場合は <code>false</code> を返す。</li>
+<li>Assumes <code>#isBlank(String)</code> is <code>true</code>; returns <code>false</code> if the target is blank.</li>
 </ul>
 
         </div>
@@ -1165,19 +1165,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>チェック対象</td>
+                <td>target to check</td>
               </tr>
               <tr>
                 <td><code>len</code></td>
                 <td><code>int</code></td>
-                <td>有効桁数</td>
+                <td>valid length</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 有効な場合は <code>true</code></p>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
         </div>
       </div>
       <div class="method" id="checkLengthNumber">
@@ -1186,12 +1186,11 @@
           <code>public boolean checkLengthNumber(String value, int intPartLen, int decPartLen)</code>
         </div>
         <div class="method-description">
-          数値桁数（精度）チェック.<br>
+          Checks numeric length (precision).<br>
 <ul>
-<li>整数部分と小数点以下の桁数が指定された範囲内であることを確認する。</li>
-<li>引数はDB項目定義と同じで整数部と小数部を足した桁数と小数部だけの桁数で指定する。</li>
-<li><code>#isNumber(String)</code> が <code>true</code> の前提とし、チェック対象がブランクの場合は
-<code>false</code> を返す。</li>
+<li>Verifies that the integer part and decimal part lengths are within the specified range.</li>
+<li>Arguments follow the same DB field definition format: specify the total length of integer and decimal parts, and the decimal part length separately.</li>
+<li>Assumes <code>#isNumber(String)</code> is <code>true</code>; returns <code>false</code> if the target is blank.</li>
 </ul>
 
         </div>
@@ -1209,24 +1208,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>チェック対象</td>
+                <td>target to check</td>
               </tr>
               <tr>
                 <td><code>intPartLen</code></td>
                 <td><code>int</code></td>
-                <td>整数部と小数部を足した有効桁数</td>
+                <td>valid length of integer part plus decimal part combined</td>
               </tr>
               <tr>
                 <td><code>decPartLen</code></td>
                 <td><code>int</code></td>
-                <td>小数部の有効桁数</td>
+                <td>valid length of decimal part</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 有効な場合は <code>true</code></p>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
         </div>
       </div>
       <div class="method" id="isDate">
@@ -1235,9 +1234,9 @@
           <code>public boolean isDate(String value)</code>
         </div>
         <div class="method-description">
-          実在日チェック.<br>
+          Checks valid date.<br>
 <ul>
-<li>文字列が日付として有効かチェックする。</li>
+<li>Checks if the string is valid as a date.</li>
 </ul>
 
         </div>
@@ -1255,14 +1254,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>チェック対象（YYYYMMDD）</td>
+                <td>target to check (YYYYMMDD)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 有効な場合は <code>true</code></p>
+          <p><code>boolean</code> - <code>true</code> if valid</p>
         </div>
       </div>
       <div class="method" id="isTrue">
@@ -1271,15 +1270,15 @@
           <code>public boolean isTrue(String val)</code>
         </div>
         <div class="method-description">
-          真偽値チェック.<br>
+          Checks boolean true.<br>
 <ul>
-<li>文字列が真偽値「真」とみなす値かチェックする。</li>
-<li>下記の評価を行う。
+<li>Checks if the string is considered as boolean true.</li>
+<li>Evaluates as follows:
 <ol>
-<li>"1", "true", "yes", "on"（すべて半角）は <code>true</code>。</li>
-<li><code>null</code> またはブランクは <code>false</code> を含み、上記以外は <code>false</code>。</li>
-<li>大文字小文字を区別しない。</li>
-<li>左右の半角スペースは無視する。</li>
+<li>"1", "true", "yes", "on" (all half-width) are <code>true</code>.</li>
+<li><code>null</code> or blank, as well as any other values, are <code>false</code>.</li>
+<li>Case-insensitive.</li>
+<li>Leading and trailing half-width spaces are ignored.</li>
 </ol>
 </li>
 </ul>
@@ -1299,14 +1298,14 @@
               <tr>
                 <td><code>val</code></td>
                 <td><code>String</code></td>
-                <td>チェック対象</td>
+                <td>target to check</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>boolean</code> - 真偽値「真」とみなす場合は <code>true</code></p>
+          <p><code>boolean</code> - <code>true</code> if considered as boolean true</p>
         </div>
       </div>
       <div class="method" id="dateToLocalDate">
@@ -1315,7 +1314,7 @@
           <code>public LocalDate dateToLocalDate(java.util.Date date)</code>
         </div>
         <div class="method-description">
-          Date型 to LocalDate型変換.
+          Converts from Date type to LocalDate type.
 
         </div>
         <div class="method-parameters">
@@ -1332,14 +1331,14 @@
               <tr>
                 <td><code>date</code></td>
                 <td><code>java.util.Date</code></td>
-                <td>Date型（java.sql.Date 含む）</td>
+                <td>Date type (including java.sql.Date)</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>LocalDate</code> - LocalDate型</p>
+          <p><code>LocalDate</code> - LocalDate type</p>
         </div>
       </div>
       <div class="method" id="trimDq">
@@ -1348,9 +1347,9 @@
           <code>public String trimDq(String value)</code>
         </div>
         <div class="method-description">
-          ダブルクォーテーション除去.<br>
+          Removes double quotes.<br>
 <ul>
-<li>文字列の開始と終了のダブルクォーテーションを除去する。</li>
+<li>Removes double quotes from the start and end of the string.</li>
 </ul>
 
         </div>
@@ -1368,14 +1367,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>対象文字列</td>
+                <td>target string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 除去後文字列</p>
+          <p><code>String</code> - the string after removal</p>
         </div>
         <div class="see-also">
           <h4>See Also</h4>
@@ -1390,9 +1389,9 @@
           <code>public String trimBothEnds(String value, char prefix, char suffix)</code>
         </div>
         <div class="method-description">
-          文字列両端切り捨て.<br>
+          Trims both ends of string.<br>
 <ul>
-<li>トリムして両端文字ともに見つかった場合のみ切り捨てる。</li>
+<li>Trims only when both end characters are found.</li>
 </ul>
 
         </div>
@@ -1410,24 +1409,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>対象文字列</td>
+                <td>target string</td>
               </tr>
               <tr>
                 <td><code>prefix</code></td>
                 <td><code>char</code></td>
-                <td>前の端の文字</td>
+                <td>character at the start</td>
               </tr>
               <tr>
                 <td><code>suffix</code></td>
                 <td><code>char</code></td>
-                <td>後ろの端の文字</td>
+                <td>character at the end</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 両端を切り捨てた文字列</p>
+          <p><code>String</code> - the string with both ends trimmed</p>
         </div>
       </div>
       <div class="method" id="trimBothEnds">
@@ -1436,9 +1435,9 @@
           <code>public String trimBothEnds(String value, String prefix, String suffix)</code>
         </div>
         <div class="method-description">
-          文字列両端切り捨て.<br>
+          Trims both ends of string.<br>
 <ul>
-<li>トリムして両端文字ともに見つかった場合のみ切り捨てる。</li>
+<li>Trims only when both end characters are found.</li>
 </ul>
 
         </div>
@@ -1456,24 +1455,24 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>対象文字列</td>
+                <td>target string</td>
               </tr>
               <tr>
                 <td><code>prefix</code></td>
                 <td><code>String</code></td>
-                <td>前の端の文字</td>
+                <td>character at the start</td>
               </tr>
               <tr>
                 <td><code>suffix</code></td>
                 <td><code>String</code></td>
-                <td>後ろの端の文字</td>
+                <td>character at the end</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 両端を切り捨てた文字列</p>
+          <p><code>String</code> - the string with both ends trimmed</p>
         </div>
       </div>
       <div class="method" id="trimZenkakuSpace">
@@ -1482,9 +1481,9 @@
           <code>public String trimZenkakuSpace(String value)</code>
         </div>
         <div class="method-description">
-          文字列両端全角スペース切り捨て.<br>
+          Trims full-width spaces from both ends of string.<br>
 <ul>
-<li>文字列の開始と終了の全角スペースを除去する。</li>
+<li>Removes full-width spaces from the start and end of the string.</li>
 </ul>
 
         </div>
@@ -1502,14 +1501,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>対象文字列</td>
+                <td>target string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 除去後文字列</p>
+          <p><code>String</code> - the string after removal</p>
         </div>
       </div>
       <div class="method" id="trimLeftZero">
@@ -1518,9 +1517,9 @@
           <code>public String trimLeftZero(String value)</code>
         </div>
         <div class="method-description">
-          左ゼロ除去.<br>
+          Removes leading zeros.<br>
 <ul>
-<li>文字列の左の <code>"0"</code> を除去する。</li>
+<li>Removes <code>"0"</code> from the left of the string.</li>
 </ul>
 
         </div>
@@ -1538,14 +1537,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>文字列</td>
+                <td>string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 処理後の文字</p>
+          <p><code>String</code> - the processed string</p>
         </div>
       </div>
       <div class="method" id="paddingLeftZero">
@@ -1554,9 +1553,10 @@
           <code>public String paddingLeftZero(String value, int digit)</code>
         </div>
         <div class="method-description">
-          左ゼロ詰め.<br>
+          Pads with leading zeros.<br>
 <ul>
-<li>文字列の左に <code>"0"</code> を詰める。</li>
+<li>Pads <code>"0"</code> to the left of the string.</li>
+<li>Pads with <code>0</code> if the argument is <code>null</code>.</li>
 </ul>
 
         </div>
@@ -1574,19 +1574,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>文字列</td>
+                <td>string</td>
               </tr>
               <tr>
                 <td><code>digit</code></td>
                 <td><code>int</code></td>
-                <td>詰めた後の文字桁数</td>
+                <td>number of characters after padding</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 処理後の文字</p>
+          <p><code>String</code> - the processed string</p>
         </div>
       </div>
       <div class="method" id="paddingLeftZero">
@@ -1595,9 +1595,9 @@
           <code>public String paddingLeftZero(int value, int digit)</code>
         </div>
         <div class="method-description">
-          左ゼロ詰め.<br>
+          Pads with leading zeros.<br>
 <ul>
-<li>数値を文字列に変換して左に <code>"0"</code> を詰める。</li>
+<li>Converts a number to a string and pads <code>"0"</code> to the left.</li>
 </ul>
 
         </div>
@@ -1615,19 +1615,19 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>int</code></td>
-                <td>数値</td>
+                <td>number</td>
               </tr>
               <tr>
                 <td><code>digit</code></td>
                 <td><code>int</code></td>
-                <td>詰めた後の文字桁数</td>
+                <td>number of characters after padding</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 処理後の文字</p>
+          <p><code>String</code> - the processed string</p>
         </div>
       </div>
       <div class="method" id="deleteLastChar">
@@ -1636,7 +1636,7 @@
           <code>public void deleteLastChar(StringBuilder sb)</code>
         </div>
         <div class="method-description">
-          最終１文字削除.
+          Deletes the last character.
 
         </div>
         <div class="method-parameters">
@@ -1665,7 +1665,7 @@
           <code>public void deleteLastChar(StringBuilder sb, int length)</code>
         </div>
         <div class="method-description">
-          最終文字削除.
+          Deletes the last characters.
 
         </div>
         <div class="method-parameters">
@@ -1687,7 +1687,7 @@
               <tr>
                 <td><code>length</code></td>
                 <td><code>int</code></td>
-                <td>最終文字長さ</td>
+                <td>length of characters to delete from the end</td>
               </tr>
             </tbody>
           </table>
@@ -1699,10 +1699,10 @@
           <code>public String urlEncode(String url)</code>
         </div>
         <div class="method-description">
-          URLエンコード変換.<br>
+          Converts URL encoding.<br>
 <ul>
-<li>JavaScript の encodeURIComponent と合わせるため１バイトブランクを "+" から "%20" に変換しなおす。</li>
-<li>ワイルドカードの "*" を "%2A" に変換する。</li>
+<li>To match JavaScript's encodeURIComponent, converts single-byte blank from "+" to "%20".</li>
+<li>Converts wildcard "*" to "%2A".</li>
 </ul>
 
         </div>
@@ -1720,14 +1720,14 @@
               <tr>
                 <td><code>url</code></td>
                 <td><code>String</code></td>
-                <td>変換文字列</td>
+                <td>target string to convert</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 変換後文字列</p>
+          <p><code>String</code> - the converted string</p>
         </div>
       </div>
       <div class="method" id="urlDecode">
@@ -1736,7 +1736,7 @@
           <code>public String urlDecode(String url)</code>
         </div>
         <div class="method-description">
-          URLデコード変換.
+          Converts URL decoding.
 
         </div>
         <div class="method-parameters">
@@ -1753,14 +1753,14 @@
               <tr>
                 <td><code>url</code></td>
                 <td><code>String</code></td>
-                <td>変換文字列</td>
+                <td>target string to convert</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 変換後文字列</p>
+          <p><code>String</code> - the converted string</p>
         </div>
       </div>
       <div class="method" id="jsonEscape">
@@ -1769,10 +1769,10 @@
           <code>public String jsonEscape(String value)</code>
         </div>
         <div class="method-description">
-          JSONエスケープ変換.<br>
+          Converts JSON escape.<br>
 <ul>
-<li>JSONでエスケープが必要な文字をエスケープする。</li>
-<li><code>null</code> も制御文字としてエスケープする。</li>
+<li>Escapes characters that require escaping in JSON.</li>
+<li>Also escapes <code>null</code> as a control character.</li>
 </ul>
 
         </div>
@@ -1790,14 +1790,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>文字列</td>
+                <td>string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 変換後文字列</p>
+          <p><code>String</code> - the converted string</p>
         </div>
       </div>
       <div class="method" id="jsonUnEscape">
@@ -1806,9 +1806,9 @@
           <code>public String jsonUnEscape(String value)</code>
         </div>
         <div class="method-description">
-          JSONエスケープ変換除去.<br>
+          Removes JSON escape conversion.<br>
 <ul>
-<li>JSONでエスケープが必要な文字のエスケープを除去する。</li>
+<li>Removes escaping of characters that require escaping in JSON.</li>
 </ul>
 
         </div>
@@ -1826,14 +1826,14 @@
               <tr>
                 <td><code>value</code></td>
                 <td><code>String</code></td>
-                <td>文字列</td>
+                <td>string</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - 除去後文字列</p>
+          <p><code>String</code> - the string after removal</p>
         </div>
       </div>
       <div class="method" id="getSequenceCode">
@@ -1842,17 +1842,17 @@
           <code>public String getSequenceCode()</code>
         </div>
         <div class="method-description">
-          シーケンスコード値取得.<br>
+          Retrieves the sequence code value.<br>
 <ul>
-<li>ナノ秒まで含むタイムスタンプを36進数に変換した値を返す。</li>
-<li>システム内で常にユニークな値を返すため１ナノ秒スリープしてから返す。</li>
-<li>複数のシステムで使用する場合、ユニークな値を返すためにはホスト名やシステム名を付加するなどの考慮が必要となる。</li>
+<li>Returns a timestamp including nanoseconds converted to base-36.</li>
+<li>Sleeps for 1 nanosecond before returning to ensure uniqueness within the system.</li>
+<li>When used across multiple systems, additional consideration such as appending a hostname or system name is required to ensure unique values.</li>
 </ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - シーケンスコード値</p>
+          <p><code>String</code> - the sequence code value</p>
         </div>
       </div>
     </div>

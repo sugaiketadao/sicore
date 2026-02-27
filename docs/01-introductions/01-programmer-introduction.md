@@ -62,7 +62,7 @@ Executed class: com.example.app.service.exmodule.ExampleListSearch
 |-|-|-|
 | Page unit | `get/setPageObj()` | Hold search conditions on list page. |
 | Module unit | `get/setModuleObj()` | Hold data being entered between pages. |
-| System unit | `get/setSystemObj()` | Hold login information. |
+| System unit | `get/setSystemObj()` | Hold sign-in information. |
 
 ### 1.6 Original CSS (No External Framework)
 

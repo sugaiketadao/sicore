@@ -525,7 +525,7 @@ Browser storage can be managed with three scopes according to usage.
 |-|-|-|-|-|
 | Page-level | `getPageObj()` | `setPageObj()` | URL HTML file level, data retention within one page | Retaining search conditions in list page |
 | Module-level | `getModuleObj()` | `setModuleObj()` | URL module directory level, data sharing between pages | Retaining data being input between header edit page ⇔ detail edit page |
-| System-level | `getSystemObj()` | `setSystemObj()` | Data sharing across entire system | Retaining login information |
+| System-level | `getSystemObj()` | `setSystemObj()` | Data sharing across entire system | Retaining sign-in information |
 <!-- AI_SKIP_END -->
 
 

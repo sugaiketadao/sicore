@@ -58,7 +58,7 @@ public final class PropertiesUtil {
   /** Default configuration directory name. */
   private static final String DEFAULT_PROP_DIRNAME = "config";
   /** Configuration key - configuration directory specification. */
-  private static final String PROPDIR_PKEY = "config.dir";
+  private static final String PROPDIR_PPKEY = "config.dir";
   /** Properties file extension. */
   private static final String PROPERTIES_TYPEMARK = "properties";
 
@@ -171,7 +171,7 @@ public final class PropertiesUtil {
       // Default configuration
       final IoItems propMap = getPropertiesMap(propDirFilePath);
       // Configuration directory path
-      final String path = propMap.getString(PROPDIR_PKEY);
+      final String path = propMap.getString(PROPDIR_PPKEY);
       if (!FileUtil.exists(path)) {
         throw new RuntimeException("Configuration directory does not exist. " + LogUtil.joinKeyVal("path", path));
       }

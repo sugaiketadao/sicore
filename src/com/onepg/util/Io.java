@@ -1776,9 +1776,9 @@ public final class Io extends AbstractIoTypeMap {
   }
   
   /**
-   * メッセージログ出力文字列.
+   * Message log output string.
    * 
-   * @return ログ出力文字列
+   * @return the log output string
    */
   private String createMsgLogString() {
     final StringBuilder sb = new StringBuilder();

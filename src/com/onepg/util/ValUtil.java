@@ -341,15 +341,15 @@ public final class ValUtil {
   }
 
   /**
-   * リスト連結.<br>
+   * Joins list.<br>
    * <ul>
-   * <li>リストが空の場合はブランクを返す。</li>
-   * <li><code>null</code> はブランクとして連結される。</li>
+   * <li>Returns blank if list is empty.</li>
+   * <li><code>null</code> is joined as blank.</li>
    * </ul>
    *
-   * @param joint つなぎ目文字
-   * @param list 連結対象
-   * @return 連結した文字列
+   * @param joint joining character
+   * @param list targets to join
+   * @return the joined string
    */
   public static String join(final String joint, final List<String> list) {
     if (list.isEmpty()) {
@@ -363,15 +363,15 @@ public final class ValUtil {
   }
 
   /**
-   * リスト連結.<br>
+   * Joins set.<br>
    * <ul>
-   * <li>リストが空の場合はブランクを返す。</li>
-   * <li><code>null</code> はブランクとして連結される。</li>
+   * <li>Returns blank if set is empty.</li>
+   * <li><code>null</code> is joined as blank.</li>
    * </ul>
    *
-   * @param joint つなぎ目文字
-   * @param list 連結対象
-   * @return 連結した文字列
+   * @param joint joining character
+   * @param list targets to join
+   * @return the joined string
    */
   public static String join(final String joint, final Set<String> list) {
     if (list.isEmpty()) {
@@ -494,14 +494,14 @@ public final class ValUtil {
   }
 
   /**
-   * 配列分割.<br>
+   * Splits into array.<br>
    * <ul>
-   * <li>文字が <code>null</code> の場合は長さゼロの配列を返す。</li>
+   * <li>Returns a zero-length array if the string is <code>null</code>.</li>
    * </ul>
    *
-   * @param value 分割対象文字
-   * @param sep 分割文字
-   * @return 分割した文字列配列
+   * @param value target string to split
+   * @param sep separator character
+   * @return the split string array
    */
   public static String[] split(final String value, final String sep) {
     if (isNull(value)) {
@@ -515,29 +515,29 @@ public final class ValUtil {
   }
 
   /**
-   * 正規表現配列分割.<br>
+   * Splits into array using regular expression.<br>
    * <ul>
-   * <li>文字が <code>null</code> の場合は長さゼロの配列を返す。</li>
+   * <li>Returns a zero-length array if the string is <code>null</code>.</li>
    * </ul>
    *
-   * @param value 分割対象文字
-   * @param sep 分割文字（正規表現）
-   * @return 分割した文字列配列
+   * @param value target string to split
+   * @param sep separator character (regular expression)
+   * @return the split string array
    */
   public static String[] splitReg(final String value, final String sep) {
     return splitReg(value, sep, -1);
   }
 
   /**
-   * 正規表現配列分割.<br>
+   * Splits into array using regular expression.<br>
    * <ul>
-   * <li>文字が <code>null</code> の場合は長さゼロの配列を返す。</li>
+   * <li>Returns a zero-length array if the string is <code>null</code>.</li>
    * </ul>
    *
-   * @param value 分割対象文字
-   * @param sep 分割文字（正規表現）
-   * @param limitLength 最大長さ
-   * @return 分割した文字列配列
+   * @param value target string to split
+   * @param sep separator character (regular expression)
+   * @param limitLength maximum length
+   * @return the split string array
    */
   public static String[] splitReg(final String value, final String sep, final int limitLength) {
     if (isNull(value)) {
@@ -547,16 +547,16 @@ public final class ValUtil {
   }
 
   /**
-   * CSV分割.<br>
+   * Splits CSV.<br>
    * <ul>
-   * <li>CSV文字列を文字列配列に分割する。</li>
-   * <li>CSV文字列が <code>null</code> の場合は長さゼロの配列を返す。</li>
-   * <li>ダブルクォーテーション付 CSVの場合、値内のダブルクォーテーション2つ("")をダブルクォーテーション(")に変換して格納する。</li>
+   * <li>Splits a CSV string into a string array.</li>
+   * <li>Returns a zero-length array if the CSV string is <code>null</code>.</li>
+   * <li>When the CSV has double quotes, converts two double quotes ("") within values to a single double quote (").</li>
    * </ul>
    *
-   * @param csv CSV文字列
-   * @param csvType CSVタイプ
-   * @return 分割した文字列配列
+   * @param csv CSV string
+   * @param csvType CSV type
+   * @return the split string array
    */
   static String[] splitCsv(final String csv, final CsvType csvType) {
     if (isNull(csv)) {
@@ -577,67 +577,67 @@ public final class ValUtil {
   }
 
   /**
-   * 文字列比較.<br>
+   * Compares strings.<br>
    * <ul>
-   * <li><code>null</code> はゼロバイトブランク文字として比較する。</li>
+   * <li>Treats <code>null</code> as a zero-byte blank string for comparison.</li>
    * </ul>
    *
-   * @param str1 比較対象その1
-   * @param str2 比較対象その2
-   * @return 同値の場合は <code>true</code>
+   * @param str1 first target to compare
+   * @param str2 second target to compare
+   * @return <code>true</code> if equal
    */
   public static boolean equals(final String str1, final String str2) {
     return nvl(str1).equals(nvl(str2));
   }
 
   /**
-   * 数値比較.<br>
+   * Compares numbers.<br>
    * <ul>
-   * <li><code>null</code> はゼロとして比較する。</li>
+   * <li>Treats <code>null</code> as zero for comparison.</li>
    * </ul>
    *
-   * @param dec1 比較対象その1
-   * @param dec2 比較対象その2
-   * @return 同値の場合は <code>true</code>
+   * @param dec1 first target to compare
+   * @param dec2 second target to compare
+   * @return <code>true</code> if equal
    */
   public static boolean equals(final BigDecimal dec1, final BigDecimal dec2) {
-    // 精度違いの equals は <code>true</code> にならないので compareTo を使用する
-    // 例：new BigDecimal("1").equals(new BigDecimal("1.0")) は <code>true</code> にならない
+    // equals with different precision does not return true, so use compareTo
+    // e.g., new BigDecimal("1").equals(new BigDecimal("1.0")) does not return true
     return (nvl(dec1).compareTo(nvl(dec2)) == 0);
   }
 
   /**
-   * 文字列安全切り取り（開始インデックスのみ指定）.<br>
+   * Safely extracts a substring (start index only).<br>
    * <ul>
-   * <li>開始インデックスから文字列の最後まで切り取る。</li>
+   * <li>Extracts from the start index to the end of the string.</li>
    * </ul>
    *
-   * @param value      対象文字列
-   * @param beginIndex 開始インデックス
-   * @return 切り取り文字列
+   * @param value      target string
+   * @param beginIndex start index
+   * @return the extracted string
    */
   public static String substring(final String value, final Integer beginIndex) {
     return substring(value, beginIndex, null);
   }
 
   /**
-   * 文字列安全切り取り.<br>
+   * Safely extracts a substring.<br>
    * <ul>
-   * <li>文字列の指定範囲を安全に切り取る。</li>
-   * <li>範囲外の指定や不正な値に対して適切に処理する。</li>
+   * <li>Safely extracts a specified range of the string.</li>
+   * <li>Handles out-of-range specifications and invalid values appropriately.</li>
    * </ul>
    *
-   * @param value      対象文字列
-   * @param beginIndex 開始インデックス（省略可能）<code>null</code> を渡した（省略した）場合は0
-   * @param endIndex   終了インデックス（省略可能）<code>null</code> を渡した（省略した）場合は文字列長
-   * @return 切り取り文字列
+   * @param value      target string
+   * @param beginIndex start index (optional); defaults to 0 if <code>null</code> is passed (omitted)
+   * @param endIndex   end index (optional); defaults to the string length if <code>null</code> is passed (omitted)
+   * @return the extracted string
    */
   public static String substring(final String value, final Integer beginIndex, final Integer endIndex) {
     if (isNull(value)) {
       return BLANK;
     }
     
-    // 省略値の補完
+    // Fill in default values
     final int begin;
     if (isNull(beginIndex)) {
       begin = 0;
@@ -648,11 +648,11 @@ public final class ValUtil {
     if (isNull(endIndex)) {
       end = value.length();
     } else {
-    // 範囲外補正
+    // Clamp to valid range
       end = Math.min(endIndex, value.length());
     }
     
-    // 開始位置が終了位置以降、または開始位置が文字列長以降の場合は空文字を返す
+    // Returns blank if the start position is at or after the end position, or at or after the string length
     if (begin < 0 || begin >= end || begin >= value.length()) {
       return BLANK;
     }
@@ -661,60 +661,60 @@ public final class ValUtil {
   }
 
   /**
-   * 英数字チェック.<br>
+   * Checks alphanumeric.<br>
    * <ul>
-   * <li>文字列が英数字として有効かチェックする。</li>
+   * <li>Checks if the string is valid as alphanumeric characters.</li>
    * </ul>
    *
-   * @param value チェック対象
-   * @return 有効な場合は <code>true</code>
+   * @param value target to check
+   * @return <code>true</code> if valid
    */
   public static boolean isAlphabetNumber(final String value) {
     if (isBlank(value)) {
-      // ブランクの場合
+      // If blank
       return false;
     }
     return Pattern.matches("^[a-zA-Z0-9]+$", value);
   }
 
   /**
-   * 数値チェック.<br>
+   * Checks numeric.<br>
    * <ul>
-   * <li>文字列が数値として有効かチェックする。</li>
+   * <li>Checks if the string is valid as a numeric value.</li>
    * </ul>
    *
-   * @param value チェック対象
-   * @return 有効な場合は <code>true</code>
+   * @param value target to check
+   * @return <code>true</code> if valid
    */
   public static boolean isNumber(final String value) {
     return isNumber(value, false, false);
   }
 
-  /** 数値チェック用パターン. */
+  /** Pattern for numeric check. */
   private static final Pattern VALID_NUMBER_PATTERN = Pattern.compile("^([1-9]\\d*|0)$");
-  /** 数値チェック用パターン - 小数許容. */
+  /** Pattern for numeric check - allows decimals. */
   private static final Pattern VALID_NUMBER_PATTERN_DEC =
       Pattern.compile("^([1-9]\\d*|0)(\\.\\d+)?$");
-  /** 数値チェック用パターン - マイナス値許容. */
+  /** Pattern for numeric check - allows negative values. */
   private static final Pattern VALID_NUMBER_PATTERN_MINUS = Pattern.compile("^[-]?([1-9]\\d*|0)$");
-  /** 数値チェック用パターン - 小数許容、マイナス値許容. */
+  /** Pattern for numeric check - allows decimals and negative values. */
   private static final Pattern VALID_NUMBER_PATTERN_DEC_MINUS =
       Pattern.compile("^[-]?([1-9]\\d*|0)(\\.\\d+)?$");
 
   /**
-   * 数値チェック.<br>
+   * Checks numeric.<br>
    * <ul>
-   * <li>文字列が数値として有効かチェックする。</li>
+   * <li>Checks if the string is valid as a numeric value.</li>
    * </ul>
    *
-   * @param value チェック対象
-   * @param minusNg マイナス値を無効とする場合は <code>true</code>
-   * @param decNg 小数を無効とする場合は <code>true</code>
-   * @return 有効な場合は <code>true</code>
+   * @param value target to check
+   * @param minusNg <code>true</code> to treat negative values as invalid
+   * @param decNg <code>true</code> to treat decimals as invalid
+   * @return <code>true</code> if valid
    */
   public static boolean isNumber(final String value, final boolean minusNg, final boolean decNg) {
     if (isBlank(value)) {
-      // ブランクの場合
+      // If blank
       return false;
     }
     final String checkVal = trimLeftZeroByIsNumber(value);
@@ -729,41 +729,40 @@ public final class ValUtil {
   }
 
   /**
-   * 桁数チェック.<br>
+   * Checks length.<br>
    * <ul>
-   * <li><code>#isBlank(String)</code> が <code>true</code> の前提とし、チェック対象がブランクの場合は <code>false</code> を返す。</li>
+   * <li>Assumes <code>#isBlank(String)</code> is <code>true</code>; returns <code>false</code> if the target is blank.</li>
    * </ul>
    * 
-   * @param value      チェック対象
-   * @param len 有効桁数
-   * @return 有効な場合は <code>true</code>
+   * @param value      target to check
+   * @param len valid length
+   * @return <code>true</code> if valid
    */
   public static boolean checkLength(final String value, final int len) {
     if (isBlank(value)) {
-      // ブランクの場合
+      // If blank
       return false;
     }
     return value.length() <= len;
   }
 
   /**
-   * 数値桁数（精度）チェック.<br>
+   * Checks numeric length (precision).<br>
    * <ul>
-   * <li>整数部分と小数点以下の桁数が指定された範囲内であることを確認する。</li>
-   * <li>引数はDB項目定義と同じで整数部と小数部を足した桁数と小数部だけの桁数で指定する。</li>
-   * <li><code>#isNumber(String)</code> が <code>true</code> の前提とし、チェック対象がブランクの場合は
-   * <code>false</code> を返す。</li>
+   * <li>Verifies that the integer part and decimal part lengths are within the specified range.</li>
+   * <li>Arguments follow the same DB field definition format: specify the total length of integer and decimal parts, and the decimal part length separately.</li>
+   * <li>Assumes <code>#isNumber(String)</code> is <code>true</code>; returns <code>false</code> if the target is blank.</li>
    * </ul>
    * 
-   * @param value      チェック対象
-   * @param intPartLen 整数部と小数部を足した有効桁数
-   * @param decPartLen 小数部の有効桁数
-   * @return 有効な場合は <code>true</code>
+   * @param value      target to check
+   * @param intPartLen valid length of integer part plus decimal part combined
+   * @param decPartLen valid length of decimal part
+   * @return <code>true</code> if valid
    */
   public static boolean checkLengthNumber(final String value, final int intPartLen,
       final int decPartLen) {
     if (isBlank(value)) {
-      // ブランクの場合
+      // If blank
       return false;
     }
     final String checkVal = trimLeftZeroByIsNumber(value);
@@ -778,14 +777,14 @@ public final class ValUtil {
   }
 
   /**
-   * 数値チェック用左ゼロ除去.<br>
+   * Removes leading zeros for numeric check.<br>
    * <ul>
-   * <li>小数点を含む数値にも対応。</li>
-   * <li>"-0" や "-000" は "0" に正規化される。</li>
+   * <li>Also supports numbers with decimal points.</li>
+   * <li>Normalizes "-0" or "-000" to "0".</li>
    * </ul>
    *
-   * @param value 文字列
-   * @return 処理後の文字
+   * @param value string
+   * @return the processed string
    */
   private static String trimLeftZeroByIsNumber(final String value) {
     final boolean hasMinus = value.startsWith("-");
@@ -796,29 +795,29 @@ public final class ValUtil {
       tmp = value;
     }
       
-    // 小数点の位置を確認
+    // Check decimal point position
     final int dotIndex = tmp.indexOf('.');
     final String ret;
     
     if (dotIndex == -1) {
-      // 小数点なし: 通常の左ゼロ除去
+      // No decimal point: standard leading zero removal
       ret = tmp.replaceAll("^0+", "");
     } else if (dotIndex == 0) {
-      // ".5" のような形式: そのまま返す（整数部がないため）
+      // Format like ".5": return as is (no integer part)
       ret = tmp;
     } else {
-      // 小数点あり: 整数部分のみ左ゼロ除去
+      // Has decimal point: remove leading zeros from integer part only
       final String intPart = tmp.substring(0, dotIndex).replaceAll("^0+", "");
-      final String decPart = tmp.substring(dotIndex); // "." を含む
+      final String decPart = tmp.substring(dotIndex); // includes "."
       ret = intPart + decPart;
     }
     
-    // すべてゼロだった場合
+    // If all zeros
     if (isBlank(ret) || ret.equals(".")) {
       return "0";
     }
     
-    // 整数部分が空 → "0" を補完
+    // Integer part is empty → fill with "0"
     if (ret.startsWith(".")) {
       if (hasMinus) {
         return "-0" + ret;
@@ -833,52 +832,52 @@ public final class ValUtil {
   }
 
   /**
-   * 実在日チェック.<br>
+   * Checks valid date.<br>
    * <ul>
-   * <li>文字列が日付として有効かチェックする。</li>
+   * <li>Checks if the string is valid as a date.</li>
    * </ul>
    *
-   * @param value チェック対象（YYYYMMDD）
-   * @return 有効な場合は <code>true</code>
+   * @param value target to check (YYYYMMDD)
+   * @return <code>true</code> if valid
    */
   public static boolean isDate(final String value) {
     if (isBlank(value)) {
-      // ブランクの場合
+      // If blank
       return false;
     }
 
     if (value.length() != 8 || !isNumber(value)) {
-      // 8桁以外または数値以外の場合
+      // If not 8 digits or not numeric
       return false;
     }
     try {
       LocalDate.parse(value, DTF_DATE);
     } catch (Exception e) {
-      // パースしてエラーが発生した場合
+      // If a parse error occurs
       return false;
     }
     return true;
   }
 
-  /** 真偽値「真」とみなす文字列のセット */
+  /** Set of strings considered as boolean true. */
   private static final Set<String> TRUE_VALUES = Set.of("1", "true", "yes", "on");
 
   /**
-   * 真偽値チェック.<br>
+   * Checks boolean true.<br>
    * <ul>
-   * <li>文字列が真偽値「真」とみなす値かチェックする。</li>
-   * <li>下記の評価を行う。
+   * <li>Checks if the string is considered as boolean true.</li>
+   * <li>Evaluates as follows:
    * <ol>
-   * <li>"1", "true", "yes", "on"（すべて半角）は <code>true</code>。</li>
-   * <li><code>null</code> またはブランクは <code>false</code> を含み、上記以外は <code>false</code>。</li>
-   * <li>大文字小文字を区別しない。</li>
-   * <li>左右の半角スペースは無視する。</li>
+   * <li>"1", "true", "yes", "on" (all half-width) are <code>true</code>.</li>
+   * <li><code>null</code> or blank, as well as any other values, are <code>false</code>.</li>
+   * <li>Case-insensitive.</li>
+   * <li>Leading and trailing half-width spaces are ignored.</li>
    * </ol>
    * </li>
    * </ul>
    *
-   * @param val チェック対象
-   * @return 真偽値「真」とみなす場合は <code>true</code>
+   * @param val target to check
+   * @return <code>true</code> if considered as boolean true
    */
   public static boolean isTrue(final String val) {
     if (isBlank(val)) {
@@ -892,10 +891,10 @@ public final class ValUtil {
   }
 
   /**
-   * Date型 to LocalDate型変換.
+   * Converts from Date type to LocalDate type.
    *
-   * @param date Date型（java.sql.Date 含む）
-   * @return LocalDate型
+   * @param date Date type (including java.sql.Date)
+   * @return LocalDate type
    */
   public static LocalDate dateToLocalDate(final java.util.Date date) {
     final java.sql.Date sd;
@@ -909,48 +908,48 @@ public final class ValUtil {
   }
 
   /**
-   * ダブルクォーテーション除去.<br>
+   * Removes double quotes.<br>
    * <ul>
-   * <li>文字列の開始と終了のダブルクォーテーションを除去する。</li>
+   * <li>Removes double quotes from the start and end of the string.</li>
    * </ul>
    *
    * @see #trimBothEnds(String, char, char)
-   * @param value 対象文字列
-   * @return 除去後文字列
+   * @param value target string
+   * @return the string after removal
    */
   public static String trimDq(final String value) {
     return trimBothEnds(value, '"', '"');
   }
 
   /**
-   * 文字列両端切り捨て.<br>
+   * Trims both ends of string.<br>
    * <ul>
-   * <li>トリムして両端文字ともに見つかった場合のみ切り捨てる。</li>
+   * <li>Trims only when both end characters are found.</li>
    * </ul>
    *
-   * @param value 対象文字列
-   * @param prefix 前の端の文字
-   * @param suffix 後ろの端の文字
-   * @return 両端を切り捨てた文字列
+   * @param value target string
+   * @param prefix character at the start
+   * @param suffix character at the end
+   * @return the string with both ends trimmed
    */
   public static String trimBothEnds(final String value, final char prefix, final char suffix) {
     return trimBothEnds(value, String.valueOf(prefix), String.valueOf(suffix));
   }
 
   /**
-   * 文字列両端切り捨て.<br>
+   * Trims both ends of string.<br>
    * <ul>
-   * <li>トリムして両端文字ともに見つかった場合のみ切り捨てる。</li>
+   * <li>Trims only when both end characters are found.</li>
    * </ul>
    *
-   * @param value 対象文字列
-   * @param prefix 前の端の文字
-   * @param suffix 後ろの端の文字
-   * @return 両端を切り捨てた文字列
+   * @param value target string
+   * @param prefix character at the start
+   * @param suffix character at the end
+   * @return the string with both ends trimmed
    */
   public static String trimBothEnds(final String value, final String prefix, final String suffix) {
     if (ValUtil.isNull(value) || value.length() < 2) {
-      // 最低２文字以上はあるはず
+      // Must have at least 2 characters
       return value;
     }
     if (value.startsWith(prefix) && value.endsWith(suffix)) {
@@ -959,19 +958,19 @@ public final class ValUtil {
     return value;
   }
 
-  /** 正規表現 - 始端全角文字列. */
+  /** Regular expression - leading full-width space. */
   private static final String REGEX_ZENKAKU_SPACE_START = "^[" + '\u3000' + "]+";
-  /** 正規表現 - 終端全角文字列. */
+  /** Regular expression - trailing full-width space. */
   private static final String REGEX_ZENKAKU_SPACE_END = "[" + '\u3000' + "]+$";
 
   /**
-   * 文字列両端全角スペース切り捨て.<br>
+   * Trims full-width spaces from both ends of string.<br>
    * <ul>
-   * <li>文字列の開始と終了の全角スペースを除去する。</li>
+   * <li>Removes full-width spaces from the start and end of the string.</li>
    * </ul>
    *
-   * @param value 対象文字列
-   * @return 除去後文字列
+   * @param value target string
+   * @return the string after removal
    */
   public static String trimZenkakuSpace(final String value) {
     if (isNull(value)) {
@@ -982,13 +981,13 @@ public final class ValUtil {
   }
 
   /**
-   * 左ゼロ除去.<br>
+   * Removes leading zeros.<br>
    * <ul>
-   * <li>文字列の左の <code>"0"</code> を除去する。</li>
+   * <li>Removes <code>"0"</code> from the left of the string.</li>
    * </ul>
    *
-   * @param value 文字列
-   * @return 処理後の文字
+   * @param value string
+   * @return the processed string
    */
   public static String trimLeftZero(final String value) {
     if (isNull(value)) {
@@ -999,21 +998,22 @@ public final class ValUtil {
   }
 
   /**
-   * 左ゼロ詰め.<br>
+   * Pads with leading zeros.<br>
    * <ul>
-   * <li>文字列の左に <code>"0"</code> を詰める。</li>
+   * <li>Pads <code>"0"</code> to the left of the string.</li>
+   * <li>Pads with <code>0</code> if the argument is <code>null</code>.</li>
    * </ul>
    *
-   * @param value 文字列
-   * @param digit 詰めた後の文字桁数
-   * @return 処理後の文字
+   * @param value string
+   * @param digit number of characters after padding
+   * @return the processed string
    */
   public static String paddingLeftZero(final String value, final int digit) {
     if (ValUtil.isNull(value)) {
-      return String.format("%0" + digit + "d", 0);
+      return ("%0" + digit + "d").formatted(0);
     }
     if (value.length() >= digit) {
-      // 長さが超えている場合はそのまま返す
+      // Return as is if length exceeds the specified digit count
       return value;
     }
     final StringBuilder sb = new StringBuilder(value);
@@ -1024,22 +1024,22 @@ public final class ValUtil {
   }
 
   /**
-   * 左ゼロ詰め.<br>
+   * Pads with leading zeros.<br>
    * <ul>
-   * <li>数値を文字列に変換して左に <code>"0"</code> を詰める。</li>
+   * <li>Converts a number to a string and pads <code>"0"</code> to the left.</li>
    * </ul>
    *
-   * @param value 数値
-   * @param digit 詰めた後の文字桁数
-   * @return 処理後の文字
+   * @param value number
+   * @param digit number of characters after padding
+   * @return the processed string
    */
   public static String paddingLeftZero(final int value, final int digit) {
-    return String.format("%0" + String.valueOf(digit) + "d", value);
+    return ("%0" + digit + "d").formatted(value);
   }
 
 
   /**
-   * 最終１文字削除.
+   * Deletes the last character.
    *
    * @param sb StringBuilder
    */
@@ -1050,10 +1050,10 @@ public final class ValUtil {
   }
 
   /**
-   * 最終文字削除.
+   * Deletes the last characters.
    *
    * @param sb StringBuilder
-   * @param length 最終文字長さ
+   * @param length length of characters to delete from the end
    */
   public static void deleteLastChar(final StringBuilder sb, final int length) {
     if (length <= 0) {
@@ -1065,14 +1065,14 @@ public final class ValUtil {
   }
 
   /**
-   * URLエンコード変換.<br>
+   * Converts URL encoding.<br>
    * <ul>
-   * <li>JavaScript の encodeURIComponent と合わせるため１バイトブランクを "+" から "%20" に変換しなおす。</li>
-   * <li>ワイルドカードの "*" を "%2A" に変換する。</li>
+   * <li>To match JavaScript's encodeURIComponent, converts single-byte blank from "+" to "%20".</li>
+   * <li>Converts wildcard "*" to "%2A".</li>
    * </ul>
    *
-   * @param url 変換文字列
-   * @return 変換後文字列
+   * @param url target string to convert
+   * @return the converted string
    */
   public static String urlEncode(final String url) {
     final String value = ValUtil.nvl(url);
@@ -1085,10 +1085,10 @@ public final class ValUtil {
   }
 
   /**
-   * URLデコード変換.
+   * Converts URL decoding.
    *
-   * @param url 変換文字列
-   * @return 変換後文字列
+   * @param url target string to convert
+   * @return the converted string
    */
   public static String urlDecode(final String url) {
     final String value = ValUtil.nvl(url);
@@ -1100,14 +1100,14 @@ public final class ValUtil {
   }
 
   /**
-   * JSONエスケープ変換.<br>
+   * Converts JSON escape.<br>
    * <ul>
-   * <li>JSONでエスケープが必要な文字をエスケープする。</li>
-   * <li><code>null</code> も制御文字としてエスケープする。</li>
+   * <li>Escapes characters that require escaping in JSON.</li>
+   * <li>Also escapes <code>null</code> as a control character.</li>
    * </ul>
    *
-   * @param value 文字列
-   * @return 変換後文字列
+   * @param value string
+   * @return the converted string
    */
   public static String jsonEscape(final String value) {
     if (isNull(value)) {
@@ -1154,13 +1154,13 @@ public final class ValUtil {
   }
 
   /**
-   * JSONエスケープ変換除去.<br>
+   * Removes JSON escape conversion.<br>
    * <ul>
-   * <li>JSONでエスケープが必要な文字のエスケープを除去する。</li>
+   * <li>Removes escaping of characters that require escaping in JSON.</li>
    * </ul>
    *
-   * @param value 文字列
-   * @return 除去後文字列
+   * @param value string
+   * @return the string after removal
    */
   public static String jsonUnEscape(final String value) {
     final StringBuilder sb = new StringBuilder();
@@ -1222,37 +1222,37 @@ public final class ValUtil {
     return sb.toString();
   }
 
-  /** シーケンスコード用 フォーマッター：タイムスタンプ（SQL:YYYYMMDDHH24MISSFF9）. */
+  /** Formatter for sequence code: timestamp (SQL:YYYYMMDDHH24MISSFF9). */
   private static final DateTimeFormatter SEQCODE_DTF = DateTimeFormatter
       .ofPattern("uuuuMMddHHmmssSSSSSSSSS").withResolverStyle(ResolverStyle.STRICT);
-  /** シーケンスコード用 タイムスタンプ分割桁指定. */
-  private static final int[][] SEQCODE_TM_SPLIT_KETA = {{2, 5}, // 年:月1 最大 "991"
-      {5, 8}, // 月2日 最大 "930"
-      {8, 11}, // 時:分1 最大 "235"
-      {11, 14}, // 分2:秒 最大 "959"
-      {14, 17}, // ミリ秒 最大 "999"
-      {17, 20}, // マイクロ秒 最大 "999"
-      {20, 23} // ナノ秒 最大 "999"
+  /** Timestamp split digit specification for sequence code. */
+  private static final int[][] SEQCODE_TM_SPLIT_KETA = {{2, 5}, // year:month1 max "991"
+      {5, 8}, // month2:day max "930"
+      {8, 11}, // hour:minute1 max "235"
+      {11, 14}, // minute2:second max "959"
+      {14, 17}, // millisecond max "999"
+      {17, 20}, // microsecond max "999"
+      {20, 23} // nanosecond max "999"
   };
 
   /**
-   * シーケンスコード値取得.<br>
+   * Retrieves the sequence code value.<br>
    * <ul>
-   * <li>ナノ秒まで含むタイムスタンプを36進数に変換した値を返す。</li>
-   * <li>システム内で常にユニークな値を返すため１ナノ秒スリープしてから返す。</li>
-   * <li>複数のシステムで使用する場合、ユニークな値を返すためにはホスト名やシステム名を付加するなどの考慮が必要となる。</li>
+   * <li>Returns a timestamp including nanoseconds converted to base-36.</li>
+   * <li>Sleeps for 1 nanosecond before returning to ensure uniqueness within the system.</li>
+   * <li>When used across multiple systems, additional consideration such as appending a hostname or system name is required to ensure unique values.</li>
    * </ul>
    *
-   * @return シーケンスコード値
+   * @return the sequence code value
    */
   public static synchronized String getSequenceCode() {
-    // 1nsスリープ
+    // Sleep for 1ns
     try {
       TimeUnit.NANOSECONDS.sleep(1);
     } catch (InterruptedException ignore) {
-      // 処理なし
+      // No processing
     }
-    // タイムスタンプを分割
+    // Split timestamp
     final String tm = LocalDateTime.now().format(SEQCODE_DTF);
 
     final StringBuilder sb = new StringBuilder();
@@ -1260,7 +1260,7 @@ public final class ValUtil {
       final String tmPart = tm.substring(keta[0], keta[1]);
       final int tmPartInt = Integer.parseInt(tmPart);
       final String tmPart36 = Integer.toString(tmPartInt, Character.MAX_RADIX);
-      sb.append(String.format("%2s", tmPart36).replace(' ', '0').toUpperCase());
+      sb.append("%2s".formatted(tmPart36).replace(' ', '0').toUpperCase());
     }
     return sb.toString();
   }

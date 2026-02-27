@@ -197,8 +197,8 @@ public final class StandaloneServer {
     } catch (final Exception | Error e) {
       LogUtil.stdout(e, "An exception error occurred in log text file close.");
     }
-    // Note: Does not call System.exit()
-    // - When via shutdown hook: JVM is already in termination process
-    // - When via HTTP: StopHandler side executes System.exit()
+    // Does not call System.exit()
+    // When called via shutdown hook, the JVM is already in the process of terminating
+    // When called via HTTP, System.exit() is called from the StopHandler
   }
 }

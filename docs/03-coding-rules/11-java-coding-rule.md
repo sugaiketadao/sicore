@@ -117,7 +117,7 @@
     - Between the opening brace `{` and the preceding string.
     - Before and after all operators (`+`, `=`, `!==`, `&&`, etc.). However, exclude increment and decrement operators.
     - Between commas, colons, semicolons and the following string.
-- Aim for approximately 100 columns per line excluding indentation, and wrap lines if they exceed this. Do not wrap lines unnecessarily if they are shorter.
+- Aim for approximately 120 columns per line excluding indentation, and wrap lines if they exceed this. Do not wrap lines unnecessarily if they are shorter.
 - Actively use text blocks (Text Block """...""") for multi-line strings. ***JDK15 or later only***
     ```java
     sb.addQuery("SELECT ");

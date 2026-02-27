@@ -9,11 +9,7 @@ import com.sun.net.httpserver.HttpExchange;
 import java.net.HttpURLConnection;
 
 /**
- * JSON service handler class.<br>
- * <ul>
- * <li>Receives HTTP requests and delegates processing to the corresponding web service class.</li>
- * <li>Dynamically resolves the service class name from the URL path and executes it using reflection.</li>
- * </ul>
+ * JSON service handler class.
  * @hidden
  */
 final class JsonServiceHandler extends AbstractHttpHandler {
@@ -46,8 +42,8 @@ final class JsonServiceHandler extends AbstractHttpHandler {
   /**
    * {@inheritDoc}
    * <ul>
-   * <li>Dynamically resolves and executes the service class from the request URL.</li>
-   * <li>Processes parameters according to the <code>GET/POST</code> method.</li>
+   * <li>Dynamically resolves the service class name from the URL path and executes it via reflection.</li>
+   * <li>Parses request parameters according to the <code>GET/POST</code> method and passes them to the service class.</li>
    * </ul>
    */
   @Override
@@ -75,7 +71,7 @@ final class JsonServiceHandler extends AbstractHttpHandler {
       super.logger.error(e, "Web service class not found. " + LogUtil.joinKeyVal("class", clsName));
       ServerUtil.responseText(exchange, HttpURLConnection.HTTP_NOT_FOUND, "Json service class not found. ");
     } catch (final Exception | Error e) {
-      super.logger.error(e, "An exception error occurred in web service execution. " + LogUtil.joinKeyVal("class", clsName));
+      super.logger.error(e, "An exception error occurred in json service execution. " + LogUtil.joinKeyVal("class", clsName));
       ServerUtil.responseText(exchange, HttpURLConnection.HTTP_INTERNAL_ERROR, "Unexpected json service error. ");
     }
   }
