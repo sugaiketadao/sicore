@@ -1,8 +1,12 @@
 package com.onepg.web;
 
+import com.onepg.util.IoItems;
 import com.onepg.util.LogUtil;
 import com.onepg.util.LogWriter;
 import com.onepg.util.PropertiesUtil;
+import com.onepg.util.ResourcesUtil;
+import com.onepg.util.PropertiesUtil.FwPropertiesName;
+import com.onepg.util.ResourcesUtil.FwResourceName;
 import com.onepg.util.ValUtil;
 import com.onepg.util.ValUtil.CharSet;
 import com.sun.net.httpserver.Headers;
@@ -49,6 +53,28 @@ final class ServerUtil {
   private static final DateTimeFormatter DTF_HTTP_DATE = 
       DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.ENGLISH)
                        .withZone(ZoneId.of("GMT"));
+
+  /** Web server settings. */
+  static final IoItems PROP_MAP;
+  /** LDAP enabled flag. */
+  static final boolean LDAP_ENABLED;
+  /** LDAP URL. */
+  static final String LDAP_URL;
+  /** LDAP user DN format. */
+  static final String LDAP_USER_DN_FMT;
+
+  /** Message map &lt;message ID, message text&gt;. */
+  static final IoItems MSG_MAP;
+
+  static {
+    // Retrieve web server settings
+    PROP_MAP = PropertiesUtil.getFrameworkProps(FwPropertiesName.WEB);
+    LDAP_ENABLED = PROP_MAP.getBooleanOrDefault("ldap.enabled", false);
+    LDAP_URL = PROP_MAP.getString("ldap.url");
+    LDAP_USER_DN_FMT = PROP_MAP.getString("ldap.user.dn.fmt");
+    // Retrieve message map
+    MSG_MAP = ResourcesUtil.getJson(FwResourceName.MSG);
+  }
 
   /**
    * Constructor.<br>

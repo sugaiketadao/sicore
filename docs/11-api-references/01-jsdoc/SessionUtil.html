@@ -24,8 +24,11 @@
         <h3>Description</h3>
         <div>Session utility class.<br>
 <ul>
-  <li>Manages information shared with web services.</li>
-  <li>Information managed by this class is retained per server session.</li>
+  <li>Sent with each web service request and automatically updated with the response data.</li>
+  <li>Stores data in JavaScript variables (in-memory).</li>
+  <li>Data is lost upon page navigation via links or page reload.</li>
+  <li>Data can be retained during page navigation by using <code>HttpUtil.movePage</code>.</li>
+  <li>Holds a JWT and automatically appends it to the request header on web service calls.</li>
 </ul></div>
       </div>
     </div>
@@ -100,6 +103,20 @@
         <div class="method-returns">
           <h4>Return Value</h4>
           <p><code>boolean</code> - <code>true</code> when storage is successful</p>
+        </div>
+      </div>
+      <div class="method">
+        <h3 id="hasToken" class="method-name">hasToken</h3>
+        <div class="method-signature">
+          <code>hasToken()</code>
+        </div>
+        <div class="method-description">
+          Checks whether a token is held.
+
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if a token exists</p>
         </div>
       </div>
       <div class="method">

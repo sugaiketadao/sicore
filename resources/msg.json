@@ -7,7 +7,9 @@
   "i0004": "Search returned {0} records.",
   "e0001": "Already registered by another user. {0}",
   "e0002": "Already updated or deleted by another user. {0}",
-  
+
+  "es001": "Invalid ID or password.",
+
   "ev001": "{0} is required.",
   "ev011": "{0} must contain only alphanumeric characters.",
   "ev012": "{0} must contain only numbers.",

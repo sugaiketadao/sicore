@@ -24,7 +24,8 @@ final class StaticFileHandler extends AbstractHttpHandler {
    * Constructor.
    */
   StaticFileHandler() {
-    super();
+    // Static files do not require JWT validation
+    super(false);
     this.serverDeployPath = PropertiesUtil.APPLICATION_DIR_PATH;
   }
 

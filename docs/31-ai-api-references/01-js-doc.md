@@ -470,6 +470,14 @@ setString(key, val)
 
 **Returns**: `boolean`
 
+#### hasToken
+
+```
+hasToken()
+```
+
+**Returns**: `boolean`
+
 #### remove
 
 ```
@@ -752,6 +760,18 @@ equalsObj(obj1, obj2, ignoreKeys)
 - `obj1`: `Object`
 - `obj2`: `Object`
 - `[ignoreKeys]`: `Array<string>`
+
+**Returns**: `boolean`
+
+#### existsObj
+
+```
+existsObj(obj, key)
+```
+
+**Parameters**:
+- `obj`: `Object`
+- `key`: `string`
 
 **Returns**: `boolean`
 

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Sign-in</title>
+  <link href="../lib/css/onepg-base.css" rel="stylesheet">
+  <style>
+    .item-head {
+      width: 8rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>Sign-in</div>
+    <!-- Message display -->
+    <section id="_msg"></section>
+  </header>
+  <main>
+    <section>
+      <!-- ID -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label for="signinId">User ID</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="text" name="signin_id" id="signinId" style="width: 14rem;">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+
+      <!-- Password -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head">
+            <label for="signinPw">Password</label>
+          </div><!-- /.item-head -->
+          <div class="item-body">
+            <input type="password" name="signin_pw" id="signinPw" style="width: 14rem;">
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+
+      <!-- Debug mode -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head"></div><!-- /.item-head -->
+          <div class="item-body">
+            <label>
+              <input type="checkbox" name="signin_debug" value="1">
+              Debug mode (outputs error details to the server log on authentication failure)
+            </label>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+
+      <!-- Button -->
+      <div class="grid-row">
+        <div class="grid-col-12">
+          <div class="item-head"></div><!-- /.item-head -->
+          <div class="item-body">
+            <button type="button" onclick="signin()">Sign in</button>
+          </div><!-- /.item-body -->
+        </div><!-- /.grid-col-* -->
+      </div><!-- /.grid-row -->
+    </section>
+  </main>
+  
+  <footer>
+    <div>©Sample</div>
+  </footer>
+
+  <script src="../lib/js/onepg-utils.js" defer></script>
+  <script src="index.js" defer></script>
+</body>
+</html>

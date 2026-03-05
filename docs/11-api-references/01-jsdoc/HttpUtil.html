@@ -97,6 +97,8 @@
 <li><pre>[Example]
      If <code>url = 'editpage.html', params = {user_id: 'U001', upd_ts: '20251231T245959001000'}</code>,
      accesses <code>editpage.html?user_id=U001&upd_ts=20251231T245959001000</code>.</pre></li>
+<li>Before navigation, temporarily saves the session data and token managed by <code>SessionUtil</code> to <code>sessionStorage</code>.</li>
+<li>This temporary save to <code>sessionStorage</code> enables session data to be restored after page navigation.</li>
 </ul>
 
         </div>
@@ -135,6 +137,10 @@
 <ul>
 <li>Sends a JSON request to the specified URL with the <code>POST</code> method and receives a JSON response.</li>
 <li>Request and response are exchanged as objects.</li>
+<li>Automatically appends the session data managed by <code>SessionUtil</code> to the request.</li>
+<li>Automatically retrieves session data from the response and saves it to the session data managed by <code>SessionUtil</code>.</li>
+<li>If a token managed by <code>SessionUtil</code> exists, appends it to the Authorization header.</li>
+<li>Throws an exception if a communication error or JSON parse error occurs.</li>
 </ul>
 
         </div>

@@ -3,10 +3,7 @@ package com.onepg.web;
 import com.onepg.db.DbUtil;
 import com.onepg.util.LogTxtHandler;
 import com.onepg.util.LogUtil;
-import com.onepg.util.PropertiesUtil;
 import com.onepg.util.ValUtil;
-import com.onepg.util.PropertiesUtil.FwPropertiesName;
-import com.onepg.util.IoItems;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -91,13 +88,10 @@ public final class StandaloneServer {
   private void start(final String[] args) throws IOException {
     LogUtil.stdout("Starting web server startup processing. ");
 
-    // Web server settings
-    final IoItems propMap = PropertiesUtil.getFrameworkProps(FwPropertiesName.WEB);
-
     // Generates web server
-    final int portNo = propMap.getInt("port.no");
-    final int waitingProcessesCount = propMap.getInt("waiting.processes.count");
-    final int parallelProcessesCount = propMap.getInt("parallel.processes.count");
+    final int portNo = ServerUtil.PROP_MAP.getInt("port.no");
+    final int waitingProcessesCount = ServerUtil.PROP_MAP.getInt("waiting.processes.count");
+    final int parallelProcessesCount = ServerUtil.PROP_MAP.getInt("parallel.processes.count");
     this.server = HttpServer.create(new InetSocketAddress(portNo), waitingProcessesCount);
     this.server.setExecutor(Executors.newFixedThreadPool(parallelProcessesCount));
 
@@ -106,22 +100,27 @@ public final class StandaloneServer {
     this.server.createContext("/", new RootHandler());
 
     // Server stop URL handler
-    final String serverStopContext = propMap.getString("server.stop.context");
+    final String serverStopContext = ServerUtil.PROP_MAP.getString("server.stop.context");
     LogUtil.stdout("Creating context. '/" + serverStopContext + "'");
     this.server.createContext("/" + serverStopContext, new StopHandler());
 
     // Static file handler
-    final String staticFileContext = propMap.getString("static.file.context");
+    final String staticFileContext = ServerUtil.PROP_MAP.getString("static.file.context");
     LogUtil.stdout("Creating context. '/" + staticFileContext + "'");
     this.server.createContext("/" + staticFileContext, new StaticFileHandler());
     
     // JSON service handler
-    final String jsonServiceContext = propMap.getString("json.service.context");
-    final String jsonServicePackage = propMap.getString("json.service.package");
+    final String jsonServiceContext = ServerUtil.PROP_MAP.getString("json.service.context");
+    final String jsonServicePackage = ServerUtil.PROP_MAP.getString("json.service.package");
     LogUtil.stdout("Creating context. '/" + jsonServiceContext + "'" + " (Java package '"
         + jsonServicePackage + "')");
     this.server.createContext("/" + jsonServiceContext,
         new JsonServiceHandler(jsonServiceContext, jsonServicePackage));
+
+    // Sign-in service handler
+    final String signinServiceContext = ServerUtil.PROP_MAP.getString("signin.service.context");
+    LogUtil.stdout("Creating context. '/" + signinServiceContext + "'");
+    this.server.createContext("/" + signinServiceContext, new SigninServiceHandler());
 
     // Starts
     this.server.start();

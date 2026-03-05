@@ -145,7 +145,7 @@ const ValUtil = /** @lends ValUtil */ {
         continue;
       }
       // Ignore if the key doesn't exist in obj2
-      if (!Object.hasOwn(obj2, key)) {
+      if (!ValUtil.existsObj(obj2, key)) {
         continue;
       }
 
@@ -179,6 +179,24 @@ const ValUtil = /** @lends ValUtil */ {
       }
     }
     return true;
+  },
+
+  /**
+   * 連想配列存在チェック.<br>
+   * <ul>
+   *   <li>指定されたキーが連想配列に存在するかをチェックする。</li>
+   *   <li>連想配列でない場合は「存在しない」と判断する。</li>
+   * </ul>
+   *
+   * @param {Object} obj チェック対象連想配列
+   * @param {string} key 存在チェック対象キー
+   * @returns {boolean} キーが存在する場合は <code>true</code>
+   */
+  existsObj : function(obj, key) {
+    if (!ValUtil.isObj(obj)) {
+      return false;
+    }
+    return Object.hasOwn(obj, key);
   },
 
   /**
@@ -642,6 +660,8 @@ const HttpUtil = /** @lends HttpUtil */ {
    * <li><pre>[Example]
    *      If <code>url = 'editpage.html', params = {user_id: 'U001', upd_ts: '20251231T245959001000'}</code>,
    *      accesses <code>editpage.html?user_id=U001&upd_ts=20251231T245959001000</code>.</pre></li>
+   * <li>Before navigation, temporarily saves the session data and token managed by <code>SessionUtil</code> to <code>sessionStorage</code>.</li>
+   * <li>This temporary save to <code>sessionStorage</code> enables session data to be restored after page navigation.</li>
    * </ul>
    *
    * @param {string} url the destination URL
@@ -658,6 +678,8 @@ const HttpUtil = /** @lends HttpUtil */ {
         loc += params;
       }
     }
+    // Saves session data to sessionStorage before page navigation.
+    SessionUtil._saveToStorage();
     // Use replace to prevent going back with the back button (returns to the first opened page)
     location.replace(loc);
   },
@@ -667,6 +689,10 @@ const HttpUtil = /** @lends HttpUtil */ {
    * <ul>
    * <li>Sends a JSON request to the specified URL with the <code>POST</code> method and receives a JSON response.</li>
    * <li>Request and response are exchanged as objects.</li>
+   * <li>Automatically appends the session data managed by <code>SessionUtil</code> to the request.</li>
+   * <li>Automatically retrieves session data from the response and saves it to the session data managed by <code>SessionUtil</code>.</li>
+   * <li>If a token managed by <code>SessionUtil</code> exists, appends it to the Authorization header.</li>
+   * <li>Throws an exception if a communication error or JSON parse error occurs.</li>
    * </ul>
    * 
    * @param {string} url the destination URL
@@ -687,6 +713,10 @@ const HttpUtil = /** @lends HttpUtil */ {
 
     // Merge headers
     const header = Object.assign(addHeader || {}, { 'Content-Type': 'application/json' });
+    // Appends the token to the Authorization header if it exists.
+    if (!ValUtil.isBlank(SessionUtil._token)) {
+      header['Authorization'] = 'Bearer ' + SessionUtil._token;
+    }
 
     const pr = new Promise(function(resolve, reject) {
       const xhr = new XMLHttpRequest();
@@ -695,7 +725,7 @@ const HttpUtil = /** @lends HttpUtil */ {
         const val = header[key];
         xhr.setRequestHeader(key, val);
       }
-      // Don't auto-parse JSON for verification
+      // Disables automatic JSON parsing and parses manually to catch parse errors.
       xhr.responseType = 'text';
 
       // Communication complete event
@@ -706,9 +736,15 @@ const HttpUtil = /** @lends HttpUtil */ {
             // Manually parse JSON
             res = JSON.parse(xhr.response);
             // Extract session data from the response and remove it
-            if (Object.hasOwn(res, SessionUtil._IOKEY)) {
+            if (ValUtil.existsObj(res, SessionUtil._IOKEY)) {
               if (ValUtil.isObj(res[SessionUtil._IOKEY])) {
                 SessionUtil._sessionData = res[SessionUtil._IOKEY];
+                // Saves the JWT to _token if it exists in the session data.
+                if (ValUtil.existsObj(SessionUtil._sessionData, SessionUtil._SSKEY_JWT)) {
+                  SessionUtil._token = SessionUtil._sessionData[SessionUtil._SSKEY_JWT];
+                  // Removes the JWT from the session data.
+                  delete SessionUtil._sessionData[SessionUtil._SSKEY_JWT];
+                }
               }
               delete res[SessionUtil._IOKEY];
             }
@@ -734,7 +770,7 @@ const HttpUtil = /** @lends HttpUtil */ {
       xhr.send(JSON.stringify(req));
     });
     
-    if (Object.hasOwn(req, SessionUtil._IOKEY)) {
+    if (ValUtil.existsObj(req, SessionUtil._IOKEY)) {
       // Remove the session data added to the request
       delete req[SessionUtil._IOKEY];
     }
@@ -2193,7 +2229,7 @@ const PageUtil = /** @lends PageUtil */ {
    * @private
    * Adds index to cell elements with custom attribute.<br>
    * <ul>
-   *   <li>Targets cell elements (elements with <code>name</code> attribute containing <code>'."</code>) that are data submission elements (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>).</li>
+   *   <li>Targets cell elements (elements with <code>name</code> attribute containing <code>'.'</code>) that are data submission elements (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>).</li>
    *   <li>Adds index as <code>data-obj-row-idx</code> attribute.</li>
    *   <li>The added index is used when converting to associative array in <code>PageUtil#getValues</code>.</li>
    *   <li>The added index also serves as a marker for displaying response values when returned from web service.</li>
@@ -2629,12 +2665,12 @@ const PageUtil = /** @lends PageUtil */ {
  */
 const StorageUtil = /** @lends StorageUtil */ {
 
-  /** @private Page unit key prefix */
-  _KEY_PREFIX_PAGE: '@page',
-  /** @private Module unit key prefix */
-  _KEY_PREFIX_MODULE: '@module',
-  /** @private System-wide key prefix */
-  _KEY_PREFIX_SYSTEM: '@system',
+  /** @private Key prefix for page-scoped storage entries */
+  _STKEY_PREFIX_PAGE: '_page@onepg',
+  /** @private Key prefix for module-scoped storage entries */
+  _STKEY_PREFIX_MODULE: '_module@onepg',
+  /** @private Key prefix for system-wide storage entries */
+  _STKEY_PREFIX_SYSTEM: '_system@onepg',
 
   /** @private Root directory name */
   _ROOT_DIR_NAME: '[root]',
@@ -2782,7 +2818,7 @@ const StorageUtil = /** @lends StorageUtil */ {
       console.error('StorageUtil#removeSystem: key is required.');
       return false;
     }
-    const sysKey = StorageUtil._KEY_PREFIX_SYSTEM + key;
+    const sysKey = StorageUtil._STKEY_PREFIX_SYSTEM + key;
     return StorageUtil._remove(sysKey);
   },
 
@@ -2944,7 +2980,7 @@ const StorageUtil = /** @lends StorageUtil */ {
       // For root directory
       mdlName = StorageUtil._ROOT_DIR_NAME;
     }
-    return `${StorageUtil._KEY_PREFIX_PAGE}/${mdlName}/${pageName}/`;
+    return `${StorageUtil._STKEY_PREFIX_PAGE}/${mdlName}/${pageName}/`;
   },
 
   /**
@@ -2973,7 +3009,7 @@ const StorageUtil = /** @lends StorageUtil */ {
       // For root directory
       mdlName = StorageUtil._ROOT_DIR_NAME;
     }
-    return `${StorageUtil._KEY_PREFIX_MODULE}/${mdlName}/`;
+    return `${StorageUtil._STKEY_PREFIX_MODULE}/${mdlName}/`;
   },
 
   /**
@@ -2983,7 +3019,7 @@ const StorageUtil = /** @lends StorageUtil */ {
    * @returns {string} System unit key
    */
   _createSystemKey: function(key) {
-    return `${StorageUtil._KEY_PREFIX_SYSTEM}/${key}`;
+    return `${StorageUtil._STKEY_PREFIX_SYSTEM}/${key}`;
   },
 
   /**
@@ -3018,7 +3054,7 @@ const StorageUtil = /** @lends StorageUtil */ {
    * @returns {boolean} <code>true</code> on successful clear
    */
   clearSystem: function() {
-    const prefix = StorageUtil._KEY_PREFIX_SYSTEM;
+    const prefix = StorageUtil._STKEY_PREFIX_SYSTEM;
     return StorageUtil._clear(prefix);
   },
 
@@ -3070,22 +3106,22 @@ const StorageUtil = /** @lends StorageUtil */ {
           continue;
         }
         const value = sessionStorage.getItem(key);
-        if (key.startsWith(StorageUtil._KEY_PREFIX_SYSTEM)) {
-          const orgKey = key.substring(StorageUtil._KEY_PREFIX_SYSTEM.length);
+        if (key.startsWith(StorageUtil._STKEY_PREFIX_SYSTEM)) {
+          const orgKey = key.substring(StorageUtil._STKEY_PREFIX_SYSTEM.length);
           sysObj[orgKey] = value;
-        } else if (key.startsWith(StorageUtil._KEY_PREFIX_MODULE)) {
-          const orgKey = key.substring(StorageUtil._KEY_PREFIX_MODULE.length);
+        } else if (key.startsWith(StorageUtil._STKEY_PREFIX_MODULE)) {
+          const orgKey = key.substring(StorageUtil._STKEY_PREFIX_MODULE.length);
           mdlObj[orgKey] = value;
-        } else if (key.startsWith(StorageUtil._KEY_PREFIX_PAGE)) {
-          const orgKey = key.substring(StorageUtil._KEY_PREFIX_PAGE.length);
+        } else if (key.startsWith(StorageUtil._STKEY_PREFIX_PAGE)) {
+          const orgKey = key.substring(StorageUtil._STKEY_PREFIX_PAGE.length);
           pageObj[orgKey] = value;
         } else {
           otherObj[key] = value;
         }
       }
-      console.log(StorageUtil._KEY_PREFIX_SYSTEM + ':', sysObj);
-      console.log(StorageUtil._KEY_PREFIX_MODULE + ':', mdlObj);
-      console.log(StorageUtil._KEY_PREFIX_PAGE + ':', pageObj);
+      console.log(StorageUtil._STKEY_PREFIX_SYSTEM + ':', sysObj);
+      console.log(StorageUtil._STKEY_PREFIX_MODULE + ':', mdlObj);
+      console.log(StorageUtil._STKEY_PREFIX_PAGE + ':', pageObj);
       console.log('Other:', otherObj);
     } catch (e) {
       console.error('StorageUtil#_debugAllData: Failed to show data.', e);
@@ -3099,8 +3135,11 @@ const StorageUtil = /** @lends StorageUtil */ {
 /**
  * Session utility class.<br>
  * <ul>
- *   <li>Manages information shared with web services.</li>
- *   <li>Information managed by this class is retained per server session.</li>
+ *   <li>Sent with each web service request and automatically updated with the response data.</li>
+ *   <li>Stores data in JavaScript variables (in-memory).</li>
+ *   <li>Data is lost upon page navigation via links or page reload.</li>
+ *   <li>Data can be retained during page navigation by using <code>HttpUtil.movePage</code>.</li>
+ *   <li>Holds a JWT and automatically appends it to the request header on web service calls.</li>
  * </ul>
  * @class
  */
@@ -3108,8 +3147,14 @@ const SessionUtil = /** @lends SessionUtil */ {
 
   /** @private Key in the request and response data (specified in Io.java). */
   _IOKEY: '_session',
+  /** @private Session key - JWT */
+  _SSKEY_JWT: 'token',
+  /** @private Storage key for temporary save during page navigation. */
+  _STKEY: '_session@onepg',
   /** @private Session data */
   _sessionData: {},
+  /** @private Token */
+  _token: '',
 
   /**
    * Retrieves a session value.
@@ -3142,13 +3187,38 @@ const SessionUtil = /** @lends SessionUtil */ {
   },
 
   /**
+   * Checks whether a token is held.
+   *
+   * @returns {boolean} <code>true</code> if a token exists
+   */
+  hasToken: function() {
+    return !ValUtil.isBlank(SessionUtil._token);
+  },
+
+  /**
+   * @private
+   * Stores the token value.
+   *
+   * @param {string} val the token value
+   * @returns {boolean} <code>true</code> if stored successfully
+   */
+  _setToken: function(val) {
+    if (ValUtil.toType(val) !== 'string') {
+      console.error(`SessionUtil#setToken: store data must be a string.`);
+      return false;
+    }
+    SessionUtil._token = val;
+    return true;
+  },
+
+  /**
    * Removes a session value.
    *
    * @param {string} key the key
    * @returns {boolean} <code>true</code> when removal is successful
    */
   remove: function(key) {
-    if (Object.hasOwn(SessionUtil._sessionData, key)) {
+    if (ValUtil.existsObj(SessionUtil._sessionData, key)) {
       delete SessionUtil._sessionData[key];
       return true;
     }
@@ -3162,7 +3232,54 @@ const SessionUtil = /** @lends SessionUtil */ {
    */
   clear: function() {
     SessionUtil._sessionData = {};
+    SessionUtil._token = '';
     return true;
+  },
+
+  /**
+   * @private
+   * Temporarily saves session data.<br>
+   * <ul>
+   *   <li>Temporarily saves the session data and token to sessionStorage.</li>
+   *   <li>Expected to be called from <code>HttpUtil.movePage</code>.</li>
+   * </ul>
+   */
+  _saveToStorage: function() {
+    try {
+      const data = {};
+      data['sessionData'] = SessionUtil._sessionData;
+      data['token'] = SessionUtil._token;
+      sessionStorage.setItem(SessionUtil._STKEY, JSON.stringify(data));
+    } catch (e) {
+      console.error('SessionUtil#_saveToStorage: Failed to save session data.', e);
+    }
+  },
+
+  /**
+   * @private
+   * Restores session data.<br>
+   * <ul>
+   *   <li>Restores the session data and token from sessionStorage and immediately removes them.</li>
+   *   <li>Automatically executed when the script is loaded.</li>
+   * </ul>
+   */
+  _restoreFromStorage: function() {
+    try {
+      const json = sessionStorage.getItem(SessionUtil._STKEY);
+      // Removes immediately after retrieval.
+      sessionStorage.removeItem(SessionUtil._STKEY);
+      if (ValUtil.isBlank(json)) {
+        return;
+      }
+      const data = JSON.parse(json);
+      if (ValUtil.existsObj(data, 'sessionData')) {
+        SessionUtil._sessionData = data['sessionData'];
+        // Always overwrites the token whenever session data exists.
+        SessionUtil._token = ValUtil.nvl(data['token']);
+      }
+    } catch (e) {
+      console.error('SessionUtil#_restoreFromStorage: Failed to restore session data.', e);
+    }
   },
 
   /**
@@ -3185,3 +3302,6 @@ const SessionUtil = /** @lends SessionUtil */ {
     console.groupEnd();
   }
 };
+
+// Automatically restores session data on page load.
+SessionUtil._restoreFromStorage();

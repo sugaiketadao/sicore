@@ -1,10 +1,7 @@
 package com.onepg.web;
 
 import com.onepg.util.Io;
-import com.onepg.util.IoItems;
 import com.onepg.util.LogUtil;
-import com.onepg.util.ResourcesUtil;
-import com.onepg.util.ResourcesUtil.FwResourceName;
 import com.sun.net.httpserver.HttpExchange;
 import java.net.HttpURLConnection;
 
@@ -20,9 +17,6 @@ final class JsonServiceHandler extends AbstractHttpHandler {
   /** Service class package. */
   private final String svcClsPackage;
 
-  /** Message map &lt;message ID, message text&gt;. */
-  private final IoItems msgMap;
-
   /**
    * Constructor.<br>
    * <ul>
@@ -36,7 +30,6 @@ final class JsonServiceHandler extends AbstractHttpHandler {
     super();
     this.contextPath = contextPath;
     this.svcClsPackage = svcClsPackage;
-    this.msgMap = ResourcesUtil.getJson(FwResourceName.MSG);
   }
 
   /**
@@ -64,7 +57,7 @@ final class JsonServiceHandler extends AbstractHttpHandler {
       serviceObj.execute(io);
       
       // Response
-      final String resJson = io.createJsonWithMsg(this.msgMap);
+      final String resJson = io.createJsonWithMsg(ServerUtil.MSG_MAP);
       ServerUtil.responseJson(exchange, resJson);
       
     } catch (final ClassNotFoundException e) {
