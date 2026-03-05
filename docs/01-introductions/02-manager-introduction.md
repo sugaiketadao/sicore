@@ -114,6 +114,12 @@ Design components needed for screen display are also developed in-house.
 - Easy to maintain design consistency.
 - Fast page loading speed.
 
+### 4.4 LDAP Authentication
+
+- Supports sign-in authentication that integrates with LDAP servers and can connect to existing corporate directory services (such as Active Directory).
+- After signing in, manages the authentication state using JWT tokens, making it easy to scale out without holding sessions on the server side.
+- Can switch LDAP authentication on/off with a single line change in the configuration file (`web.properties`).
+
 ---
 
 ## 5. Impact on Development Costs

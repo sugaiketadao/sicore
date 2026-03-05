@@ -25,6 +25,7 @@ In contrast to feature-rich frameworks, it eliminates annotations and complex co
 ### 2. Robust Data Processing
 - **Io class**: The `Io` class extends `Map<String, String>` to achieve NULL-safe and type-safe data operations.
 - **Bug prevention**: Duplicate key checks and existence check features prevent simple mistakes.
+- **LDAP authentication**: Enables sign-in authentication that integrates with LDAP servers (such as Active Directory) with a single line in `web.properties`. After authentication, maintains the authentication state statelessly using JWT tokens.
 
 ### 3. Prototype-driven
 - **HTML reuse**: Developers can use HTML mockups created by web designers directly as production code.

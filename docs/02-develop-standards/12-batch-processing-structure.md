@@ -28,7 +28,11 @@
 │   │   └── util/                # Common component Java package: Stores common components used from batch processing Java classes. [Package name util is an example]
 │   └── com/onpg/                 # This framework domain Java package
 ├── classes/                       # Java class compilation destination directory
-└── lib/                           # Java library file directory
+├── lib/                           # Java library file directory
+├── script/                        # Batch execution shell script directory (for Linux)
+│   └── sub/                      # Common subscript directory (environment variable definitions, Java execution, etc.)
+└── script-win/                    # Batch execution script directory (for Windows)
+     └── sub/                      # Common subscript directory (environment variable definitions, Java execution, etc.)
 ```
 
 ### File Creation Unit
@@ -72,6 +76,18 @@ public class ExampleBatch extends AbstractBatch {
 ```
 java com.example.app.bat.exmodule.ExampleBatch "param1=value1&param2=value2"
 ```
+
+> Batch execution scripts are provided under `script/` (for Linux) and `script-win/` (for Windows).
+> Calling `sub/java-exec.sh` (or `java-exec.bat`) standardizes classpath and environment variable settings. Therefore, in phases after unit testing, launch batches through the execution scripts instead of directly running the `java` command.
+>
+> **Linux** (`script/JOB-EXAMPLE.sh`):
+> ```bash
+> bash $(dirname $0)/sub/java-exec.sh $(basename $0 .sh) com.example.app.bat.exmodule.ExampleBatch "param1=value1&param2=value2"
+> ```
+> **Windows** (`script-win\JOB-EXAMPLE.bat`):
+> ```bat
+> call %~dp0sub\java-exec.bat %~n0 com.example.app.bat.exmodule.ExampleBatch "param1=value1&param2=value2"
+> ```
 
 ### Database Access Processing
 - When accessing database within processing, by inheriting the `AbstractDbAccessBatch` class, database connection can be obtained from the `getDbConn` method anywhere within the class during `doExecute` method processing.

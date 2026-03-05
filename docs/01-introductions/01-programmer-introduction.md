@@ -84,6 +84,11 @@ Executed class: com.example.app.service.exmodule.ExampleListSearch
 - Responsive support ready (PC, tablet, smartphone).
 - Low learning cost (fewer class names to remember).
 
+### 1.7 LDAP Authentication
+
+- Set `ldap.enabled=true` in `web.properties` to enable sign-in authentication that integrates with LDAP servers.
+- After signing in, maintains the authentication state using JWT tokens without holding sessions on the server side (stateless).
+
 ---
 
 ## 2. Data Flow
