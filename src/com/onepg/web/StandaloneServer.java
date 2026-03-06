@@ -105,22 +105,26 @@ public final class StandaloneServer {
     this.server.createContext("/" + serverStopContext, new StopHandler());
 
     // Static file handler
-    final String staticFileContext = ServerUtil.PROP_MAP.getString("static.file.context");
-    LogUtil.stdout("Creating context. '/" + staticFileContext + "'");
-    this.server.createContext("/" + staticFileContext, new StaticFileHandler());
-    
+    if (ServerUtil.PROP_MAP.containsKey("static.file.context")) {
+      final String staticFileContext = ServerUtil.PROP_MAP.getString("static.file.context");
+      LogUtil.stdout("Creating context. '/" + staticFileContext + "'");
+      this.server.createContext("/" + staticFileContext, new StaticFileHandler());
+    }
+
     // JSON service handler
-    final String jsonServiceContext = ServerUtil.PROP_MAP.getString("json.service.context");
-    final String jsonServicePackage = ServerUtil.PROP_MAP.getString("json.service.package");
-    LogUtil.stdout("Creating context. '/" + jsonServiceContext + "'" + " (Java package '"
-        + jsonServicePackage + "')");
-    this.server.createContext("/" + jsonServiceContext,
-        new JsonServiceHandler(jsonServiceContext, jsonServicePackage));
+    if (ServerUtil.PROP_MAP.containsKey("json.service.context")) {
+      final String jsonServiceContext = ServerUtil.PROP_MAP.getString("json.service.context");
+      final String jsonServicePackage = ServerUtil.PROP_MAP.getString("json.service.package");
+      LogUtil.stdout("Creating context. '/" + jsonServiceContext + "'" + " (Java package '" + jsonServicePackage + "')");
+      this.server.createContext("/" + jsonServiceContext, new JsonServiceHandler(jsonServiceContext, jsonServicePackage));
+    }
 
     // Sign-in service handler
-    final String signinServiceContext = ServerUtil.PROP_MAP.getString("signin.service.context");
-    LogUtil.stdout("Creating context. '/" + signinServiceContext + "'");
-    this.server.createContext("/" + signinServiceContext, new SigninServiceHandler());
+    if (ServerUtil.PROP_MAP.containsKey("signin.service.context")) {
+      final String signinServiceContext = ServerUtil.PROP_MAP.getString("signin.service.context");
+      LogUtil.stdout("Creating context. '/" + signinServiceContext + "'");
+      this.server.createContext("/" + signinServiceContext, new SigninServiceHandler());
+    }
 
     // Starts
     this.server.start();

@@ -34,7 +34,7 @@ public final class LogUtil {
 
   static {
     PROP_MAP = PropertiesUtil.getFrameworkProps(FwPropertiesName.LOG);
-    DEVELOP_MODE = Boolean.parseBoolean(PROP_MAP.getString("develop.mode"));
+    DEVELOP_MODE = PROP_MAP.getBooleanOrDefault("develop.mode", false);
     CONSOLE_WRITER = new CustomPrintWriter(System.out, true, LineSep.LF);
     PARENT_PID = LogUtil.getParentPid();
 

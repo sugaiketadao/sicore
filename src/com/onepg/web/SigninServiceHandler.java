@@ -2,6 +2,7 @@ package com.onepg.web;
 
 import com.onepg.util.Io;
 import com.onepg.util.LogUtil;
+import com.onepg.util.ValUtil;
 import com.sun.net.httpserver.HttpExchange;
 import java.net.HttpURLConnection;
 
@@ -31,6 +32,12 @@ final class SigninServiceHandler extends AbstractHttpHandler {
       // Execute sign-in service processing
       (new SigninService()).execute(io);
       
+      // Execute post-sign-in service processing
+      if (!ValUtil.isBlank(ServerUtil.SIGNIN_AFTER_SERVICE_CLS)) {
+        final AbstractWebService serviceObj = createWebServiceClsInstance(ServerUtil.SIGNIN_AFTER_SERVICE_CLS);
+        serviceObj.execute(io);
+      }
+
       // Response
       final String resJson = io.createJsonWithMsg(ServerUtil.MSG_MAP);
       ServerUtil.responseJson(exchange, resJson);

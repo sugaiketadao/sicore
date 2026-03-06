@@ -1,4 +1,12 @@
 /**
+ * Initialization.
+ */
+const init = async function () {
+  // Clear messages
+  PageUtil.clearMsg();
+};
+
+/**
  * Sign-in processing.
  * Performs LDAP authentication and navigates to the portal page on success.
  */
@@ -23,3 +31,6 @@ const signin = async function () {
   // Navigate to portal page
   HttpUtil.movePage('../index.html');
 };
+
+// Execute initialization
+init();

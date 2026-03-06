@@ -62,6 +62,8 @@ final class ServerUtil {
   static final String LDAP_URL;
   /** LDAP user DN format. */
   static final String LDAP_USER_DN_FMT;
+  /** Post-sign-in service class name. */
+  static final String SIGNIN_AFTER_SERVICE_CLS;
 
   /** Message map &lt;message ID, message text&gt;. */
   static final IoItems MSG_MAP;
@@ -70,8 +72,9 @@ final class ServerUtil {
     // Retrieve web server settings
     PROP_MAP = PropertiesUtil.getFrameworkProps(FwPropertiesName.WEB);
     LDAP_ENABLED = PROP_MAP.getBooleanOrDefault("ldap.enabled", false);
-    LDAP_URL = PROP_MAP.getString("ldap.url");
-    LDAP_USER_DN_FMT = PROP_MAP.getString("ldap.user.dn.fmt");
+    LDAP_URL = PROP_MAP.getStringOrDefault("ldap.url", ValUtil.BLANK);
+    LDAP_USER_DN_FMT = PROP_MAP.getStringOrDefault("ldap.user.dn.fmt", ValUtil.BLANK);
+    SIGNIN_AFTER_SERVICE_CLS = PROP_MAP.getStringOrDefault("signin.after.service", ValUtil.BLANK);
     // Retrieve message map
     MSG_MAP = ResourcesUtil.getJson(FwResourceName.MSG);
   }

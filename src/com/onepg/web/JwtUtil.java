@@ -22,9 +22,9 @@ final class JwtUtil {
   /** JWT header (Base64URL encoded). */
   private static final String JWT_HEADER = base64UrlEncode("{\"alg\":\"HS256\",\"typ\":\"JWT\"}");
   /** Signing secret key. */
-  private static final String SECRET_KEY = ServerUtil.PROP_MAP.getString("jwt.secret.key");
+  private static final String SECRET_KEY = ServerUtil.PROP_MAP.getStringOrDefault("jwt.secret.key", "must-be-configured-in-web.properties");
   /** Expiration period (seconds). */
-  private static final long EXPIRE_SEC = ServerUtil.PROP_MAP.getLong("jwt.expire.sec");
+  private static final long EXPIRE_SEC = ServerUtil.PROP_MAP.getLongOrDefault("jwt.expire.sec", 86_400L); // デフォルトは24時間
 
   /**
    * Constructor.
