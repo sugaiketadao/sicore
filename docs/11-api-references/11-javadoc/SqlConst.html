@@ -26,13 +26,17 @@
         <h3>Description</h3>
         <div>Fixed SQL.<br>
 <ul>
-<li>Stores SQL string and bind item definitions (item name and type).</li>
-<li>When executing SQL, parameters with bind values are passed together with this SQL.</li>
+<li>Stores the SQL string and bind item definitions (item names and types).</li>
+<li>When executing SQL, pass the parameters with bind values along with this SQL.</li>
 <li>The same item name can be bound multiple times with the same type.</li>
-<li>If there are no bind items, it is used as is.</li>
+<li>If there are no bind items, use the SQL directly.</li>
+<li>Primarily intended for use in batch processing.</li>
+<li>Using this class enables prepared statement caching, so it is also intended for use in web service processing to improve performance.</li>
+<li>To execute using prepared statement caching, use <code>SqlUtil.executeOneCache</code> or <code>SqlUtil.executeCache</code>.</li>
 </ul>
 <pre>
-[SQL Declaration Example 1]<code>SqlConst SQL_INS_PET = SqlConst.begin()
+[SQL declaration example: with bind items]
+<code>SqlConst SQL_INS_PET = SqlConst.begin()
     .addQuery("INSERT INTO t_pet ( ")
     .addQuery("  pet_no ")
     .addQuery(", pet_nm ")
@@ -47,8 +51,10 @@
     .addQuery(", ? ", "now_ts", BindType.Timestamp)
     .addQuery(" ) ")
     .end();</code>
-[SQL Execution Example 1] <code>SqlUtil.executeOne(conn, SQL_INS_PET.bind(io));</code>
-[SQL Declaration Example 2]<code>SqlConst SQL_SEL_USER = SqlConst.begin()
+[SQL execution example: with bind items]
+<code>SqlUtil.executeOne(conn, SQL_INS_PET.bind(io));</code>
+[SQL declaration example: without bind items]
+<code>SqlConst SQL_SEL_USER = SqlConst.begin()
     .addQuery("SELECT ")
     .addQuery("  u.user_id ")
     .addQuery(", u.user_nm ")
@@ -57,7 +63,10 @@
     .addQuery(" FROM t_user u ")
     .addQuery(" ORDER BY u.user_id ")
     .end();</code>
-[SQL Execution Example 2] <code>SqlResultSet rSet = SqlUtil.select(getDbConn(), SQL_SEL_USER);</code>
+[SQL execution example: without bind items]
+<code>SqlResultSet rSet = SqlUtil.select(getDbConn(), SQL_SEL_USER);</code>
+[SQL execution example: prepared statement cache execution]
+<code>SqlUtil.executeOneCache(conn, SQL_INS_PET.bind(io));</code>
 </pre>
 </div>
       </div>

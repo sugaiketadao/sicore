@@ -80,6 +80,7 @@ java com.example.app.bat.exmodule.ExampleBatch "param1=value1&param2=value2"
 > Batch execution scripts are provided under `script/` (for Linux) and `script-win/` (for Windows).
 > Calling `sub/java-exec.sh` (or `java-exec.bat`) standardizes classpath and environment variable settings. Therefore, in phases after unit testing, launch batches through the execution scripts instead of directly running the `java` command.
 >
+<!-- AI_SKIP_START -->
 > **Linux** (`script/JOB-EXAMPLE.sh`):
 > ```bash
 > bash $(dirname $0)/sub/java-exec.sh $(basename $0 .sh) com.example.app.bat.exmodule.ExampleBatch "param1=value1&param2=value2"
@@ -88,6 +89,7 @@ java com.example.app.bat.exmodule.ExampleBatch "param1=value1&param2=value2"
 > ```bat
 > call %~dp0sub\java-exec.bat %~n0 com.example.app.bat.exmodule.ExampleBatch "param1=value1&param2=value2"
 > ```
+<!-- AI_SKIP_END -->
 
 ### Database Access Processing
 - When accessing database within processing, by inheriting the `AbstractDbAccessBatch` class, database connection can be obtained from the `getDbConn` method anywhere within the class during `doExecute` method processing.
@@ -197,6 +199,32 @@ SqlConst.begin()
 // Bind values and generate SqlBean
 SQL_INS_USER.bind(row)
 ```
+
+#### Prepared Statement Cache Execution
+- When executing the same SQL repeatedly within a loop, use `SqlUtil.executeOneCache` or `SqlUtil.executeCache` to cache the prepared statement and improve performance.
+- To use caching, a `DbConn` instance returned by `getDbConn()` of `AbstractDbAccessBatch` and a `SqlConst` (fixed SQL) are required. `SqlBuilder` (dynamic SQL) is not eligible for caching.
+- Cached prepared statements are retained until the DB connection is closed.
+
+**Implementation Example**:
+```java
+@Override
+public int doExecute(final IoItems io) throws Exception {
+  // Bulk retrieval
+  final IoRows rows = SqlUtil.selectBulkAll(getDbConn(), SQL_SEL_IMPORT_DATA);
+
+  for (final IoItems row : rows) {
+    // Execute the same SQL repeatedly in a loop → improve performance with caching
+    SqlUtil.executeOneCache(getDbConn(), SQL_INS_USER.bind(row));
+  }
+  return 0;
+}
+```
+
+**Main Methods**:
+| Method | Return Value | Description |
+|-|-|-|
+| `SqlUtil.executeOneCache(conn, sb)` | `boolean` | Executes for one row. Throws an exception if multiple rows are updated. Returns `false` for 0 rows, `true` for 1 row. |
+| `SqlUtil.executeCache(conn, sb)` | `int` | Executes for multiple rows. Returns the number of affected rows. |
 
 ### Log Output Processing
 For log output, use the `logger` instance that the superclass `AbstractBatch` (including `AbstractDbAccessBatch`) has.

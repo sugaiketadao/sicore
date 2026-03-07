@@ -479,15 +479,15 @@ If the value is <code>null</code>, returns the replacement character for logging
           <p><code>String</code> - formatted uptime</p>
         </div>
       </div>
-      <div class="method" id="getClassNameAndLineNo">
-        <h3 class="method-name">getClassNameAndLineNo</h3>
+      <div class="method" id="getClsNameAndLineNo">
+        <h3 class="method-name">getClsNameAndLineNo</h3>
         <div class="method-signature">
-          <code>public String getClassNameAndLineNo(Class&lt;?&gt; callerClass)</code>
+          <code>public String getClsNameAndLineNo(Class&lt;?&gt; callerCls)</code>
         </div>
         <div class="method-description">
-          Gets caller information.
+          Retrieves caller information.
 <ul>
-<li>Gets the class package + class name + line number of the caller from the stack trace.</li>
+<li>Retrieves the caller's class package, class name, and line number from the stack trace.</li>
 </ul>
         </div>
         <div class="method-parameters">
@@ -502,16 +502,16 @@ If the value is <code>null</code>, returns the replacement character for logging
             </thead>
             <tbody>
               <tr>
-                <td><code>callerClass</code></td>
+                <td><code>callerCls</code></td>
                 <td><code>Class&lt;?&gt;</code></td>
-                <td>caller class</td>
+                <td>the caller class</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>String</code> - class package + class name + line number</p>
+          <p><code>String</code> - the class package, class name, and line number</p>
         </div>
       </div>
     </div>

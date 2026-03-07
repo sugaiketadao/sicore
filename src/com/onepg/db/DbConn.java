@@ -16,6 +16,7 @@ import java.sql.Savepoint;
 import java.sql.ShardingKey;
 import java.sql.Statement;
 import java.sql.Struct;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -39,6 +40,9 @@ public class DbConn implements Connection {
   private final Connection conn;
   /** Connection serial code. */
   protected final String serialCode;
+
+  /** Prepared statement cache &lt;SQL-ID, PreparedStatement&gt;. */
+  private final Map<String, PreparedStatement> psCache = new HashMap<>();
 
   /**
    * Constructor.
@@ -95,12 +99,71 @@ public class DbConn implements Connection {
   }
 
   /**
+   * Creates a prepared statement (with prepared statement cache).<br>
+   * <ul>
+   * <li>Creates and returns a prepared statement using the SQL string passed as an argument.</li>
+   * <li>Prepared statements are cached with the SQL-ID as the key; if the same SQL-ID exists, returns the cached prepared statement.</li>
+   * <li>Cached prepared statements are reused until the DB connection is closed.</li>
+   * </ul>
+   * 
+   * @param sqlId the SQL identification ID
+   * @param sql the SQL string
+   * @return the prepared statement
+   * @throws SQLException SQL exception
+   */
+  PreparedStatement prepareStatementCache(final String sqlId, final String sql) throws SQLException {
+    if (ValUtil.isBlank(sqlId)) {
+      throw new RuntimeException("SQL-ID must not be blank. " + LogUtil.joinKeyVal("sqlId", sqlId));
+    }
+    if (ValUtil.isBlank(sql)) {
+      throw new RuntimeException("SQL must not be blank. " + LogUtil.joinKeyVal("sqlId", sqlId, "sql", sql));
+    }
+    // Return from cache if the SQL-ID exists in cache
+    if (this.psCache.containsKey(sqlId)) {
+      if (this.logger.isDevelopMode()) {
+        this.logger.develop("Prepared statement cache hit. " + LogUtil.joinKeyVal("sqlId", sqlId));
+      }
+      return this.psCache.get(sqlId);
+    }
+    // Generate, store in cache, and return if the SQL-ID does not exist in cache
+    if (this.logger.isDevelopMode()) {
+      this.logger.develop("Prepared statement cache miss. " + LogUtil.joinKeyVal("sqlId", sqlId));
+    }
+    final PreparedStatement ps = this.conn.prepareStatement(sql);
+    this.psCache.put(sqlId, ps);
+    return ps;
+  }
+
+  /**
+   * Clears the prepared statement cache.<br>
+   * <ul>
+   * <li>Closes all cached prepared statements and clears the cache.</li>
+   * </ul>
+   *
+   */
+  void closePsCache() {
+    for (final Map.Entry<String, PreparedStatement> entry : this.psCache.entrySet()) {
+      final PreparedStatement ps = entry.getValue();
+      try {
+        ps.close();
+        this.logger.develop("Prepared statement closed. " + LogUtil.joinKeyVal("sqlId", entry.getKey()));
+      } catch (SQLException e) {
+        this.logger.error(e, "Exception error occurred during prepared statement close. " + LogUtil.joinKeyVal("sqlId", entry.getKey()));
+      }
+    }
+    this.psCache.clear();
+  }
+
+  /**
    * Forces rollback and disconnects the database.<br>
    * <ul>
    * <li>Components should use this method instead of <code>#close()</code> as it does not throw errors.</li>
    * </ul>
    */
   void rollbackCloseForce() {
+    // Close prepared statement cache
+    closePsCache();
+
     try {
       if (this.conn.isClosed()) {
         this.logger.develop("Database connection is already closed. ");

@@ -15,31 +15,31 @@ import java.util.List;
  */
 public class SqlBean {
 
-  /** SQL identifier ID.  */
+  /** SQL-ID.  */
   protected final String id;
-  
   /** SQL string. */
   protected final String query;
-  
   /** SQL string builder. */
   protected final StringBuilder queryBuilder;
-
   /** Bind value list. */
   protected final List<Object> bindValues;
   
   /**
-   * Constructor for fixed SQL.
+   * Constructor for SqlConst (fixed SQL).
    */
   protected SqlBean(final String query) {
     // Get class package + class name + line number as ID
-    this.id = LogUtil.getClassNameAndLineNo(this.getClass());
+    this.id = LogUtil.getClsNameAndLineNo(this.getClass());
     this.query = query;
     this.queryBuilder = null;
     this.bindValues = new ArrayList<>();
   }
   
   /**
-   * Constructor for fixed SQL with bind values.
+   * Constructor with bind values for SqlConst (fixed SQL)#bind.<br>
+   * <ul>
+   * <li>The SQL-ID is inherited from the originating instance.</li>
+   * </ul>
    */
   protected SqlBean(final String id, final String query, final List<Object> bindValues) {
     this.id = id;
@@ -49,7 +49,10 @@ public class SqlBean {
   }
   
   /**
-   * Constructor for dynamic SQL.
+   * Constructor for SqlBuilder (dynamic SQL).<br>
+   * <ul>
+   * <li>The SQL-ID is always blank.</li>
+   * </ul>
    */
   protected SqlBean() {
     this.id = ValUtil.BLANK;
@@ -59,9 +62,9 @@ public class SqlBean {
   }
 
   /**
-   * Gets SQL identifier ID.
+   * Gets SQL-ID.
    *
-   * @return the SQL identifier ID (<code>null</code> allowed)
+   * @return the SQL-ID (<code>null</code> allowed)
    */
   String getId() {
     return this.id;

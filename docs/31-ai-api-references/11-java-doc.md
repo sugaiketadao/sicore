@@ -2310,14 +2310,14 @@ public String formatDaysTime(long msec)
 
 **Returns**: `String`
 
-#### getClassNameAndLineNo
+#### getClsNameAndLineNo
 
 ```
-public String getClassNameAndLineNo(Class<?> callerClass)
+public String getClsNameAndLineNo(Class<?> callerCls)
 ```
 
 **Parameters**:
-- `callerClass`: `Class<?>`
+- `callerCls`: `Class<?>`
 
 **Returns**: `String`
 
@@ -2993,6 +2993,30 @@ public boolean executeOne(Connection conn, SqlBean sb)
 
 ```
 public int execute(Connection conn, SqlBean sb)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `sb`: `SqlBean`
+
+**Returns**: `int`
+
+#### executeOneCache
+
+```
+public boolean executeOneCache(Connection conn, SqlBean sb)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `sb`: `SqlBean`
+
+**Returns**: `boolean`
+
+#### executeCache
+
+```
+public int executeCache(Connection conn, SqlBean sb)
 ```
 
 **Parameters**:

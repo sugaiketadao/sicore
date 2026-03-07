@@ -346,6 +346,7 @@ public final class SqlUtil {
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be inserted into the new column without modifying the implementation.</li>
    * <li>Throws an exception if the number of affected rows is zero for reasons other than a unique constraint violation.</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -431,6 +432,7 @@ public final class SqlUtil {
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be inserted into the new column without modifying the implementation.</li>
    * <li>Throws an exception if the number of affected rows is zero for reasons other than a unique constraint violation.</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -528,6 +530,7 @@ public final class SqlUtil {
    * <li>A WHERE clause is built using the key columns.</li>
    * <li>Key columns MUST be included in the parameter values.</li>
    * <li>Key column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -563,6 +566,7 @@ public final class SqlUtil {
    * <li>Key column names and the timestamp column name MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
    * <li>The timestamp column is updated to the current date and time.</li>
    * <li>Use <code>#updateOne(Connection, String, AbstractIoTypeMap, String[])</code> if timestamp optimistic locking is not required.</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -632,6 +636,7 @@ public final class SqlUtil {
    * <li>A WHERE clause is built using the primary key columns of the table.</li>
    * <li>Throws an exception if the table has no primary key.</li>
    * <li>Primary key columns MUST be included in the parameter values.</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -659,6 +664,7 @@ public final class SqlUtil {
    * <li>The timestamp column name MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
    * <li>The timestamp column is updated to the current date and time.</li>
    * <li>Use <code>#updateOneByPkey(Connection, String, AbstractIoTypeMap)</code> if timestamp optimistic locking is not required.</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -683,6 +689,7 @@ public final class SqlUtil {
    * <li>A WHERE clause is built using the search condition columns.</li>
    * <li>Search condition columns MUST be included in the parameter values.</li>
    * <li>Search condition column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn       the database connection
@@ -730,6 +737,7 @@ public final class SqlUtil {
    * <li>Updates all records in the specified table.</li>
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn       the database connection
@@ -776,6 +784,7 @@ public final class SqlUtil {
    * <li>Key columns MUST be included in the parameter values.</li>
    * <li>Parameters that are not key columns are ignored.</li>
    * <li>Key column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -809,6 +818,7 @@ public final class SqlUtil {
    * <li>Parameters that are neither key columns nor the timestamp column are ignored.</li>
    * <li>Key column names and the timestamp column name MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
    * <li>Use <code>#deleteOne(Connection, String, AbstractIoTypeMap, String[])</code> if timestamp optimistic locking is not required.</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -851,6 +861,7 @@ public final class SqlUtil {
    * <li>Throws an exception if the table has no primary key.</li>
    * <li>Primary key columns MUST be included in the parameter values.</li>
    * <li>Parameters that are not primary key columns are ignored.</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -876,6 +887,7 @@ public final class SqlUtil {
    * <li>Parameters that are neither primary key columns nor the timestamp column are ignored.</li>
    * <li>The timestamp column name MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
    * <li>Use <code>#deleteOneByPkey(Connection, String, AbstractIoTypeMap)</code> if timestamp optimistic locking is not required.</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn      the database connection
@@ -898,6 +910,7 @@ public final class SqlUtil {
    * <li>A WHERE clause is built using the search condition columns.</li>
    * <li>Search condition columns MUST be included in the parameter values.</li>
    * <li>Search condition column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
+   * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
    * </ul>
    *
    * @param conn       the database connection
@@ -1095,19 +1108,95 @@ public final class SqlUtil {
   private static int executeSql(final Connection conn, final SqlBean sb)
       throws SQLException {
         
-    if (logger.isDevelopMode()) {
-      // Output SQL log
-      logger.develop("SQL#EXECUTE execution. " + LogUtil.joinKeyVal("sql", sb));
-    }
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
     // Generate statement
     try (final PreparedStatement stmt = conn.prepareStatement(sb.getQuery());) {
       // Set parameters to statement
       setStmtParameters(stmt, sb.getBindValues(), dbmsName);
+      if (logger.isDevelopMode()) {
+        // Output SQL log
+        logger.develop("SQL#EXECUTE execution. " + LogUtil.joinKeyVal("sql", sb));
+      }
       // Execute SQL
       final int ret = stmt.executeUpdate();
       return ret;
     }
+  }
+
+  /**
+   * Executes insert, update, or delete for a single record (SQL, with prepared statement cache).<br>
+   * <ul>
+   * <li>Throws an exception error if multiple records are affected.</li>
+   * <li>Improves performance when executing the same SQL multiple times.</li>
+   * <li>Executes using a cached prepared statement.</li>
+   * <li>To use caching, a <code>DbConn</code> (DB connection wrapper) instance and a <code>SqlConst</code> (fixed SQL) instance with a SQL-ID are required.</li>
+   * </ul>
+   *
+   * @param conn the database connection
+   * @param sb the SQL Bean
+   * @return <code>true</code> if one record is affected, <code>false</code> if zero
+   */
+  public static boolean executeOneCache(final Connection conn, final SqlBean sb) {
+    final int ret = executeCache(conn, sb);
+    if (ret > 1) {
+      throw new RuntimeException("Multiple records were affected. " + LogUtil.joinKeyVal("sql", sb));
+    }
+    return (ret == 1);
+  }
+
+  /**
+   * Executes insert, update, or delete (SQL, with prepared statement cache).<br>
+   * <ul>
+   * <li>Improves performance when executing the same SQL multiple times.</li>
+   * <li>Executes using a cached prepared statement.</li>
+   * <li>To use caching, a <code>DbConn</code> (DB connection wrapper) instance and a <code>SqlConst</code> (fixed SQL) instance with a SQL-ID are required.</li>
+   * </ul>
+   *
+   * @param conn the database connection
+   * @param sb the SQL Bean
+   * @return the number of affected records
+   */
+  public static int executeCache(final Connection conn, final SqlBean sb) {
+    try {
+      return executeSqlCache(conn, sb);
+    } catch (SQLException e) {
+      throw new RuntimeException("Exception error occurred during SQL execution. " + LogUtil.joinKeyVal("sql", sb), e);
+    }
+  }
+
+  /**
+   * Executes SQL (with prepared statement cache).
+   *
+   * @param conn the database connection
+   * @param sb the SQL Bean
+   * @return the number of affected records
+   * @throws SQLException SQL exception error
+   */
+  private static int executeSqlCache(final Connection conn, final SqlBean sb)
+      throws SQLException {
+
+    final String sqlId = sb.getId();
+    if (ValUtil.isBlank(sqlId)) {
+      throw new RuntimeException("A SqlConst (fixed SQL) instance with a SQL-ID is required. " + LogUtil.joinKeyVal("sql", sb));
+    }
+    if (!(conn instanceof DbConn)) {
+      throw new RuntimeException("A cache-enabled DbConn (DB connection wrapper) instance is required. " + LogUtil.joinKeyVal("sql", sb));
+    }
+    final DbConn dbConn = (DbConn) conn;        
+    final DbmsName dbmsName = DbUtil.getDbmsName(conn);
+    // Generate statement
+    final PreparedStatement stmt = dbConn.prepareStatementCache(sqlId, sb.getQuery());
+    // Set parameters to statement
+    setStmtParameters(stmt, sb.getBindValues(), dbmsName);
+    if (logger.isDevelopMode()) {
+      // Output SQL log
+      logger.develop("SQL#EXECUTE execution. " + LogUtil.joinKeyVal("sql", sb));
+    }
+    // Execute SQL
+    final int ret = stmt.executeUpdate();
+    // Clear statement parameters to cache and reuse
+    stmt.clearParameters();
+    return ret;
   }
 
   /**

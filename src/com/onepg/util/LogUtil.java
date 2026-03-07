@@ -468,22 +468,39 @@ public final class LogUtil {
   }
 
   /**
-   * Gets caller information.
+   * Retrieves caller information.
    * <ul>
-   * <li>Gets the class package + class name + line number of the caller from the stack trace.</li>
+   * <li>Retrieves the caller's class package, class name, and line number from the stack trace.</li>
    * </ul>
-   * @param callerClass caller class
-   * @return class package + class name + line number
+   * @param callerCls the caller class
+   * @return the class package, class name, and line number
    */
-  public static String getClassNameAndLineNo(final Class<?> callerClass) {
-    final String callerClassName = callerClass.getName();
+  public static String getClsNameAndLineNo(final Class<?> callerCls) {
+    final String callerClsName = callerCls.getName();
+    final String thisClsName = LogUtil.class.getName();
     final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
     for (final StackTraceElement element : stackTrace) {
-      final String className = element.getClassName();
-      if (!className.equals(callerClassName)
-          && !className.equals(Thread.class.getName())) {
-        return className + "[" + element.getLineNumber() + "]";
+      final String clsName = element.getClassName();
+      if (clsName.equals(Thread.class.getName())) {
+        continue;
       }
+      if (clsName.equals(thisClsName)) {
+        continue;
+      }
+      if (clsName.equals(callerClsName) || clsName.startsWith(callerClsName + "$")) {
+        // Skips callerCls itself and its inner classes
+        continue;
+      }
+      try {
+        final Class<?> elementCls = Class.forName(clsName);
+        if (elementCls.isAssignableFrom(callerCls)) {
+          // Skips superclasses and superinterfaces of callerCls
+          continue;
+        }
+      } catch (final ClassNotFoundException ignore) {
+        // No processing
+      }
+      return clsName + "[" + element.getLineNumber() + "]";
     }
     return "UnknownSource";
   }

@@ -205,9 +205,9 @@ public class ExampleImport extends AbstractDbAccessBatch {
     // Reads the file and updates the database
     try (final CsvReader cr = new CsvReader(inputPath, CharSet.UTF8, CsvType.DQ_ALL_LF)) {
       for (final IoItems row : cr) {
-        if (!SqlUtil.executeOne(getDbConn(), SQL_UPD_USER.bind(row))) {
+        if (!SqlUtil.executeOneCache(getDbConn(), SQL_UPD_USER.bind(row))) {
           // Executes insert if the update count is 0
-          SqlUtil.executeOne(getDbConn(), SQL_INS_USER.bind(row));
+          SqlUtil.executeOneCache(getDbConn(), SQL_INS_USER.bind(row));
         }
       }
       if (cr.getReadedCount() == 0) {
@@ -233,6 +233,7 @@ java com.example.app.bat.exmodule.ExampleImport "input=/tmp/user_import.csv"
 - `IoItems#putAllByCsvDq(String[], String)`: Creates a map from field name array and CSV row.
 - `SqlConst#bind(IoItems)`: Binds values to predefined SQL and generates a SqlBuilder.
 - `SqlUtil.executeOne()`: Returns true if the update count is 1, false if 0.
+- `SqlUtil.executeOneCache()`: The Prepared Statement Cache Execution variant of `SqlUtil.executeOne()` above.
 <!-- AI_SKIP_END -->
 
 ---
