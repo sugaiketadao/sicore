@@ -8,9 +8,9 @@ import java.util.List;
  * SQL builder.<br>
  * <ul>
  * <li>A class that encapsulates SQL and parameter list required for database access.</li>
+ * <li>Primarily intended for web service processing use; declare as a method variable.</li>
  * <li>Has methods that can build SQL and set parameters simultaneously.</li>
  * <li><code>add*</code> methods return the instance itself, so they can be used in method chains.</li>
- * <li>Primarily intended for use in web service processing.</li>
  * </ul>
  * <pre>
  * [SQL Addition Example 1] <code>sqlBuilder.addQuery("AND a.user_id IS NOT NULL ");</code>
@@ -76,7 +76,8 @@ public final class SqlBuilder extends SqlBean {
   /**
    * Adds SQL builder.<br>
    * <ul>
-   * <li>Inherits SQL and parameters.</li>
+   * <li>Inherits SQL and parameters from another <code>SqlBuilder</code>.</li>
+   * <li>Used when building subqueries or condition blocks separately.</li>
    * </ul>
    *
    * @param sb the SQL builder
@@ -98,6 +99,7 @@ public final class SqlBuilder extends SqlBean {
    * [Example 2] <code>sqlBuilder.addQuery("AND a.user_id = ? ", userId);</code>
    * [Example 3] <code>sqlBuilder.addQuery("AND ? <= a.birth_dt AND a.birth_dt <= ?", birthDtFrom, birthDtTo);</code>
    * </pre>
+   *
    * @param sql    the SQL
    * @param params the parameters (multiple allowed) (optional)
    * @return the instance itself
@@ -168,6 +170,7 @@ public final class SqlBuilder extends SqlBean {
    * <pre>In the example below, SQL is added only if <code>userId</code> is not <code>null</code> and not blank.
    * [Example] <code>sqlBuilder.addQueryIfNotBlankParameter("AND user_id = ? ", userId);</code>
    * </pre>
+   *
    * @see #addQuery(String, Object...)
    * @see #addQnotB(String, Object)
    * @param sql the SQL

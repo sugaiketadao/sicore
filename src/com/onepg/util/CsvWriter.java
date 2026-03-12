@@ -12,7 +12,7 @@ import com.onepg.util.ValUtil.LineSep;
  * <li>Allows specification of character set, line separator, and CSV format.</li>
  * </ul>
  */
-public class CsvWriter implements AutoCloseable {
+public final class CsvWriter implements AutoCloseable {
 
   /** Text writer. */
   private final TxtWriter txtWriter;

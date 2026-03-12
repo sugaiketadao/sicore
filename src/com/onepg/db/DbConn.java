@@ -42,7 +42,7 @@ public class DbConn implements Connection {
   protected final String serialCode;
 
   /** Prepared statement cache &lt;SQL-ID, PreparedStatement&gt;. */
-  private final Map<String, PreparedStatement> psCache = new HashMap<>();
+  private final Map<String, PreparedStatement> stmtCache = new HashMap<>();
 
   /**
    * Constructor.
@@ -119,19 +119,19 @@ public class DbConn implements Connection {
       throw new RuntimeException("SQL must not be blank. " + LogUtil.joinKeyVal("sqlId", sqlId, "sql", sql));
     }
     // Return from cache if the SQL-ID exists in cache
-    if (this.psCache.containsKey(sqlId)) {
+    if (this.stmtCache.containsKey(sqlId)) {
       if (this.logger.isDevelopMode()) {
         this.logger.develop("Prepared statement cache hit. " + LogUtil.joinKeyVal("sqlId", sqlId));
       }
-      return this.psCache.get(sqlId);
+      return this.stmtCache.get(sqlId);
     }
     // Generate, store in cache, and return if the SQL-ID does not exist in cache
     if (this.logger.isDevelopMode()) {
       this.logger.develop("Prepared statement cache miss. " + LogUtil.joinKeyVal("sqlId", sqlId));
     }
-    final PreparedStatement ps = this.conn.prepareStatement(sql);
-    this.psCache.put(sqlId, ps);
-    return ps;
+    final PreparedStatement stmt = this.conn.prepareStatement(sql);
+    this.stmtCache.put(sqlId, stmt);
+    return stmt;
   }
 
   /**
@@ -141,17 +141,13 @@ public class DbConn implements Connection {
    * </ul>
    *
    */
-  void closePsCache() {
-    for (final Map.Entry<String, PreparedStatement> entry : this.psCache.entrySet()) {
-      final PreparedStatement ps = entry.getValue();
-      try {
-        ps.close();
-        this.logger.develop("Prepared statement closed. " + LogUtil.joinKeyVal("sqlId", entry.getKey()));
-      } catch (SQLException e) {
-        this.logger.error(e, "Exception error occurred during prepared statement close. " + LogUtil.joinKeyVal("sqlId", entry.getKey()));
-      }
+  void closeStmtCache() {
+    for (final Map.Entry<String, PreparedStatement> entry : this.stmtCache.entrySet()) {
+      final PreparedStatement stmt = entry.getValue();
+      DbUtil.closeQuietly(stmt);
+      this.logger.develop("Prepared statement closed. " + LogUtil.joinKeyVal("sqlId", entry.getKey()));
     }
-    this.psCache.clear();
+    this.stmtCache.clear();
   }
 
   /**
@@ -162,7 +158,7 @@ public class DbConn implements Connection {
    */
   void rollbackCloseForce() {
     // Close prepared statement cache
-    closePsCache();
+    closeStmtCache();
 
     try {
       if (this.conn.isClosed()) {

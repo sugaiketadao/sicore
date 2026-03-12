@@ -391,6 +391,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
           Inserts a single record into the specified table.<br>
 <ul>
 <li>Inserts one record into the specified table.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>Parameters not present in the table are ignored.</li>
 <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be inserted into the new column without modifying the implementation.</li>
 <li>Throws an exception if the number of affected rows is zero for reasons other than a unique constraint violation.</li>
@@ -442,6 +443,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
 <ul>
 <li>Inserts one record into the specified table.</li>
 <li>Sets the timestamp for optimistic locking.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>Parameters not present in the table are ignored.</li>
 <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be inserted into the new column without modifying the implementation.</li>
 <li>Throws an exception if the number of affected rows is zero for reasons other than a unique constraint violation.</li>
@@ -498,6 +500,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
 <ul>
 <li>Updates one record in the specified table.</li>
 <li>Throws an exception if multiple records are updated.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>Parameters not present in the table are ignored.</li>
 <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
 <li>A WHERE clause is built using the key columns.</li>
@@ -557,6 +560,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
 <li>Updates one record in the specified table.</li>
 <li>Throws an exception if multiple records are updated.</li>
 <li>Performs optimistic locking using a timestamp.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>Parameters not present in the table are ignored.</li>
 <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
 <li>A WHERE clause is built using the key columns and the timestamp column (for locking).</li>
@@ -622,6 +626,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
 <ul>
 <li>Updates one record in the specified table.</li>
 <li>Throws an exception if multiple records are updated.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>Parameters not present in the table are ignored.</li>
 <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
 <li>A WHERE clause is built using the primary key columns of the table.</li>
@@ -676,6 +681,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
 <li>Updates one record in the specified table.</li>
 <li>Throws an exception if multiple records are updated.</li>
 <li>Performs optimistic locking using a timestamp.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>Parameters not present in the table are ignored.</li>
 <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
 <li>A WHERE clause is built using the primary key columns and the timestamp column (for locking).</li>
@@ -736,6 +742,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
           Updates multiple records in the specified table.<br>
 <ul>
 <li>Updates multiple records in the specified table.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>Parameters not present in the table are ignored.</li>
 <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
 <li>A WHERE clause is built using the search condition columns.</li>
@@ -793,6 +800,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
           Updates all records in the specified table.<br>
 <ul>
 <li>Updates all records in the specified table.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>Parameters not present in the table are ignored.</li>
 <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
 <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
@@ -843,6 +851,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
 <ul>
 <li>Deletes one record from the specified table.</li>
 <li>Throws an exception if multiple records are deleted.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>A WHERE clause is built using the key columns.</li>
 <li>Key columns MUST be included in the parameter values.</li>
 <li>Parameters that are not key columns are ignored.</li>
@@ -901,6 +910,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
 <li>Deletes one record from the specified table.</li>
 <li>Throws an exception if multiple records are deleted.</li>
 <li>Performs optimistic locking using a timestamp.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>A WHERE clause is built using the key columns and the timestamp column (for locking).</li>
 <li>Key columns and the timestamp column MUST be included in the parameter values.</li>
 <li>Parameters that are neither key columns nor the timestamp column are ignored.</li>
@@ -964,6 +974,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
 <ul>
 <li>Deletes one record from the specified table.</li>
 <li>Throws an exception if multiple records are deleted.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>A WHERE clause is built using the primary key columns of the table.</li>
 <li>Throws an exception if the table has no primary key.</li>
 <li>Primary key columns MUST be included in the parameter values.</li>
@@ -1017,6 +1028,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
 <li>Deletes one record from the specified table.</li>
 <li>Throws an exception if multiple records are deleted.</li>
 <li>Performs optimistic locking using a timestamp.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>A WHERE clause is built using the primary key columns and the timestamp column (for locking).</li>
 <li>Throws an exception if the table has no primary key.</li>
 <li>Primary key columns and the timestamp column MUST be included in the parameter values.</li>
@@ -1075,6 +1087,7 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
           Deletes multiple records from the specified table.<br>
 <ul>
 <li>Deletes multiple records from the specified table.</li>
+<li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
 <li>A WHERE clause is built using the search condition columns.</li>
 <li>Search condition columns MUST be included in the parameter values.</li>
 <li>Search condition column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
@@ -1326,6 +1339,49 @@ Alternatively, though more complex, splitting data retrieval using a SQL LIMIT c
         <div class="method-returns">
           <h4>Return Value</h4>
           <p><code>int</code> - the number of affected records</p>
+        </div>
+      </div>
+      <div class="method" id="createItemBindTypeMapByMeta">
+        <h3 class="method-name">createItemBindTypeMapByMeta</h3>
+        <div class="method-signature">
+          <code>public Map&lt;String, BindType&gt; createItemBindTypeMapByMeta(Connection conn, String tableName)</code>
+        </div>
+        <div class="method-description">
+          Creates a DB column name and bind type map for the specified table.<br>
+<ul>
+<li>Creates a map of field names and bind types from DB metadata.</li>
+<li>Preserves the field order in the map.</li>
+<li>Converts physical field names to lowercase letters. (To match the key rules of <code>AbstractIoTypeMap</code>)</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>conn</code></td>
+                <td><code>Connection</code></td>
+                <td>database connection</td>
+              </tr>
+              <tr>
+                <td><code>tableName</code></td>
+                <td><code>String</code></td>
+                <td>table name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Map&lt;String, BindType&gt;</code> - DB column name (lowercase) and bind type map</p>
         </div>
       </div>
       <div class="method" id="getToday">

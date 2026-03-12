@@ -132,6 +132,27 @@ public final class IoItems extends AbstractIoTypeMap {
   }
 
   /**
+   * Creates TSV string for data I/O.<br>
+   * <ul>
+   * <li>Creates TSV string in the order values were added to the map.</li>
+   * <li>Escapes <code>null</code>.</li>
+   * <li>Escapes line break codes (CRLF, CR, LF) and tab characters within values.</li>
+   * </ul>
+   *
+   * @param csvType CSV type
+   * @return the CSV string
+   */
+  String createIoTsv() {
+    final StringBuilder sb = new StringBuilder();
+    for (final Entry<String, String> ent : super.getValMap().entrySet()) {
+      final String val = ValUtil.nvl(ent.getValue());
+      sb.append(ValUtil.escIoTsv(val)).append(ValUtil.TAB);
+    }
+    ValUtil.deleteLastChar(sb);
+    return sb.toString();
+  }
+
+  /**
    * Creates URL parameter (the part after ? in URL).
    *
    * @return the URL-encoded GET parameter
@@ -298,6 +319,46 @@ public final class IoItems extends AbstractIoTypeMap {
       // Store value
       count++;
       put(key, value.replace("\"\"", "\""));
+    }
+    return count;
+  }
+
+  /**
+   * Stores TSV values for data I/O.
+   * <ul>
+   * <li>Storing with an already existing key results in a runtime error.</li>
+   * <li>Assumes <code>null</code> is escaped.</li>
+   * <li>Assumes line break codes (CRLF, CR, LF) and tab characters within values are escaped.</li>
+   * </ul>
+   *
+   * @param keys key array
+   * @param tsv TSV string
+   * @return the number of stored items
+   */
+  int putAllByIoTsv(final String[] keys, final String tsv) {
+    // Maximum index
+    final int keyMaxIdx = keys.length - 1;
+
+    int keyIdx = -1;
+    int count = 0;
+
+    for (final String value : new SimpleSeparateParser(tsv, ValUtil.TAB)) {
+      keyIdx++;
+      if (keyMaxIdx < keyIdx) {
+        // Terminate when TSV columns exceed key columns (normally should not occur)
+        break;
+      }
+
+      // Key name
+      final String key = keys[keyIdx];
+      if (ValUtil.isBlank(key)) {
+        // Skip if key name is blank (treat as unnecessary item) (normally should not occur)
+        continue;
+      }
+
+      // Store value
+      count++;
+      put(key, ValUtil.reEscIoTsv(value));
     }
     return count;
   }

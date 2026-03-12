@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SqlResultSet - JavaDoc</title>
+  <title>IoTsvReader - JavaDoc</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="header">
     <div class="header-content">
-      <h1>SqlResultSet</h1>
-      <p>Framework Components [com.onepg.db]</p>
+      <h1>IoTsvReader</h1>
+      <p>Framework Components [com.onepg.util]</p>
       <a href="index.html" class="back-link">← Back to Class List</a>
     </div>
   </div>
@@ -18,27 +18,30 @@
     <div class="section">
       <h2>Class Information</h2>
       <div class="class-details">
-        <p><strong>Package:</strong> com.onepg.db</p>
-        <p><strong>Class Name:</strong> SqlResultSet</p>
+        <p><strong>Package:</strong> com.onepg.util</p>
+        <p><strong>Class Name:</strong> IoTsvReader</p>
       </div>
       <div class="class-description">
         <h3>Description</h3>
-        <div>SQL result set wrapper class.
-
+        <div>TSV reader class for data I/O.<br>
 <ul>
-<li>A wrapper class for the result set <code>ResultSet</code> that provides an iterator and handles closing of the statement and result set.</li>
-<li>By using this class, data can only be retrieved through the iterator.</li>
+<li>Wrapper class for the text reader <code>TxtReader</code>.</li>
 <li>Declare in a try clause (try-with-resources statement).</li>
-<li>The physical field names in the row map retrieved from the iterator of this class are in lowercase English letters. (<code>IoItems</code> keys)</li>
+<li>Provides an iterator that returns each TSV row as <code>IoItems</code>.</li>
+<li>Uses the first row of the file as column names and as keys for <code>IoItems</code>.</li>
+<li>Key names must be valid as <code>IoItems</code> object keys. (key rule of <code>AbstractIoTypeMap</code>)</li>
+<li>Assumes the file encoding is UTF-8 and the line separator is LF.</li>
+<li>Assumes that newline characters (CRLF, CR, LF) and tab characters within values are escaped.</li>
 </ul>
+<pre>[Example]
+<code>try (final IoTsvReader tr = new IoTsvReader(filePath);) {
+  for (final IoItems items : tr) {
+    : (omitted)
+  }
+}</code>
+</pre>
 </div>
       </div>
-        <div class="see-also">
-          <h4>See Also</h4>
-          <ul>
-            <li><a href="SqlUtil.html#select">SqlUtil#select(java.sql.Connection, SqlBuilder)</a></li>
-          </ul>
-        </div>
     </div>
     <div class="section">
       <h2>Method List</h2>
@@ -53,7 +56,7 @@
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>Iterator&lt;IoItems&gt;</code> - the result row iterator</p>
+          <p><code>Iterator&lt;IoItems&gt;</code> - the TSV row iterator</p>
         </div>
       </div>
       <div class="method" id="close">
@@ -62,29 +65,22 @@
           <code>public void close()</code>
         </div>
         <div class="method-description">
-          Closes the result set and statement.<br>
-<ul>
-<li>Closes the result set and statement.</li>
-</ul>
-
+          Closes the file.
   
         </div>
       </div>
-      <div class="method" id="isExists">
-        <h3 class="method-name">isExists</h3>
+      <div class="method" id="getKeys">
+        <h3 class="method-name">getKeys</h3>
         <div class="method-signature">
-          <code>public boolean isExists()</code>
+          <code>public String[] getKeys()</code>
         </div>
         <div class="method-description">
-          Checks if data exists (matches database retrieval conditions).<br>
+          Retrieves the key array.<br>
 <ul>
-<li>In DB2, #isBeforeFirst (with TYPE_FORWARD_ONLY) causes an error.</li>
+<li>Returns the key array retrieved from the first row of the file.</li>
+<li>Returns an empty array if the file has zero rows.</li>
 </ul>
-
-        </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>boolean</code> - <code>true</code> if data was retrieved</p>
+  
         </div>
       </div>
       <div class="method" id="getReadedCount">
@@ -93,9 +89,10 @@
           <code>public int getReadedCount()</code>
         </div>
         <div class="method-description">
-          Retrieves the number of rows read (not the count matching database retrieval conditions).<br>
+          Retrieves the number of rows read (excluding the header row).<br>
 <ul>
-<li>Returns the count read by the iterator.</li>
+<li>Returns the number of rows read by the iterator.</li>
+<li>The first row is not counted when it is used as the key (header row).</li>
 </ul>
 
         </div>
@@ -110,26 +107,12 @@
           <code>public boolean isReadedEndRow()</code>
         </div>
         <div class="method-description">
-          Determines if the last row has been read.
+          Checks if the last row has been read.
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
           <p><code>boolean</code> - <code>true</code> if the last row has been read</p>
-        </div>
-      </div>
-      <div class="method" id="getItemNames">
-        <h3 class="method-name">getItemNames</h3>
-        <div class="method-signature">
-          <code>public String[] getItemNames()</code>
-        </div>
-        <div class="method-description">
-          Retrieves database column names.
-
-        </div>
-        <div class="method-returns">
-          <h4>Return Value</h4>
-          <p><code>String[]</code> - the database column name string array(lowercase)</p>
         </div>
       </div>
       <div class="method" id="hasNext">
@@ -138,11 +121,7 @@
           <code>public boolean hasNext()</code>
         </div>
         <div class="method-description">
-          Checks if the next row exists.<br>
-<ul>
-<li>Closes the result set and statement if the next row does not exist, in case the try clause was not used.</li>
-<li>Does not recheck on consecutive hasNext() calls.</li>
-</ul>
+          Checks if the next row exists.
 
         </div>
         <div class="method-returns">
@@ -156,12 +135,15 @@
           <code>public IoItems next()</code>
         </div>
         <div class="method-description">
-          Retrieves the next row.
+          Retrieves the next row.<br>
+<ul>
+<li>Stores the TSV row in <code>IoItems</code> and returns it.</li>
+</ul>
 
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>IoItems</code> - the row map</p>
+          <p><code>IoItems</code> - the <code>IoItems</code> containing the TSV row</p>
         </div>
       </div>
     </div>

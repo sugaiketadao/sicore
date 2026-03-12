@@ -293,6 +293,57 @@
           <p><code>Connection</code> - the database connection</p>
         </div>
       </div>
+      <div class="method" id="getConnByUrl">
+        <h3 class="method-name">getConnByUrl</h3>
+        <div class="method-signature">
+          <code>public Connection getConnByUrl(String url, String user, String pass, String traceCode)</code>
+        </div>
+        <div class="method-description">
+          Retrieves a database connection with the specified JDBC URL.<br>
+<ul>
+<li>Declare in a try clause (try-with-resources statement).</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>url</code></td>
+                <td><code>String</code></td>
+                <td>JDBC connection URL</td>
+              </tr>
+              <tr>
+                <td><code>user</code></td>
+                <td><code>String</code></td>
+                <td>database user</td>
+              </tr>
+              <tr>
+                <td><code>pass</code></td>
+                <td><code>String</code></td>
+                <td>database password</td>
+              </tr>
+              <tr>
+                <td><code>traceCode</code></td>
+                <td><code>String</code></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>Connection</code> - the database connection</p>
+        </div>
+      </div>
       <div class="method" id="closePooledConn">
         <h3 class="method-name">closePooledConn</h3>
         <div class="method-signature">
@@ -311,14 +362,95 @@
       <div class="method" id="getConnNames">
         <h3 class="method-name">getConnNames</h3>
         <div class="method-signature">
-          <code>public List&lt;String&gt; getConnNames()</code>
+          <code>public String[] getConnNames()</code>
         </div>
         <div class="method-description">
           Retrieves database connection configuration names.
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>List&lt;String&gt;</code> - the list of connection names with URLs configured (includes the default connection name)</p>
+          <p><code>String[]</code> - the array of connection names with URLs configured (includes the default connection name)</p>
+        </div>
+      </div>
+      <div class="method" id="isExistsTable">
+        <h3 class="method-name">isExistsTable</h3>
+        <div class="method-signature">
+          <code>public boolean isExistsTable(Connection conn, String tableName)</code>
+        </div>
+        <div class="method-description">
+          Checks if the table exists.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>conn</code></td>
+                <td><code>Connection</code></td>
+                <td>database connection</td>
+              </tr>
+              <tr>
+                <td><code>tableName</code></td>
+                <td><code>String</code></td>
+                <td>table name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if the table exists</p>
+        </div>
+      </div>
+      <div class="method" id="getPrimaryKeys">
+        <h3 class="method-name">getPrimaryKeys</h3>
+        <div class="method-signature">
+          <code>public String[] getPrimaryKeys(Connection conn, String tableName)</code>
+        </div>
+        <div class="method-description">
+          Retrieves the primary key column names.<br>
+<ul>
+<li>Retrieves primary key column names of the table from JDBC metadata.</li>
+<li>Returns an empty array for tables without a primary key.</li>
+<li>Converts column physical names to lowercase letters. (Key rule of <code>AbstractIoTypeMap</code>)</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>conn</code></td>
+                <td><code>Connection</code></td>
+                <td>database connection</td>
+              </tr>
+              <tr>
+                <td><code>tableName</code></td>
+                <td><code>String</code></td>
+                <td>table name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String[]</code> - the primary key column name array (lowercase, in KEY_SEQ order)</p>
         </div>
       </div>
     </div>

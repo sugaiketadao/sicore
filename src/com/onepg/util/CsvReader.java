@@ -14,6 +14,7 @@ import com.onepg.util.ValUtil.CharSet;
  * <li>Provides an iterator that returns each row of CSV as <code>IoItems</code>.</li>
  * <li>Uses the first line of the file as column names and uses them as keys for <code>IoItems</code>.</li>
  * <li>When the first line of the file does not contain column names, the keys for <code>IoItems</code> must be passed to the constructor.</li>
+ * <li>Key names must be valid values as <code>IoItems</code> object keys. (key rules of <code>AbstractIoTypeMap</code>)</li>
  * <li>Items with blank keys in the key array are not stored in <code>IoItems</code>. (Specify blank keys for columns to skip.)</li>
  * <li>When the number of CSV items exceeds the number of keys, excess items are not stored.</li>
  * <li>When the number of keys exceeds the number of CSV items, the values for those keys are always blank.</li>
@@ -66,6 +67,7 @@ public final class CsvReader implements Iterable<IoItems>, AutoCloseable {
    * Constructor.<br>
    * <ul>
    * <li>Uses the key array argument and reads from the first line of the file as CSV data.</li>
+   * <li>Key names must be valid values as <code>IoItems</code> object keys. (key rules of <code>AbstractIoTypeMap</code>)</li>
    * </ul>
    *
    * @param filePath file path
@@ -98,6 +100,18 @@ public final class CsvReader implements Iterable<IoItems>, AutoCloseable {
   @Override
   public void close() {
     this.txtReader.close();
+  }
+
+  /**
+   * Returns the key array.<br>
+   * <ul>
+   * <li>If the first row of the file is used as keys, returns the key array retrieved from the first row of the file.</li>
+   * <li>If the file has zero rows, returns a zero-length array.</li>
+   * <li>If the key array argument is used, returns the key array argument.</li>
+   * </ul>
+   */
+  public String[] getKeys() {
+    return this.keys;
   }
 
   /**

@@ -27,7 +27,7 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   private final PreparedStatement stmt;
   /** Result set. */
   private final ResultSet rset;
-  /** Database column name and class type map. */
+  /** DB column name (lowercase) and class type map. */
   private final Map<String, ItemClsType> nameClsMap;
   /** Connection serial code. */
   private final String serialCode;
@@ -43,7 +43,7 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
    *
    * @param stmt statement
    * @param rset result set
-   * @param nameClsMap database column name and class type map
+   * @param nameClsMap DB column name (lowercase) and class type map
    * @param serialCode connection serial code
    */
   SqlResultSet(final PreparedStatement stmt, final ResultSet rset,
@@ -161,7 +161,7 @@ public final class SqlResultSet implements Iterable<IoItems>, AutoCloseable {
   /**
    * Retrieves database column names.
    *
-   * @return the database column name string array
+   * @return the database column name string array(lowercase)
    */
   public String[] getItemNames() {
     final String[] itemNames = new String[this.nameClsMap.size()];

@@ -1,6 +1,7 @@
 package com.onepg.db;
 
 import com.onepg.db.DbUtil.DbmsName;
+import com.onepg.db.SqlConst.BindType;
 import com.onepg.util.AbstractIoTypeMap;
 import com.onepg.util.IoItems;
 import com.onepg.util.IoRows;
@@ -9,7 +10,6 @@ import com.onepg.util.LogWriter;
 import com.onepg.util.ValUtil;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * SQL execution utility class.
@@ -343,6 +342,7 @@ public final class SqlUtil {
    * Inserts a single record into the specified table.<br>
    * <ul>
    * <li>Inserts one record into the specified table.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be inserted into the new column without modifying the implementation.</li>
    * <li>Throws an exception if the number of affected rows is zero for reasons other than a unique constraint violation.</li>
@@ -355,55 +355,49 @@ public final class SqlUtil {
    * @return <code>false</code> if a unique constraint violation occurs; <code>true</code> if the record was successfully inserted
    */
   public static boolean insertOne(final Connection conn, final String tableName, final AbstractIoTypeMap params) {
-
     if (ValUtil.isEmpty(params)) {
       throw new RuntimeException("Parameters are required. ");
     }
+
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
+    // DB column name / class type map.
+    final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
+    
     final SqlBuilder sbInto = new SqlBuilder();
     final SqlBuilder sbVals = new SqlBuilder();
-    try {
-      // DB column name / class type map.
-      final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
+    sbInto.addQuery("INSERT INTO ").addQuery(tableName);
+    sbInto.addQuery(" ( ");
+    sbVals.addQuery(" ( ");
 
-      sbInto.addQuery("INSERT INTO ").addQuery(tableName);
-
-      sbInto.addQuery(" ( ");
-      sbVals.addQuery(" ( ");
-      int count = 0;
-      for (final String itemName : params.keySet()) {
-        if (!itemClsMap.containsKey(itemName)) {
-          // Skip parameters not present in the table.
-          continue;
-        }
-
-        // Column class type.
-        final ItemClsType itemCls = itemClsMap.get(itemName);
-        // Get value by column class type.
-        final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
-
-        // Add to SQL.
-        sbInto.addQuery(itemName).addQuery(",");
-        sbVals.addQuery("?,", param);
-        count++;
-      }
-      if (count <= 0) {
-        // No registration target items exist.
-        throw new RuntimeException("No registration target items exist. " + LogUtil.joinKeyVal("tableName", tableName,
-            "params", params));
+    int count = 0;
+    for (final String itemName : params.keySet()) {
+      if (!itemClsMap.containsKey(itemName)) {
+        // Skip parameters not present in the table.
+        continue;
       }
 
-      // Assemble SQL.
-      sbInto.delLastChar();
-      sbVals.delLastChar();
-      sbInto.addQuery(" ) VALUES ");
-      sbVals.addQuery(" ) ");
-      sbInto.addSqlBuilder(sbVals);
+      // Column class type.
+      final ItemClsType itemCls = itemClsMap.get(itemName);
+      // Get value by column class type.
+      final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
 
-    } catch (final SQLException e) {
-      throw new RuntimeException("Exception error occurred during data insert SQL generation. "
-          + LogUtil.joinKeyVal("tableName", tableName, "params", params), e);
+      // Add to SQL.
+      sbInto.addQuery(itemName).addQuery(",");
+      sbVals.addQuery("?,", param);
+      count++;
     }
+    if (count <= 0) {
+      // No registration target items exist.
+      throw new RuntimeException("No registration target items exist. " + LogUtil.joinKeyVal("tableName", tableName,
+          "params", params));
+    }
+
+    // Assemble SQL.
+    sbInto.delLastChar();
+    sbVals.delLastChar();
+    sbInto.addQuery(" ) VALUES ");
+    sbVals.addQuery(" ) ");
+    sbInto.addSqlBuilder(sbVals);
 
     try{
       // Execute SQL.
@@ -429,6 +423,7 @@ public final class SqlUtil {
    * <ul>
    * <li>Inserts one record into the specified table.</li>
    * <li>Sets the timestamp for optimistic locking.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be inserted into the new column without modifying the implementation.</li>
    * <li>Throws an exception if the number of affected rows is zero for reasons other than a unique constraint violation.</li>
@@ -443,63 +438,56 @@ public final class SqlUtil {
    */
   public static boolean insertOne(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String tsItem) {
-
     if (ValUtil.isEmpty(params)) {
       throw new RuntimeException("Parameters are required. ");
     }
+
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
     final String curTs = getCurrentTimestampSql(dbmsName);
+    // DB column name / class type map.
+    final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
 
     final SqlBuilder sbInto = new SqlBuilder();
     final SqlBuilder sbVals = new SqlBuilder();
-    try {
-      // DB column name / class type map.
-      final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
-
-      sbInto.addQuery("INSERT INTO ").addQuery(tableName);
-
-      sbInto.addQuery(" ( ");
-      sbVals.addQuery(" ( ");
-      int count = 0;
-      for (final String itemName : params.keySet()) {
-        if (!itemClsMap.containsKey(itemName)) {
-          // Skip parameters not present in the table.
-          continue;
-        }
-        if (tsItem.equals(itemName)) {
-          // Skip the timestamp column.
-          continue;
-        }
-
-        // Column class type.
-        final ItemClsType itemCls = itemClsMap.get(itemName);
-        // Get value by column class type.
-        final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
-
-        // Add to SQL.
-        sbInto.addQuery(itemName).addQuery(",");
-        sbVals.addQuery("?,", param);
-        count++;
+    sbInto.addQuery("INSERT INTO ").addQuery(tableName);
+    sbInto.addQuery(" ( ");
+    sbVals.addQuery(" ( ");
+    
+    int count = 0;
+    for (final String itemName : params.keySet()) {
+      if (!itemClsMap.containsKey(itemName)) {
+        // Skip parameters not present in the table.
+        continue;
       }
-      if (count <= 0) {
-        // No registration target items exist.
-        throw new RuntimeException("No registration target items exist. " + LogUtil.joinKeyVal("tableName", tableName,
-            "params", params));
+      if (tsItem.equals(itemName)) {
+        // Skip the timestamp column.
+        continue;
       }
 
-      // Add timestamp SQL.
-      sbInto.addQuery(tsItem);
-      sbVals.addQuery(curTs);
+      // Column class type.
+      final ItemClsType itemCls = itemClsMap.get(itemName);
+      // Get value by column class type.
+      final Object param = getValueFromIoItemsByItemCls(params, itemName, itemCls);
 
-      // Assemble SQL.
-      sbInto.addQuery(" ) VALUES ");
-      sbVals.addQuery(" ) ");
-      sbInto.addSqlBuilder(sbVals);
-
-    } catch (final SQLException e) {
-      throw new RuntimeException("Exception error occurred during data insert SQL generation. "
-          + LogUtil.joinKeyVal("tableName", tableName, "params", params), e);
+      // Add to SQL.
+      sbInto.addQuery(itemName).addQuery(",");
+      sbVals.addQuery("?,", param);
+      count++;
     }
+    if (count <= 0) {
+      // No registration target items exist.
+      throw new RuntimeException("No registration target items exist. " + LogUtil.joinKeyVal("tableName", tableName,
+          "params", params));
+    }
+
+    // Add timestamp SQL.
+    sbInto.addQuery(tsItem);
+    sbVals.addQuery(curTs);
+
+    // Assemble SQL.
+    sbInto.addQuery(" ) VALUES ");
+    sbVals.addQuery(" ) ");
+    sbInto.addSqlBuilder(sbVals);
 
     try {
       // Execute SQL.
@@ -525,6 +513,7 @@ public final class SqlUtil {
    * <ul>
    * <li>Updates one record in the specified table.</li>
    * <li>Throws an exception if multiple records are updated.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
    * <li>A WHERE clause is built using the key columns.</li>
@@ -559,6 +548,7 @@ public final class SqlUtil {
    * <li>Updates one record in the specified table.</li>
    * <li>Throws an exception if multiple records are updated.</li>
    * <li>Performs optimistic locking using a timestamp.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
    * <li>A WHERE clause is built using the key columns and the timestamp column (for locking).</li>
@@ -579,7 +569,6 @@ public final class SqlUtil {
    */
   public static boolean updateOne(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] keyItems, final String tsItem) {
-
     if (ValUtil.isEmpty(params)) {
       throw new RuntimeException("Parameters are required. ");
     }
@@ -592,27 +581,20 @@ public final class SqlUtil {
     
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
     final String curTs = getCurrentTimestampSql(dbmsName);
-    
+    // DB field name / class type map
+    final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
+  
+    final String[] whereItems = Arrays.copyOf(keyItems, keyItems.length + 1);
+    whereItems[keyItems.length] = tsItem;
+
     final SqlBuilder sb = new SqlBuilder();
-    try {
-      // DB field name / class type map
-      final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
-
-      final String[] whereItems = Arrays.copyOf(keyItems, keyItems.length + 1);
-      whereItems[keyItems.length] = tsItem;
-
-      sb.addQuery("UPDATE ").addQuery(tableName);
-      // Add SET clause
-      addSetQuery(sb, params, whereItems, itemClsMap);
-      // Update timestamp field with current datetime
-      sb.addQuery(",").addQuery(tsItem).addQuery("=").addQuery(curTs);
-      // Add WHERE clause
-      addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
-
-    } catch (SQLException e) {
-      throw new RuntimeException("Exception error occurred during data update SQL generation. " + LogUtil.joinKeyVal("tableName", tableName,
-          "keyItems", keyItems, "tsItem", tsItem, "params", params), e);
-    }
+    sb.addQuery("UPDATE ").addQuery(tableName);
+    // Add SET clause
+    addSetQuery(sb, params, whereItems, itemClsMap);
+    // Update timestamp field with current datetime
+    sb.addQuery(",").addQuery(tsItem).addQuery("=").addQuery(curTs);
+    // Add WHERE clause
+    addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
 
     try {
       // Execute SQL
@@ -631,6 +613,7 @@ public final class SqlUtil {
    * <ul>
    * <li>Updates one record in the specified table.</li>
    * <li>Throws an exception if multiple records are updated.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
    * <li>A WHERE clause is built using the primary key columns of the table.</li>
@@ -646,7 +629,7 @@ public final class SqlUtil {
    * @return <code>true</code> if one record was updated; <code>false</code> if zero records were updated
    */
   public static boolean updateOneByPkey(final Connection conn, final String tableName, final AbstractIoTypeMap params) {
-    final String[] pkItems = getPkeys(conn, tableName);
+    final String[] pkItems = DbUtil.getPrimaryKeys(conn, tableName);
     return updateOne(conn, tableName, params, pkItems);
   }
 
@@ -656,6 +639,7 @@ public final class SqlUtil {
    * <li>Updates one record in the specified table.</li>
    * <li>Throws an exception if multiple records are updated.</li>
    * <li>Performs optimistic locking using a timestamp.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
    * <li>A WHERE clause is built using the primary key columns and the timestamp column (for locking).</li>
@@ -676,7 +660,7 @@ public final class SqlUtil {
    */
   public static boolean updateOneByPkey(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String tsItem) {
-    final String[] pkItems = getPkeys(conn, tableName);
+    final String[] pkItems = DbUtil.getPrimaryKeys(conn, tableName);
     return updateOne(conn, tableName, params, pkItems, tsItem);
   }
 
@@ -684,6 +668,7 @@ public final class SqlUtil {
    * Updates multiple records in the specified table.<br>
    * <ul>
    * <li>Updates multiple records in the specified table.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
    * <li>A WHERE clause is built using the search condition columns.</li>
@@ -701,26 +686,19 @@ public final class SqlUtil {
    */
   public static int update(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] whereItems) {
-
     if (ValUtil.isEmpty(params)) {
       throw new RuntimeException("Parameters are required. ");
     }
 
+    // Create column name/class type map.
+    final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
+
     final SqlBuilder sb = new SqlBuilder();
-    try {
-      // Create column name/class type map.
-      final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
-
-      sb.addQuery("UPDATE ").addQuery(tableName);
-      // Add SET clause.
-      addSetQuery(sb, params, whereItems, itemClsMap);
-      // Add WHERE clause.
-      addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
-
-    } catch (SQLException e) {
-      throw new RuntimeException("Exception error occurred during data update SQL generation. " + LogUtil.joinKeyVal("tableName", tableName,
-          "whereItems", whereItems, "params", params), e);
-    }
+    sb.addQuery("UPDATE ").addQuery(tableName);
+    // Add SET clause.
+    addSetQuery(sb, params, whereItems, itemClsMap);
+    // Add WHERE clause.
+    addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
 
     try {
       // Execute SQL.
@@ -735,6 +713,7 @@ public final class SqlUtil {
    * Updates all records in the specified table.<br>
    * <ul>
    * <li>Updates all records in the specified table.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>Parameters not present in the table are ignored.</li>
    * <li>Note: if a column is added to the table after implementation and that column name already exists in the parameters, values will be updated in the new column without modifying the implementation.</li>
    * <li>Since this method retrieves DB metadata to generate SQL, performance is inferior to methods that accept SQL as an argument.</li>
@@ -747,24 +726,17 @@ public final class SqlUtil {
    * @return the number of updated records
    */
   public static int updateAll(final Connection conn, final String tableName, final AbstractIoTypeMap params) {
-
     if (ValUtil.isEmpty(params)) {
       throw new RuntimeException("Parameters are required. ");
     }
 
+    // Create column name/class type map.
+    final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
+
     final SqlBuilder sb = new SqlBuilder();
-    try {
-      // Create column name/class type map.
-      final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
-
-      sb.addQuery("UPDATE ").addQuery(tableName);
-      // Add SET clause.
-      addSetQuery(sb, params, null, itemClsMap);
-
-    } catch (SQLException e) {
-      throw new RuntimeException("Exception error occurred during data update SQL generation. " + LogUtil.joinKeyVal("tableName", tableName,
-          "params", params), e);
-    }
+    sb.addQuery("UPDATE ").addQuery(tableName);
+    // Add SET clause.
+    addSetQuery(sb, params, null, itemClsMap);
 
     try {
       // Execute SQL.
@@ -780,6 +752,7 @@ public final class SqlUtil {
    * <ul>
    * <li>Deletes one record from the specified table.</li>
    * <li>Throws an exception if multiple records are deleted.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>A WHERE clause is built using the key columns.</li>
    * <li>Key columns MUST be included in the parameter values.</li>
    * <li>Parameters that are not key columns are ignored.</li>
@@ -813,6 +786,7 @@ public final class SqlUtil {
    * <li>Deletes one record from the specified table.</li>
    * <li>Throws an exception if multiple records are deleted.</li>
    * <li>Performs optimistic locking using a timestamp.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>A WHERE clause is built using the key columns and the timestamp column (for locking).</li>
    * <li>Key columns and the timestamp column MUST be included in the parameter values.</li>
    * <li>Parameters that are neither key columns nor the timestamp column are ignored.</li>
@@ -831,7 +805,6 @@ public final class SqlUtil {
    */
   public static boolean deleteOne(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] keyItems, final String tsItem) {
-
     if (ValUtil.isEmpty(params)) {
       throw new RuntimeException("Parameters are required. ");
     }
@@ -857,6 +830,7 @@ public final class SqlUtil {
    * <ul>
    * <li>Deletes one record from the specified table.</li>
    * <li>Throws an exception if multiple records are deleted.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>A WHERE clause is built using the primary key columns of the table.</li>
    * <li>Throws an exception if the table has no primary key.</li>
    * <li>Primary key columns MUST be included in the parameter values.</li>
@@ -871,7 +845,7 @@ public final class SqlUtil {
    * @return <code>true</code> if one record was deleted; <code>false</code> if zero records were deleted
    */
   public static boolean deleteOneByPkey(final Connection conn, final String tableName, final AbstractIoTypeMap params) {
-    final String[] pkItems = getPkeys(conn, tableName);
+    final String[] pkItems = DbUtil.getPrimaryKeys(conn, tableName);
     return deleteOne(conn, tableName, params, pkItems);
   }
 
@@ -881,6 +855,7 @@ public final class SqlUtil {
    * <li>Deletes one record from the specified table.</li>
    * <li>Throws an exception if multiple records are deleted.</li>
    * <li>Performs optimistic locking using a timestamp.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>A WHERE clause is built using the primary key columns and the timestamp column (for locking).</li>
    * <li>Throws an exception if the table has no primary key.</li>
    * <li>Primary key columns and the timestamp column MUST be included in the parameter values.</li>
@@ -899,7 +874,7 @@ public final class SqlUtil {
    */
   public static boolean deleteOneByPkey(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String tsItem) {
-    final String[] pkItems = getPkeys(conn, tableName);
+    final String[] pkItems = DbUtil.getPrimaryKeys(conn, tableName);
     return deleteOne(conn, tableName, params, pkItems, tsItem);
   }
 
@@ -907,6 +882,7 @@ public final class SqlUtil {
    * Deletes multiple records from the specified table.<br>
    * <ul>
    * <li>Deletes multiple records from the specified table.</li>
+   * <li>Primarily designed for use in web service processing, assuming that requests are passed directly as parameter values.</li>
    * <li>A WHERE clause is built using the search condition columns.</li>
    * <li>Search condition columns MUST be included in the parameter values.</li>
    * <li>Search condition column names MUST be specified in lowercase. (key rule of <code>AbstractIoTypeMap</code>)</li>
@@ -922,24 +898,17 @@ public final class SqlUtil {
    */
   public static int delete(final Connection conn, final String tableName, final AbstractIoTypeMap params,
       final String[] whereItems) {
-
     if (ValUtil.isEmpty(params)) {
       throw new RuntimeException("Parameters are required. ");
     }
 
-    final SqlBuilder sb = new SqlBuilder();
-    try {
-      // Create column name/class type map.
-      final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
+    // Create column name/class type map.
+    final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
 
-      sb.addQuery("DELETE FROM ").addQuery(tableName);
-      // Add WHERE clause.
-      addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
-      
-    } catch (SQLException e) {
-      throw new RuntimeException("Exception error occurred during data delete SQL generation. " + LogUtil.joinKeyVal("tableName", tableName,
-          "whereItems", whereItems, "params", params), e);
-    }
+    final SqlBuilder sb = new SqlBuilder();
+    sb.addQuery("DELETE FROM ").addQuery(tableName);
+    // Add WHERE clause.
+    addWhereQuery(sb, tableName, params, whereItems, itemClsMap);
 
     try {
       // Execute SQL.
@@ -1034,7 +1003,6 @@ public final class SqlUtil {
    */
   private static void addWhereQuery(final SqlBuilder sb, final String tableName,
       final AbstractIoTypeMap params, final String[] whereItems, final Map<String, ItemClsType> itemClsMap) {
-
     if (ValUtil.isEmpty(whereItems)) {
       // Error if no extraction condition column names are specified
       throw new RuntimeException("Extraction condition column names are required. " + LogUtil.joinKeyVal("tableName", tableName, "params", params));
@@ -1105,8 +1073,7 @@ public final class SqlUtil {
    * @return the number of affected records
    * @throws SQLException SQL exception error
    */
-  private static int executeSql(final Connection conn, final SqlBean sb)
-      throws SQLException {
+  private static int executeSql(final Connection conn, final SqlBean sb) throws SQLException {
         
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
     // Generate statement
@@ -1172,9 +1139,7 @@ public final class SqlUtil {
    * @return the number of affected records
    * @throws SQLException SQL exception error
    */
-  private static int executeSqlCache(final Connection conn, final SqlBean sb)
-      throws SQLException {
-
+  private static int executeSqlCache(final Connection conn, final SqlBean sb) throws SQLException {
     final String sqlId = sb.getId();
     if (ValUtil.isBlank(sqlId)) {
       throw new RuntimeException("A SqlConst (fixed SQL) instance with a SQL-ID is required. " + LogUtil.joinKeyVal("sql", sb));
@@ -1243,15 +1208,14 @@ public final class SqlUtil {
    * @param fetchSize fetch size
    * @throws SQLException SQL exception error
    */
-  private static void setStmtFetchProperty(final PreparedStatement stmt, final int fetchSize)
-      throws SQLException {
+  private static void setStmtFetchProperty(final PreparedStatement stmt, final int fetchSize) throws SQLException {
     // Set fetch direction and fetch size
     stmt.setFetchDirection(ResultSet.FETCH_FORWARD);
     stmt.setFetchSize(fetchSize);
   }
 
   /**
-   * Creates a DB field name / class type map from the result set.<br>
+   * Creates a DB column name and class type map from the result set.<br>
    * <ul>
    * <li>Creates a map of field names and class types from the result set.</li>
    * <li>Preserves the field order in the map.</li>
@@ -1259,13 +1223,12 @@ public final class SqlUtil {
    * </ul>
    *
    * @param rset result set
-   * @return the DB field name / class type map
+   * @return DB column name (lowercase) and class type map
    * @throws SQLException SQL exception error
    */
-  private static Map<String, ItemClsType> createItemNameClsMap(final ResultSet rset)
-      throws SQLException {
+  private static Map<String, ItemClsType> createItemNameClsMap(final ResultSet rset) throws SQLException {
 
-    // DB field name / class type map
+    // DB column name (lowercase) and class type map
     final Map<String, ItemClsType> itemClsMap = new LinkedHashMap<>();
 
     // DBMS name
@@ -1298,7 +1261,7 @@ public final class SqlUtil {
   }
 
   /**
-   * Creates a DB field name / class type map for the specified table.<br>
+   * Creates a DB column name and class type map for the specified table.<br>
    * <ul>
    * <li>Creates a map of field names and class types from DB metadata.</li>
    * <li>Preserves the field order in the map.</li>
@@ -1307,20 +1270,18 @@ public final class SqlUtil {
    *
    * @param conn database connection
    * @param tableName table name
-   * @throws SQLException SQL exception error
+   * @return DB column name (lowercase) and class type map
    */
-  private static Map<String, ItemClsType> createItemNameClsMapByMeta(final Connection conn,
-      final String tableName) throws SQLException {
+  private static Map<String, ItemClsType> createItemNameClsMapByMeta(final Connection conn, final String tableName) {
 
-    // DB field name / class type map
+    final String tableCondition = DbUtil.convTableNameByDbms(conn, tableName);
+    // DB column name (lowercase) and class type map
     final Map<String, ItemClsType> itemClsMap = new LinkedHashMap<>();
 
     // DBMS name
     final DbmsName dbmsName = DbUtil.getDbmsName(conn);
-    // DB metadata
-    final DatabaseMetaData cmeta = conn.getMetaData();
     // Column information result set
-    try (final ResultSet rset = cmeta.getColumns(null, null, tableName, null)) {
+    try (final ResultSet rset = conn.getMetaData().getColumns(null, null, tableCondition, null)) {
       while (rset.next()) {
         // Column name
         final String itemName = rset.getString("COLUMN_NAME").toLowerCase();
@@ -1334,6 +1295,8 @@ public final class SqlUtil {
 
         itemClsMap.put(itemName, itemCls);
       }
+    } catch (SQLException e) {
+      throw new RuntimeException("Exception error occurred during metadata acquisition. " + LogUtil.joinKeyVal("tableName", tableName), e);
     }
     return itemClsMap;
   }
@@ -1519,6 +1482,54 @@ public final class SqlUtil {
   }
 
   /**
+   * Creates a DB column name and bind type map for the specified table.<br>
+   * <ul>
+   * <li>Creates a map of field names and bind types from DB metadata.</li>
+   * <li>Preserves the field order in the map.</li>
+   * <li>Converts physical field names to lowercase letters. (To match the key rules of <code>AbstractIoTypeMap</code>)</li>
+   * </ul>
+   *
+   * @param conn database connection
+   * @param tableName table name
+   * @return DB column name (lowercase) and bind type map
+   */
+  public static Map<String, BindType> createItemBindTypeMapByMeta(final Connection conn, final String tableName) {
+    
+    // DB column name (lowercase) and bind type map
+    final Map<String, BindType> itemBindMap = new LinkedHashMap<>();
+
+    // DB column name and class type map
+    final Map<String, ItemClsType> itemClsMap = createItemNameClsMapByMeta(conn, tableName);
+
+    for (final Map.Entry<String, ItemClsType> ent : itemClsMap.entrySet()) {
+      // Field name
+      final String itemName = ent.getKey();
+      // Field class type
+      final ItemClsType itemCls = ent.getValue();
+      // Convert to bind type
+      final BindType bindType;
+      if (ItemClsType.STRING_CLS == itemCls) {
+        bindType = BindType.STRING;
+      } else if (ItemClsType.BIGDECIMAL_CLS == itemCls) {
+        bindType = BindType.BIGDECIMAL;
+      } else if (ItemClsType.DATE_CLS == itemCls) {
+        bindType = BindType.DATE;
+      } else if (ItemClsType.TIMESTAMP_CLS == itemCls) {
+        bindType = BindType.TIMESTAMP;
+      } else if (ItemClsType.STRING_TO_DATE_CLS == itemCls) {
+        bindType = BindType.DATE;
+      } else if (ItemClsType.STRING_TO_TS_CLS == itemCls) {
+        bindType = BindType.TIMESTAMP;
+      } else {
+        throw new RuntimeException("Item class type is invalid. "
+            + LogUtil.joinKeyVal("itemName", itemName, "itemCls", itemCls.toString()));
+      }
+      itemBindMap.put(itemName, bindType);
+    }
+    return itemBindMap;
+  }
+
+  /**
    * Determines if a unique constraint violation error occurred.<br>
    * <ul>
    * <li>Determines whether a unique constraint violation error occurred per DBMS.</li>
@@ -1553,33 +1564,6 @@ public final class SqlUtil {
     }
 
     return false;
-  }
-
-  /**
-   * Retrieves primary key field names.<br>
-   * <ul>
-   * <li>Retrieves primary key field names of the table from JDBC metadata.</li>
-   * <li>Throws a runtime error for tables without primary keys.</li>
-   * <li>Converts physical field names to lowercase letters. (Key rules of <code>AbstractIoTypeMap</code>)</li>
-   * </ul>
-   *
-   * @param conn      database connection
-   * @param tableName table name
-   * @return the primary key field name array (in KEY_SEQ order)
-   */
-  private static String[] getPkeys(final Connection conn, final String tableName) {
-    try {
-      // Sort in KEY_SEQ order
-      final Map<Short, String> pkMap = new TreeMap<>();
-      try (final ResultSet rset = conn.getMetaData().getPrimaryKeys(null, null, tableName)) {
-        while (rset.next()) {
-          pkMap.put(rset.getShort("KEY_SEQ"), rset.getString("COLUMN_NAME").toLowerCase());
-        }
-      }
-      return pkMap.values().toArray(new String[0]);
-    } catch (SQLException e) {
-      throw new RuntimeException("Exception error occurred during primary key retrieval. " + LogUtil.joinKeyVal("tableName", tableName), e);
-    }
   }
 
   /** Timestamp retrieval SQL (6-digit fractional seconds) map. */

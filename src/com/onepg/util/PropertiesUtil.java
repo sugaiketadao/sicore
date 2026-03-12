@@ -10,7 +10,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -187,8 +186,7 @@ public final class PropertiesUtil {
    */
   private static IoItems getModulePorps() {
     final IoItems allPropMap = new IoItems();
-    final List<String> fileList =
-        FileUtil.getFileList(PROP_STORAGE_DIR_PATH, PROPERTIES_TYPEMARK, null, null, null);
+    final String[] fileList = FileUtil.getFileList(PROP_STORAGE_DIR_PATH, PROPERTIES_TYPEMARK, null, null, null);
     for (final String filePath : fileList) {
       if (FwPropertiesName.exists(FileUtil.getFileName(filePath))) {
         // Excludes framework-reserved properties files

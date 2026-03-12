@@ -103,7 +103,13 @@
           <code>public boolean skip()</code>
         </div>
         <div class="method-description">
-          Skips one row.
+          Skips one row.<br>
+<ul>
+<li>Skips rows such as header rows.</li>
+<li>Does not result in an error even if the skip row count is greater than the file rows, and the return value becomes <code>false</code>.</li>
+<li>The skip row count is not counted up.</li>
+<li>Cannot skip after the iterator has been created.</li>
+</ul>
 
         </div>
         <div class="method-returns">
@@ -127,7 +133,8 @@
 <ul>
 <li>Skips rows such as header rows.</li>
 <li>Does not result in an error even if the skip row count is greater than the file rows, and the return value becomes <code>false</code>.</li>
-<li>Read row count is not counted up.</li>
+<li>The skip row count is not counted up.</li>
+<li>Cannot skip after the iterator has been created.</li>
 </ul>
 
         </div>

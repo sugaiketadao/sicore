@@ -41,6 +41,17 @@ public final class ValUtil {
   public static final String CR = "\r";
   /** Line break code - CRLF. */
   public static final String CRLF = "\r\n";
+  /** Tab character - TAB. */
+  public static final String TAB = "\t";
+
+  /** TSV for data I/O - NULL replacement character. */
+  private static final String IOTSV_NULL = "\\\\0";
+  /** TSV for data I/O - Tab replacement character. */
+  private static final String IOTSV_TAB = "\\\\t";
+  /** TSV for data I/O - Carriage return replacement character. */
+  private static final String IOTSV_CR = "\\\\r";
+  /** TSV for data I/O - Line feed replacement character. */
+  private static final String IOTSV_LF = "\\\\n";
 
   /** Character set specification - UTF-8. */
   public static final String UTF8 = StandardCharsets.UTF_8.name();
@@ -491,6 +502,60 @@ public final class ValUtil {
     } else {
       return value.replace("\"", "\"\"").replace(ValUtil.CRLF, " ").replace(ValUtil.CR, " ").replace(ValUtil.LF, " ");
     }
+  }
+
+  /**
+   * Joins array as TSV for data I/O.
+   *
+   * @param values targets to join
+   * @return the joined TSV string
+   */
+  static String joinIoTsv(final String[] values) {
+    final StringBuilder sb = new StringBuilder();
+    for (final String value : values) {
+      sb.append(ValUtil.escIoTsv(value)).append(ValUtil.TAB);
+    }
+    ValUtil.deleteLastChar(sb);
+    return sb.toString();
+  }
+
+  /**
+   * TSV escape conversion for data I/O.<br>
+   * <ul>
+   * <li>Escapes <code>null</code>.</li>
+   * <li>Escapes line break codes (CRLF, CR, LF) and tab characters within values.</li>
+   * </ul>
+   * 
+   * @param value target string
+   * @return the converted string
+   */
+  static String escIoTsv(final String value) {
+    if (isNull(value)) {
+      return IOTSV_NULL;
+    }
+    final String ret = value.replaceAll(TAB, IOTSV_TAB)
+                      .replaceAll(CR, IOTSV_CR)
+                      .replaceAll(LF, IOTSV_LF);
+    return ret;
+  }
+
+  /**
+   * TSV escape reversion for data I/O.<br>
+   * <ul>
+   * <li>Reverts the escape applied by <code>#escIoTsv</code>.</li>
+   * </ul>
+   * 
+   * @param value target string
+   * @return the converted string
+   */
+  static String reEscIoTsv(final String value) {
+    if (IOTSV_NULL.equals(value)) {
+      return null;
+    }
+    final String ret = value.replaceAll(IOTSV_TAB, TAB)
+                      .replaceAll(IOTSV_CR, CR)
+                      .replaceAll(IOTSV_LF, LF);
+    return ret;
   }
 
   /**

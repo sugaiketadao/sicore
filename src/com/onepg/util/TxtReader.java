@@ -36,6 +36,8 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
   /** Read row */
   private String nextLine = null;
 
+  /** Iterator created flag. */
+  private boolean iteCreated = false;
   /** Read row count. */
   private int readedCount = 0;
   /** Last row read flag. */
@@ -71,6 +73,10 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
    */
   @Override
   public Iterator<String> iterator() {
+    if (this.iteCreated) {
+      throw new RuntimeException("Iterator has already been created.");
+    }
+    this.iteCreated = true;
     return new TxtReadIterator();
   }
 
@@ -112,7 +118,13 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
   }
 
   /**
-   * Skips one row.
+   * Skips one row.<br>
+   * <ul>
+   * <li>Skips rows such as header rows.</li>
+   * <li>Does not result in an error even if the skip row count is greater than the file rows, and the return value becomes <code>false</code>.</li>
+   * <li>The skip row count is not counted up.</li>
+   * <li>Cannot skip after the iterator has been created.</li>
+   * </ul>
    * 
    * @see #skip(int)
    * @return <code>false</code> if there are insufficient rows
@@ -126,7 +138,8 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
    * <ul>
    * <li>Skips rows such as header rows.</li>
    * <li>Does not result in an error even if the skip row count is greater than the file rows, and the return value becomes <code>false</code>.</li>
-   * <li>Read row count is not counted up.</li>
+   * <li>The skip row count is not counted up.</li>
+   * <li>Cannot skip after the iterator has been created.</li>
    * </ul>
    *
    * @param count Skip row count
@@ -139,7 +152,10 @@ public final class TxtReader implements Iterable<String>, AutoCloseable {
     if (count <= 0) {
       return true;
     }
-    
+    if (this.iteCreated) {
+      throw new RuntimeException("Cannot call skip() after iterator has been created.");
+    }
+
     try {
       for (int c = 1; c <= count; c++) {        
         // Skips reading one row

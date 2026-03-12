@@ -1,8 +1,13 @@
 package com.onepg.util;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,6 +18,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 /**
  * File operations utility class.
@@ -69,6 +77,24 @@ public final class FileUtil {
       ret += File.separator;
     }
     return ret.toString();
+  }
+
+  /**
+   * Replaces the file extension.<br>
+   * <ul>
+   * <li>Replaces the extension of the file path.</li>
+   * </ul>
+   *
+   * @param path file path
+   * @param typeMark the extension to replace with
+   * @return the file path
+   */
+  public static String replaceTypeMark(final String path, final String typeMark) {
+    if (ValUtil.isBlank(path)) {
+      return ValUtil.BLANK;
+    }
+    final String[] names = splitTypeMark(path);
+    return names[0] + "." + typeMark;
   }
 
   /**
@@ -143,6 +169,21 @@ public final class FileUtil {
   }
 
   /**
+   * Checks if a directory.
+   *
+   * @param checkPath path to check
+   * @return <code>true</code> if a directory
+   */
+  public static boolean isDirectory(final String checkPath) {
+    final Path path = Paths.get(checkPath);
+    if (!Files.exists(path)) { 
+      // Redundant, but treats non-existent paths as not a directory. (Files.isDirectory returns false for non-existent paths)
+      return false;
+    }
+    return Files.isDirectory(path);
+  }
+  
+  /**
    * Retrieves the file name from the full path (directories are also acceptable).
    *
    * @param fullPath full path
@@ -153,13 +194,20 @@ public final class FileUtil {
   }
 
   /**
-   * Retrieves the parent directory path from the full path (directories are also acceptable).
+   * Retrieves the parent directory path from the full path (directories are also acceptable).<br>
+   * <ul>
+   * <li>Returns <code>null</code> if the parent directory does not exist.</li>
+   * </ul>
    *
    * @param fullPath full path
    * @return the parent directory path
    */
   public static String getParentPath(final String fullPath) {
-    return Paths.get(fullPath).getParent().toString();
+    final Path parentPath = Paths.get(fullPath).getParent();
+    if (ValUtil.isNull(parentPath)) {
+      return null;
+    }
+    return parentPath.toString();
   }
 
   /**
@@ -169,6 +217,9 @@ public final class FileUtil {
    * @return the file modified date-time (yyyyMMddHHmmss)
    */
   public static String getFileModifiedDateTime(final String fullPath) {
+    if (!exists(fullPath)) {
+      throw new RuntimeException("File does not exist. " + LogUtil.joinKeyVal("path", fullPath));
+    }
     final File file = new File(fullPath);
     final long lastModified = file.lastModified();
     final Instant lastInst = Instant.ofEpochMilli(lastModified);
@@ -183,7 +234,7 @@ public final class FileUtil {
    * @param fileName file name or full path
    * @return the string array {part before extension, extension} (neither includes the dot)
    */
-  public static String[] splitFileTypeMark(final String fileName) {
+  public static String[] splitTypeMark(final String fileName) {
     final int markIdx = fileName.lastIndexOf(".");
     final String[] ret = new String[2];
 
@@ -199,6 +250,46 @@ public final class FileUtil {
   }
 
   /**
+   * Removes the extension from a file name.
+   *
+   * @param fileName file name or full path
+   * @return the part before the extension (does not include the dot)
+   */
+  public static String trimTypeMark(final String fileName) {
+    final int markIdx = fileName.lastIndexOf(".");
+    final String tmpName;
+    if (markIdx <= 0) {
+      // Files without extension or starting with a dot are processed as is
+      tmpName = fileName;
+    } else {
+      tmpName = fileName.substring(0, markIdx);
+    }
+    final int sepIdx = tmpName.lastIndexOf(File.separator);
+    if (sepIdx < 0) {
+      // If no separator is found, the argument is treated as a file name only
+      return tmpName;
+    }
+    // Returns only the file name from the full path
+    return tmpName.substring(sepIdx + 1);
+  }
+
+  /**
+   * Retrieves the extension from a file name.
+   *
+   * @param fileName file name or full path
+   * @return the extension (does not include the dot)
+   */
+  public static String getTypeMark(final String fileName) {
+    final int markIdx = fileName.lastIndexOf(".");
+    if (markIdx <= 0) {
+      // Returns blank for files without extension or starting with a dot
+      return ValUtil.BLANK;
+    }
+    // Returns only the extension from the full path
+    return fileName.substring(markIdx + 1);
+  }
+
+  /**
    * Retrieves the file path (absolute path) list.<br>
    * <ul>
    * <li>File name and extension search strings are case-insensitive.</li>
@@ -209,10 +300,10 @@ public final class FileUtil {
    * @param prefixMatch search file name prefix match (optional) <code>null</code> if omitted
    * @param middleMatch search file name middle match (optional) <code>null</code> if omitted
    * @param suffixMatch search file name suffix match (optional) <code>null</code> if omitted
-   * @return the file path (absolute path) list
+   * @return the file path (absolute path) array
    * @throws RuntimeException if the directory does not exist
    */
-  public static List<String> getFileList(final String dirPath, final String typeMark,
+  public static String[] getFileList(final String dirPath, final String typeMark,
       final String prefixMatch, final String middleMatch, final String suffixMatch) {
     final File parentDir = new File(dirPath);
     if (!parentDir.exists()) {
@@ -233,7 +324,7 @@ public final class FileUtil {
       final FilenameFilter filter = new FilenameFilter() {
         @Override
         public boolean accept(final File dir, final String name) {
-          final String[] names = FileUtil.splitFileTypeMark(name);
+          final String[] names = FileUtil.splitTypeMark(name);
           names[0] = names[0].toLowerCase();
           names[1] = names[1].toLowerCase();
           if (!ValUtil.isBlank(typeMarkL) && !names[1].equals(typeMarkL)) {
@@ -261,12 +352,16 @@ public final class FileUtil {
 
     final List<String> retList = new ArrayList<>();
     if (ValUtil.isNull(files)) {
-      return retList;
+      return new String[0];
     }
     for (final File file : files) {
+      if (!file.isFile()) {
+        // Directories are excluded
+        continue;
+      }
       retList.add(file.getAbsolutePath());
     }
-    return retList;
+    return retList.toArray(new String[0]);
   }
 
   /**
@@ -380,8 +475,7 @@ public final class FileUtil {
     try {
       Files.delete(deletePath);
     } catch (IOException e) {
-      throw new RuntimeException("Exception error occurred in file deletion. "
-                                + LogUtil.joinKeyVal("path", deleteFilePath), e);
+      throw new RuntimeException("Exception error occurred in file deletion. " + LogUtil.joinKeyVal("path", deleteFilePath), e);
     }
     return true;
   }
@@ -419,4 +513,96 @@ public final class FileUtil {
     return true;
   }
 
+  /**
+   * Creates a zip file.
+   * 
+   * @param srcPath source file path
+   * @param fileNameCharset file name character set
+   * @param zipPath zip file path
+   */
+  public static void zip(final String srcPath, final String fileNameCharset, final String zipPath) {
+    zip(List.of(srcPath), fileNameCharset, zipPath);
+  }
+
+  /**
+   * Creates a zip file.
+   * 
+   * @param srcPaths source file path list
+   * @param fileNameCharset file name character set
+   * @param zipPath zip file path
+   */
+  public static void zip(final List<String> srcPaths, final String fileNameCharset, final String zipPath) {
+    // Check file existence and create File objects
+    final List<File> srcFiles = new ArrayList<>();
+    for (final String path : srcPaths) {
+      final File f = new File(path);
+      if (!f.exists()) {
+        throw new RuntimeException("Source file to compress does not exist. " + LogUtil.joinKeyVal("path", f.getAbsolutePath()));
+      }
+      srcFiles.add(f);
+    }
+    // Zip file
+    final File zipFile = new File(zipPath);
+    if (zipFile.exists()) {
+      throw new RuntimeException("Zip file already exists. " + LogUtil.joinKeyVal("path", zipFile.getAbsolutePath()));
+    }
+    if (zipFile.getParentFile() != null && !zipFile.getParentFile().exists()) {
+      throw new RuntimeException("Parent directory of zip file does not exist. " + LogUtil.joinKeyVal("path", zipFile.getAbsolutePath()));
+    }
+    // Compress
+    try (final ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile), Charset.forName(fileNameCharset))) {
+      for (final File file : srcFiles) {
+        zos.putNextEntry(new ZipEntry(file.getName()));
+        try (final InputStream is = new BufferedInputStream(new FileInputStream(file))) {
+          is.transferTo(zos);
+        }
+      }
+    } catch (Exception e) {
+      // If compression fails, delete the created zip file
+      delete(zipFile);
+      throw new RuntimeException("Exception error occurred during zip file creation. " + LogUtil.joinKeyVal("path", zipFile.getAbsolutePath()), e);
+    }
+  }
+  
+  /**
+   * Extracts a zip file.
+   * 
+   * @param zipPath zip file path
+   * @param destDirPath destination directory path for extraction
+   * @return the array of extracted file names
+   */
+  public static String[] unzip(final String zipPath, final String destDirPath) {
+    final File destDir = new File(destDirPath);
+    if (!destDir.exists()) {
+      throw new RuntimeException("Destination directory for extraction does not exist. " + LogUtil.joinKeyVal("path", destDirPath));
+    }
+    
+    final List<String> retPaths = new ArrayList<>();
+    
+    try (final ZipFile zipFile = new ZipFile(zipPath)) {
+      for (final ZipEntry entry : zipFile.stream().toList()) {
+        final File outFile = new File(destDir, entry.getName());
+        if (!outFile.getCanonicalPath().startsWith(destDir.getCanonicalPath() + File.separator)) {
+          throw new RuntimeException("Invalid zip entry path. " + LogUtil.joinKeyVal("file", entry.getName()));
+        }
+        if (entry.isDirectory()) {
+          // For directory entries, only create the directory
+          outFile.mkdirs();
+          continue;
+        }
+        // Create the parent directory if it does not exist (for nested entries)
+        outFile.getParentFile().mkdirs();
+        try (final InputStream is = zipFile.getInputStream(entry);
+             final FileOutputStream fos = new FileOutputStream(outFile)) {
+          is.transferTo(fos);
+          retPaths.add(outFile.getAbsolutePath());
+        } catch (IOException e) {
+          throw new RuntimeException("Exception error occurred during extraction. " + LogUtil.joinKeyVal("file", entry.getName()), e);
+        }
+      }
+    } catch (IOException e) {
+      throw new RuntimeException("Exception error occurred during zip file extraction. " + LogUtil.joinKeyVal("path", zipPath), e);
+    }
+    return retPaths.toArray(new String[0]);
+  }
 }

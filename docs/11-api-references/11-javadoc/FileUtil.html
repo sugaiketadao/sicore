@@ -83,6 +83,47 @@
           <p><code>String</code> - the file path</p>
         </div>
       </div>
+      <div class="method" id="replaceTypeMark">
+        <h3 class="method-name">replaceTypeMark</h3>
+        <div class="method-signature">
+          <code>public String replaceTypeMark(String path, String typeMark)</code>
+        </div>
+        <div class="method-description">
+          Replaces the file extension.<br>
+<ul>
+<li>Replaces the extension of the file path.</li>
+</ul>
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>path</code></td>
+                <td><code>String</code></td>
+                <td>file path</td>
+              </tr>
+              <tr>
+                <td><code>typeMark</code></td>
+                <td><code>String</code></td>
+                <td>the extension to replace with</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the file path</p>
+        </div>
+      </div>
       <div class="method" id="convOsPath">
         <h3 class="method-name">convOsPath</h3>
         <div class="method-signature">
@@ -222,6 +263,39 @@
           <p><code>boolean</code> - <code>true</code> if exists</p>
         </div>
       </div>
+      <div class="method" id="isDirectory">
+        <h3 class="method-name">isDirectory</h3>
+        <div class="method-signature">
+          <code>public boolean isDirectory(String checkPath)</code>
+        </div>
+        <div class="method-description">
+          Checks if a directory.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>checkPath</code></td>
+                <td><code>String</code></td>
+                <td>path to check</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>boolean</code> - <code>true</code> if a directory</p>
+        </div>
+      </div>
       <div class="method" id="getFileName">
         <h3 class="method-name">getFileName</h3>
         <div class="method-signature">
@@ -261,7 +335,10 @@
           <code>public String getParentPath(String fullPath)</code>
         </div>
         <div class="method-description">
-          Retrieves the parent directory path from the full path (directories are also acceptable).
+          Retrieves the parent directory path from the full path (directories are also acceptable).<br>
+<ul>
+<li>Returns <code>null</code> if the parent directory does not exist.</li>
+</ul>
 
         </div>
         <div class="method-parameters">
@@ -321,10 +398,10 @@
           <p><code>String</code> - the file modified date-time (yyyyMMddHHmmss)</p>
         </div>
       </div>
-      <div class="method" id="splitFileTypeMark">
-        <h3 class="method-name">splitFileTypeMark</h3>
+      <div class="method" id="splitTypeMark">
+        <h3 class="method-name">splitTypeMark</h3>
         <div class="method-signature">
-          <code>public String[] splitFileTypeMark(String fileName)</code>
+          <code>public String[] splitTypeMark(String fileName)</code>
         </div>
         <div class="method-description">
           Splits file name or full path into extension and the rest.
@@ -354,10 +431,76 @@
           <p><code>String[]</code> - the string array {part before extension, extension} (neither includes the dot)</p>
         </div>
       </div>
+      <div class="method" id="trimTypeMark">
+        <h3 class="method-name">trimTypeMark</h3>
+        <div class="method-signature">
+          <code>public String trimTypeMark(String fileName)</code>
+        </div>
+        <div class="method-description">
+          Removes the extension from a file name.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>fileName</code></td>
+                <td><code>String</code></td>
+                <td>file name or full path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the part before the extension (does not include the dot)</p>
+        </div>
+      </div>
+      <div class="method" id="getTypeMark">
+        <h3 class="method-name">getTypeMark</h3>
+        <div class="method-signature">
+          <code>public String getTypeMark(String fileName)</code>
+        </div>
+        <div class="method-description">
+          Retrieves the extension from a file name.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>fileName</code></td>
+                <td><code>String</code></td>
+                <td>file name or full path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String</code> - the extension (does not include the dot)</p>
+        </div>
+      </div>
       <div class="method" id="getFileList">
         <h3 class="method-name">getFileList</h3>
         <div class="method-signature">
-          <code>public List&lt;String&gt; getFileList(String dirPath, String typeMark, String prefixMatch, String middleMatch, String suffixMatch)</code>
+          <code>public String[] getFileList(String dirPath, String typeMark, String prefixMatch, String middleMatch, String suffixMatch)</code>
         </div>
         <div class="method-description">
           Retrieves the file path (absolute path) list.<br>
@@ -407,7 +550,7 @@
         </div>
         <div class="method-returns">
           <h4>Return Value</h4>
-          <p><code>List&lt;String&gt;</code> - the file path (absolute path) list</p>
+          <p><code>String[]</code> - the file path (absolute path) array</p>
         </div>
       </div>
       <div class="method" id="move">
@@ -686,6 +829,122 @@
         <div class="method-returns">
           <h4>Return Value</h4>
           <p><code>boolean</code> - <code>false</code> if it already exists</p>
+        </div>
+      </div>
+      <div class="method" id="zip">
+        <h3 class="method-name">zip</h3>
+        <div class="method-signature">
+          <code>public void zip(String srcPath, String fileNameCharset, String zipPath)</code>
+        </div>
+        <div class="method-description">
+          Creates a zip file.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>srcPath</code></td>
+                <td><code>String</code></td>
+                <td>source file path</td>
+              </tr>
+              <tr>
+                <td><code>fileNameCharset</code></td>
+                <td><code>String</code></td>
+                <td>file name character set</td>
+              </tr>
+              <tr>
+                <td><code>zipPath</code></td>
+                <td><code>String</code></td>
+                <td>zip file path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="zip">
+        <h3 class="method-name">zip</h3>
+        <div class="method-signature">
+          <code>public void zip(List&lt;String&gt; srcPaths, String fileNameCharset, String zipPath)</code>
+        </div>
+        <div class="method-description">
+          Creates a zip file.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>srcPaths</code></td>
+                <td><code>List&lt;String&gt;</code></td>
+                <td>source file path list</td>
+              </tr>
+              <tr>
+                <td><code>fileNameCharset</code></td>
+                <td><code>String</code></td>
+                <td>file name character set</td>
+              </tr>
+              <tr>
+                <td><code>zipPath</code></td>
+                <td><code>String</code></td>
+                <td>zip file path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="method" id="unzip">
+        <h3 class="method-name">unzip</h3>
+        <div class="method-signature">
+          <code>public String[] unzip(String zipPath, String destDirPath)</code>
+        </div>
+        <div class="method-description">
+          Extracts a zip file.
+
+        </div>
+        <div class="method-parameters">
+          <h4>Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>zipPath</code></td>
+                <td><code>String</code></td>
+                <td>zip file path</td>
+              </tr>
+              <tr>
+                <td><code>destDirPath</code></td>
+                <td><code>String</code></td>
+                <td>destination directory path for extraction</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-returns">
+          <h4>Return Value</h4>
+          <p><code>String[]</code> - the array of extracted file names</p>
         </div>
       </div>
     </div>

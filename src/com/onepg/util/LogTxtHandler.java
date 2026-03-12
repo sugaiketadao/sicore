@@ -31,11 +31,7 @@ public final class LogTxtHandler implements AutoCloseable {
   /** Log text handler pool map &lt;file path, log text handler&gt; (singleton). */
   private static final Map<String, LogTxtHandler> logTxtPoolMaps_ = new ConcurrentHashMap<>();
 
-  /** Base file path (without extension). */
-  private final String baseFilePath;
-  /** Extension (with dot). */
-  private final String fileTypeMark;
-  /** File path (base file path + extension). */
+  /** File path. */
   private final String filePath;
   /** Previous output date (YYYYMMDD). */
   private String beforePrintDate = null;
@@ -129,11 +125,7 @@ public final class LogTxtHandler implements AutoCloseable {
    * @param baseFilePath base file path
    */
   private LogTxtHandler(final String baseFilePath) {
-
-    final String[] tmp = FileUtil.splitFileTypeMark(baseFilePath);
-    this.baseFilePath = tmp[0];
-    this.fileTypeMark = "." + tmp[1];
-    this.filePath = this.baseFilePath + this.fileTypeMark;
+    this.filePath = baseFilePath;
 
     // If the file from the previous startup remains, uses the file modified date as the previous output date
     if (FileUtil.exists(this.filePath)) {
@@ -208,7 +200,13 @@ public final class LogTxtHandler implements AutoCloseable {
       return;
     }
 
-    final String destPath = this.baseFilePath + "_" + this.beforePrintDate + this.fileTypeMark;
+    final String[] tmp = FileUtil.splitTypeMark(this.filePath);
+    final String destPath;
+    if (ValUtil.isBlank(tmp[1])) {
+      destPath = tmp[0] + "_" + this.beforePrintDate;
+    } else {
+      destPath = tmp[0] + "_" + this.beforePrintDate + "." + tmp[1];
+    }
     if (FileUtil.exists(destPath)) {
       // Basically impossible, but if a dated file already exists, does not rename
       // To continue even on rolling failure, outputs error log and continues processing

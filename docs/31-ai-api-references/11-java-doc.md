@@ -168,6 +168,12 @@ public Iterator<IoItems> iterator()
 public void close()
 ```
 
+#### getKeys
+
+```
+public String[] getKeys()
+```
+
 #### getReadedCount
 
 ```
@@ -342,6 +348,20 @@ public Connection getConnPooledByConfigName(String connName, String traceCode)
 
 **Returns**: `Connection`
 
+#### getConnByUrl
+
+```
+public Connection getConnByUrl(String url, String user, String pass, String traceCode)
+```
+
+**Parameters**:
+- `url`: `String`
+- `user`: `String`
+- `pass`: `String`
+- `traceCode`: `String`
+
+**Returns**: `Connection`
+
 #### closePooledConn
 
 ```
@@ -351,10 +371,34 @@ public void closePooledConn()
 #### getConnNames
 
 ```
-public List<String> getConnNames()
+public String[] getConnNames()
 ```
 
-**Returns**: `List<String>`
+**Returns**: `String[]`
+
+#### isExistsTable
+
+```
+public boolean isExistsTable(Connection conn, String tableName)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `tableName`: `String`
+
+**Returns**: `boolean`
+
+#### getPrimaryKeys
+
+```
+public String[] getPrimaryKeys(Connection conn, String tableName)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `tableName`: `String`
+
+**Returns**: `String[]`
 
 ## FileUtil
 
@@ -378,6 +422,18 @@ public String joinPath(String... paths)
 
 **Parameters**:
 - `paths`: `String...`
+
+**Returns**: `String`
+
+#### replaceTypeMark
+
+```
+public String replaceTypeMark(String path, String typeMark)
+```
+
+**Parameters**:
+- `path`: `String`
+- `typeMark`: `String`
 
 **Returns**: `String`
 
@@ -425,6 +481,17 @@ public boolean existsParent(String checkPath)
 
 **Returns**: `boolean`
 
+#### isDirectory
+
+```
+public boolean isDirectory(String checkPath)
+```
+
+**Parameters**:
+- `checkPath`: `String`
+
+**Returns**: `boolean`
+
 #### getFileName
 
 ```
@@ -458,10 +525,10 @@ public String getFileModifiedDateTime(String fullPath)
 
 **Returns**: `String`
 
-#### splitFileTypeMark
+#### splitTypeMark
 
 ```
-public String[] splitFileTypeMark(String fileName)
+public String[] splitTypeMark(String fileName)
 ```
 
 **Parameters**:
@@ -469,10 +536,32 @@ public String[] splitFileTypeMark(String fileName)
 
 **Returns**: `String[]`
 
+#### trimTypeMark
+
+```
+public String trimTypeMark(String fileName)
+```
+
+**Parameters**:
+- `fileName`: `String`
+
+**Returns**: `String`
+
+#### getTypeMark
+
+```
+public String getTypeMark(String fileName)
+```
+
+**Parameters**:
+- `fileName`: `String`
+
+**Returns**: `String`
+
 #### getFileList
 
 ```
-public List<String> getFileList(String dirPath, String typeMark, String prefixMatch, String middleMatch, String suffixMatch)
+public String[] getFileList(String dirPath, String typeMark, String prefixMatch, String middleMatch, String suffixMatch)
 ```
 
 **Parameters**:
@@ -482,7 +571,7 @@ public List<String> getFileList(String dirPath, String typeMark, String prefixMa
 - `middleMatch`: `String`
 - `suffixMatch`: `String`
 
-**Returns**: `List<String>`
+**Returns**: `String[]`
 
 #### move
 
@@ -564,6 +653,40 @@ public boolean makeDir(String dirPath)
 - `dirPath`: `String`
 
 **Returns**: `boolean`
+
+#### zip
+
+```
+public void zip(String srcPath, String fileNameCharset, String zipPath)
+```
+
+**Parameters**:
+- `srcPath`: `String`
+- `fileNameCharset`: `String`
+- `zipPath`: `String`
+
+#### zip
+
+```
+public void zip(List<String> srcPaths, String fileNameCharset, String zipPath)
+```
+
+**Parameters**:
+- `srcPaths`: `List<String>`
+- `fileNameCharset`: `String`
+- `zipPath`: `String`
+
+#### unzip
+
+```
+public String[] unzip(String zipPath, String destDirPath)
+```
+
+**Parameters**:
+- `zipPath`: `String`
+- `destDirPath`: `String`
+
+**Returns**: `String[]`
 
 ## Io
 
@@ -2159,6 +2282,116 @@ public void setLimitOver(boolean limitOver)
 **Parameters**:
 - `limitOver`: `boolean`
 
+## IoTsvReader
+
+**Package**: com.onepg.util
+
+### Methods
+
+#### iterator
+
+```
+public Iterator<IoItems> iterator()
+```
+
+**Returns**: `Iterator<IoItems>`
+
+#### close
+
+```
+public void close()
+```
+
+#### getKeys
+
+```
+public String[] getKeys()
+```
+
+#### getReadedCount
+
+```
+public int getReadedCount()
+```
+
+**Returns**: `int`
+
+#### isReadedEndRow
+
+```
+public boolean isReadedEndRow()
+```
+
+**Returns**: `boolean`
+
+#### hasNext
+
+```
+public boolean hasNext()
+```
+
+**Returns**: `boolean`
+
+#### next
+
+```
+public IoItems next()
+```
+
+**Returns**: `IoItems`
+
+## IoTsvWriter
+
+**Package**: com.onepg.util
+
+### Methods
+
+#### close
+
+```
+public void close()
+```
+
+#### println
+
+```
+public void println(String[] values)
+```
+
+**Parameters**:
+- `values`: `String[]`
+
+#### println
+
+```
+public void println(IoItems row)
+```
+
+**Parameters**:
+- `row`: `IoItems`
+
+#### flush
+
+```
+public void flush()
+```
+
+#### getFilePath
+
+```
+public String getFilePath()
+```
+
+**Returns**: `String`
+
+#### getLineCount
+
+```
+public long getLineCount()
+```
+
+**Returns**: `long`
+
 ## LogUtil
 
 **Package**: com.onepg.util
@@ -2626,6 +2859,25 @@ public SqlConstBuilder addQuery(String sql, String itemName, BindType bindType)
 
 **Returns**: `SqlConstBuilder`
 
+#### delLastChar
+
+```
+public SqlConstBuilder delLastChar()
+```
+
+**Returns**: `SqlConstBuilder`
+
+#### delLastChar
+
+```
+public SqlConstBuilder delLastChar(int deleteCharCount)
+```
+
+**Parameters**:
+- `deleteCharCount`: `int`
+
+**Returns**: `SqlConstBuilder`
+
 ## SqlResultSet
 
 **Package**: com.onepg.db
@@ -3024,6 +3276,18 @@ public int executeCache(Connection conn, SqlBean sb)
 - `sb`: `SqlBean`
 
 **Returns**: `int`
+
+#### createItemBindTypeMapByMeta
+
+```
+public Map<String, BindType> createItemBindTypeMapByMeta(Connection conn, String tableName)
+```
+
+**Parameters**:
+- `conn`: `Connection`
+- `tableName`: `String`
+
+**Returns**: `Map<String, BindType>`
 
 #### getToday
 
