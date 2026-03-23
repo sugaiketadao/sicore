@@ -54,9 +54,9 @@ public final class DbUtil {
     }
 
     /**
-     * メタ情報のテーブル名や列名が大文字か.
+     * Checks if table names and column names in metadata are in uppercase.
      *
-     * @return 大文字の場合は <code>true</code>
+     * @return <code>true</code> if the names are in uppercase
      */ 
     private boolean isMetaNameUpperCase() {
       return this == ORACLE || this == DB2;

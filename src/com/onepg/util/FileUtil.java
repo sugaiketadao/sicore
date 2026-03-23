@@ -296,12 +296,11 @@ public final class FileUtil {
    * </ul>
    *
    * @param dirPath     target directory path
-   * @param typeMark    search extension (optional) <code>null</code> if omitted ※ dot character not required
+   * @param typeMark    search extension (optional) <code>null</code> if omitted (dot character not required)
    * @param prefixMatch search file name prefix match (optional) <code>null</code> if omitted
    * @param middleMatch search file name middle match (optional) <code>null</code> if omitted
    * @param suffixMatch search file name suffix match (optional) <code>null</code> if omitted
    * @return the file path (absolute path) array
-   * @throws RuntimeException if the directory does not exist
    */
   public static String[] getFileList(final String dirPath, final String typeMark,
       final String prefixMatch, final String middleMatch, final String suffixMatch) {
@@ -385,8 +384,6 @@ public final class FileUtil {
    * @param srcFile source file
    * @param destFile destination file (directory specification allowed)
    * @return the destination file object
-   * @throws IllegalArgumentException if the destination file already exists
-   * @throws IllegalStateException if file move fails
    */
   public static File move(final File srcFile, final File destFile) {
     final Path srcPath = Paths.get(srcFile.getAbsolutePath());
@@ -426,8 +423,6 @@ public final class FileUtil {
    * @param srcFile source file
    * @param destFile destination file (directory specification allowed)
    * @return the destination file object
-   * @throws IllegalArgumentException if the destination file already exists
-   * @throws IllegalStateException if file copy fails
    */
   public static File copy(final File srcFile, final File destFile) {
     final Path srcPath = Paths.get(srcFile.getAbsolutePath());
@@ -453,6 +448,9 @@ public final class FileUtil {
     if (destFile.isDirectory()) {
       return Paths.get(FileUtil.joinPath(destFile.getAbsolutePath(), srcFile.getName()));
     } else {
+      if (ValUtil.isBlank(getTypeMark(destFile.getAbsolutePath()))) {
+        throw new RuntimeException("Destination file path is neither a directory nor a file with an extension. " + LogUtil.joinKeyVal("path", destFile.getAbsolutePath()));
+      }
       return Paths.get(destFile.getAbsolutePath());
     }
   }
@@ -465,7 +463,6 @@ public final class FileUtil {
    *
    * @param deleteFilePath file path to delete
    * @return <code>false</code> if the file does not exist
-   * @throws IllegalStateException if file deletion fails
    */
   public static boolean delete(final String deleteFilePath) {
     final Path deletePath = Paths.get(deleteFilePath);
@@ -496,7 +493,6 @@ public final class FileUtil {
    *
    * @param dirPath directory path
    * @return <code>false</code> if it already exists
-   * @throws IllegalStateException if directory creation fails
    */
   public static boolean makeDir(final String dirPath) {
     final Path path = Paths.get(dirPath);

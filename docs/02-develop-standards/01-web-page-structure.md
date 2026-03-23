@@ -453,10 +453,10 @@ Defines JavaScript description rules.
 - Do not write JavaScript within HTML; write it in external files and reference them.
 - JavaScript dedicated to that page MUST be one file, and file name MUST be the same as HTML file.
   [Example] For `listpage.html`, use `listpage.js`
-- Within event processing such as button elements, only execute one function defined in external file.
-- Describe JavaScript files at the end within `<body>` to load them. At that time, add `defer` attribute.
-- Initial processing JavaScript on page display is described at the end of JavaScript file.
-- When executing web service within JavaScript, it becomes synchronous processing using `await`, so functions within module JavaScript file are defined with `async`.
+- Event handlers of button elements and similar elements MUST execute only a single method defined in an external file.
+- Load JavaScript files by placing them at the end of `<body>`. Add the `defer` attribute when doing so.
+- Write initialization JavaScript that runs on page load at the end of the JavaScript file.
+- When calling a web service from JavaScript, processing becomes synchronous using `await`; therefore, define methods in module JavaScript files with `async`.
 
 ```HTML
     <button type="button" onclick="insert()">Register</button>

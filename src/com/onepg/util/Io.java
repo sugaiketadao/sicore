@@ -88,8 +88,8 @@ import java.util.Map;
  * 
  * <li>Arrays of 4 or more layers (dimensions) in JSON are not supported.
  * <ul>
- * <li>{ [ [ ] ] } is supported. → array list</li>
- * <li>{ [ { } ] } is supported. → multiple rows list</li>
+ * <li>{ [ [ ] ] } is supported. -> array list</li>
+ * <li>{ [ { } ] } is supported. -> multiple rows list</li>
  * <li>{ [ [ [ ] ] ] } is not supported.</li>
  * <li>{ [ [ { } ] ] } is not supported.</li>
  * </ul>

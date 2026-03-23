@@ -41,11 +41,11 @@ public class ExampleListSearch extends AbstractDbAccessWebService {
     sb.addQuery("  u.user_id ");
     sb.addQuery(", u.user_nm ");
     sb.addQuery(", u.email ");
-    sb.addQuery(", CASE WHEN u.gender_cs = 'M' THEN 'Male' WHEN u.gender_cs = 'F' THEN 'Female' ELSE 'Other' END gender_dn ");
+    sb.addQuery(", CASE WHEN u.gender_cs = 'M' THEN 'Male' WHEN u.gender_cs = 'F' THEN 'Female' ELSE 'Other' END AS gender_dn ");
     sb.addQuery(", u.income_am ");
     sb.addQuery(", u.birth_dt ");
     sb.addQuery(", u.upd_ts ");
-    sb.addQuery(" FROM t_user u ").addQuery(" WHERE 1=1 ");
+    sb.addQuery(" FROM t_user AS u ").addQuery(" WHERE 1=1 ");
     sb.addQnotB("   AND u.user_id = ? ", io.getString("user_id"));
     sb.addQnotB("   AND u.user_nm LIKE '%' || ? || '%' ", io.getString("user_nm"));
     sb.addQnotB("   AND u.email LIKE ? || '%' ", io.getString("email"));

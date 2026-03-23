@@ -882,7 +882,7 @@ public final class ValUtil {
       return "0";
     }
     
-    // Integer part is empty → fill with "0"
+    // Integer part is empty -> fill with "0"
     if (ret.startsWith(".")) {
       if (hasMinus) {
         return "-0" + ret;

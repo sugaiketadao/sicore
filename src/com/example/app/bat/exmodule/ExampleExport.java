@@ -30,7 +30,7 @@ public class ExampleExport extends AbstractDbAccessBatch {
       .addQuery(", u.income_am ")
       .addQuery(", u.birth_dt ")
       .addQuery(", u.upd_ts ")
-      .addQuery(" FROM t_user u ")
+      .addQuery(" FROM t_user AS u ")
       .addQuery(" ORDER BY u.user_id ")
       .end();
 

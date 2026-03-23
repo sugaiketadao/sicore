@@ -24,7 +24,7 @@ final class JwtUtil {
   /** Signing secret key. */
   private static final String SECRET_KEY = ServerUtil.PROP_MAP.getStringOrDefault("jwt.secret.key", "must-be-configured-in-web.properties");
   /** Expiration period (seconds). */
-  private static final long EXPIRE_SEC = ServerUtil.PROP_MAP.getLongOrDefault("jwt.expire.sec", 86_400L); // デフォルトは24時間
+  private static final long EXPIRE_SEC = ServerUtil.PROP_MAP.getLongOrDefault("jwt.expire.sec", 86_400L); // Default is 24 hours
 
   /**
    * Constructor.
@@ -52,7 +52,6 @@ final class JwtUtil {
    *
    * @param token JWT string
    * @return the sign-in ID
-   * @throws Exception if the signature is invalid or the token has expired
    */
   static String validateToken(final String token) {
     if (ValUtil.isBlank(token)) {
@@ -85,7 +84,6 @@ final class JwtUtil {
    *
    * @param data data to sign
    * @return the Base64URL encoded signature
-   * @throws Exception signing error
    */
   private static String sign(final String data) {
     try {

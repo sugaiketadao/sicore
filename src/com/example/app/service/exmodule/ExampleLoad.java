@@ -44,7 +44,7 @@ public class ExampleLoad extends AbstractDbAccessWebService {
     sb.addQuery(", u.spouse_cs ");
     sb.addQuery(", u.income_am ");
     sb.addQuery(", u.birth_dt ");
-    sb.addQuery(" FROM t_user u ");
+    sb.addQuery(" FROM t_user AS u ");
     sb.addQuery(" WHERE u.user_id = ? ", io.getString("user_id"));
     sb.addQuery("   AND u.upd_ts = ? ", io.getSqlTimestampNullable("upd_ts"));
 
@@ -75,7 +75,7 @@ public class ExampleLoad extends AbstractDbAccessWebService {
     sb.addQuery(", d.vaccine_cs ");
     sb.addQuery(", d.weight_kg ");
     sb.addQuery(", d.birth_dt ");
-    sb.addQuery(" FROM t_user_pet d ");
+    sb.addQuery(" FROM t_user_pet AS d ");
     sb.addQuery(" WHERE d.user_id = ? ", io.getString("user_id"));
     sb.addQuery(" ORDER BY d.pet_no");
     // Retrieves all rows in bulk from the database

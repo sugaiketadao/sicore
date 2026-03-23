@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 固定SQL.<br>
+ * Fixed SQL.<br>
  * <ul>
- * <li>SQL文字列とバインド項目定義（項目名と型）を格納します。</li>
- * <li>おもにバッチ処理での使用を想定しており、クラス変数（定数）として宣言します。</li>
- * <li>本クラスを使用することでプリペアードステートメントのキャッシュが可能になるため、Webサービス処理での性能改善目的の使用も想定しています。</li>
- * <li>SQL実行時には、バインド値を持つパラメーターをこのSQLと共に渡します。</li>
- * <li>同じ項目名を同じ型で複数回バインド可能です。</li>
- * <li>バインド項目が無い場合は、そのまま使用します。</li>
- * <li>プリペアードステートメントのキャッシュを使用して実行するには <code>SqlUtil.executeOneCache</code> または <code>SqlUtil.executeCache</code> を使用します。</li>
+ * <li>Stores the SQL string and bind field definitions (field names and types).</li>
+ * <li>Primarily intended for use in batch processing; declare as a class variable (constant).</li>
+ * <li>Using this class enables caching of prepared statements, so its use for performance improvement in web service processing is also assumed.</li>
+ * <li>When executing SQL, pass parameters with bind values together with this SQL.</li>
+ * <li>The same field name can be bound multiple times with the same type.</li>
+ * <li>If there are no bind fields, use as-is.</li>
+ * <li>To execute using the prepared statement cache, use <code>SqlUtil.executeOneCache</code> or <code>SqlUtil.executeCache</code>.</li>
  * </ul>
  * <pre>
- * ［SQL宣言例 バインド項目有り］
+ * [SQL declaration example - with bind fields]
  * <code>SqlConst SQL_INS_PET = SqlConst.begin()
  *     .addQuery("INSERT INTO t_pet ( ")
  *     .addQuery("  pet_no ")
@@ -38,31 +38,31 @@ import java.util.Map;
  *     .addQuery(", ? ", "now_ts", BindType.Timestamp)
  *     .addQuery(" ) ")
  *     .end();</code>
- * ［SQL実行例 バインド項目有り］
+ * [SQL execution example - with bind fields]
  * <code>SqlUtil.executeOne(conn, SQL_INS_PET.bind(io));</code>
- * ［SQL宣言例 バインド項目無し］
+ * [SQL declaration example - without bind fields]
  * <code>SqlConst SQL_SEL_USER = SqlConst.begin()
  *     .addQuery("SELECT ")
  *     .addQuery("  u.user_id ")
  *     .addQuery(", u.user_nm ")
  *     .addQuery(", u.email ")
  *     .addQuery(", u.birth_dt ")
- *     .addQuery(" FROM t_user u ")
+ *     .addQuery(" FROM t_user AS u ")
  *     .addQuery(" ORDER BY u.user_id ")
  *     .end();</code>
- * ［SQL実行例 バインド項目無し］
+ * [SQL execution example - without bind fields]
  * <code>SqlResultSet rSet = SqlUtil.select(getDbConn(), SQL_SEL_USER);</code>
- * ［SQL実行例 プリペアードステートメントキャッシュ実行］
+ * [SQL execution example - prepared statement cache execution]
  * <code>SqlUtil.executeOneCache(conn, SQL_INS_PET.bind(io));</code>
  * </pre>
  */
 public final class SqlConst extends SqlBean {
 
   /**
-   * バインド型.<br>
+   * Bind type.<br>
    * <ul>
-   * <li>SQLにバインドする際の型を示します。</li>
-   * <li>数値の型は <code>BigDecimal</code> に統一されます。</li>
+   * <li>Indicates the type used when binding to SQL.</li>
+   * <li>Numeric types are unified as <code>BigDecimal</code>.</li>
    * </ul>
    */
   public enum BindType {
@@ -70,22 +70,22 @@ public final class SqlConst extends SqlBean {
   }
 
   /** 
-   * バインド項目名リスト.<br>
+   * Bind field name list.<br>
    * <ul>
-   * <li>バインド項目名の順序を保持するためのリスト。</li>
-   * <li>同じ項目名が複数回バインドされる場合も、その順序で複数回格納されます。</li>
+   * <li>A list for maintaining the order of bind field names.</li>
+   * <li>If the same field name is bound multiple times, it is stored multiple times in order.</li>
    * </ul>
    */
   private final List<String> bindItemNames;
-  /** バインド項目定義マップ&lt;項目名、型&gt;. */
+  /** Bind field definition map &lt;field name, type&gt;. */
   private final Map<String, BindType> bindItems;
   
   /**
-   * コンストラクタ.
+   * Constructor.
    * 
-   * @param query SQL文字列
-   * @param bindItemNames バインド項目名リスト
-   * @param bindItems バインド項目定義マップ&lt;項目名、型&gt;
+   * @param query SQL string
+   * @param bindItemNames bind field name list
+   * @param bindItems bind field definition map &lt;field name, type&gt;
    */
   SqlConst(final String query, final List<String> bindItemNames, final Map<String, BindType> bindItems) {
     super(query);
@@ -94,25 +94,25 @@ public final class SqlConst extends SqlBean {
   }
   
   /**
-   * 固定SQLビルダーインスタンス生成.
+   * Creates a fixed SQL builder instance.
    * 
-   * @return 固定SQLビルダーインスタンス
+   * @return the fixed SQL builder instance
    */
   public static SqlConstBuilder begin() {
     return new SqlConstBuilder();
   }
   
   /**
-   * バインド値セット.<br>
+   * Sets bind values.<br>
    * <ul>
-   * <li>格納しているSQL文字列と、引数として受け取ったパラメーター値マップを SQL Bean にセットして返します。</li>
-   * <li>パラメーター値マップからバインド項目名リストとバインド項目定義マップをもとにバインド値リストを作成して SQL Bean にセットします。</li>
-   * <li>バインド値リストの要素は <code>Object</code> とし、各項目値はバインド項目定義に沿った型で格納されます。</li>
-   * <li>パラメーター値マップにバインド項目名が存在しなければ実行時エラーとなります。</li>
+   * <li>Sets the stored SQL string and the parameter value map received as an argument into a SQL Bean and returns it.</li>
+   * <li>Creates a bind value list from the bind field name list and bind field definition map using values from the parameter value map, and sets it in the SQL Bean.</li>
+   * <li>The elements of the bind value list are of type <code>Object</code>, and each field value is stored with the type specified in the bind field definition.</li>
+   * <li>If a bind field name does not exist in the parameter value map, a runtime error occurs.</li>
    * </ul>
    * 
-   * @param params パラメーター値マップ
-   * @return SQL Bean
+   * @param params parameter value map
+   * @return the SQL Bean
    */
   public SqlBean bind(final AbstractIoTypeMap params) {
     if (ValUtil.isNull(params)) {
@@ -147,86 +147,86 @@ public final class SqlConst extends SqlBean {
   }
 
   /**
-   * 固定SQLビルダー.
+   * Fixed SQL builder.
    * <ul>
-   * <li>固定SQL（<code>SqlConst</code>）を組み立てるビルダークラスです。</li>
-   * <li>SQL の組み立てとバインド項目定義（項目名と型）を同時に行えるメソッドを持ちます。</li>
-   * <li><code>addQuery</code> メソッドは自インスタンスを返すのでメソッドチェーンで使えます。</li>
+   * <li>A builder class for constructing fixed SQL (<code>SqlConst</code>).</li>
+   * <li>Provides methods to build SQL and define bind fields (field names and types) simultaneously.</li>
+   * <li>The <code>addQuery</code> method returns the instance itself, so it can be used in method chains.</li>
    * </ul>
    */
   public static final class SqlConstBuilder {
 
-    /** SQL文字列. */
+    /** SQL string. */
     private final StringBuilder query = new StringBuilder();
 
     /** 
-     * バインド項目名リスト.<br>
+     * Bind field name list.<br>
      * <ul>
-     * <li>バインド項目名の順序を保持するためのリスト。</li>
-     * <li>同じ項目名が複数回バインドされる場合も、その順序で複数回格納されます。</li>
+     * <li>A list for maintaining the order of bind field names.</li>
+     * <li>If the same field name is bound multiple times, it is stored multiple times in order.</li>
      * </ul>
      */
     private final List<String> bindItemNames = new ArrayList<>();
-    /** バインド項目定義マップ&lt;項目名、型&gt;. */
+    /** Bind field definition map &lt;field name, type&gt;. */
     private final Map<String, BindType> bindItems = new LinkedHashMap<>();
       
     /**
-     * コンストラクタ.
+     * Constructor.
      */
     SqlConstBuilder() {
-      // 処理なし
+      // No processing
     }
 
     /**
-     * 固定SQL返却.
+     * Returns the fixed SQL.
      *
-     * @return 固定SQL
+     * @return the fixed SQL
      */
     public SqlConst end() {
       return new SqlConst(this.query.toString(), this.bindItemNames, this.bindItems);
     }
 
     /**
-     * SQL追加.<br>
+     * Adds SQL.<br>
      * <ul>
-     * <li>２文字以上のブランクを1文字ブランクに置き換えて追加します。</li>
+     * <li>Replaces two or more consecutive blanks with a single blank before appending.</li>
      * </ul>
      * 
      * @param sql SQL
-     * @return 自インスタンス
+     * @return the instance itself
      */
     public SqlConstBuilder addQuery(final String sql) {
-      // SQL追加
+      // Add SQL
       SqlUtil.appendQuery(this.query, sql); 
       return this;
     }
 
     /**
-     * SQL＆バインド項目定義（項目名と型）追加.<br>
+     * Adds SQL and bind field definition (field name and type).<br>
      * <ul>
-     * <li>SQL文字列内にバインドプレースホルダー <code>?</code> を１つだけ含む必要があります。</li>
-     * <li>バインド項目名は <code>Io</code> オブジェクトキーとして有効な値である必要があります。（<code>AbstractIoTypeMap</code> のキールール）</li>
+     * <li>The SQL string must contain exactly one bind placeholder <code>?</code>.</li>
+     * <li>The bind field name must be a valid value as an <code>Io</code> object key (key rules of <code>AbstractIoTypeMap</code>).</li>
      * </ul>
      *
      * @param sql      SQL
-     * @param itemName バインド項目名
-     * @param bindType バインド型
-     * @return 自インスタンス
+     * @param itemName bind field name
+     * @param bindType bind type
+     * @return the instance itself
      */
     public SqlConstBuilder addQuery(final String sql, final String itemName, final BindType bindType) {
-      // バインド項目名チェック
+      // Validate bind field name
       ValUtil.validateIoKey(itemName);
 
       if (ValUtil.isBlank(sql)) {
         throw new RuntimeException("SQL must not be blank.");
       }
-      // SQL文字列内の ? の数チェック
+      // Check the number of ? placeholders in the SQL string
       final int placeholderCount = sql.length() - sql.replace("?", "").length();
       if (placeholderCount != 1) {
         throw new RuntimeException("SQL must contain exactly one bind placeholder '?'. "
             + LogUtil.joinKeyVal("sql", sql, "placeholderCount", placeholderCount));
       }
-      // 既存バインド項目型チェック
+      // Check existing bind field type
       if (this.bindItems.containsKey(itemName) && this.bindItems.get(itemName) != bindType) {
         throw new RuntimeException("Bind item already exists with different type. "
                                 + LogUtil.joinKeyVal("itemName", itemName,
@@ -234,9 +234,9 @@ public final class SqlConst extends SqlBean {
                                                     "newType", bindType));
       }
     
-      // SQL追加
+      // Add SQL
       SqlUtil.appendQuery(this.query, sql); 
-      // バインド項目名リストとバインド項目定義マップに追加
+      // Add to bind field name list and bind field definition map
       this.bindItemNames.add(itemName);
       this.bindItems.put(itemName, bindType);
 
@@ -244,12 +244,12 @@ public final class SqlConst extends SqlBean {
     }
     
     /**
-     * 最終SQL文字列削除.
+     * Deletes the last SQL string character.
      * <ul>
-     * <li>SQL文字列の最終文字（１文字）を削除します。</li>
+     * <li>Deletes the last character (one character) of the SQL string.</li>
      * </ul>
      * 
-     * @return 自インスタンス
+     * @return the instance itself
      */
     public SqlConstBuilder delLastChar() {
       ValUtil.deleteLastChar(this.query);
@@ -257,13 +257,13 @@ public final class SqlConst extends SqlBean {
     }
     
     /**
-     * 最終SQL文字列削除.
+     * Deletes the last SQL string characters.
      * <ul>
-     * <li>SQL文字列の最後から指定文字数を削除します。</li>
+     * <li>Deletes the specified number of characters from the end of the SQL string.</li>
      * </ul>
      * 
-     * @param deleteCharCount 削除文字数
-     * @return 自インスタンス
+     * @param deleteCharCount number of characters to delete
+     * @return the instance itself
      */
     public SqlConstBuilder delLastChar(final int deleteCharCount) {
       ValUtil.deleteLastChar(this.query, deleteCharCount);

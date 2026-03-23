@@ -358,7 +358,6 @@ public final class PropertiesUtil {
    * </ul>
    *
    * @return binary file parent directory path
-   * @throws IllegalStateException if getting the class file path fails
    */
   private static String getJavaClassParentPath() {
     final ProtectionDomain pd = FileUtil.class.getProtectionDomain();

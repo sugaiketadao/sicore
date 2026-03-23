@@ -69,7 +69,7 @@ final class CsvDqParser extends AbstractStringSeparateParser {
         if (isPreEsc(value, i)) {
           continue;
         }
-        // Treat as escape sequence (""→") when next character after double quote is also double quote
+        // Treat as escape sequence (""->") when next character after double quote is also double quote
         if (i + 1 < value.length() && value.charAt(i + 1) == '"') {
           if (inDq) {
             // Valid only within double quotes
