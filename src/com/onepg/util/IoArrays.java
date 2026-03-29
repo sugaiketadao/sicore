@@ -8,6 +8,8 @@ import java.util.List;
  * Array list.<br>
  * <ul>
  * <li>Holds table-image data.</li>
+ * <li>Holds table-image data more compactly than a list of maps.</li>
+ * <li>Intended for API use.</li>
  * </ul>
  */
 public final class IoArrays extends ArrayList<List<String>> {
