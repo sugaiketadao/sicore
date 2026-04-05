@@ -2,6 +2,7 @@ package com.onepg.db;
 
 import com.onepg.util.ValUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,49 @@ public final class SqlBuilder extends SqlBean {
    * Constructor.
    */
   public SqlBuilder() {
-    super();
+    super(ValUtil.BLANK, null, new StringBuilder(), new ArrayList<>());
+  }
+  
+  /**
+   * Copy constructor.<br>
+   * @param id SQL-ID
+   * @param queryBuilder SQL string
+   * @param bindValues the list of bind values
+   */
+  private SqlBuilder(final String id, final StringBuilder queryBuilder, final List<Object> bindValues) {
+    super(id, null, queryBuilder, bindValues);
+  }
+ 
+  /**
+   * Creates a copied instance.<br>
+   * <ul>
+   * <li>Creates a new SqlBuilder by copying the SQL string and bind values of the argument SQL Bean.</li>
+   * <li>If the source is SqlConst, the SQL-ID will be the source ID with the specified string appended.</li>
+   * </ul>
+   * @param sb the source SQL Bean
+   * @param addId the string to append to the ID
+   * @return the copied SqlBuilder
+   */
+  static SqlBuilder copy(final SqlBean sb, final String addId) {
+    final String id;
+    final StringBuilder queryBuilder;
+    final List<Object> bindValues;
+    if (ValUtil.isNull(sb.queryBuilder)) {
+      if (ValUtil.isBlank(sb.id)) {
+        throw new RuntimeException("Source SQL Bean must have an ID when copying from SqlConst.");
+      }
+      if (ValUtil.isBlank(addId)) {
+        throw new RuntimeException("addId must not be blank when copying from SqlConst.");
+      }
+      // When the source is SqlConst
+      id = sb.id + "-" + addId;
+      queryBuilder = new StringBuilder(sb.query);
+    } else {
+      id = ValUtil.BLANK;
+      queryBuilder = new StringBuilder(sb.queryBuilder);
+    }
+    bindValues = new ArrayList<>(sb.bindValues);
+    return new SqlBuilder(id, queryBuilder, bindValues);
   }
 
   /**

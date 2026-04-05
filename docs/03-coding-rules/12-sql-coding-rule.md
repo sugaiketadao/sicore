@@ -20,7 +20,7 @@
 
 ## Table Joins
 - Write inner joins using `JOIN`. Omit `INNER`.
-- Write outer joins using `LEFT JOIN`.
+- Write outer joins using `LEFT JOIN`. Omit `OUTER`.
 - In the `ON` clause for join conditions, write the column from the `JOIN`ed table on the left side.
     - [OK Example] `FROM tbla AS ta JOIN tblz AS tz ON tz.id = ta.id`
     - [NG Example] `FROM tbla AS ta JOIN tblz AS tz ON ta.id = tz.id`

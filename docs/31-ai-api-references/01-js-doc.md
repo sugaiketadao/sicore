@@ -374,7 +374,7 @@ getValues(outerElm)
 ```
 
 **Parameters**:
-- `[outerElm]`: `Object`
+- `[outerElm]`: `Element`
 
 **Returns**: `Object`
 

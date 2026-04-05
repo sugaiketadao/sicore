@@ -3,7 +3,6 @@ package com.onepg.db;
 import com.onepg.util.LogUtil;
 import com.onepg.util.ValUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,42 +24,19 @@ public class SqlBean {
   protected final List<Object> bindValues;
   
   /**
-   * Constructor for SqlConst (fixed SQL).
+   * Constructor.
+   * @param id SQL-ID
+   * @param query SQL string
+   * @param queryBuilder SQL string builder
+   * @param bindValues Bind value list
    */
-  protected SqlBean(final String query) {
-    // Get class package + class name + line number as ID
-    this.id = LogUtil.getClsNameAndLineNo(this.getClass());
-    this.query = query;
-    this.queryBuilder = null;
-    this.bindValues = new ArrayList<>();
-  }
-  
-  /**
-   * Constructor with bind values for SqlConst (fixed SQL)#bind.<br>
-   * <ul>
-   * <li>The SQL-ID is inherited from the originating instance.</li>
-   * </ul>
-   */
-  protected SqlBean(final String id, final String query, final List<Object> bindValues) {
+  protected SqlBean(final String id, final String query, final StringBuilder queryBuilder, final List<Object> bindValues) {
     this.id = id;
     this.query = query;
-    this.queryBuilder = null;
+    this.queryBuilder = queryBuilder;
     this.bindValues = bindValues;
   }
   
-  /**
-   * Constructor for SqlBuilder (dynamic SQL).<br>
-   * <ul>
-   * <li>The SQL-ID is always blank.</li>
-   * </ul>
-   */
-  protected SqlBean() {
-    this.id = ValUtil.BLANK;
-    this.query = null;
-    this.queryBuilder = new StringBuilder();
-    this.bindValues = new ArrayList<>();
-  }
-
   /**
    * Gets SQL-ID.
    *

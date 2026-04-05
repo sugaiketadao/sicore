@@ -87,12 +87,28 @@ public final class SqlConst extends SqlBean {
    * @param bindItemNames bind field name list
    * @param bindItems bind field definition map &lt;field name, type&gt;
    */
-  SqlConst(final String query, final List<String> bindItemNames, final Map<String, BindType> bindItems) {
-    super(query);
+  private SqlConst(final String query, final List<String> bindItemNames, final Map<String, BindType> bindItems) {
+    // Retrieves the class package + class name + line number as the ID
+    super(LogUtil.getClsNameAndLineNo(SqlConst.class), query, null, new ArrayList<>());
     this.bindItemNames = bindItemNames;
     this.bindItems = bindItems;
   }
   
+  /**
+   * Constructor with bind values.<br>
+   * <ul>
+   * <li>The SQL-ID is expected to inherit the ID of the source.</li>
+   * </ul>
+   * @param id SQL-ID
+   * @param query the SQL string
+   * @param bindValues the list of bind values
+   */
+  private SqlConst(final String id, final String query, final List<Object> bindValues) {
+    super(id, query, null, bindValues);
+    this.bindItemNames = null;
+    this.bindItems = null;
+  }
+
   /**
    * Creates a fixed SQL builder instance.
    * 
@@ -112,9 +128,9 @@ public final class SqlConst extends SqlBean {
    * </ul>
    * 
    * @param params parameter value map
-   * @return the SQL Bean
+   * @return the fixed SQL
    */
-  public SqlBean bind(final AbstractIoTypeMap params) {
+  public SqlConst bind(final AbstractIoTypeMap params) {
     if (ValUtil.isNull(params)) {
       throw new RuntimeException("Parameter map must not be null.");
     }
@@ -143,7 +159,7 @@ public final class SqlConst extends SqlBean {
         bindValues.add(paramValue);
       }
     }
-    return new SqlBean(super.id, super.query, bindValues);
+    return new SqlConst(super.id, super.query, bindValues);
   }
 
   /**

@@ -2819,13 +2819,13 @@ public SqlConstBuilder begin()
 #### bind
 
 ```
-public SqlBean bind(AbstractIoTypeMap params)
+public SqlConst bind(AbstractIoTypeMap params)
 ```
 
 **Parameters**:
 - `params`: `AbstractIoTypeMap`
 
-**Returns**: `SqlBean`
+**Returns**: `SqlConst`
 
 #### end
 

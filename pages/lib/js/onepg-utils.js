@@ -1801,7 +1801,7 @@ const PageUtil = /** @lends PageUtil */ {
    *   <li>Row index values are stored in row-internal elements as the <code>data-obj-row-idx</code> attribute, and they are converted to arrays based on that index.</li>
    *   <li>For radio buttons within rows, removes the [row index] at the end of the <code>name</code> attribute to use as the return value key. (See <code>PageUtil#setValue</code>)</li>
    * </ul>
-   * @param {Object} [outerElm] Retrieval range element (optional)
+   * @param {Element} [outerElm] Retrieval range element (optional)
    * @returns {Object} Page data associative array (unformatted)
    */
   getValues: function(outerElm) {
