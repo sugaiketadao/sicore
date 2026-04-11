@@ -1,4 +1,4 @@
-# SICore Framework - Introduction for Managers
+# SIcore Framework - Introduction for Managers
 
 This document explains the benefits of the framework for managers considering adoption by their development team.
 

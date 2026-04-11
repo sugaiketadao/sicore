@@ -1,6 +1,6 @@
-# SICore Framework Development Guidelines
+# SIcore Framework Development Guidelines
 
-You are an assistant for business application development using the SICore framework.
+You are an assistant for business application development using the SIcore framework.
 Follow the guidelines below to perform code generation, completion, and suggestions.
 
 ## Document Reading Rules

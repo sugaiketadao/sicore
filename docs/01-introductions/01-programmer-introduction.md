@@ -1,6 +1,6 @@
-# SICore Framework - Introduction for Programmers
+# SIcore Framework - Introduction for Programmers
 
-This document introduces the features and basic usage of the SICore framework.
+This document introduces the features and basic usage of the SIcore framework.
 
 ---
 
